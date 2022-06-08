@@ -1,0 +1,164 @@
+syntax = "proto3";
+
+package openfga.v1;
+
+import "google/api/field_behavior.proto";
+import "google/protobuf/timestamp.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+import "validate/validate.proto";
+
+message TupleKey {
+  string object = 1 [
+    (validate.rules).string = {
+      max_bytes: 256,
+      pattern: "^[^\\s]*$"
+    },
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      max_length: 256,
+      example: "\"document:2021-budget\""
+    }
+  ];
+  string relation = 2 [
+    (validate.rules).string = {
+      max_bytes: 50,
+      pattern: "^[^:#@\\s]*$"
+    },
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      max_length: 50,
+      example: "\"reader\""
+    }
+  ];
+  string user = 3 [
+    (validate.rules).string = {
+      max_bytes: 512
+    },
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      max_length: 512,
+      example: "\"anne\""
+    }
+  ];
+}
+
+message Tuple {
+  TupleKey key = 1;
+  google.protobuf.Timestamp timestamp = 2;
+}
+
+message TupleKeys {
+  repeated TupleKey tuple_keys = 1 [
+    (validate.rules).repeated = {
+      min_items: 1,
+      max_items: 25
+    },
+    json_name = "tuple_keys",
+    (google.api.field_behavior) = REQUIRED,
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      minimum: 1,
+      maximum: 25
+    }
+  ];
+}
+
+message ContextualTupleKeys {
+  repeated TupleKey tuple_keys = 1 [
+    (validate.rules).repeated = {
+      min_items: 1,
+      max_items: 10
+    },
+    json_name = "tuple_keys",
+    (google.api.field_behavior) = REQUIRED,
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      minimum: 1,
+      maximum: 10
+    }
+  ];
+}
+
+// A UsersetTree contains the result of an Expansion.
+message UsersetTree {
+  // A leaf node contains either
+  // - a set of users (which may be individual users, or usersets
+  //   referencing other relations)
+  // - a computed node, which is the result of a computed userset
+  //   value in the authorization model
+  // - a tupleToUserset nodes, containing the result of expanding
+  //   a tupleToUserset value in a authorization model.
+  message Leaf {
+    oneof value {
+      Users users = 1;
+      Computed computed = 2;
+      TupleToUserset tuple_to_userset = 3;
+    }
+  }
+
+  message Nodes {
+    repeated Node nodes = 1;
+  }
+
+  message Users {
+    repeated string users = 1;
+  }
+
+  message Computed {
+    string userset = 1;
+  }
+
+  message TupleToUserset {
+    string tupleset = 1;
+    repeated Computed computed = 2;
+  }
+
+  message Difference {
+    Node base = 1;
+    Node subtract = 2;
+  }
+
+  message Node {
+    string name = 1;
+    oneof value {
+      Leaf leaf = 2;
+      Difference difference = 5;
+      Nodes union = 6;
+      Nodes intersection = 7;
+    }
+  }
+
+  Node root = 1;
+}
+
+message Assertion {
+  TupleKey tuple_key = 1 [
+    (validate.rules).message.required = true,
+    json_name = "tuple_key",
+    (google.api.field_behavior) = REQUIRED
+  ];
+
+  bool expectation = 2 [
+    json_name = "expectation",
+    (google.api.field_behavior) = REQUIRED
+  ];
+}
+
+message Assertions {
+  repeated Assertion assertions = 1;
+}
+
+// buf:lint:ignore ENUM_ZERO_VALUE_SUFFIX
+enum TupleOperation {
+  TUPLE_OPERATION_WRITE = 0;
+  TUPLE_OPERATION_DELETE = 1;
+}
+
+message TupleChange {
+  TupleKey tuple_key = 1 [json_name = "tuple_key"];
+  TupleOperation operation = 2 [(validate.rules).enum.defined_only = true];
+  google.protobuf.Timestamp timestamp = 3;
+}
+
+message Store {
+  string id = 1;
+  string name = 2;
+  google.protobuf.Timestamp created_at = 3 [json_name = "created_at"];
+  google.protobuf.Timestamp updated_at = 4 [json_name = "updated_at"];
+  google.protobuf.Timestamp deleted_at = 5 [json_name = "deleted_at"];
+}

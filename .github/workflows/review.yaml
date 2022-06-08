@@ -1,0 +1,28 @@
+name: review
+on: 
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: bufbuild/buf-setup-action@v1
+        with:
+          version: '1.4.0'
+      - uses: bufbuild/buf-lint-action@v1
+      - uses: bufbuild/buf-breaking-action@v1
+        with:
+          # The 'main' branch of the GitHub repository that defines the module.
+          against: 'https://github.com/${GITHUB_REPOSITORY}.git#branch=main'
+  openapi:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: bufbuild/buf-setup-action@v1
+        with:
+          version: '1.4.0'
+      - name: "Generate OpenAPI & Diff"
+        run: "./buf.gen.yaml && git diff --text --exit-code docs/openapiv2/apidocs.swagger.json"

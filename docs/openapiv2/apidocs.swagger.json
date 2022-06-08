@@ -1,0 +1,1671 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "OpenFGA",
+    "version": "0.1",
+    "contact": {}
+  },
+  "tags": [
+    {
+      "name": "OpenFGAService"
+    }
+  ],
+  "schemes": [
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/stores": {
+      "get": {
+        "summary": "Get all stores",
+        "description": "Returns a paginated list of OpenFGA stores.",
+        "operationId": "ListStores",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ListStoresResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "continuation_token",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Store"
+        ]
+      },
+      "post": {
+        "summary": "Create a store",
+        "description": "Create a unique OpenFGA store which will be used to store authorization models and relationship tuples.",
+        "operationId": "CreateStore",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/CreateStoreResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreateStoreRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Store"
+        ]
+      }
+    },
+    "/stores/{store_id}": {
+      "get": {
+        "summary": "Get a store",
+        "description": "Returns an OpenFGA store.",
+        "operationId": "GetStore",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/GetStoreResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "store_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Store"
+        ]
+      },
+      "delete": {
+        "summary": "Delete a store",
+        "description": "Delete an OpenFGA store. This does not delete the data associated to it, like tuples or authorization models.",
+        "operationId": "DeleteStore",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/DeleteStoreResponse"
+            }
+          },
+          "204": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/DeleteStoreResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "store_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Store"
+        ]
+      }
+    },
+    "/stores/{store_id}/assertions/{authorization_model_id}": {
+      "get": {
+        "summary": "Read assertions for an authorization model ID",
+        "description": "The GET assertions API will return, for a given authorization model id, all the assertions stored for it. An assertion is an object that contains a tuple key, and the expectation of whether a call to the Check API of that tuple key will return true or false. ",
+        "operationId": "ReadAssertions",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ReadAssertionsResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "store_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization_model_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Assertions"
+        ]
+      },
+      "put": {
+        "summary": "Upsert assertions for an authorization model ID",
+        "description": "The Write Assertions API will add new assertions for an authorization model id, or overwrite the existing ones. An assertion is an object that contains a tuple key, and the expectation of whether a call to the Check API of that tuple key will return true or false. ",
+        "operationId": "WriteAssertions",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/WriteAssertionsResponse"
+            }
+          },
+          "204": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/WriteAssertionsResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "store_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization_model_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "assertions": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/Assertion"
+                  },
+                  "maximum": 100,
+                  "required": [
+                    "assertions"
+                  ]
+                }
+              },
+              "required": [
+                "assertions"
+              ]
+            }
+          }
+        ],
+        "tags": [
+          "Assertions"
+        ]
+      }
+    },
+    "/stores/{store_id}/authorization-models": {
+      "get": {
+        "summary": "Return all the authorization model IDs for a particular store",
+        "description": "The GET authorization-models API will return all the IDs of the authorization models for a certain store.\nPath parameter `store_id` is required.\nOpenFGA's response will contain an array of all authorization model IDs, sorted in descending order of creation.\n\n## Example\nAssume that the store's authorization model has been configured twice.  To get all the IDs of the authorization models that had been created in this store, call GET authorization-models.  The API will return a response that looks like:\n```json\n{\n  \"authorization_model_ids\": [\n      \"1yunpF9DkzXMzm0dHrsCuWsooEV\",\n      \"1yundoHpJHlodgn4EOVar2DhmKp\"\n  ]\n}\n```\nIf there are more authorization model IDs available, the response will contain an extra field `continuation_token`:\n```json\n{\n  \"authorization_model_ids\": [\n      \"1yunpF9DkzXMzm0dHrsCuWsooEV\",\n      \"1yundoHpJHlodgn4EOVar2DhmKp\"\n  ],\n  \"continuation_token\": \"eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ==\"\n}\n```\n",
+        "operationId": "ReadAuthorizationModels",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ReadAuthorizationModelsResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "store_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "continuation_token",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Authorization Models"
+        ]
+      },
+      "post": {
+        "summary": "Create a new authorization model",
+        "description": "The POST authorization-model API will update the authorization model for a certain store.\nPath parameter `store_id` and `type_definitions` array in the body are required.  Each item in the `type_definitions` array is a type definition as specified in the field `type_definition`.\nThe response will return the authorization model's ID in the `id` field.\n\n## Example\nTo update the authorization model with a single `document` authorization model, call POST authorization-models API with the body: \n```json\n{\n  \"type_definitions\":[\n    {\n      \"type\":\"document\",\n      \"relations\":{\n        \"reader\":{\n          \"union\":{\n            \"child\":[\n              {\n                \"this\":{\n\n                }\n              },\n              {\n                \"computedUserset\":{\n                  \"object\":\"\",\n                  \"relation\":\"writer\"\n                }\n              }\n            ]\n          }\n        },\n        \"writer\":{\n          \"this\":{\n\n          }\n        }\n      }\n    }\n  ]\n}\n```\nOpenFGA's response will include the version id for this authorization model, which will look like \n```\n{\"authorization_model_id\": \"1yunpF9DkzXMzm0dHrsCuWsooEV\"}\n```\n",
+        "operationId": "WriteAuthorizationModel",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/WriteAuthorizationModelResponse"
+            }
+          },
+          "201": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/WriteAuthorizationModelResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "store_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "typeDefinitions",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/TypeDefinitions"
+            }
+          }
+        ],
+        "tags": [
+          "Authorization Models"
+        ]
+      }
+    },
+    "/stores/{store_id}/authorization-models/{id}": {
+      "get": {
+        "summary": "Return a particular version of an authorization model",
+        "description": "The GET authorization-models by ID API will return a particular version of authorization model that had been configured for a certain store.  \nPath parameter `store_id` and `id` are required.\nThe response will return the authorization model for the particular version.\n\n## Example\nTo retrieve the authorization model with ID `1yunpF9DkzXMzm0dHrsCuWsooEV` for the store, call the GET authorization-models by ID API with `1yunpF9DkzXMzm0dHrsCuWsooEV` as the `id` path parameter.  The API will return:\n```json\n{\n  \"authorization_model\":{\n    \"id\":\"1yunpF9DkzXMzm0dHrsCuWsooEV\",\n    \"type_definitions\":[\n      {\n        \"type\":\"document\",\n        \"relations\":{\n          \"reader\":{\n            \"union\":{\n              \"child\":[\n                {\n                  \"this\":{}\n                },\n                {\n                  \"computedUserset\":{\n                    \"object\":\"\",\n                    \"relation\":\"writer\"\n                  }\n                }\n              ]\n            }\n          },\n          \"writer\":{\n            \"this\":{}\n          }\n        }\n      }\n    ]\n  }\n}\n```\nIn the above example, there is only 1 type (`document`) with 2 relations (`writer` and `reader`).",
+        "operationId": "ReadAuthorizationModel",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ReadAuthorizationModelResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "store_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Authorization Models"
+        ]
+      }
+    },
+    "/stores/{store_id}/changes": {
+      "get": {
+        "summary": "Return a list of all the tuple changes",
+        "description": "The GET changes API will return a paginated list of tuple changes (additions and deletions) that occurred in a given store, sorted by ascending time. The response will include a continuation token that is used to get the next set of changes. If there are no changes after the provided continuation token, the same token will be returned in order for it to be used when new changes are recorded. If the store never had any tuples added or removed, this token will be empty.\nYou can use the `type` parameter to only get the list of tuple changes that affect objects of that type.\n",
+        "operationId": "ReadChanges",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ReadChangesResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "store_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "continuation_token",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Relationship Tuples"
+        ]
+      }
+    },
+    "/stores/{store_id}/check": {
+      "post": {
+        "summary": "Check whether a user is authorized to access an object",
+        "description": "The Check API queries to check if the user has a certain relationship with an object in a certain store.\nPath parameter `store_id` as well as the body parameter `tuple_key` with specified `object`, `relation` and `user` subfields are all required.\nOptionally, a `contextual_tuples` object may also be included in the body of the request. This object contains one field `tuple_keys`, which is an array of tuple keys.\nThe response will return whether the relationship exists in the field `allowed`.\n\n## Example\nIn order to check if user `anne` has a `can_read` relationship with object `document:2021-budget` given the following contextual tuple\n```json\n{\n  \"user\": \"anne\",\n  \"relation\": \"member\",\n  \"object\": \"time_slot:office_hours\"\n}\n```\na check API call should be fired with the following body:\n```json\n{\n  \"tuple_key\": {\n    \"user\": \"anne\",\n    \"relation\": \"can_read\",\n    \"object\": \"document:2021-budget\"\n  },\n  \"contextual_tuples\": {\n    \"tuple_keys\": [\n      {\n        \"user\": \"anne\",\n        \"relation\": \"member\",\n        \"object\": \"time_slot:office_hours\"\n      }\n    ]\n  }\n}\n```\nOpenFGA's response will include `{ \"allowed\": true }` if there is a relationship and `{ \"allowed\": false }` if there isn't.",
+        "operationId": "Check",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/CheckResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "store_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "tuple_key": {
+                  "$ref": "#/definitions/TupleKey"
+                },
+                "contextual_tuples": {
+                  "$ref": "#/definitions/ContextualTupleKeys"
+                },
+                "authorization_model_id": {
+                  "type": "string",
+                  "example": "1yunpF9DkzXMzm0dHrsCuWsooEV"
+                },
+                "trace": {
+                  "type": "boolean",
+                  "example": false,
+                  "description": "Defaults to false. Making it true has performance implications.",
+                  "readOnly": true
+                }
+              }
+            }
+          }
+        ],
+        "tags": [
+          "Relationship Queries"
+        ]
+      }
+    },
+    "/stores/{store_id}/expand": {
+      "post": {
+        "summary": "Expand all relationships in userset tree format, and following userset rewrite rules.  Useful to reason about and debug a certain relationship",
+        "description": "The Expand API will return all users (including user and userset) that have certain relationship with an object in a certain store.\nThis is different from the `/stores/{store_id}/read` API in that both users and computed references are returned.\nPath parameter `store_id` as well as body parameter `object`, `relation` are all required.\nThe response will return a userset tree whose leaves are the user id and usersets.  Union, intersection and difference operator are located in the intermediate nodes.\n\n## Example\nAssume the following type definition for document:\n```yaml\n  type document\n    relations\n      define reader as self or writer\n      define writer as self\n```\nIn order to expand all users that have `reader` relationship with object `document:2021-budget`, an expand API call should be fired with the following body\n```json\n{\n  \"tuple_key\": {\n    \"object\": \"document:2021-budget\",\n    \"relation\": \"reader\"\n  }\n}\n```\nOpenFGA's response will be a userset tree of the users and computed usersets that have read access to the document.\n```json\n{\n  \"tree\":{\n    \"root\":{\n      \"type\":\"document:2021-budget#reader\",\n      \"union\":{\n        \"nodes\":[\n          {\n            \"type\":\"document:2021-budget#reader\",\n            \"leaf\":{\n              \"users\":{\n                \"users\":[\n                  \"bob\"\n                ]\n              }\n            }\n          },\n          {\n            \"type\":\"document:2021-budget#reader\",\n            \"leaf\":{\n              \"computed\":{\n                \"userset\":\"document:2021-budget#writer\"\n              }\n            }\n          }\n        ]\n      }\n    }\n  }\n}\n```\nThe caller can then call expand API for the `writer` relationship for the `document:2021-budget`.",
+        "operationId": "Expand",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ExpandResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "store_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "tuple_key": {
+                  "$ref": "#/definitions/TupleKey"
+                },
+                "authorization_model_id": {
+                  "type": "string",
+                  "example": "1yunpF9DkzXMzm0dHrsCuWsooEV"
+                }
+              }
+            }
+          }
+        ],
+        "tags": [
+          "Relationship Queries"
+        ]
+      }
+    },
+    "/stores/{store_id}/read": {
+      "post": {
+        "summary": "Get tuples from the store that matches a query, without following userset rewrite rules",
+        "description": "The POST read API will return the tuples for a certain store that matches a query filter specified in the body. Tuples and type definitions allow OpenFGA to determine whether a relationship exists between an object and an user.\nIt is different from the `/stores/{store_id}/expand` API in that only read returns relationship tuples that are stored in the system and satisfy the query.\nIt does not expand or traverse the graph by taking the authorization model into account.Path parameter `store_id` is required.  In the body:\n1. Object is mandatory. An object can be a full object (e.g., `type:object_id`) or type only (e.g., `type:`).\n2. User is mandatory in the case the object is type only.\n## Examples\n### Query for all objects in a type definition\nTo query for all objects that `bob` has `reader` relationship in the document type definition, call read API with body of\n```json\n{\n \"tuple_key\": {\n     \"user\": \"bob\",\n     \"relation\": \"reader\",\n     \"object\": \"document:\"\n  }\n}\n```\nThe API will return tuples and an optional continuation token, something like\n```json\n{\n  \"tuples\": [\n    {\n      \"key\": {\n        \"user\": \"bob\",\n        \"relation\": \"reader\",\n        \"object\": \"document:2021-budget\"\n      },\n      \"timestamp\": \"2021-10-06T15:32:11.128Z\"\n    }\n  ]\n}\n```\nThis means that `bob` has a `reader` relationship with 1 document `document:2021-budget`.\n### Query for all users with particular relationships for a particular document\nTo query for all users that have `reader` relationship with `document:2021-budget`, call read API with body of \n```json\n{\n  \"tuple_key\": {\n     \"object\": \"document:2021-budget\",\n     \"relation\": \"reader\"\n   }\n}\n```\nThe API will return something like \n```json\n{\n  \"tuples\": [\n    {\n      \"key\": {\n        \"user\": \"bob\",\n        \"relation\": \"reader\",\n        \"object\": \"document:2021-budget\"\n      },\n      \"timestamp\": \"2021-10-06T15:32:11.128Z\"\n    }\n  ]\n}\n```\nThis means that `document:2021-budget` has 1 `reader` (`bob`).  Note that the API will not return writers such as `anne` even when all writers are readers.  This is because only direct relationship are returned for the READ API.\n### Query for all users with all relationships for a particular document\nTo query for all users that have any relationship with `document:2021-budget`, call read API with body of \n```json\n{\n  \"tuple_key\": {\n      \"object\": \"document:2021-budget\"\n   }\n}\n```\nThe API will return something like \n```json\n{\n  \"tuples\": [\n    {\n      \"key\": {\n        \"user\": \"anne\",\n        \"relation\": \"writer\",\n        \"object\": \"document:2021-budget\"\n      },\n      \"timestamp\": \"2021-10-05T13:42:12.356Z\"\n    },\n    {\n      \"key\": {\n        \"user\": \"bob\",\n        \"relation\": \"reader\",\n        \"object\": \"document:2021-budget\"\n      },\n      \"timestamp\": \"2021-10-06T15:32:11.128Z\"\n    }\n  ]\n}\n```\nThis means that `document:2021-budget` has 1 `reader` (`bob`) and 1 `writer` (`anne`).\n",
+        "operationId": "Read",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ReadResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "store_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "tuple_key": {
+                  "$ref": "#/definitions/TupleKey"
+                },
+                "authorization_model_id": {
+                  "type": "string",
+                  "example": "1yunpF9DkzXMzm0dHrsCuWsooEV"
+                },
+                "page_size": {
+                  "type": "integer",
+                  "format": "int32",
+                  "example": 50
+                },
+                "continuation_token": {
+                  "type": "string",
+                  "example": "eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ=="
+                }
+              }
+            }
+          }
+        ],
+        "tags": [
+          "Relationship Tuples"
+        ]
+      }
+    },
+    "/stores/{store_id}/read-tuples": {
+      "post": {
+        "operationId": "ReadTuples",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ReadTuplesResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "store_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "page_size": {
+                  "type": "integer",
+                  "format": "int32",
+                  "example": 50
+                },
+                "continuation_token": {
+                  "type": "string",
+                  "example": "eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ=="
+                }
+              },
+              "title": "ReadTuples should only be used for the playground. do not enable it for prod deployments"
+            }
+          }
+        ],
+        "tags": [
+          "Relationship Tuples"
+        ]
+      }
+    },
+    "/stores/{store_id}/write": {
+      "post": {
+        "summary": "Add or delete tuples from the store",
+        "description": "The POST write API will update the tuples for a certain store.  Tuples and type definitions allow OpenFGA to determine whether a relationship exists between an object and an user.\nPath parameter `store_id` is required.  In the body, `writes` adds new tuples while `deletes` removes existing tuples.\n## Example\n### Adding relationships\nTo add `anne` as a `writer` for `document:2021-budget`, call write API with the following \n```json\n{\n  \"writes\": {\n    \"tuple_keys\": [\n      {\n        \"user\": \"anne\",\n        \"relation\": \"writer\",\n        \"object\": \"document:2021-budget\"\n      }\n    ]\n  }\n}\n```\n### Removing relationships\nTo remove `bob` as a `reader` for `document:2021-budget`, call write API with the following \n```json\n{\n  \"deletes\": {\n    \"tuple_keys\": [\n      {\n        \"user\": \"bob\",\n        \"relation\": \"reader\",\n        \"object\": \"document:2021-budget\"\n      }\n    ]\n  }\n}\n```\n",
+        "operationId": "Write",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/WriteResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "store_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "writes": {
+                  "$ref": "#/definitions/TupleKeys"
+                },
+                "deletes": {
+                  "$ref": "#/definitions/TupleKeys"
+                },
+                "authorization_model_id": {
+                  "type": "string",
+                  "example": "1yunpF9DkzXMzm0dHrsCuWsooEV"
+                }
+              }
+            }
+          }
+        ],
+        "tags": [
+          "Relationship Tuples"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "Any": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "Assertion": {
+      "type": "object",
+      "properties": {
+        "tuple_key": {
+          "$ref": "#/definitions/TupleKey"
+        },
+        "expectation": {
+          "type": "boolean",
+          "required": [
+            "expectation"
+          ]
+        }
+      },
+      "required": [
+        "expectation"
+      ]
+    },
+    "AuthorizationModel": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "type_definitions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TypeDefinition"
+          }
+        }
+      }
+    },
+    "CheckResponse": {
+      "type": "object",
+      "properties": {
+        "allowed": {
+          "type": "boolean",
+          "example": true
+        },
+        "resolution": {
+          "type": "string",
+          "description": "For internal use only."
+        }
+      }
+    },
+    "Computed": {
+      "type": "object",
+      "properties": {
+        "userset": {
+          "type": "string"
+        }
+      }
+    },
+    "ContextualTupleKeys": {
+      "type": "object",
+      "properties": {
+        "tuple_keys": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TupleKey"
+          },
+          "maximum": 10,
+          "minimum": 1,
+          "required": [
+            "tuple_keys"
+          ]
+        }
+      },
+      "required": [
+        "tuple_keys"
+      ]
+    },
+    "CreateStoreRequest": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "CreateStoreResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "DeleteStoreResponse": {
+      "type": "object"
+    },
+    "DirectUserset": {
+      "type": "object",
+      "description": "A DirectUserset is a sentinel message for referencing\nthe direct members specified by an object/relation mapping."
+    },
+    "ErrorCode": {
+      "type": "string",
+      "enum": [
+        "no_error",
+        "validation_error",
+        "authorization_model_not_found",
+        "authorization_model_resolution_too_complex",
+        "invalid_write_input",
+        "cannot_allow_duplicate_tuples_in_one_request",
+        "cannot_allow_duplicate_types_in_one_request",
+        "cannot_allow_multiple_references_to_one_relation",
+        "invalid_continuation_token",
+        "invalid_tuple_set",
+        "invalid_check_input",
+        "invalid_expand_input",
+        "unsupported_user_set",
+        "invalid_object_format",
+        "write_failed_due_to_invalid_input",
+        "authorization_model_assertions_not_found",
+        "latest_authorization_model_not_found",
+        "type_not_found",
+        "relation_not_found",
+        "empty_relation_definition",
+        "invalid_user",
+        "invalid_tuple",
+        "unknown_relation",
+        "store_id_invalid_length",
+        "assertions_too_many_items",
+        "id_too_long",
+        "authorization_model_id_too_long",
+        "tuple_key_value_not_specified",
+        "tuple_keys_too_many_or_too_few_items",
+        "page_size_invalid",
+        "param_missing_value",
+        "difference_base_missing_value",
+        "subtract_base_missing_value",
+        "object_too_long",
+        "relation_too_long",
+        "type_definitions_too_few_items",
+        "type_invalid_length",
+        "type_invalid_pattern",
+        "relations_too_few_items",
+        "relations_too_long",
+        "relations_invalid_pattern",
+        "object_invalid_pattern",
+        "query_string_type_continuation_token_mismatch",
+        "exceeded_entity_limit",
+        "invalid_contextual_tuple",
+        "duplicate_contextual_tuple"
+      ],
+      "default": "no_error"
+    },
+    "ExpandResponse": {
+      "type": "object",
+      "properties": {
+        "tree": {
+          "$ref": "#/definitions/UsersetTree"
+        }
+      }
+    },
+    "GetStoreResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "InternalErrorCode": {
+      "type": "string",
+      "enum": [
+        "no_internal_error",
+        "internal_error",
+        "cancelled",
+        "deadline_exceeded",
+        "already_exists",
+        "resource_exhausted",
+        "failed_precondition",
+        "aborted",
+        "out_of_range",
+        "unavailable",
+        "data_loss"
+      ],
+      "default": "no_internal_error"
+    },
+    "InternalErrorMessageResponse": {
+      "type": "object",
+      "example": {
+        "code": "internal_error",
+        "message": "Internal Server Error"
+      },
+      "properties": {
+        "code": {
+          "$ref": "#/definitions/InternalErrorCode"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    },
+    "Leaf": {
+      "type": "object",
+      "properties": {
+        "users": {
+          "$ref": "#/definitions/Users"
+        },
+        "computed": {
+          "$ref": "#/definitions/Computed"
+        },
+        "tupleToUserset": {
+          "$ref": "#/definitions/UsersetTree.TupleToUserset"
+        }
+      },
+      "description": "A leaf node contains either\n- a set of users (which may be individual users, or usersets\n  referencing other relations)\n- a computed node, which is the result of a computed userset\n  value in the authorization model\n- a tupleToUserset nodes, containing the result of expanding\n  a tupleToUserset value in a authorization model."
+    },
+    "ListStoresResponse": {
+      "type": "object",
+      "properties": {
+        "stores": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Store"
+          }
+        },
+        "continuation_token": {
+          "type": "string"
+        }
+      }
+    },
+    "Node": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "leaf": {
+          "$ref": "#/definitions/Leaf"
+        },
+        "difference": {
+          "$ref": "#/definitions/UsersetTree.Difference"
+        },
+        "union": {
+          "$ref": "#/definitions/Nodes"
+        },
+        "intersection": {
+          "$ref": "#/definitions/Nodes"
+        }
+      }
+    },
+    "Nodes": {
+      "type": "object",
+      "properties": {
+        "nodes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Node"
+          }
+        }
+      }
+    },
+    "NotFoundErrorCode": {
+      "type": "string",
+      "enum": [
+        "no_not_found_error",
+        "undefined_endpoint",
+        "store_id_not_found",
+        "unimplemented"
+      ],
+      "default": "no_not_found_error"
+    },
+    "ObjectRelation": {
+      "type": "object",
+      "properties": {
+        "object": {
+          "type": "string"
+        },
+        "relation": {
+          "type": "string"
+        }
+      }
+    },
+    "PathUnknownErrorMessageResponse": {
+      "type": "object",
+      "example": {
+        "code": "undefined_endpoint",
+        "message": "Endpoint not enabled"
+      },
+      "properties": {
+        "code": {
+          "$ref": "#/definitions/NotFoundErrorCode"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    },
+    "ReadAssertionsResponse": {
+      "type": "object",
+      "properties": {
+        "authorization_model_id": {
+          "type": "string",
+          "example": "1yunpF9DkzXMzm0dHrsCuWsooEV"
+        },
+        "assertions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Assertion"
+          }
+        }
+      }
+    },
+    "ReadAuthorizationModelResponse": {
+      "type": "object",
+      "properties": {
+        "authorization_model": {
+          "$ref": "#/definitions/AuthorizationModel"
+        }
+      }
+    },
+    "ReadAuthorizationModelsResponse": {
+      "type": "object",
+      "properties": {
+        "authorization_models": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/AuthorizationModel"
+          }
+        },
+        "continuation_token": {
+          "type": "string",
+          "example": "eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ=="
+        }
+      }
+    },
+    "ReadChangesResponse": {
+      "type": "object",
+      "properties": {
+        "changes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TupleChange"
+          }
+        },
+        "continuation_token": {
+          "type": "string",
+          "example": "eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ=="
+        }
+      }
+    },
+    "ReadResponse": {
+      "type": "object",
+      "properties": {
+        "tuples": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Tuple"
+          }
+        },
+        "continuation_token": {
+          "type": "string",
+          "example": "eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ=="
+        }
+      }
+    },
+    "ReadTuplesResponse": {
+      "type": "object",
+      "properties": {
+        "tuples": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Tuple"
+          }
+        },
+        "continuation_token": {
+          "type": "string",
+          "example": "eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ=="
+        }
+      }
+    },
+    "Status": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Any"
+          }
+        }
+      }
+    },
+    "Store": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "deleted_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "Tuple": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "$ref": "#/definitions/TupleKey"
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "TupleChange": {
+      "type": "object",
+      "properties": {
+        "tuple_key": {
+          "$ref": "#/definitions/TupleKey"
+        },
+        "operation": {
+          "$ref": "#/definitions/TupleOperation"
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "TupleKey": {
+      "type": "object",
+      "properties": {
+        "object": {
+          "type": "string",
+          "example": "document:2021-budget",
+          "maxLength": 256
+        },
+        "relation": {
+          "type": "string",
+          "example": "reader",
+          "maxLength": 50
+        },
+        "user": {
+          "type": "string",
+          "example": "anne",
+          "maxLength": 512
+        }
+      }
+    },
+    "TupleKeys": {
+      "type": "object",
+      "properties": {
+        "tuple_keys": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TupleKey"
+          },
+          "maximum": 25,
+          "minimum": 1,
+          "required": [
+            "tuple_keys"
+          ]
+        }
+      },
+      "required": [
+        "tuple_keys"
+      ]
+    },
+    "TupleOperation": {
+      "type": "string",
+      "enum": [
+        "TUPLE_OPERATION_WRITE",
+        "TUPLE_OPERATION_DELETE"
+      ],
+      "default": "TUPLE_OPERATION_WRITE",
+      "title": "buf:lint:ignore ENUM_ZERO_VALUE_SUFFIX"
+    },
+    "TypeDefinition": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "required": [
+            "type"
+          ]
+        },
+        "relations": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/Userset"
+          },
+          "required": [
+            "relations"
+          ]
+        }
+      },
+      "required": [
+        "type",
+        "relations"
+      ]
+    },
+    "TypeDefinitions": {
+      "type": "object",
+      "properties": {
+        "type_definitions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TypeDefinition"
+          },
+          "minimum": 1
+        }
+      }
+    },
+    "Users": {
+      "type": "object",
+      "properties": {
+        "users": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "Userset": {
+      "type": "object",
+      "properties": {
+        "this": {
+          "$ref": "#/definitions/DirectUserset"
+        },
+        "computedUserset": {
+          "$ref": "#/definitions/ObjectRelation"
+        },
+        "tupleToUserset": {
+          "$ref": "#/definitions/v1.TupleToUserset"
+        },
+        "union": {
+          "$ref": "#/definitions/Usersets"
+        },
+        "intersection": {
+          "$ref": "#/definitions/Usersets"
+        },
+        "difference": {
+          "$ref": "#/definitions/v1.Difference"
+        }
+      }
+    },
+    "UsersetTree": {
+      "type": "object",
+      "properties": {
+        "root": {
+          "$ref": "#/definitions/Node"
+        }
+      },
+      "description": "A UsersetTree contains the result of an Expansion."
+    },
+    "UsersetTree.Difference": {
+      "type": "object",
+      "properties": {
+        "base": {
+          "$ref": "#/definitions/Node"
+        },
+        "subtract": {
+          "$ref": "#/definitions/Node"
+        }
+      }
+    },
+    "UsersetTree.TupleToUserset": {
+      "type": "object",
+      "properties": {
+        "tupleset": {
+          "type": "string"
+        },
+        "computed": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Computed"
+          }
+        }
+      }
+    },
+    "Usersets": {
+      "type": "object",
+      "properties": {
+        "child": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Userset"
+          }
+        }
+      }
+    },
+    "ValidationErrorMessageResponse": {
+      "type": "object",
+      "example": {
+        "code": "validation_error",
+        "message": "Generic validation error"
+      },
+      "properties": {
+        "code": {
+          "$ref": "#/definitions/ErrorCode"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    },
+    "WriteAssertionsResponse": {
+      "type": "object"
+    },
+    "WriteAuthorizationModelResponse": {
+      "type": "object",
+      "properties": {
+        "authorization_model_id": {
+          "type": "string",
+          "example": "1yunpF9DkzXMzm0dHrsCuWsooEV"
+        }
+      }
+    },
+    "WriteResponse": {
+      "type": "object"
+    },
+    "v1.Difference": {
+      "type": "object",
+      "properties": {
+        "base": {
+          "$ref": "#/definitions/Userset"
+        },
+        "subtract": {
+          "$ref": "#/definitions/Userset"
+        }
+      }
+    },
+    "v1.TupleToUserset": {
+      "type": "object",
+      "properties": {
+        "tupleset": {
+          "$ref": "#/definitions/ObjectRelation",
+          "title": "The target object/relation"
+        },
+        "computedUserset": {
+          "$ref": "#/definitions/ObjectRelation"
+        }
+      }
+    }
+  }
+}

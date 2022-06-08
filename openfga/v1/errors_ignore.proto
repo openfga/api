@@ -1,0 +1,112 @@
+syntax = "proto3";
+
+package openfga.v1;
+
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+enum ErrorCode {
+
+  no_error = 0;
+
+  // 2000 level errors are returned due to input error
+
+  validation_error = 2000;
+  authorization_model_not_found = 2001;
+  authorization_model_resolution_too_complex = 2002;
+  invalid_write_input = 2003;
+  cannot_allow_duplicate_tuples_in_one_request = 2004;
+  cannot_allow_duplicate_types_in_one_request = 2005;
+  cannot_allow_multiple_references_to_one_relation = 2006;
+  invalid_continuation_token = 2007;
+  invalid_tuple_set = 2008;
+  invalid_check_input = 2009;
+  invalid_expand_input = 2010;
+  unsupported_user_set = 2011;
+  invalid_object_format = 2012;
+  write_failed_due_to_invalid_input = 2017;
+  authorization_model_assertions_not_found = 2018;
+  latest_authorization_model_not_found = 2020;
+  type_not_found = 2021;
+  relation_not_found = 2022;
+  empty_relation_definition = 2023;
+  invalid_user = 2025;
+  invalid_tuple = 2027;
+  unknown_relation = 2028;
+  store_id_invalid_length = 2030;
+  assertions_too_many_items = 2033;
+  id_too_long = 2034;
+  authorization_model_id_too_long = 2036;
+  tuple_key_value_not_specified = 2037;
+  tuple_keys_too_many_or_too_few_items = 2038;
+  page_size_invalid = 2039;
+  param_missing_value = 2040;
+  difference_base_missing_value = 2041;
+  subtract_base_missing_value = 2042;
+  object_too_long = 2043;
+  relation_too_long = 2044;
+  type_definitions_too_few_items = 2045;
+  type_invalid_length = 2046;
+  type_invalid_pattern = 2047;
+  relations_too_few_items = 2048;
+  relations_too_long = 2049;
+  relations_invalid_pattern = 2050;
+  object_invalid_pattern = 2051;
+  query_string_type_continuation_token_mismatch = 2052;
+  exceeded_entity_limit = 2053;
+  invalid_contextual_tuple = 2054;
+  duplicate_contextual_tuple = 2055;
+}
+
+enum InternalErrorCode {
+
+  no_internal_error = 0;
+
+  // 4000 level errors are returned due to internal error
+
+  internal_error = 4000;
+  cancelled = 4003;
+  deadline_exceeded = 4004;
+  already_exists = 4005;
+  resource_exhausted = 4006;
+  failed_precondition = 4007;
+  aborted = 4008;
+  out_of_range = 4009;
+  unavailable = 4010;
+  data_loss = 4011;
+}
+
+
+enum NotFoundErrorCode { 
+
+  no_not_found_error = 0;
+  
+  undefined_endpoint = 5000;
+  store_id_not_found = 5002;
+  unimplemented = 5004;
+}
+
+message ValidationErrorMessageResponse {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    example: "{\"code\":\"validation_error\", \"message\":\"Generic validation error\"}"
+  };
+  ErrorCode code = 1;
+  string message = 2;
+}
+
+message InternalErrorMessageResponse {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    example: "{\"code\":\"internal_error\", \"message\":\"Internal Server Error\"}"
+  };
+  InternalErrorCode code = 1;
+  string message = 2;
+}
+
+message PathUnknownErrorMessageResponse {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    example: "{\"code\":\"undefined_endpoint\", \"message\":\"Endpoint not enabled\"}"
+  };
+  NotFoundErrorCode code = 1;
+  string message = 2;
+}
+
+message ErrorMessageRequest {}

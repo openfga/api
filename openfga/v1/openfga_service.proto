@@ -1,0 +1,1175 @@
+syntax = "proto3";
+
+package openfga.v1;
+
+import "google/api/annotations.proto";
+import "google/api/field_behavior.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
+import "openfga/v1/openfga.proto";
+import "openfga/v1/authzmodel.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+import "validate/validate.proto";
+
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+  info: {
+    title: "OpenFGA";
+    version: "0.1";
+    contact: {
+      name: "";
+      url: "";
+    };
+    description: ""
+  };
+  consumes: "application/json";
+  produces: "application/json";
+  schemes: HTTPS;
+  responses: {
+    key: "400"
+    value: {
+      description: "Request failed due to invalid input."
+      schema: {
+        json_schema: {
+          ref: ".openfga.v1.ValidationErrorMessageResponse"
+        }
+      }
+    }
+  }
+  responses: {
+    key: "404"
+    value: {
+      description: "Request failed due to incorrect path."
+      schema: {
+        json_schema: {
+          ref: ".openfga.v1.PathUnknownErrorMessageResponse"
+        }
+      }
+    }
+  }
+  responses: {
+    key: "500"
+    value: {
+      description: "Request failed due to internal server error."
+      schema: {
+        json_schema: {
+          ref: ".openfga.v1.InternalErrorMessageResponse"
+        }
+      }
+    }
+  }
+};
+
+service OpenFGAService {
+  rpc Read(ReadRequest) returns (ReadResponse) {
+    option (google.api.http) = {
+      post: "/stores/{store_id}/read"
+      body: "*"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Get tuples from the store that matches a query, without following userset rewrite rules"
+      tags: [
+        "Relationship Tuples"
+      ]
+      operation_id: "Read"
+      description:
+        "The POST read API will return the tuples for a certain store that matches a "
+        "query filter specified in the body. Tuples and "
+        "type definitions allow OpenFGA to determine whether a "
+        "relationship exists between an object and an user.\n"
+        "It is different from the `/stores/{store_id}/expand` API in that only "
+        "read returns relationship tuples that are stored in the system and satisfy the query.\n"
+        "It does not expand or traverse the graph by taking the authorization model into account."
+        "Path parameter `store_id` is required.  In the body:\n"
+        "1. Object is mandatory. An object can be a full object (e.g., "
+        "`type:object_id`) or type only (e.g., `type:`).\n"
+        "2. User is mandatory in the case the object is type only.\n"
+        "## Examples\n"
+        "### Query for all objects in a type definition\n"
+        "To query for all objects that `bob` has `reader` relationship in "
+        "the document type definition, call read API with body of\n"
+        "```json\n"
+        "{\n"
+        " \"tuple_key\": {\n"
+        "     \"user\": \"bob\",\n"
+        "     \"relation\": \"reader\",\n"
+        "     \"object\": \"document:\"\n"
+        "  }\n"
+        "}\n"
+        "```\n"
+        "The API will return tuples and an optional continuation token, something like\n"
+        "```json\n"
+        "{\n"
+        "  \"tuples\": [\n"
+        "    {\n"
+        "      \"key\": {\n"
+        "        \"user\": \"bob\",\n"
+        "        \"relation\": \"reader\",\n"
+        "        \"object\": \"document:2021-budget\"\n"
+        "      },\n"
+        "      \"timestamp\": \"2021-10-06T15:32:11.128Z\"\n"
+        "    }\n"
+        "  ]\n"
+        "}\n"
+        "```\n"
+        "This means that `bob` has a `reader` relationship with 1 document "
+        "`document:2021-budget`.\n"
+        "### Query for all users with particular relationships for a particular document\n"
+        "To query for all users that have `reader` relationship with "
+        "`document:2021-budget`, call read API with body of \n"
+        "```json\n"
+        "{\n"
+        "  \"tuple_key\": {\n"
+        "     \"object\": \"document:2021-budget\",\n"
+        "     \"relation\": \"reader\"\n"
+        "   }\n"
+        "}\n"
+        "```\n"
+        "The API will return something like \n"
+        "```json\n"
+        "{\n"
+        "  \"tuples\": [\n"
+        "    {\n"
+        "      \"key\": {\n"
+        "        \"user\": \"bob\",\n"
+        "        \"relation\": \"reader\",\n"
+        "        \"object\": \"document:2021-budget\"\n"
+        "      },\n"
+        "      \"timestamp\": \"2021-10-06T15:32:11.128Z\"\n"
+        "    }\n"
+        "  ]\n"
+        "}\n"
+        "```\n"
+        "This means that `document:2021-budget` has 1 `reader` (`bob`).  "
+        "Note that the API will not return writers such as "
+        "`anne` even when all writers are readers.  "
+        "This is because only direct relationship are returned for the READ API.\n"
+        "### Query for all users with all relationships for a particular document\n"
+        "To query for all users that have any relationship with "
+        "`document:2021-budget`, call read API with body of \n"
+        "```json\n"
+        "{\n"
+        "  \"tuple_key\": {\n"
+        "      \"object\": \"document:2021-budget\"\n"
+        "   }\n"
+        "}\n"
+        "```\n"
+        "The API will return something like \n"
+        "```json\n"
+        "{\n"
+        "  \"tuples\": [\n"
+        "    {\n"
+        "      \"key\": {\n"
+        "        \"user\": \"anne\",\n"
+        "        \"relation\": \"writer\",\n"
+        "        \"object\": \"document:2021-budget\"\n"
+        "      },\n"
+        "      \"timestamp\": \"2021-10-05T13:42:12.356Z\"\n"
+        "    },\n"
+        "    {\n"
+        "      \"key\": {\n"
+        "        \"user\": \"bob\",\n"
+        "        \"relation\": \"reader\",\n"
+        "        \"object\": \"document:2021-budget\"\n"
+        "      },\n"
+        "      \"timestamp\": \"2021-10-06T15:32:11.128Z\"\n"
+        "    }\n"
+        "  ]\n"
+        "}\n"
+        "```\n"
+        "This means that `document:2021-budget` has 1 `reader` (`bob`) "
+        "and 1 `writer` (`anne`).\n"
+    };
+  }
+
+  rpc Write(WriteRequest) returns (WriteResponse) {
+    option (google.api.http) = {
+      post: "/stores/{store_id}/write"
+      body: "*"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Add or delete tuples from the store"
+      tags: [
+        "Relationship Tuples"
+      ]
+      operation_id: "Write"
+      description:
+        "The POST write API will update the tuples for a certain store.  Tuples and "
+        "type definitions allow OpenFGA to determine whether a "
+        "relationship exists between an object and an user.\n"
+        "Path parameter `store_id` is required.  In the body, `writes` "
+        "adds new tuples while `deletes` removes existing tuples.\n"
+        "## Example\n"
+        "### Adding relationships\n"
+        "To add `anne` as a `writer` for `document:2021-budget`, call "
+        "write API with the following \n"
+        "```json\n"
+        "{\n"
+        "  \"writes\": {\n"
+        "    \"tuple_keys\": [\n"
+        "      {\n"
+        "        \"user\": \"anne\",\n"
+        "        \"relation\": \"writer\",\n"
+        "        \"object\": \"document:2021-budget\"\n"
+        "      }\n"
+        "    ]\n"
+        "  }\n"
+        "}\n"
+        "```\n"
+        "### Removing relationships\n"
+        "To remove `bob` as a `reader` for `document:2021-budget`, call "
+        "write API with the following \n"
+        "```json\n"
+        "{\n"
+        "  \"deletes\": {\n"
+        "    \"tuple_keys\": [\n"
+        "      {\n"
+        "        \"user\": \"bob\",\n"
+        "        \"relation\": \"reader\",\n"
+        "        \"object\": \"document:2021-budget\"\n"
+        "      }\n"
+        "    ]\n"
+        "  }\n"
+        "}\n"
+        "```\n"
+    };
+  }
+
+  rpc Check(CheckRequest) returns (CheckResponse) {
+    option (google.api.http) = {
+      post: "/stores/{store_id}/check"
+      body: "*"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Check whether a user is authorized to access an object"
+      tags: [
+        "Relationship Queries"
+      ]
+      operation_id: "Check"
+      description:
+        "The Check API queries to check if the user has a certain relationship with an object in a certain store.\n"
+        "Path parameter `store_id` as well as the body parameter `tuple_key` with specified `object`, `relation` and `user` subfields are all required.\n"
+        "Optionally, a `contextual_tuples` object may also be included in the body of the request. This object contains one field `tuple_keys`, which is an array of tuple keys.\n"
+        "The response will return whether the relationship exists in the field `allowed`.\n\n"
+        "## Example\n"
+        "In order to check if user `anne` has a `can_read` relationship with object `document:2021-budget` given the following contextual tuple\n"
+        "```json\n"
+        "{\n"
+        "  \"user\": \"anne\",\n"
+        "  \"relation\": \"member\",\n"
+        "  \"object\": \"time_slot:office_hours\"\n"
+        "}\n"
+        "```\n"
+        "a check API call should be fired with the following body:\n"
+        "```json\n"
+        "{\n"
+        "  \"tuple_key\": {\n"
+        "    \"user\": \"anne\",\n"
+        "    \"relation\": \"can_read\",\n"
+        "    \"object\": \"document:2021-budget\"\n"
+        "  },\n"
+        "  \"contextual_tuples\": {\n"
+        "    \"tuple_keys\": [\n"
+        "      {\n"
+        "        \"user\": \"anne\",\n"
+        "        \"relation\": \"member\",\n"
+        "        \"object\": \"time_slot:office_hours\"\n"
+        "      }\n"
+        "    ]\n"
+        "  }\n"
+        "}\n"
+        "```\n"
+        "OpenFGA's response will include `{ \"allowed\": true }` if there is a relationship "
+        "and `{ \"allowed\": false }` if there isn't."
+    };
+  }
+
+  rpc Expand(ExpandRequest) returns (ExpandResponse) {
+    option (google.api.http) = {
+      post: "/stores/{store_id}/expand"
+      body: "*"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Expand all relationships in userset tree format, and following userset rewrite rules.  Useful to reason about and debug a certain relationship"
+      tags: [
+        "Relationship Queries"
+      ]
+      operation_id: "Expand"
+      description:
+        "The Expand API will return all users (including user and userset) "
+        "that have certain relationship with an object in a certain store.\n"
+        "This is different from the `/stores/{store_id}/read` API in that both users and "
+        "computed references are returned.\n"
+        "Path parameter `store_id` as well as body parameter `object`, `relation` are all required.\n"
+        "The response will return a userset tree whose leaves are the user id and usersets.  "
+        "Union, intersection and difference operator are located in the intermediate nodes.\n\n"
+        "## Example\n"
+        "Assume the following type definition for document:\n"
+        "```yaml\n"
+        "  type document\n"
+        "    relations\n"
+        "      define reader as self or writer\n"
+        "      define writer as self\n"
+        "```\n"
+        "In order to expand all users that have `reader` relationship with object `document:2021-budget`, "
+        "an expand API call should be fired with the following body\n"
+        "```json\n"
+        "{\n"
+        "  \"tuple_key\": {\n"
+        "    \"object\": \"document:2021-budget\",\n"
+        "    \"relation\": \"reader\"\n"
+        "  }\n"
+        "}\n"
+        "```\n"
+        "OpenFGA's response will be a userset tree of the users and computed usersets that have "
+        "read access to the document.\n"
+        "```json\n"
+        "{\n"
+        "  \"tree\":{\n"
+        "    \"root\":{\n"
+        "      \"type\":\"document:2021-budget#reader\",\n"
+        "      \"union\":{\n"
+        "        \"nodes\":[\n"
+        "          {\n"
+        "            \"type\":\"document:2021-budget#reader\",\n"
+        "            \"leaf\":{\n"
+        "              \"users\":{\n"
+        "                \"users\":[\n"
+        "                  \"bob\"\n"
+        "                ]\n"
+        "              }\n"
+        "            }\n"
+        "          },\n"
+        "          {\n"
+        "            \"type\":\"document:2021-budget#reader\",\n"
+        "            \"leaf\":{\n"
+        "              \"computed\":{\n"
+        "                \"userset\":\"document:2021-budget#writer\"\n"
+        "              }\n"
+        "            }\n"
+        "          }\n"
+        "        ]\n"
+        "      }\n"
+        "    }\n"
+        "  }\n"
+        "}\n"
+        "```\n"
+        "The caller can then call expand API for the `writer` relationship for the `document:2021-budget`."
+    };
+  }
+
+  rpc ReadAuthorizationModels(ReadAuthorizationModelsRequest) returns (ReadAuthorizationModelsResponse) {
+    option (google.api.http) = {
+      get: "/stores/{store_id}/authorization-models"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Return all the authorization model IDs for a particular store"
+      tags: [
+        "Authorization Models"
+      ]
+      operation_id: "ReadAuthorizationModels"
+      description:
+        "The GET authorization-models API will return all the IDs of the "
+        "authorization models for a certain store.\n"
+        "Path parameter `store_id` is required.\n"
+        "OpenFGA's response will contain an array of all authorization "
+        "model IDs, sorted in descending order of creation.\n\n"
+        "## Example\n"
+        "Assume that the store's authorization model has been configured twice.  "
+        "To get all the IDs of the authorization models that had been created in this store, call "
+        "GET authorization-models.  The API will return a response that looks like:\n"
+        "```json\n"
+        "{\n"
+        "  \"authorization_model_ids\": [\n"
+        "      \"1yunpF9DkzXMzm0dHrsCuWsooEV\",\n"
+        "      \"1yundoHpJHlodgn4EOVar2DhmKp\"\n"
+        "  ]\n"
+        "}\n"
+        "```\n"
+        "If there are more authorization model IDs available, the response will contain an extra field `continuation_token`:\n"
+        "```json\n"
+        "{\n"
+        "  \"authorization_model_ids\": [\n"
+        "      \"1yunpF9DkzXMzm0dHrsCuWsooEV\",\n"
+        "      \"1yundoHpJHlodgn4EOVar2DhmKp\"\n"
+        "  ],\n"
+        "  \"continuation_token\": \"eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ==\"\n"
+        "}\n"
+        "```\n"
+        ""
+    };
+  }
+
+  rpc ReadAuthorizationModel(ReadAuthorizationModelRequest) returns (ReadAuthorizationModelResponse) {
+    option (google.api.http) = {
+      get: "/stores/{store_id}/authorization-models/{id}"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Return a particular version of an authorization model"
+      tags: [
+        "Authorization Models"
+      ]
+      operation_id: "ReadAuthorizationModel"
+      description:
+        "The GET authorization-models by ID API will return a particular version of "
+        "authorization model that had been configured for a certain store.  \n"
+        "Path parameter `store_id` and `id` are required.\n"
+        "The response will return the authorization model for the particular version.\n\n"
+        "## Example\n"
+        "To retrieve the authorization model with ID `1yunpF9DkzXMzm0dHrsCuWsooEV` for the store, "
+        "call the GET authorization-models by ID API with `1yunpF9DkzXMzm0dHrsCuWsooEV` as the "
+        "`id` path parameter.  The API will return:\n"
+        "```json\n"
+        "{\n"
+        "  \"authorization_model\":{\n"
+        "    \"id\":\"1yunpF9DkzXMzm0dHrsCuWsooEV\",\n"
+        "    \"type_definitions\":[\n"
+        "      {\n"
+        "        \"type\":\"document\",\n"
+        "        \"relations\":{\n"
+        "          \"reader\":{\n"
+        "            \"union\":{\n"
+        "              \"child\":[\n"
+        "                {\n"
+        "                  \"this\":{}\n"
+        "                },\n"
+        "                {\n"
+        "                  \"computedUserset\":{\n"
+        "                    \"object\":\"\",\n"
+        "                    \"relation\":\"writer\"\n"
+        "                  }\n"
+        "                }\n"
+        "              ]\n"
+        "            }\n"
+        "          },\n"
+        "          \"writer\":{\n"
+        "            \"this\":{}\n"
+        "          }\n"
+        "        }\n"
+        "      }\n"
+        "    ]\n"
+        "  }\n"
+        "}\n"
+        "```\n"
+        "In the above example, there is only 1 type (`document`) "
+        "with 2 relations (`writer` and `reader`)."
+    };
+  }
+
+  rpc WriteAuthorizationModel(WriteAuthorizationModelRequest) returns (WriteAuthorizationModelResponse) {
+    option (google.api.http) = {
+      post: "/stores/{store_id}/authorization-models"
+      body: "type_definitions"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Create a new authorization model"
+      tags: [
+        "Authorization Models"
+      ]
+      operation_id: "WriteAuthorizationModel"
+      description:
+        "The POST authorization-model API will update the authorization model "
+        "for a certain store.\n"
+        "Path parameter `store_id` and `type_definitions` array in the body are "
+        "required.  Each item in the `type_definitions` array is a type "
+        "definition as specified in the field `type_definition`.\n"
+        "The response will return the authorization model's ID in the `id` field.\n\n"
+        "## Example\n"
+        "To update the authorization model with a single `document` authorization model, call POST "
+        "authorization-models API with the body: \n"
+        "```json\n"
+        "{\n"
+        "  \"type_definitions\":[\n"
+        "    {\n"
+        "      \"type\":\"document\",\n"
+        "      \"relations\":{\n"
+        "        \"reader\":{\n"
+        "          \"union\":{\n"
+        "            \"child\":[\n"
+        "              {\n"
+        "                \"this\":{\n"
+        "\n"
+        "                }\n"
+        "              },\n"
+        "              {\n"
+        "                \"computedUserset\":{\n"
+        "                  \"object\":\"\",\n"
+        "                  \"relation\":\"writer\"\n"
+        "                }\n"
+        "              }\n"
+        "            ]\n"
+        "          }\n"
+        "        },\n"
+        "        \"writer\":{\n"
+        "          \"this\":{\n"
+        "\n"
+        "          }\n"
+        "        }\n"
+        "      }\n"
+        "    }\n"
+        "  ]\n"
+        "}\n"
+        "```\n"
+        "OpenFGA's response will include the version id for this authorization model, "
+        "which will look like \n"
+        "```\n"
+        "{\"authorization_model_id\": \"1yunpF9DkzXMzm0dHrsCuWsooEV\"}\n"
+        "```\n"
+      responses: {
+        key: "201"
+        value: {
+          description: "A successful response."
+          schema: {
+            json_schema: {
+              ref: ".openfga.v1.WriteAuthorizationModelResponse"
+            }
+          }
+        }
+      }
+    };
+  }
+
+  rpc ReadTuples(ReadTuplesRequest) returns (ReadTuplesResponse) {
+    option (google.api.http) = {
+      post: "/stores/{store_id}/read-tuples"
+      body: "*"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: [
+        "Relationship Tuples"
+      ]
+      operation_id: "ReadTuples"
+    };
+  }
+
+  rpc WriteAssertions(WriteAssertionsRequest) returns (WriteAssertionsResponse) {
+    option (google.api.http) = {
+      put: "/stores/{store_id}/assertions/{authorization_model_id}"
+      body: "*"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Upsert assertions for an authorization model ID"
+      tags: [
+        "Assertions"
+      ]
+      operation_id: "WriteAssertions"
+      description:
+        "The Write Assertions API will add new assertions for an authorization model id, "
+        "or overwrite the existing ones. An assertion is an object that contains a "
+        "tuple key, and the expectation of whether a call to the Check API of that tuple key "
+        "will return true or false. "
+      responses: {
+        key: "204"
+        value: {
+          description: "A successful response."
+          schema: {
+            json_schema: {
+              ref: ".openfga.v1.WriteAssertionsResponse"
+            }
+          }
+        }
+      }
+    };
+  }
+
+  rpc ReadAssertions(ReadAssertionsRequest) returns (ReadAssertionsResponse) {
+    option (google.api.http) = {
+      get: "/stores/{store_id}/assertions/{authorization_model_id}"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Read assertions for an authorization model ID"
+      tags: [
+        "Assertions"
+      ]
+      operation_id: "ReadAssertions"
+      description:
+        "The GET assertions API will return, for a given authorization model id, "
+        "all the assertions stored for it. An assertion is an object that contains a "
+        "tuple key, and the expectation of whether a call to the Check API of that tuple key "
+        "will return true or false. "
+    };
+  }
+
+  rpc ReadChanges(ReadChangesRequest) returns (ReadChangesResponse) {
+    option (google.api.http) = {
+      get: "/stores/{store_id}/changes"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Return a list of all the tuple changes"
+      tags: [
+        "Relationship Tuples"
+      ]
+      operation_id: "ReadChanges"
+      description:
+        "The GET changes API will return a paginated list of tuple changes (additions and deletions) that occurred "
+        "in a given store, sorted by ascending time. The response will include a continuation token "
+        "that is used to get the next set of changes. If there are no changes after the provided continuation token, "
+        "the same token will be returned in order for it to be used when new changes are recorded. "
+        "If the store never had any tuples added or removed, this token will be empty.\n"
+        "You can use the `type` parameter to only get the list of tuple changes that affect objects of that type.\n"
+    };
+  }
+
+  rpc CreateStore(CreateStoreRequest) returns (CreateStoreResponse) {
+    option (google.api.http) = {
+      post: "/stores",
+      body: "*"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Create a store"
+      tags: [
+        "Store"
+      ]
+      operation_id: "CreateStore"
+      description: "Create a unique OpenFGA store which will be used to store authorization models and relationship tuples."
+    };
+  }
+
+  rpc DeleteStore(DeleteStoreRequest) returns (DeleteStoreResponse) {
+    option (google.api.http) = {
+      delete: "/stores/{store_id}",
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Delete a store"
+      tags: [
+        "Store"
+      ]
+      operation_id: "DeleteStore"
+      description: "Delete an OpenFGA store. This does not delete the data associated to it, like tuples or authorization models."
+      responses: {
+        key: "204"
+        value: {
+          description: "A successful response."
+          schema: {
+            json_schema: {
+              ref: ".openfga.v1.DeleteStoreResponse"
+            }
+          }
+        }
+      }
+    };
+  }
+
+  rpc GetStore(GetStoreRequest) returns (GetStoreResponse) {
+    option (google.api.http) = {
+      get: "/stores/{store_id}"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Get a store"
+      tags: [
+        "Store"
+      ]
+      operation_id: "GetStore"
+      description: "Returns an OpenFGA store."
+    };
+  }
+
+  rpc ListStores(ListStoresRequest) returns (ListStoresResponse) {
+    option (google.api.http) = {
+      get: "/stores"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Get all stores"
+      tags: [
+        "Store"
+      ]
+      operation_id: "ListStores"
+      description: "Returns a paginated list of OpenFGA stores."
+    };
+  }
+}
+
+message ReadRequest {
+  string store_id = 1 [
+    json_name = "store_id",
+    (validate.rules).string = {
+      min_len: 1,
+      max_bytes: 256
+    },
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""
+    }
+  ];
+
+  openfga.v1.TupleKey tuple_key = 2 [
+    json_name = "tuple_key",
+    (validate.rules).message.required = true
+  ];
+
+  string authorization_model_id = 3 [
+    json_name = "authorization_model_id",
+    (validate.rules).string.max_len = 26,
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"1yunpF9DkzXMzm0dHrsCuWsooEV\""
+    }
+  ];
+
+  google.protobuf.Int32Value page_size = 4 [
+    json_name = "page_size",
+    (validate.rules).int32 = {
+      gte: 1,
+      lte: 100
+    },
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "50"
+    }
+  ];
+
+  string continuation_token = 5 [
+    json_name = "continuation_token",
+    (validate.rules).string.max_bytes = 5120,
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ==\""
+    }
+  ];
+}
+
+message ReadResponse {
+  repeated openfga.v1.Tuple tuples = 1;
+
+  string continuation_token = 2 [
+    json_name = "continuation_token",
+    (validate.rules).string.max_bytes = 5120,
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ==\""
+    }
+  ];
+}
+
+message WriteRequest {
+  string store_id = 1 [
+    json_name = "store_id",
+    (validate.rules).string = {
+      min_len: 1,
+      max_len: 256
+    },
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""
+    }
+  ];
+
+  openfga.v1.TupleKeys writes = 2;
+
+  openfga.v1.TupleKeys deletes = 3;
+
+  string authorization_model_id = 4 [
+    json_name = "authorization_model_id",
+    (validate.rules).string.max_len = 26,
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"1yunpF9DkzXMzm0dHrsCuWsooEV\""
+    }
+  ];
+}
+
+message WriteResponse {}
+
+message CheckRequest {
+  string store_id = 1 [
+    json_name = "store_id",
+    (validate.rules).string = {
+      min_len: 1,
+      max_bytes: 256
+    },
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""
+    }
+  ];
+
+  openfga.v1.TupleKey tuple_key = 2 [
+    json_name = "tuple_key",
+    (validate.rules).message.required = true
+  ];
+
+  openfga.v1.ContextualTupleKeys contextual_tuples = 3 [json_name = "contextual_tuples"];
+
+  string authorization_model_id = 4 [
+    json_name = "authorization_model_id",
+    (validate.rules).string.max_len = 26,
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"1yunpF9DkzXMzm0dHrsCuWsooEV\""
+    }
+  ];
+
+  // Defaults to false. Making it true has performance implications.
+  bool trace = 5 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    read_only: true,
+    example: "false"
+  }];
+}
+
+message CheckResponse {
+  bool allowed = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    example: "true"
+  }];
+
+  // For internal use only.
+  string resolution = 2;
+}
+
+message ExpandRequest {
+  string store_id = 1 [
+    json_name = "store_id",
+    (validate.rules).string = {
+      min_len: 1,
+      max_bytes: 256
+    },
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""
+    }
+  ];
+
+  openfga.v1.TupleKey tuple_key = 2 [
+    json_name = "tuple_key",
+    (validate.rules).message.required = true
+  ];
+
+  string authorization_model_id = 3 [
+    json_name = "authorization_model_id",
+    (validate.rules).string.max_len = 26,
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"1yunpF9DkzXMzm0dHrsCuWsooEV\""
+    }
+  ];
+}
+
+message ExpandResponse {
+  openfga.v1.UsersetTree tree = 1;
+}
+
+message ReadAuthorizationModelRequest {
+  string store_id = 1 [
+    json_name = "store_id",
+    (validate.rules).string = {
+      min_len: 1,
+      max_bytes: 256
+    },
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""
+    }
+  ];
+
+  string id = 2 [(validate.rules).string.max_len = 26];
+}
+
+message ReadAuthorizationModelResponse {
+  AuthorizationModel authorization_model = 1 [json_name = "authorization_model"];
+}
+
+message WriteAuthorizationModelRequest {
+  string store_id = 1 [
+    json_name = "store_id",
+    (validate.rules).string = {
+      min_len: 1,
+      max_bytes: 256
+    },
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""
+    }
+  ];
+
+  TypeDefinitions type_definitions = 2;
+}
+
+message WriteAuthorizationModelResponse {
+  string authorization_model_id = 1 [
+    json_name = "authorization_model_id",
+    (validate.rules).string.max_len = 26,
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"1yunpF9DkzXMzm0dHrsCuWsooEV\""
+    }
+  ];
+}
+
+message ReadAuthorizationModelsRequest {
+  string store_id = 1 [
+    json_name = "store_id",
+    (validate.rules).string = {
+      min_len: 1,
+      max_bytes: 256
+    },
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""
+    }
+  ];
+
+  google.protobuf.Int32Value page_size = 2 [
+    json_name = "page_size",
+    (validate.rules).int32 = {
+      gte: 1,
+      lte: 100
+    },
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "50"
+    }
+  ];
+
+  string continuation_token = 3 [
+    json_name = "continuation_token",
+    (validate.rules).string.max_bytes = 5120,
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ==\""
+    }
+  ];
+}
+
+message ReadAuthorizationModelsResponse {
+  repeated AuthorizationModel authorization_models = 1 [
+    json_name = "authorization_models"
+  ];
+
+  string continuation_token = 2 [
+    json_name = "continuation_token",
+    (validate.rules).string.max_bytes = 5120,
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ==\""
+    }
+  ];
+}
+
+// ReadTuples should only be used for the playground. do not enable it for prod deployments
+message ReadTuplesRequest {
+  string store_id = 1 [
+    json_name = "store_id",
+    (validate.rules).string = {
+      min_len: 1,
+      max_bytes: 256
+    },
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""
+    }
+  ];
+
+  google.protobuf.Int32Value page_size = 2 [
+    json_name = "page_size",
+    (validate.rules).int32 = {
+      gte: 1,
+      lte: 100
+    },
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "50"
+    }
+  ];
+
+  string continuation_token = 3 [
+    json_name = "continuation_token",
+    (validate.rules).string.max_bytes = 5120,
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ==\""
+    }
+  ];
+}
+
+message ReadTuplesResponse {
+  repeated openfga.v1.Tuple tuples = 1;
+
+  string continuation_token = 2 [
+    json_name = "continuation_token",
+    (validate.rules).string.max_bytes = 5120,
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ==\""
+    }
+  ];
+}
+
+message WriteAssertionsRequest {
+  string store_id = 1 [
+    json_name = "store_id",
+    (validate.rules).string = {
+      min_len: 1,
+      max_bytes: 256
+    },
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""
+    }
+  ];
+
+  string authorization_model_id = 2 [
+    json_name = "authorization_model_id",
+    (validate.rules).string = {
+      min_len: 1,
+      max_bytes: 26
+    },
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"1yunpF9DkzXMzm0dHrsCuWsooEV\""
+    }
+  ];
+
+  repeated openfga.v1.Assertion assertions = 3 [
+    json_name = "assertions",
+    (validate.rules).repeated = {
+      min_items: 0,
+      max_items: 100
+    },
+    (google.api.field_behavior) = REQUIRED,
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      minimum: 0,
+      maximum: 100
+    }
+  ];
+}
+
+message WriteAssertionsResponse {}
+
+message ReadAssertionsRequest {
+  string store_id = 1 [
+    json_name = "store_id",
+    (validate.rules).string = {
+      min_len: 1,
+      max_bytes: 256
+    },
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""
+    }
+  ];
+
+  string authorization_model_id = 2 [
+    json_name = "authorization_model_id",
+    (validate.rules).string = {
+      min_len: 1,
+      max_bytes: 26
+    },
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"1yunpF9DkzXMzm0dHrsCuWsooEV\""
+    }
+  ];
+}
+
+message ReadAssertionsResponse {
+  string authorization_model_id = 1 [
+    json_name = "authorization_model_id",
+    (validate.rules).string = {
+      min_len: 1,
+      max_bytes: 26
+    },
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"1yunpF9DkzXMzm0dHrsCuWsooEV\""
+    }
+  ];
+
+  repeated openfga.v1.Assertion assertions = 2;
+}
+
+message ReadChangesRequest {
+  string store_id = 1 [
+    json_name = "store_id",
+    (validate.rules).string = {
+      min_len: 1,
+      max_bytes: 256
+    },
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""
+    }
+  ];
+
+  string type = 2 [(validate.rules).string = {
+    max_bytes: 254,
+    pattern: "^[^:#\\s]*$"
+  }];
+
+  google.protobuf.Int32Value page_size = 3 [
+    json_name = "page_size",
+    (validate.rules).int32 = {
+      gte: 1,
+      lte: 100
+    },
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "50"
+    }
+  ];
+
+  string continuation_token = 4 [
+    json_name = "continuation_token",
+    (validate.rules).string.max_bytes = 5120,
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ==\""
+    }
+  ];
+}
+
+message ReadChangesResponse {
+  repeated openfga.v1.TupleChange changes = 1;
+
+  string continuation_token = 2 [
+    json_name = "continuation_token",
+    (validate.rules).string.max_bytes = 5120,
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ==\""
+    }
+  ];
+}
+
+message CreateStoreRequest {
+  string name = 1 [(validate.rules).string = {
+    pattern: "^[a-zA-Z0-9\\s\\.\\-\\/^_&@]{3,64}$"
+  }];
+}
+
+message CreateStoreResponse {
+  string id = 1;
+  string name = 2;
+  google.protobuf.Timestamp created_at = 3 [json_name = "created_at"];
+  google.protobuf.Timestamp updated_at = 4 [json_name = "updated_at"];
+}
+
+message DeleteStoreRequest {
+  string store_id = 1 [
+    json_name = "store_id",
+    (validate.rules).string = {
+      pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"
+    }
+  ];
+}
+
+message DeleteStoreResponse {}
+
+message GetStoreRequest {
+  string store_id = 1 [
+    json_name = "store_id",
+    (validate.rules).string = {
+      pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"
+    }
+  ];
+}
+
+message GetStoreResponse {
+  string id = 1;
+  string name = 2;
+  google.protobuf.Timestamp created_at = 3 [json_name = "created_at"];
+  google.protobuf.Timestamp updated_at = 4 [json_name = "updated_at"];
+}
+
+message ListStoresRequest {
+  google.protobuf.Int32Value page_size = 1 [
+    json_name = "page_size",
+    (validate.rules).int32 = {
+      gte: 1,
+      lte: 100
+    }
+  ];
+  string continuation_token = 2 [
+    json_name = "continuation_token",
+    (validate.rules).string.max_bytes = 5120
+  ];
+}
+
+message ListStoresResponse {
+  repeated openfga.v1.Store stores = 1;
+  string continuation_token = 2 [
+    json_name = "continuation_token",
+    (validate.rules).string.max_bytes = 5120
+  ];
+}

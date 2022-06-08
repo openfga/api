@@ -1,0 +1,15 @@
+#!/usr/bin/env -S buf generate --template
+---
+version: v1
+managed:
+  enabled: true
+  go_package_prefix:
+    default: github.com/openfga/api/proto
+    except:
+      - buf.build/googleapis/googleapis
+plugins:
+  - remote: buf.build/grpc-ecosystem/plugins/openapiv2:v2.10.0-1
+    out: docs/openapiv2
+    opt:
+      - openapi_naming_strategy=simple
+      - allow_merge=true

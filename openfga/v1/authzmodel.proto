@@ -1,0 +1,93 @@
+syntax = "proto3";
+
+package openfga.v1;
+
+import "google/api/field_behavior.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+import "validate/validate.proto";
+
+message AuthorizationModel {
+  string id = 1;
+  repeated TypeDefinition type_definitions = 2 [json_name = "type_definitions"];
+}
+
+message TypeDefinitions {
+  repeated TypeDefinition type_definitions = 1 [
+    json_name = "type_definitions",
+
+    (validate.rules).repeated = {
+      min_items: 1
+    },
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      minimum: 1,
+    }
+  ];
+}
+
+message TypeDefinition {
+  string type = 1 [
+    (validate.rules).string = {
+      min_len: 1,
+      max_bytes: 254,
+      pattern: "^[^:#@\\s]*$"
+    },
+    (google.api.field_behavior) = REQUIRED
+  ];
+  map<string, Userset> relations = 2 [
+    (validate.rules).map = {
+      min_pairs: 1
+    },
+    (validate.rules).map.keys.string = {
+      min_len: 1,
+      max_bytes: 50,
+      pattern: "^[^:#@\\s]*$"
+    },
+    (google.api.field_behavior) = REQUIRED
+  ];
+}
+
+message Usersets {
+  repeated Userset child = 1;
+}
+
+message Difference {
+  Userset base = 1 [
+    (validate.rules).message.required = true,
+    (google.api.field_behavior) = REQUIRED
+  ];
+
+  Userset subtract = 2 [
+    (validate.rules).message.required = true,
+    (google.api.field_behavior) = REQUIRED
+  ];
+}
+
+message Userset {
+  oneof userset {
+    DirectUserset this = 1;
+    ObjectRelation computed_userset = 2;
+    TupleToUserset tuple_to_userset = 3;
+    Usersets union = 4;
+    Usersets intersection = 5;
+    Difference difference = 6;
+  }
+}
+
+// A DirectUserset is a sentinel message for referencing
+// the direct members specified by an object/relation mapping.
+message DirectUserset {}
+
+message ObjectRelation {
+  string object = 1 [(validate.rules).string = {
+    max_bytes: 256
+  }];
+  string relation = 2 [(validate.rules).string = {
+    max_bytes: 50
+  }];
+}
+
+message TupleToUserset {
+  // The target object/relation
+  ObjectRelation tupleset = 1;
+  ObjectRelation computed_userset = 2;
+}
