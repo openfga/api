@@ -2,7 +2,6 @@ syntax = "proto3";
 
 package openfga.v1;
 
-import "openfga/v1/openfga.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 
 option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
