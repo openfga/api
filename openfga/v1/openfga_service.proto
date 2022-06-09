@@ -11,54 +11,6 @@ import "openfga/v1/authzmodel.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 import "validate/validate.proto";
 
-option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
-  info: {
-    title: "OpenFGA";
-    version: "0.1";
-    contact: {
-      name: "";
-      url: "";
-    };
-    description: ""
-  };
-  consumes: "application/json";
-  produces: "application/json";
-  schemes: HTTPS;
-  responses: {
-    key: "400"
-    value: {
-      description: "Request failed due to invalid input."
-      schema: {
-        json_schema: {
-          ref: ".openfga.v1.ValidationErrorMessageResponse"
-        }
-      }
-    }
-  }
-  responses: {
-    key: "404"
-    value: {
-      description: "Request failed due to incorrect path."
-      schema: {
-        json_schema: {
-          ref: ".openfga.v1.PathUnknownErrorMessageResponse"
-        }
-      }
-    }
-  }
-  responses: {
-    key: "500"
-    value: {
-      description: "Request failed due to internal server error."
-      schema: {
-        json_schema: {
-          ref: ".openfga.v1.InternalErrorMessageResponse"
-        }
-      }
-    }
-  }
-};
-
 service OpenFGAService {
   rpc Read(ReadRequest) returns (ReadResponse) {
     option (google.api.http) = {
@@ -629,7 +581,7 @@ service OpenFGAService {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       summary: "Create a store"
       tags: [
-        "Store"
+        "Stores"
       ]
       operation_id: "CreateStore"
       description: "Create a unique OpenFGA store which will be used to store authorization models and relationship tuples."
@@ -644,7 +596,7 @@ service OpenFGAService {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       summary: "Delete a store"
       tags: [
-        "Store"
+        "Stores"
       ]
       operation_id: "DeleteStore"
       description: "Delete an OpenFGA store. This does not delete the data associated to it, like tuples or authorization models."
@@ -670,7 +622,7 @@ service OpenFGAService {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       summary: "Get a store"
       tags: [
-        "Store"
+        "Stores"
       ]
       operation_id: "GetStore"
       description: "Returns an OpenFGA store."
@@ -685,7 +637,7 @@ service OpenFGAService {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       summary: "Get all stores"
       tags: [
-        "Store"
+        "Stores"
       ]
       operation_id: "ListStores"
       description: "Returns a paginated list of OpenFGA stores."

@@ -1,0 +1,54 @@
+syntax = "proto3";
+
+package openfga.v1;
+
+import "openfga/v1/openfga.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+  info: {
+    title: "OpenFGA";
+    description: "A high performance and flexible authorization/permission engine built for developers and inspired by Google Zanzibar.";
+    version: "0.1";
+    contact: {
+      name: "community@openfga.dev";
+      url: "https://openfga.dev";
+    };
+  };
+  consumes: "application/json";
+  produces: "application/json";
+  schemes: HTTPS;
+  responses: {
+    key: "400"
+    value: {
+      description: "Request failed due to invalid input."
+      schema: {
+        json_schema: {
+          ref: ".openfga.v1.ValidationErrorMessageResponse"
+        }
+      }
+    }
+  }
+  responses: {
+    key: "404"
+    value: {
+      description: "Request failed due to incorrect path."
+      schema: {
+        json_schema: {
+          ref: ".openfga.v1.PathUnknownErrorMessageResponse"
+        }
+      }
+    }
+  }
+  responses: {
+    key: "500"
+    value: {
+      description: "Request failed due to internal server error."
+      schema: {
+        json_schema: {
+          ref: ".openfga.v1.InternalErrorMessageResponse"
+        }
+      }
+    }
+  }
+};

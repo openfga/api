@@ -2,8 +2,12 @@
   "swagger": "2.0",
   "info": {
     "title": "OpenFGA",
+    "description": "A high performance and flexible authorization/permission engine built for developers and inspired by Google Zanzibar.",
     "version": "0.1",
-    "contact": {}
+    "contact": {
+      "name": "community@openfga.dev",
+      "url": "https://openfga.dev"
+    }
   },
   "tags": [
     {
@@ -67,7 +71,7 @@
           }
         ],
         "tags": [
-          "Store"
+          "Stores"
         ]
       },
       "post": {
@@ -111,7 +115,7 @@
           }
         ],
         "tags": [
-          "Store"
+          "Stores"
         ]
       }
     },
@@ -155,7 +159,7 @@
           }
         ],
         "tags": [
-          "Store"
+          "Stores"
         ]
       },
       "delete": {
@@ -194,7 +198,7 @@
           }
         ],
         "tags": [
-          "Store"
+          "Stores"
         ]
       }
     },
