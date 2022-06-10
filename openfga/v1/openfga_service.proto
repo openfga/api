@@ -498,10 +498,24 @@ service OpenFGAService {
     };
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Read all the tuples from a given store"
       tags: [
         "Relationship Tuples"
       ]
       operation_id: "ReadTuples"
+      description:
+        "The GET read-tuples API will return a paginated list of tuples that exist in a given store. The response will include a continuation token if there are more tuples to be returned."
+      responses: {
+        key: "200"
+        value: {
+          description: "A successful response."
+          schema: {
+            json_schema: {
+              ref: ".openfga.v1.ReadTuplesResponse"
+            }
+          }
+        }
+      }
     };
   }
 
