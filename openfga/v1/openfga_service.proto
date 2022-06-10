@@ -344,7 +344,7 @@ service OpenFGAService {
         "  ]\n"
         "}\n"
         "```\n"
-        "If there are more authorization model IDs available, the response will contain an extra field `continuation_token`:\n"
+        "If there are more authorization models available, the response will contain an extra field `continuation_token`:\n"
         "```json\n"
         "{\n"
         "  \"authorization_models\": [\n"
