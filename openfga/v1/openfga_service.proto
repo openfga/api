@@ -319,7 +319,7 @@ service OpenFGAService {
     };
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      summary: "Return all the authorization model for a particular store"
+      summary: "Return all the authorization models for a particular store"
       tags: [
         "Authorization Models"
       ]
