@@ -319,36 +319,44 @@ service OpenFGAService {
     };
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      summary: "Return all the authorization model IDs for a particular store"
+      summary: "Return all the authorization models for a particular store"
       tags: [
         "Authorization Models"
       ]
       operation_id: "ReadAuthorizationModels"
       description:
-        "The GET authorization-models API will return all the IDs of the "
-        "authorization models for a certain store.\n"
+        "The GET authorization-models API will return all the authorization models for a certain store.\n"
         "Path parameter `store_id` is required.\n"
-        "OpenFGA's response will contain an array of all authorization "
-        "model IDs, sorted in descending order of creation.\n\n"
+        "OpenFGA's response will contain an array of all authorization models, sorted in descending order of creation.\n\n"
         "## Example\n"
-        "Assume that the store's authorization model has been configured twice.  "
-        "To get all the IDs of the authorization models that had been created in this store, call "
-        "GET authorization-models.  The API will return a response that looks like:\n"
+        "Assume that a store's authorization model has been configured twice. To get all the authorization models that have been created in this store, call GET authorization-models. The API will return a response that looks like:\n"
         "```json\n"
         "{\n"
-        "  \"authorization_model_ids\": [\n"
-        "      \"1yunpF9DkzXMzm0dHrsCuWsooEV\",\n"
-        "      \"1yundoHpJHlodgn4EOVar2DhmKp\"\n"
+        "  \"authorization_models\": [\n"
+        "    {\n"
+        "      \"id\": \"01G50QVV17PECNVAHX1GG4Y5NC\",\n"
+        "      \"type_definitions\": [...]\n"
+        "    },\n"
+        "    {\n"
+        "      \"id\": \"01G4ZW8F4A07AKQ8RHSVG9RW04\",\n"
+        "      \"type_definitions\": [...]\n"
+        "    },\n"
         "  ]\n"
         "}\n"
         "```\n"
-        "If there are more authorization model IDs available, the response will contain an extra field `continuation_token`:\n"
+        "If there are more authorization models available, the response will contain an extra field `continuation_token`:\n"
         "```json\n"
         "{\n"
-        "  \"authorization_model_ids\": [\n"
-        "      \"1yunpF9DkzXMzm0dHrsCuWsooEV\",\n"
-        "      \"1yundoHpJHlodgn4EOVar2DhmKp\"\n"
-        "  ],\n"
+        "  \"authorization_models\": [\n"
+        "    {\n"
+        "      \"id\": \"01G50QVV17PECNVAHX1GG4Y5NC\",\n"
+        "      \"type_definitions\": [...]\n"
+        "    },\n"
+        "    {\n"
+        "      \"id\": \"01G4ZW8F4A07AKQ8RHSVG9RW04\",\n"
+        "      \"type_definitions\": [...]\n"
+        "    },\n"
+        "  ]\n"
         "  \"continuation_token\": \"eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ==\"\n"
         "}\n"
         "```\n"
@@ -445,9 +453,7 @@ service OpenFGAService {
         "          \"union\":{\n"
         "            \"child\":[\n"
         "              {\n"
-        "                \"this\":{\n"
-        "\n"
-        "                }\n"
+        "                \"this\":{}\n"
         "              },\n"
         "              {\n"
         "                \"computedUserset\":{\n"
@@ -459,9 +465,7 @@ service OpenFGAService {
         "          }\n"
         "        },\n"
         "        \"writer\":{\n"
-        "          \"this\":{\n"
-        "\n"
-        "          }\n"
+        "          \"this\":{}\n"
         "        }\n"
         "      }\n"
         "    }\n"
@@ -471,7 +475,7 @@ service OpenFGAService {
         "OpenFGA's response will include the version id for this authorization model, "
         "which will look like \n"
         "```\n"
-        "{\"authorization_model_id\": \"1yunpF9DkzXMzm0dHrsCuWsooEV\"}\n"
+        "{\"authorization_model_id\": \"01G50QVV17PECNVAHX1GG4Y5NC\"}\n"
         "```\n"
       responses: {
         key: "201"
@@ -494,10 +498,24 @@ service OpenFGAService {
     };
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Read all the tuples from a given store"
       tags: [
         "Relationship Tuples"
       ]
       operation_id: "ReadTuples"
+      description:
+        "The GET read-tuples API will return a paginated list of tuples that exist in a given store. The response will include a continuation token if there are more tuples to be returned."
+      responses: {
+        key: "200"
+        value: {
+          description: "A successful response."
+          schema: {
+            json_schema: {
+              ref: ".openfga.v1.ReadTuplesResponse"
+            }
+          }
+        }
+      }
     };
   }
 
