@@ -663,12 +663,15 @@ service OpenFGAService {
   }
 }
 
+// Note: store_id is a ULID using pattern ^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$
+// which excludes I, L, O, and U
+// because of https://github.com/ulid/spec#encoding
+
 message ReadRequest {
   string store_id = 1 [
     json_name = "store_id",
     (validate.rules).string = {
-      min_len: 1,
-      max_bytes: 256
+      pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"
     },
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""
@@ -724,8 +727,7 @@ message WriteRequest {
   string store_id = 1 [
     json_name = "store_id",
     (validate.rules).string = {
-      min_len: 1,
-      max_len: 256
+      pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"
     },
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""
@@ -751,8 +753,7 @@ message CheckRequest {
   string store_id = 1 [
     json_name = "store_id",
     (validate.rules).string = {
-      min_len: 1,
-      max_bytes: 256
+      pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"
     },
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""
@@ -794,8 +795,7 @@ message ExpandRequest {
   string store_id = 1 [
     json_name = "store_id",
     (validate.rules).string = {
-      min_len: 1,
-      max_bytes: 256
+      pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"
     },
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""
@@ -824,8 +824,7 @@ message ReadAuthorizationModelRequest {
   string store_id = 1 [
     json_name = "store_id",
     (validate.rules).string = {
-      min_len: 1,
-      max_bytes: 256
+      pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"
     },
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""
@@ -843,8 +842,7 @@ message WriteAuthorizationModelRequest {
   string store_id = 1 [
     json_name = "store_id",
     (validate.rules).string = {
-      min_len: 1,
-      max_bytes: 256
+      pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"
     },
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""
@@ -868,8 +866,7 @@ message ReadAuthorizationModelsRequest {
   string store_id = 1 [
     json_name = "store_id",
     (validate.rules).string = {
-      min_len: 1,
-      max_bytes: 256
+      pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"
     },
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""
@@ -915,8 +912,7 @@ message ReadTuplesRequest {
   string store_id = 1 [
     json_name = "store_id",
     (validate.rules).string = {
-      min_len: 1,
-      max_bytes: 256
+      pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"
     },
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""
@@ -959,8 +955,7 @@ message WriteAssertionsRequest {
   string store_id = 1 [
     json_name = "store_id",
     (validate.rules).string = {
-      min_len: 1,
-      max_bytes: 256
+      pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"
     },
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""
@@ -998,8 +993,7 @@ message ReadAssertionsRequest {
   string store_id = 1 [
     json_name = "store_id",
     (validate.rules).string = {
-      min_len: 1,
-      max_bytes: 256
+      pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"
     },
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""
@@ -1037,8 +1031,7 @@ message ReadChangesRequest {
   string store_id = 1 [
     json_name = "store_id",
     (validate.rules).string = {
-      min_len: 1,
-      max_bytes: 256
+      pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"
     },
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""
@@ -1100,6 +1093,9 @@ message DeleteStoreRequest {
     json_name = "store_id",
     (validate.rules).string = {
       pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"
+    },
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""
     }
   ];
 }
@@ -1111,6 +1107,9 @@ message GetStoreRequest {
     json_name = "store_id",
     (validate.rules).string = {
       pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"
+    },
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""
     }
   ];
 }
