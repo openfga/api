@@ -8,11 +8,11 @@ import "validate/validate.proto";
 
 message AuthorizationModel {
   option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
-    example: "{\"id\": \"1yunpF9DkzXMzm0dHrsCuWsooEV\", \"type_definitions\":[{\"type\":\"document\",\"relations\":{\"reader\":{\"union\":{\"child\":[{\"this\":{}},{\"computedUserset\":{\"object\":\"\",\"relation\":\"writer\"}}]}},\"writer\":{\"this\":{}}}}]}"
+    example: "{\"id\": \"01G5JAVJ41T49E9TT3SKVS7X1J\", \"type_definitions\":[{\"type\":\"document\",\"relations\":{\"reader\":{\"union\":{\"child\":[{\"this\":{}},{\"computedUserset\":{\"object\":\"\",\"relation\":\"writer\"}}]}},\"writer\":{\"this\":{}}}}]}"
   };
   string id = 1 [
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      example: "\"1yunpF9DkzXMzm0dHrsCuWsooEV\""
+      example: "\"01G5JAVJ41T49E9TT3SKVS7X1J\""
     },
     (validate.rules).string = {
       pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"

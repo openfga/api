@@ -381,13 +381,13 @@ service OpenFGAService {
         "Path parameter `store_id` and `id` are required.\n"
         "The response will return the authorization model for the particular version.\n\n"
         "## Example\n"
-        "To retrieve the authorization model with ID `1yunpF9DkzXMzm0dHrsCuWsooEV` for the store, "
-        "call the GET authorization-models by ID API with `1yunpF9DkzXMzm0dHrsCuWsooEV` as the "
+        "To retrieve the authorization model with ID `01G5JAVJ41T49E9TT3SKVS7X1J` for the store, "
+        "call the GET authorization-models by ID API with `01G5JAVJ41T49E9TT3SKVS7X1J` as the "
         "`id` path parameter.  The API will return:\n"
         "```json\n"
         "{\n"
         "  \"authorization_model\":{\n"
-        "    \"id\":\"1yunpF9DkzXMzm0dHrsCuWsooEV\",\n"
+        "    \"id\":\"01G5JAVJ41T49E9TT3SKVS7X1J\",\n"
         "    \"type_definitions\":[\n"
         "      {\n"
         "        \"type\":\"document\",\n"
@@ -689,7 +689,7 @@ message ReadRequest {
       pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"
     },
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      example: "\"1yunpF9DkzXMzm0dHrsCuWsooEV\""
+      example: "\"01G5JAVJ41T49E9TT3SKVS7X1J\""
     }
   ];
 
@@ -746,7 +746,7 @@ message WriteRequest {
       pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"
     },
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      example: "\"1yunpF9DkzXMzm0dHrsCuWsooEV\""
+      example: "\"01G5JAVJ41T49E9TT3SKVS7X1J\""
     }
   ];
 }
@@ -777,7 +777,7 @@ message CheckRequest {
       pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"
     },
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      example: "\"1yunpF9DkzXMzm0dHrsCuWsooEV\""
+      example: "\"01G5JAVJ41T49E9TT3SKVS7X1J\""
     }
   ];
 
@@ -819,7 +819,7 @@ message ExpandRequest {
       pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"
     },
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      example: "\"1yunpF9DkzXMzm0dHrsCuWsooEV\""
+      example: "\"01G5JAVJ41T49E9TT3SKVS7X1J\""
     }
   ];
 }
@@ -867,7 +867,7 @@ message WriteAuthorizationModelResponse {
       pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"
     },
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      example: "\"1yunpF9DkzXMzm0dHrsCuWsooEV\""
+      example: "\"01G5JAVJ41T49E9TT3SKVS7X1J\""
     }
   ];
 }
@@ -978,7 +978,7 @@ message WriteAssertionsRequest {
       pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"
     },
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      example: "\"1yunpF9DkzXMzm0dHrsCuWsooEV\""
+      example: "\"01G5JAVJ41T49E9TT3SKVS7X1J\""
     }
   ];
 
@@ -1015,7 +1015,7 @@ message ReadAssertionsRequest {
       pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"
     },
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      example: "\"1yunpF9DkzXMzm0dHrsCuWsooEV\""
+      example: "\"01G5JAVJ41T49E9TT3SKVS7X1J\""
     }
   ];
 }
@@ -1027,7 +1027,7 @@ message ReadAssertionsResponse {
       pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"
     },
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      example: "\"1yunpF9DkzXMzm0dHrsCuWsooEV\""
+      example: "\"01G5JAVJ41T49E9TT3SKVS7X1J\""
     }
   ];
 
