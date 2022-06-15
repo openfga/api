@@ -42,9 +42,7 @@ message TypeDefinition {
   };
   string type = 1 [
     (validate.rules).string = {
-      min_len: 1,
-      max_bytes: 254,
-      pattern: "^[^:#@\\s]*$"
+      pattern: "^[^:#@\\s]{1,254}$"
     },
     (google.api.field_behavior) = REQUIRED,
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
@@ -56,9 +54,7 @@ message TypeDefinition {
       min_pairs: 1
     },
     (validate.rules).map.keys.string = {
-      min_len: 1,
-      max_bytes: 50,
-      pattern: "^[^:#@\\s]*$"
+      pattern: "^[^:#@\\s]{1,50}$"
     },
     (google.api.field_behavior) = REQUIRED,
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {

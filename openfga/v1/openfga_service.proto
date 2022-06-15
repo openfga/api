@@ -1046,8 +1046,7 @@ message ReadChangesRequest {
   ];
 
   string type = 2 [(validate.rules).string = {
-    max_bytes: 254,
-    pattern: "^[^:#\\s]*$"
+    pattern: "^[^:#\\s]{,254}$"
   }];
 
   google.protobuf.Int32Value page_size = 3 [
