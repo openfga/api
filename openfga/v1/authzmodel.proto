@@ -7,8 +7,20 @@ import "protoc-gen-openapiv2/options/annotations.proto";
 import "validate/validate.proto";
 
 message AuthorizationModel {
-  string id = 1;
-  repeated TypeDefinition type_definitions = 2 [json_name = "type_definitions"];
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    example: "{\"id\": \"01G5JAVJ41T49E9TT3SKVS7X1J\", \"type_definitions\":[{\"type\":\"document\",\"relations\":{\"reader\":{\"union\":{\"child\":[{\"this\":{}},{\"computedUserset\":{\"object\":\"\",\"relation\":\"writer\"}}]}},\"writer\":{\"this\":{}}}}]}"
+  };
+  string id = 1 [
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"01G5JAVJ41T49E9TT3SKVS7X1J\""
+    },
+    (validate.rules).string = {
+      pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"
+    }
+  ];
+  repeated TypeDefinition type_definitions = 2 [
+    json_name = "type_definitions"
+  ];
 }
 
 message TypeDefinitions {
@@ -25,24 +37,29 @@ message TypeDefinitions {
 }
 
 message TypeDefinition {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    example: "{\"type\":\"document\",\"relations\":{\"reader\":{\"union\":{\"child\":[{\"this\":{}},{\"computedUserset\":{\"object\":\"\",\"relation\":\"writer\"}}]}},\"writer\":{\"this\":{}}}}"
+  };
   string type = 1 [
     (validate.rules).string = {
-      min_len: 1,
-      max_bytes: 254,
-      pattern: "^[^:#@\\s]*$"
+      pattern: "^[^:#@\\s]{1,254}$"
     },
-    (google.api.field_behavior) = REQUIRED
+    (google.api.field_behavior) = REQUIRED,
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"document\""
+    }
   ];
   map<string, Userset> relations = 2 [
     (validate.rules).map = {
       min_pairs: 1
     },
     (validate.rules).map.keys.string = {
-      min_len: 1,
-      max_bytes: 50,
-      pattern: "^[^:#@\\s]*$"
+      pattern: "^[^:#@\\s]{1,50}$"
     },
-    (google.api.field_behavior) = REQUIRED
+    (google.api.field_behavior) = REQUIRED,
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "{\"relations\":{\"reader\":{\"union\":{\"child\":[{\"this\":{}},{\"computedUserset\":{\"object\":\"\",\"relation\":\"writer\"}}]}},\"writer\":{\"this\":{}}}}"
+    }
   ];
 }
 

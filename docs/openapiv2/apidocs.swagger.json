@@ -322,8 +322,8 @@
     },
     "/stores/{store_id}/authorization-models": {
       "get": {
-        "summary": "Return all the authorization model IDs for a particular store",
-        "description": "The GET authorization-models API will return all the IDs of the authorization models for a certain store.\nPath parameter `store_id` is required.\nOpenFGA's response will contain an array of all authorization model IDs, sorted in descending order of creation.\n\n## Example\nAssume that the store's authorization model has been configured twice.  To get all the IDs of the authorization models that had been created in this store, call GET authorization-models.  The API will return a response that looks like:\n```json\n{\n  \"authorization_model_ids\": [\n      \"1yunpF9DkzXMzm0dHrsCuWsooEV\",\n      \"1yundoHpJHlodgn4EOVar2DhmKp\"\n  ]\n}\n```\nIf there are more authorization model IDs available, the response will contain an extra field `continuation_token`:\n```json\n{\n  \"authorization_model_ids\": [\n      \"1yunpF9DkzXMzm0dHrsCuWsooEV\",\n      \"1yundoHpJHlodgn4EOVar2DhmKp\"\n  ],\n  \"continuation_token\": \"eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ==\"\n}\n```\n",
+        "summary": "Return all the authorization models for a particular store",
+        "description": "The GET authorization-models API will return all the authorization models for a certain store.\nPath parameter `store_id` is required.\nOpenFGA's response will contain an array of all authorization models, sorted in descending order of creation.\n\n## Example\nAssume that a store's authorization model has been configured twice. To get all the authorization models that have been created in this store, call GET authorization-models. The API will return a response that looks like:\n```json\n{\n  \"authorization_models\": [\n    {\n      \"id\": \"01G50QVV17PECNVAHX1GG4Y5NC\",\n      \"type_definitions\": [...]\n    },\n    {\n      \"id\": \"01G4ZW8F4A07AKQ8RHSVG9RW04\",\n      \"type_definitions\": [...]\n    },\n  ]\n}\n```\nIf there are more authorization models available, the response will contain an extra field `continuation_token`:\n```json\n{\n  \"authorization_models\": [\n    {\n      \"id\": \"01G50QVV17PECNVAHX1GG4Y5NC\",\n      \"type_definitions\": [...]\n    },\n    {\n      \"id\": \"01G4ZW8F4A07AKQ8RHSVG9RW04\",\n      \"type_definitions\": [...]\n    },\n  ]\n  \"continuation_token\": \"eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ==\"\n}\n```\n",
         "operationId": "ReadAuthorizationModels",
         "responses": {
           "200": {
@@ -378,7 +378,7 @@
       },
       "post": {
         "summary": "Create a new authorization model",
-        "description": "The POST authorization-model API will update the authorization model for a certain store.\nPath parameter `store_id` and `type_definitions` array in the body are required.  Each item in the `type_definitions` array is a type definition as specified in the field `type_definition`.\nThe response will return the authorization model's ID in the `id` field.\n\n## Example\nTo update the authorization model with a single `document` authorization model, call POST authorization-models API with the body: \n```json\n{\n  \"type_definitions\":[\n    {\n      \"type\":\"document\",\n      \"relations\":{\n        \"reader\":{\n          \"union\":{\n            \"child\":[\n              {\n                \"this\":{\n\n                }\n              },\n              {\n                \"computedUserset\":{\n                  \"object\":\"\",\n                  \"relation\":\"writer\"\n                }\n              }\n            ]\n          }\n        },\n        \"writer\":{\n          \"this\":{\n\n          }\n        }\n      }\n    }\n  ]\n}\n```\nOpenFGA's response will include the version id for this authorization model, which will look like \n```\n{\"authorization_model_id\": \"1yunpF9DkzXMzm0dHrsCuWsooEV\"}\n```\n",
+        "description": "The POST authorization-model API will update the authorization model for a certain store.\nPath parameter `store_id` and `type_definitions` array in the body are required.  Each item in the `type_definitions` array is a type definition as specified in the field `type_definition`.\nThe response will return the authorization model's ID in the `id` field.\n\n## Example\nTo update the authorization model with a single `document` authorization model, call POST authorization-models API with the body: \n```json\n{\n  \"type_definitions\":[\n    {\n      \"type\":\"document\",\n      \"relations\":{\n        \"reader\":{\n          \"union\":{\n            \"child\":[\n              {\n                \"this\":{}\n              },\n              {\n                \"computedUserset\":{\n                  \"object\":\"\",\n                  \"relation\":\"writer\"\n                }\n              }\n            ]\n          }\n        },\n        \"writer\":{\n          \"this\":{}\n        }\n      }\n    }\n  ]\n}\n```\nOpenFGA's response will include the version id for this authorization model, which will look like \n```\n{\"authorization_model_id\": \"01G50QVV17PECNVAHX1GG4Y5NC\"}\n```\n",
         "operationId": "WriteAuthorizationModel",
         "responses": {
           "201": {
@@ -430,7 +430,7 @@
     "/stores/{store_id}/authorization-models/{id}": {
       "get": {
         "summary": "Return a particular version of an authorization model",
-        "description": "The GET authorization-models by ID API will return a particular version of authorization model that had been configured for a certain store.  \nPath parameter `store_id` and `id` are required.\nThe response will return the authorization model for the particular version.\n\n## Example\nTo retrieve the authorization model with ID `1yunpF9DkzXMzm0dHrsCuWsooEV` for the store, call the GET authorization-models by ID API with `1yunpF9DkzXMzm0dHrsCuWsooEV` as the `id` path parameter.  The API will return:\n```json\n{\n  \"authorization_model\":{\n    \"id\":\"1yunpF9DkzXMzm0dHrsCuWsooEV\",\n    \"type_definitions\":[\n      {\n        \"type\":\"document\",\n        \"relations\":{\n          \"reader\":{\n            \"union\":{\n              \"child\":[\n                {\n                  \"this\":{}\n                },\n                {\n                  \"computedUserset\":{\n                    \"object\":\"\",\n                    \"relation\":\"writer\"\n                  }\n                }\n              ]\n            }\n          },\n          \"writer\":{\n            \"this\":{}\n          }\n        }\n      }\n    ]\n  }\n}\n```\nIn the above example, there is only 1 type (`document`) with 2 relations (`writer` and `reader`).",
+        "description": "The GET authorization-models by ID API will return a particular version of authorization model that had been configured for a certain store.  \nPath parameter `store_id` and `id` are required.\nThe response will return the authorization model for the particular version.\n\n## Example\nTo retrieve the authorization model with ID `01G5JAVJ41T49E9TT3SKVS7X1J` for the store, call the GET authorization-models by ID API with `01G5JAVJ41T49E9TT3SKVS7X1J` as the `id` path parameter.  The API will return:\n```json\n{\n  \"authorization_model\":{\n    \"id\":\"01G5JAVJ41T49E9TT3SKVS7X1J\",\n    \"type_definitions\":[\n      {\n        \"type\":\"document\",\n        \"relations\":{\n          \"reader\":{\n            \"union\":{\n              \"child\":[\n                {\n                  \"this\":{}\n                },\n                {\n                  \"computedUserset\":{\n                    \"object\":\"\",\n                    \"relation\":\"writer\"\n                  }\n                }\n              ]\n            }\n          },\n          \"writer\":{\n            \"this\":{}\n          }\n        }\n      }\n    ]\n  }\n}\n```\nIn the above example, there is only 1 type (`document`) with 2 relations (`writer` and `reader`).",
         "operationId": "ReadAuthorizationModel",
         "responses": {
           "200": {
@@ -593,7 +593,7 @@
                 },
                 "authorization_model_id": {
                   "type": "string",
-                  "example": "1yunpF9DkzXMzm0dHrsCuWsooEV"
+                  "example": "01G5JAVJ41T49E9TT3SKVS7X1J"
                 },
                 "trace": {
                   "type": "boolean",
@@ -660,7 +660,7 @@
                 },
                 "authorization_model_id": {
                   "type": "string",
-                  "example": "1yunpF9DkzXMzm0dHrsCuWsooEV"
+                  "example": "01G5JAVJ41T49E9TT3SKVS7X1J"
                 }
               }
             }
@@ -721,7 +721,7 @@
                 },
                 "authorization_model_id": {
                   "type": "string",
-                  "example": "1yunpF9DkzXMzm0dHrsCuWsooEV"
+                  "example": "01G5JAVJ41T49E9TT3SKVS7X1J"
                 },
                 "page_size": {
                   "type": "integer",
@@ -743,6 +743,8 @@
     },
     "/stores/{store_id}/read-tuples": {
       "post": {
+        "summary": "Read all the tuples from a given store",
+        "description": "The GET read-tuples API will return a paginated list of tuples that exist in a given store. The response will include a continuation token if there are more tuples to be returned.",
         "operationId": "ReadTuples",
         "responses": {
           "200": {
@@ -856,7 +858,7 @@
                 },
                 "authorization_model_id": {
                   "type": "string",
-                  "example": "1yunpF9DkzXMzm0dHrsCuWsooEV"
+                  "example": "01G5JAVJ41T49E9TT3SKVS7X1J"
                 }
               }
             }
@@ -897,9 +899,38 @@
     },
     "AuthorizationModel": {
       "type": "object",
+      "example": {
+        "id": "01G5JAVJ41T49E9TT3SKVS7X1J",
+        "type_definitions": [
+          {
+            "type": "document",
+            "relations": {
+              "reader": {
+                "union": {
+                  "child": [
+                    {
+                      "this": {}
+                    },
+                    {
+                      "computedUserset": {
+                        "object": "",
+                        "relation": "writer"
+                      }
+                    }
+                  ]
+                }
+              },
+              "writer": {
+                "this": {}
+              }
+            }
+          }
+        ]
+      },
       "properties": {
         "id": {
-          "type": "string"
+          "type": "string",
+          "example": "01G5JAVJ41T49E9TT3SKVS7X1J"
         },
         "type_definitions": {
           "type": "array",
@@ -953,7 +984,8 @@
       "type": "object",
       "properties": {
         "name": {
-          "type": "string"
+          "type": "string",
+          "example": "my-store-name"
         }
       }
     },
@@ -961,7 +993,8 @@
       "type": "object",
       "properties": {
         "id": {
-          "type": "string"
+          "type": "string",
+          "example": "01YCP46JKYM8FJCQ37NMBYHE5X"
         },
         "name": {
           "type": "string"
@@ -1047,7 +1080,8 @@
       "type": "object",
       "properties": {
         "id": {
-          "type": "string"
+          "type": "string",
+          "example": "01YCP46JKYM8FJCQ37NMBYHE5X"
         },
         "name": {
           "type": "string"
@@ -1119,7 +1153,8 @@
           }
         },
         "continuation_token": {
-          "type": "string"
+          "type": "string",
+          "example": "eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ=="
         }
       }
     },
@@ -1195,7 +1230,7 @@
       "properties": {
         "authorization_model_id": {
           "type": "string",
-          "example": "1yunpF9DkzXMzm0dHrsCuWsooEV"
+          "example": "01G5JAVJ41T49E9TT3SKVS7X1J"
         },
         "assertions": {
           "type": "array",
@@ -1391,15 +1426,61 @@
     },
     "TypeDefinition": {
       "type": "object",
+      "example": {
+        "type": "document",
+        "relations": {
+          "reader": {
+            "union": {
+              "child": [
+                {
+                  "this": {}
+                },
+                {
+                  "computedUserset": {
+                    "object": "",
+                    "relation": "writer"
+                  }
+                }
+              ]
+            }
+          },
+          "writer": {
+            "this": {}
+          }
+        }
+      },
       "properties": {
         "type": {
           "type": "string",
+          "example": "document",
           "required": [
             "type"
           ]
         },
         "relations": {
           "type": "object",
+          "example": {
+            "relations": {
+              "reader": {
+                "union": {
+                  "child": [
+                    {
+                      "this": {}
+                    },
+                    {
+                      "computedUserset": {
+                        "object": "",
+                        "relation": "writer"
+                      }
+                    }
+                  ]
+                }
+              },
+              "writer": {
+                "this": {}
+              }
+            }
+          },
           "additionalProperties": {
             "$ref": "#/definitions/Userset"
           },
@@ -1527,7 +1608,7 @@
       "properties": {
         "authorization_model_id": {
           "type": "string",
-          "example": "1yunpF9DkzXMzm0dHrsCuWsooEV"
+          "example": "01G5JAVJ41T49E9TT3SKVS7X1J"
         }
       }
     },
