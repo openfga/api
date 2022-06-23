@@ -7,3 +7,5 @@
 
 .DS_Store
 .env
+proto/
+*.pb.go
