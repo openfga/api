@@ -11,4 +11,4 @@ To generate source code from the protobuf definitions contained in this project 
 ./buf.gen.yaml
 ```
 
-this will put the generated source code in the `proto/` directory.
+The command above will generate source code in the `proto/` directory.
