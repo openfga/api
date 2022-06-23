@@ -14,7 +14,7 @@ To generate source code from the protobuf definitions contained in this project 
 The command above will generate source code in the `proto/` directory.
 
 ## Generating OpenAPI Documentation
-To generate the OpenAPI documentation from the protobuf sources you can run the following command:
+To generate the OpenAPI documentation from the protobuf sources you can run the following commands:
 
 ```bash
 ./buf.gen.yaml
