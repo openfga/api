@@ -10,7 +10,8 @@ import "validate/validate.proto";
 message TupleKey {
   string object = 1 [
     (validate.rules).string = {
-      pattern: "^[^\\s]{0,256}$"
+      pattern: "^[^\\s]{2,256}$",
+      ignore_empty: true
     },
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       max_length: 256,
@@ -19,7 +20,8 @@ message TupleKey {
   ];
   string relation = 2 [
     (validate.rules).string = {
-      pattern: "^[^:#@\\s]{0,50}$"
+      pattern: "^[^:#@\\s]{1,50}$",
+      ignore_empty: true
     },
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       max_length: 50,
