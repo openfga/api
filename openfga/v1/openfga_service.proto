@@ -861,7 +861,9 @@ message WriteAuthorizationModelRequest {
     }
   ];
 
-  TypeDefinitions type_definitions = 2;
+  TypeDefinitions type_definitions = 2 [
+    (validate.rules).message.required = true
+  ];
 }
 
 message WriteAuthorizationModelResponse {
