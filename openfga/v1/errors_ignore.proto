@@ -57,6 +57,14 @@ enum ErrorCode {
   duplicate_contextual_tuple = 2055;
 }
 
+enum AuthNErrorCode { 
+
+  no_authn_error = 0;
+
+  missing_bearer_token = 3000;
+  unauthorized = 3001;
+}
+
 enum InternalErrorCode {
 
   no_internal_error = 0;
@@ -74,7 +82,6 @@ enum InternalErrorCode {
   unavailable = 4010;
   data_loss = 4011;
 }
-
 
 enum NotFoundErrorCode { 
 
