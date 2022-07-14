@@ -61,8 +61,14 @@ enum AuthNErrorCode {
 
   no_authn_error = 0;
 
-  missing_bearer_token = 3000;
-  unauthorized = 3001;
+  unauthorized = 3000;
+  missing_bearer_token = 3001;
+	error_parsing_token = 3002;
+	invalid_token = 3003;
+	invalid_claims = 3004;
+	invalid_issuer = 3005;
+	invalid_audience = 3006;
+	invalid_subject = 3007;
 }
 
 enum InternalErrorCode {
