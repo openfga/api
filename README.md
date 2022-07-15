@@ -16,7 +16,11 @@ The command above will generate source code in the `proto/` directory.
 ## Use the generated sources in OpenFGA
 
 1. Generate the sources as above
-2. `cd proto && go mod init go.buf.build/openfga/go/openfga/api`
+2. In the `proto` directory execute the following commands:
+    ```
+    go mod init go.buf.build/openfga/go/openfga/api
+    go mod tidy
+    ```
 3. In OpenFGA, add the following line to your `go.mod`:
     ```
     replace go.buf.build/openfga/go/openfga/api => /path/to/proto
