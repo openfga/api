@@ -13,6 +13,19 @@ To generate source code from the protobuf definitions contained in this project 
 
 The command above will generate source code in the `proto/` directory.
 
+## Use the generated sources in OpenFGA
+
+1. Generate the sources as above
+2. In the `proto` directory execute the following commands:
+    ```
+    go mod init go.buf.build/openfga/go/openfga/api
+    go mod tidy
+    ```
+3. In OpenFGA, add the following line to your `go.mod`:
+    ```
+    replace go.buf.build/openfga/go/openfga/api => /path/to/proto
+    ```
+
 ## Generating OpenAPI Documentation
 To generate the OpenAPI documentation from the protobuf sources you can run the following commands:
 
