@@ -726,6 +726,9 @@
                 },
                 "user": {
                   "type": "string"
+                },
+                "contextual_tuples": {
+                  "$ref": "#/definitions/ContextualTupleKeys"
                 }
               }
             }
@@ -800,6 +803,9 @@
                 },
                 "user": {
                   "type": "string"
+                },
+                "contextual_tuples": {
+                  "$ref": "#/definitions/ContextualTupleKeys"
                 }
               }
             }

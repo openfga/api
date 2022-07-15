@@ -695,6 +695,10 @@ message LookupRequest {
 
     string relation = 4;
     string user = 5;
+
+    openfga.v1.ContextualTupleKeys contextual_tuples = 6 [
+      json_name = "contextual_tuples"
+    ];
 }
 
 message LookupResponse {
