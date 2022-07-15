@@ -661,6 +661,52 @@ service OpenFGAService {
       description: "Returns a paginated list of OpenFGA stores."
     };
   }
+
+  // StreamedLookup is a streaming variation of the Lookup API (see Lookup for more info).
+  rpc StreamedLookup(LookupRequest) returns (stream StreamedLookupResponse) {
+    option (google.api.http) = {
+      post: "/stores/{store_id}/lookup:streamed",
+      body: "*"
+    };
+  }
+
+  // Lookup looks up the object ids for objects of the provided type that the given user
+  // has a specific relation with.
+  rpc Lookup(LookupRequest) returns (LookupResponse) {
+    option (google.api.http) = {
+      post: "/stores/{store_id}/lookup",
+      body: "*"
+    };
+  }
+}
+
+message LookupRequest {
+    string store_id  = 1 [
+      json_name = "store_id"
+    ];
+
+    string authorization_model_id = 2 [
+      json_name = "authorization_model_id"
+    ];
+
+    string object_type = 3 [
+      json_name = "object_type"
+    ];
+
+    string relation = 4;
+    string user = 5;
+}
+
+message LookupResponse {
+  repeated string object_ids = 1 [
+    json_name = "object_ids"
+  ];
+}
+
+message StreamedLookupResponse {
+  string object_id = 1 [
+    json_name = "object_id"
+  ];
 }
 
 // Note: store_id is a ULID using pattern ^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$

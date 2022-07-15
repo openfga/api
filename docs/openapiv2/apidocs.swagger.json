@@ -671,6 +671,145 @@
         ]
       }
     },
+    "/stores/{store_id}/lookup": {
+      "post": {
+        "summary": "Lookup looks up the object ids for objects of the provided type that the given user\nhas a specific relation with.",
+        "operationId": "OpenFGAService_Lookup",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/LookupResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "store_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "authorization_model_id": {
+                  "type": "string"
+                },
+                "object_type": {
+                  "type": "string"
+                },
+                "relation": {
+                  "type": "string"
+                },
+                "user": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "tags": [
+          "OpenFGAService"
+        ]
+      }
+    },
+    "/stores/{store_id}/lookup:streamed": {
+      "post": {
+        "summary": "StreamedLookup is a streaming variation of the Lookup API (see Lookup for more info).",
+        "operationId": "OpenFGAService_StreamedLookup",
+        "responses": {
+          "200": {
+            "description": "A successful response.(streaming responses)",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "result": {
+                  "$ref": "#/definitions/StreamedLookupResponse"
+                },
+                "error": {
+                  "$ref": "#/definitions/Status"
+                }
+              },
+              "title": "Stream result of StreamedLookupResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "store_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "authorization_model_id": {
+                  "type": "string"
+                },
+                "object_type": {
+                  "type": "string"
+                },
+                "relation": {
+                  "type": "string"
+                },
+                "user": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "tags": [
+          "OpenFGAService"
+        ]
+      }
+    },
     "/stores/{store_id}/read": {
       "post": {
         "summary": "Get tuples from the store that matches a query, without following userset rewrite rules",
@@ -1158,6 +1297,17 @@
         }
       }
     },
+    "LookupResponse": {
+      "type": "object",
+      "properties": {
+        "object_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "Node": {
       "type": "object",
       "properties": {
@@ -1346,6 +1496,14 @@
         "deleted_at": {
           "type": "string",
           "format": "date-time"
+        }
+      }
+    },
+    "StreamedLookupResponse": {
+      "type": "object",
+      "properties": {
+        "object_id": {
+          "type": "string"
         }
       }
     },
