@@ -79,7 +79,7 @@
         "description": "Create a unique OpenFGA store which will be used to store authorization models and relationship tuples.",
         "operationId": "CreateStore",
         "responses": {
-          "200": {
+          "201": {
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/CreateStoreResponse"
