@@ -603,6 +603,17 @@ service OpenFGAService {
       ]
       operation_id: "CreateStore"
       description: "Create a unique OpenFGA store which will be used to store authorization models and relationship tuples."
+      responses: {
+        key: "201"
+        value: {
+          description: "A successful response."
+          schema: {
+            json_schema: {
+              ref: ".openfga.v1.CreateStoreResponse"
+            }
+          }
+        }
+      }
     };
   }
 
