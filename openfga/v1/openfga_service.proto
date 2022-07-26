@@ -356,7 +356,7 @@ service OpenFGAService {
         "      \"id\": \"01G4ZW8F4A07AKQ8RHSVG9RW04\",\n"
         "      \"type_definitions\": [...]\n"
         "    },\n"
-        "  ]\n"
+        "  ],\n"
         "  \"continuation_token\": \"eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ==\"\n"
         "}\n"
         "```\n"
