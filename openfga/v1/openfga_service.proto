@@ -662,25 +662,25 @@ service OpenFGAService {
     };
   }
 
-  // StreamedLookup is a streaming variation of the Lookup API (see Lookup for more info).
-  rpc StreamedLookup(LookupRequest) returns (stream StreamedLookupResponse) {
+  // StreamedListObjects is a streaming variation of the ListObjects API (see ListObjects for more info).
+  rpc StreamedListObjects(StreamedListObjectsRequest) returns (stream StreamedListObjectsResponse) {
     option (google.api.http) = {
-      post: "/stores/{store_id}/lookup:streamed",
+      post: "/stores/{store_id}/streamedListObjects",
       body: "*"
     };
   }
 
-  // Lookup looks up the object ids for objects of the provided type that the given user
+  // ListObjects lists all of the object ids for objects of the provided type that the given user
   // has a specific relation with.
-  rpc Lookup(LookupRequest) returns (LookupResponse) {
+  rpc ListObjects(ListObjectsRequest) returns (ListObjectsResponse) {
     option (google.api.http) = {
-      post: "/stores/{store_id}/lookup",
+      post: "/stores/{store_id}/listObjects",
       body: "*"
     };
   }
 }
 
-message LookupRequest {
+message ListObjectsRequest {
     string store_id  = 1 [
       json_name = "store_id"
     ];
@@ -701,13 +701,34 @@ message LookupRequest {
     ];
 }
 
-message LookupResponse {
+message ListObjectsResponse {
   repeated string object_ids = 1 [
     json_name = "object_ids"
   ];
 }
 
-message StreamedLookupResponse {
+message StreamedListObjectsRequest {
+     string store_id  = 1 [
+      json_name = "store_id"
+    ];
+
+    string authorization_model_id = 2 [
+      json_name = "authorization_model_id"
+    ];
+
+    string object_type = 3 [
+      json_name = "object_type"
+    ];
+
+    string relation = 4;
+    string user = 5;
+
+    openfga.v1.ContextualTupleKeys contextual_tuples = 6 [
+      json_name = "contextual_tuples"
+    ];
+}
+
+message StreamedListObjectsResponse {
   string object_id = 1 [
     json_name = "object_id"
   ];
