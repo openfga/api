@@ -4,8 +4,19 @@ package openfga.v1;
 
 import "protoc-gen-openapiv2/options/annotations.proto";
 
-enum ErrorCode {
+enum AuthErrorCode {
+  no_auth_error = 0;
 
+  auth_failed_invalid_subject = 1001;
+  auth_failed_invalid_audience = 1002;
+  auth_failed_invalid_issuer = 1003;
+  invalid_claims = 1004;
+  auth_failed_invalid_bearer_token = 1005;
+  bearer_token_missing = 1010;
+  unauthorized = 1012;
+}
+
+enum ErrorCode {
   no_error = 0;
 
   // 2000 level errors are returned due to input error
@@ -57,22 +68,7 @@ enum ErrorCode {
   duplicate_contextual_tuple = 2055;
 }
 
-enum AuthNErrorCode { 
-
-  no_authn_error = 0;
-  
-  unauthorized = 3000;
-  missing_bearer_token = 3001;
-  error_parsing_token = 3002;
-  invalid_token = 3003;
-  invalid_claims = 3004;
-  invalid_issuer = 3005;
-  invalid_audience = 3006;
-  invalid_subject = 3007;
-}
-
 enum InternalErrorCode {
-
   no_internal_error = 0;
 
   // 4000 level errors are returned due to internal error
@@ -89,10 +85,9 @@ enum InternalErrorCode {
   data_loss = 4011;
 }
 
-enum NotFoundErrorCode { 
-
+enum NotFoundErrorCode {
   no_not_found_error = 0;
-  
+
   undefined_endpoint = 5000;
   store_id_not_found = 5002;
   unimplemented = 5004;
