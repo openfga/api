@@ -5,7 +5,6 @@ package openfga.v1;
 import "protoc-gen-openapiv2/options/annotations.proto";
 
 enum ErrorCode {
-
   no_error = 0;
 
   // 2000 level errors are returned due to input error
@@ -58,7 +57,6 @@ enum ErrorCode {
 }
 
 enum InternalErrorCode {
-
   no_internal_error = 0;
 
   // 4000 level errors are returned due to internal error
@@ -75,11 +73,9 @@ enum InternalErrorCode {
   data_loss = 4011;
 }
 
-
-enum NotFoundErrorCode { 
-
+enum NotFoundErrorCode {
   no_not_found_error = 0;
-  
+
   undefined_endpoint = 5000;
   store_id_not_found = 5002;
   unimplemented = 5004;

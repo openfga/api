@@ -6,8 +6,8 @@ import "google/api/annotations.proto";
 import "google/api/field_behavior.proto";
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/wrappers.proto";
-import "openfga/v1/openfga.proto";
 import "openfga/v1/authzmodel.proto";
+import "openfga/v1/openfga.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 import "validate/validate.proto";
 
@@ -503,8 +503,7 @@ service OpenFGAService {
         "Relationship Tuples"
       ]
       operation_id: "ReadTuples"
-      description:
-        "The GET read-tuples API will return a paginated list of tuples that exist in a given store. The response will include a continuation token if there are more tuples to be returned."
+      description: "The GET read-tuples API will return a paginated list of tuples that exist in a given store. The response will include a continuation token if there are more tuples to be returned."
       responses: {
         key: "200"
         value: {
@@ -872,9 +871,7 @@ message WriteAuthorizationModelRequest {
     }
   ];
 
-  TypeDefinitions type_definitions = 2 [
-    (validate.rules).message.required = true
-  ];
+  TypeDefinitions type_definitions = 2 [(validate.rules).message.required = true];
 }
 
 message WriteAuthorizationModelResponse {
@@ -921,9 +918,7 @@ message ReadAuthorizationModelsRequest {
 }
 
 message ReadAuthorizationModelsResponse {
-  repeated AuthorizationModel authorization_models = 1 [
-    json_name = "authorization_models"
-  ];
+  repeated AuthorizationModel authorization_models = 1 [json_name = "authorization_models"];
 
   string continuation_token = 2 [
     json_name = "continuation_token",
@@ -1111,11 +1106,9 @@ message CreateStoreRequest {
 }
 
 message CreateStoreResponse {
-  string id = 1 [
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""
-    }
-  ];
+  string id = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""
+  }];
   string name = 2;
   google.protobuf.Timestamp created_at = 3 [json_name = "created_at"];
   google.protobuf.Timestamp updated_at = 4 [json_name = "updated_at"];
@@ -1148,11 +1141,9 @@ message GetStoreRequest {
 }
 
 message GetStoreResponse {
-  string id = 1 [
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""
-    }
-  ];
+  string id = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""
+  }];
   string name = 2;
   google.protobuf.Timestamp created_at = 3 [json_name = "created_at"];
   google.protobuf.Timestamp updated_at = 4 [json_name = "updated_at"];
