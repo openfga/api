@@ -7,6 +7,8 @@ managed:
     default: github.com/openfga/api/proto
     except:
       - buf.build/googleapis/googleapis
+      - buf.build/envoyproxy/protoc-gen-validate
+      - buf.build/grpc-ecosystem/grpc-gateway
 plugins:
   - remote: buf.build/protocolbuffers/plugins/go:v1.28.0-1
     out: proto/
