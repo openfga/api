@@ -18,9 +18,7 @@ message AuthorizationModel {
       pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"
     }
   ];
-  repeated TypeDefinition type_definitions = 2 [
-    json_name = "type_definitions"
-  ];
+  repeated TypeDefinition type_definitions = 2 [json_name = "type_definitions"];
 }
 
 message TypeDefinitions {
