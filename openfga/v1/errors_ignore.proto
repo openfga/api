@@ -4,6 +4,19 @@ package openfga.v1;
 
 import "protoc-gen-openapiv2/options/annotations.proto";
 
+enum AuthErrorCode {
+  no_auth_error = 0;
+
+  auth_failed_invalid_subject = 1001;
+  auth_failed_invalid_audience = 1002;
+  auth_failed_invalid_issuer = 1003;
+  invalid_claims = 1004;
+  auth_failed_invalid_bearer_token = 1005;
+  bearer_token_missing = 1010;
+  
+  unauthenticated = 1500;
+}
+
 enum ErrorCode {
   no_error = 0;
 
