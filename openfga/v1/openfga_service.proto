@@ -671,6 +671,106 @@ service OpenFGAService {
       description: "Returns a paginated list of OpenFGA stores."
     };
   }
+
+  // StreamedListObjects is a streaming variation of the ListObjects API (see ListObjects for more info).
+  rpc StreamedListObjects(StreamedListObjectsRequest) returns (stream StreamedListObjectsResponse) {
+    option (google.api.http) = {
+      post: "/stores/{store_id}/streamedListObjects",
+      body: "*"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: [
+        "Relationship Queries"
+      ]
+      operation_id: "StreamedListObjects"
+    };
+  }
+
+  // ListObjects lists all of the object ids for objects of the provided type that the given user
+  // has a specific relation with.
+  rpc ListObjects(ListObjectsRequest) returns (ListObjectsResponse) {
+    option (google.api.http) = {
+      post: "/stores/{store_id}/listObjects",
+      body: "*"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: [
+        "Relationship Queries"
+      ]
+      operation_id: "ListObjects"
+    };
+  }
+}
+
+message ListObjectsRequest {
+  string store_id = 1 [
+    json_name = "store_id",
+    (validate.rules).string = {
+      pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"
+    },
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""
+    }
+  ];
+
+  string authorization_model_id = 2 [
+    json_name = "authorization_model_id",
+    (validate.rules).string = {
+      pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$",
+      ignore_empty: true
+    },
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"01G5JAVJ41T49E9TT3SKVS7X1J\""
+    }
+  ];
+
+  string type = 3 [json_name = "type"];
+
+  string relation = 4;
+  string user = 5;
+
+  openfga.v1.ContextualTupleKeys contextual_tuples = 6 [json_name = "contextual_tuples"];
+}
+
+message ListObjectsResponse {
+  repeated string object_ids = 1 [json_name = "object_ids"];
+}
+
+message StreamedListObjectsRequest {
+  string store_id = 1 [
+    json_name = "store_id",
+    (validate.rules).string = {
+      pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"
+    },
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""
+    }
+  ];
+
+  string authorization_model_id = 2 [
+    json_name = "authorization_model_id",
+    (validate.rules).string = {
+      pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$",
+      ignore_empty: true
+    },
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"01G5JAVJ41T49E9TT3SKVS7X1J\""
+    }
+  ];
+
+  string type = 3 [json_name = "type"];
+
+  string relation = 4;
+  string user = 5;
+
+  openfga.v1.ContextualTupleKeys contextual_tuples = 6 [json_name = "contextual_tuples"];
+}
+
+// The response for a StreamedListObjects RPC.
+message StreamedListObjectsResponse {
+  string object_id = 1 [json_name = "object_id"];
 }
 
 // Note: store_id is a ULID using pattern ^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$
