@@ -691,7 +691,7 @@ service OpenFGAService {
   // has a specific relation with.
   rpc ListObjects(ListObjectsRequest) returns (ListObjectsResponse) {
     option (google.api.http) = {
-      post: "/stores/{store_id}/listObjects",
+      post: "/stores/{store_id}/list-objects",
       body: "*"
     };
 
