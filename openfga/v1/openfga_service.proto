@@ -675,7 +675,7 @@ service OpenFGAService {
   // StreamedListObjects is a streaming variation of the ListObjects API (see ListObjects for more info).
   rpc StreamedListObjects(StreamedListObjectsRequest) returns (stream StreamedListObjectsResponse) {
     option (google.api.http) = {
-      post: "/stores/{store_id}/streamedListObjects",
+      post: "/stores/{store_id}/streamed-list-objects",
       body: "*"
     };
 
