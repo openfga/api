@@ -671,7 +671,7 @@
         ]
       }
     },
-    "/stores/{store_id}/listObjects": {
+    "/stores/{store_id}/list-objects": {
       "post": {
         "summary": "ListObjects lists all of the object ids for objects of the provided type that the given user\nhas a specific relation with.",
         "operationId": "ListObjects",
@@ -874,7 +874,7 @@
         ]
       }
     },
-    "/stores/{store_id}/streamedListObjects": {
+    "/stores/{store_id}/streamed-list-objects": {
       "post": {
         "summary": "StreamedListObjects is a streaming variation of the ListObjects API (see ListObjects for more info).",
         "operationId": "StreamedListObjects",
