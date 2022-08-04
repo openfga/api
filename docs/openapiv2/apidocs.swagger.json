@@ -671,6 +671,75 @@
         ]
       }
     },
+    "/stores/{store_id}/list-objects": {
+      "post": {
+        "summary": "ListObjects lists all of the object ids for objects of the provided type that the given user\nhas a specific relation with.",
+        "operationId": "ListObjects",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ListObjectsResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "store_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "authorization_model_id": {
+                  "type": "string",
+                  "example": "01G5JAVJ41T49E9TT3SKVS7X1J"
+                },
+                "type": {
+                  "type": "string"
+                },
+                "relation": {
+                  "type": "string"
+                },
+                "user": {
+                  "type": "string"
+                },
+                "contextual_tuples": {
+                  "$ref": "#/definitions/ContextualTupleKeys"
+                }
+              }
+            }
+          }
+        ],
+        "tags": [
+          "Relationship Queries"
+        ]
+      }
+    },
     "/stores/{store_id}/read": {
       "post": {
         "summary": "Get tuples from the store that matches a query, without following userset rewrite rules",
@@ -802,6 +871,84 @@
         ],
         "tags": [
           "Relationship Tuples"
+        ]
+      }
+    },
+    "/stores/{store_id}/streamed-list-objects": {
+      "post": {
+        "summary": "StreamedListObjects is a streaming variation of the ListObjects API (see ListObjects for more info).",
+        "operationId": "StreamedListObjects",
+        "responses": {
+          "200": {
+            "description": "A successful response.(streaming responses)",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "result": {
+                  "$ref": "#/definitions/StreamedListObjectsResponse"
+                },
+                "error": {
+                  "$ref": "#/definitions/Status"
+                }
+              },
+              "title": "Stream result of StreamedListObjectsResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "store_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "authorization_model_id": {
+                  "type": "string",
+                  "example": "01G5JAVJ41T49E9TT3SKVS7X1J"
+                },
+                "type": {
+                  "type": "string"
+                },
+                "relation": {
+                  "type": "string"
+                },
+                "user": {
+                  "type": "string"
+                },
+                "contextual_tuples": {
+                  "$ref": "#/definitions/ContextualTupleKeys"
+                }
+              }
+            }
+          }
+        ],
+        "tags": [
+          "Relationship Queries"
         ]
       }
     },
@@ -1143,6 +1290,17 @@
       },
       "description": "A leaf node contains either\n- a set of users (which may be individual users, or usersets\n  referencing other relations)\n- a computed node, which is the result of a computed userset\n  value in the authorization model\n- a tupleToUserset nodes, containing the result of expanding\n  a tupleToUserset value in a authorization model."
     },
+    "ListObjectsResponse": {
+      "type": "object",
+      "properties": {
+        "object_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ListStoresResponse": {
       "type": "object",
       "properties": {
@@ -1348,6 +1506,15 @@
           "format": "date-time"
         }
       }
+    },
+    "StreamedListObjectsResponse": {
+      "type": "object",
+      "properties": {
+        "object_id": {
+          "type": "string"
+        }
+      },
+      "description": "The response for a StreamedListObjects RPC."
     },
     "Tuple": {
       "type": "object",

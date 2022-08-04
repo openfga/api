@@ -13,7 +13,7 @@ enum AuthErrorCode {
   invalid_claims = 1004;
   auth_failed_invalid_bearer_token = 1005;
   bearer_token_missing = 1010;
-  
+
   unauthenticated = 1500;
 }
 
