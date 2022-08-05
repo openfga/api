@@ -921,12 +921,7 @@ message ExpandRequest {
     }
   ];
 
-  openfga.v1.TupleKey tuple_key = 2 [
-    json_name = "tuple_key",
-    (validate.rules).message.required = true
-  ];
-
-  string authorization_model_id = 3 [
+  string authorization_model_id = 2 [
     json_name = "authorization_model_id",
     (validate.rules).string = {
       pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$",
@@ -934,6 +929,30 @@ message ExpandRequest {
     },
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       example: "\"01G5JAVJ41T49E9TT3SKVS7X1J\""
+    }
+  ];
+
+  string object = 3 [
+    (google.api.field_behavior) = REQUIRED,
+    (validate.rules).string = {
+      pattern: "^[^\\s]{2,256}$",
+      ignore_empty: true
+    },
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      max_length: 256,
+      example: "\"document:2021-budget\""
+    }
+  ];
+
+  string relation = 4 [
+    (google.api.field_behavior) = REQUIRED,
+    (validate.rules).string = {
+      pattern: "^[^:#@\\s]{1,50}$",
+      ignore_empty: true
+    },
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      max_length: 50,
+      example: "\"reader\""
     }
   ];
 }
