@@ -1,0 +1,190 @@
+syntax = "proto3";
+
+package openfga.v1beta1;
+
+service OpenFGAService {
+  rpc Read(ReadRequest) returns (ReadResponse) {
+    option (google.api.http) = {
+      post: "/stores/{store_id}/read"
+      body: "*"
+    };
+  }
+
+  rpc StreamedRead(ReadRequest) returns (stream StreamedReadResponse) {
+    option (google.api.http) = {
+      post: "/stores/{store_id}/read:streamed"
+      body: "*"
+    };
+  }
+
+  rpc Write(WriteRequest) returns (WriteResponse) {
+    option (google.api.http) = {
+      post: "/stores/{store_id}/write"
+      body: "*"
+    };
+  }
+
+  rpc Check(CheckRequest) returns (CheckResponse) {
+    option (google.api.http) = {
+      post: "/stores/{store_id}/check"
+      body: "*"
+    };
+  }
+
+  rpc Expand(ExpandRequest) returns (ExpandResponse) {}
+
+  rpc ReadChanges(ReadChangesRequest) returns (ReadChangesResponse) {
+    option (google.api.http) = {
+      post: "/stores/{store_id}/changes"
+      body: "*"
+    };
+  }
+
+  rpc StreamedReadChanges(StreamingReadChangesRequest) returns (stream StreamedReadChanges) {
+    option (google.api.http) = {
+      post: "/stores/{store_id}/changes:streamed"
+      body: "*"
+    };
+  }
+
+  rpc CreateStore(CreateStoreRequest) returns (CreateStoreResponse) {}
+
+  rpc DeleteStore(DeleteStoreRequest) returns (DeleteStoreResponse) {}
+
+  rpc GetStore(GetStoreRequest) returns (GetStoreResponse) {}
+
+  rpc ListStores(ListStoresRequest) returns (ListStoresResponse) {}
+}
+
+message ReadRequest {
+  string store_id = 1;
+
+  RelationshipTuplesFilter filter = 2;
+
+  int32 page_size = 3;
+  string continuation_token = 4;
+}
+
+message ReadResponse {
+  repeated RelationshipTuple relationship_tuples = 1;
+  string continuation_token = 2;
+}
+
+message WriteRequest {
+  string store_id = 1;
+
+  repeated RelationshipTuple writes = 2;
+  repeated RelationshipTuple deletes = 3;
+}
+
+message WriteResponse {}
+
+message CheckRequest {
+  string store_id = 1;
+  string model_id = 2;
+
+  Object object = 3;
+  string relation = 4;
+  User user = 5;
+
+  repeated RelationshipTuple contextual_tuples = 6;
+
+  CheckOptions additional_opts = 7;
+}
+
+message CheckResponse {
+  bool allowed = 1;
+
+  string resolution_path = 2;
+}
+
+message ReadChangesRequest {
+  string store_id = 1;
+
+  string object_type = 2;
+
+  int32 page_size = 3;
+  string continuation_token = 4;
+}
+
+message ReadChangesResponse {
+  repeated RelationshipTupleChange changes = 1;
+}
+
+message CheckOptions {
+  bool trace = 1;
+}
+
+// Object represents an object in the system.
+//
+// See https://openfga.dev/docs/concepts#what-is-an-object
+message Object {
+  string type = 1;
+  string id = 2;
+}
+
+// RelationshipTuplesFilter
+message RelationshipTuplesFilter {
+  string object_type = 1;
+  string object_id = 2;
+  User user = 3;
+}
+
+// RelationshipTupleChange represents a change to a relationship tuple
+// in the system. Changes are introduced by calls to the Write API.
+message RelationshipTupleChange {
+  enum Operation {
+    OPERATION_UNSPECIFIED = 0;
+    OPERATION_WRITE = 1;
+    OPERATION_DELETE = 2;
+  }
+
+  Object object = 1;
+  string relation = 2;
+  User user = 3;
+
+  Operation operation = 4;
+  google.protobuf.Timestamp timestamp = 5;
+}
+
+// User represents either a concrete user id or a userset which expands to zero or
+// more users.
+//
+// See https://openfga.dev/docs/concepts#what-is-a-user
+message User {
+  oneof user_ref {
+    // A concrete user id.
+    string id = 1;
+
+    // A Userset that expands to zero or more users.
+    Userset userset = 2;
+  }
+}
+
+// Userset represents a set of users that have a particular relation to
+// an object.
+message Userset {
+  Object object = 1;
+  string relation = 2;
+}
+
+// RelationshipTuple represents a single OpenFGA relationship tuple.
+//
+// See https://openfga.dev/docs/concepts#what-is-a-relationship-tuple
+message RelationshipTuple {
+  Object object = 1;
+  string relation = 2;
+  User user = 3;
+}
+
+// Store represents an OpenFGA store, which is an entity used to organize relationship
+// tuples needed to answer authorization queries.
+//
+// See https://openfga.dev/docs/concepts#what-is-a-store
+message Store {
+  string id = 1;
+  string name = 2;
+  google.protobuf.Timestamp created_at = 3 [json_name = "created_at"];
+  google.protobuf.Timestamp updated_at = 4 [json_name = "updated_at"];
+  google.protobuf.Timestamp deleted_at = 5 [json_name = "deleted_at"];
+}
