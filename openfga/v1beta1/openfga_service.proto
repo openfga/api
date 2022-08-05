@@ -98,6 +98,49 @@ message CheckResponse {
   string resolution_path = 2;
 }
 
+message ExpandRequest {
+  string store_id = 1;
+  string model_id = 2;
+
+  Object object = 3;
+  string relation = 4;
+}
+
+message ExpandResponse {
+  UsersetTree tree_root = 1;
+}
+
+message UsersetTree {
+
+  // An enumeration defining types of nodes within a UsersetTree.
+  enum NodeType {
+
+    NODE_TYPE_UNSPECIFIED = 0;
+
+    // A node type which expands to a union of all children.
+    NODE_TYPE_UNION = 1;
+
+    // A node type which expands to an intersection of the children.
+    NODE_TYPE_INTERSECTION = 3;
+
+    // A node type which is a leaf and contains no children.
+    //
+    // Its Subject is a subject id string unless the maximum call depth was reached.
+    NODE_TYPE_LEAF = 4;
+  }
+
+  // The type of the node.
+  NodeType node_type = 1;
+
+  // The user this node represents.
+  User user = 2;
+
+  // The children of this node.
+  //
+  // This is unset if `node_type` is `NODE_TYPE_LEAF`.
+  repeated UserTree children = 3;
+}
+
 message ReadChangesRequest {
   string store_id = 1;
 
