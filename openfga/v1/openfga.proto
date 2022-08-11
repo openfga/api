@@ -7,6 +7,16 @@ import "google/protobuf/timestamp.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 import "validate/validate.proto";
 
+// Object represents an OpenFGA Object.
+//
+// An Object is composed of a type and identifier (e.g. 'document:1')
+//
+// See https://openfga.dev/docs/concepts#what-is-an-object
+message Object {
+  string type = 1;
+  string id = 2;
+}
+
 message TupleKey {
   string object = 1 [
     (validate.rules).string = {
