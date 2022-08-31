@@ -1108,6 +1108,14 @@
         }
       }
     },
+    "ComputedUserset": {
+      "type": "object",
+      "properties": {
+        "relation": {
+          "type": "string"
+        }
+      }
+    },
     "ContextualTupleKeys": {
       "type": "object",
       "properties": {
@@ -1357,17 +1365,6 @@
       ],
       "default": "no_not_found_error"
     },
-    "ObjectRelation": {
-      "type": "object",
-      "properties": {
-        "object": {
-          "type": "string"
-        },
-        "relation": {
-          "type": "string"
-        }
-      }
-    },
     "PathUnknownErrorMessageResponse": {
       "type": "object",
       "example": {
@@ -1591,6 +1588,14 @@
       "default": "TUPLE_OPERATION_WRITE",
       "title": "buf:lint:ignore ENUM_ZERO_VALUE_SUFFIX"
     },
+    "Tupleset": {
+      "type": "object",
+      "properties": {
+        "relation": {
+          "type": "string"
+        }
+      }
+    },
     "TypeDefinition": {
       "type": "object",
       "example": {
@@ -1691,7 +1696,7 @@
           "$ref": "#/definitions/DirectUserset"
         },
         "computedUserset": {
-          "$ref": "#/definitions/ObjectRelation"
+          "$ref": "#/definitions/ComputedUserset"
         },
         "tupleToUserset": {
           "$ref": "#/definitions/v1.TupleToUserset"
@@ -1797,11 +1802,11 @@
       "type": "object",
       "properties": {
         "tupleset": {
-          "$ref": "#/definitions/ObjectRelation",
+          "$ref": "#/definitions/Tupleset",
           "title": "The target object/relation"
         },
         "computedUserset": {
-          "$ref": "#/definitions/ObjectRelation"
+          "$ref": "#/definitions/ComputedUserset"
         }
       }
     }

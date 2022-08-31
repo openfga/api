@@ -61,6 +61,35 @@ message TypeDefinition {
   ];
 }
 
+message Userset {
+  oneof userset {
+    DirectUserset this = 1;
+    ComputedUserset computed_userset = 2;
+    TupleToUserset tuple_to_userset = 3;
+    Usersets union = 4;
+    Usersets intersection = 5;
+    Difference difference = 6;
+  }
+}
+
+// A DirectUserset is a sentinel message for referencing
+// the direct members specified by an object/relation mapping.
+message DirectUserset {}
+
+message ComputedUserset {
+  string relation = 1 [(validate.rules).string = { max_bytes: 50 }];
+}
+
+message TupleToUserset {
+  // The target object/relation
+  Tupleset tupleset = 1;
+  ComputedUserset computed_userset = 2;
+}
+
+message Tupleset {
+  string relation = 1 [(validate.rules).string = { max_bytes: 50 }];
+}
+
 message Usersets {
   repeated Userset child = 1;
 }
@@ -75,34 +104,4 @@ message Difference {
     (validate.rules).message.required = true,
     (google.api.field_behavior) = REQUIRED
   ];
-}
-
-message Userset {
-  oneof userset {
-    DirectUserset this = 1;
-    ObjectRelation computed_userset = 2;
-    TupleToUserset tuple_to_userset = 3;
-    Usersets union = 4;
-    Usersets intersection = 5;
-    Difference difference = 6;
-  }
-}
-
-// A DirectUserset is a sentinel message for referencing
-// the direct members specified by an object/relation mapping.
-message DirectUserset {}
-
-message ObjectRelation {
-  string object = 1 [(validate.rules).string = {
-    max_bytes: 256
-  }];
-  string relation = 2 [(validate.rules).string = {
-    max_bytes: 50
-  }];
-}
-
-message TupleToUserset {
-  // The target object/relation
-  ObjectRelation tupleset = 1;
-  ObjectRelation computed_userset = 2;
 }
