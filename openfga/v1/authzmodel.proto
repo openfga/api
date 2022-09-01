@@ -62,7 +62,7 @@ message TypeDefinition {
 }
 
 message UsersetRewrite {
-  oneof rewrite_oneof {
+  oneof userset_rewrite {
     This this = 1;
     ComputedUserset computed_userset = 2;
     TupleToUserset tuple_to_userset = 3;
