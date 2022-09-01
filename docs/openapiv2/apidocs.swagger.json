@@ -1044,49 +1044,6 @@
         "expectation"
       ]
     },
-    "AuthorizationModel": {
-      "type": "object",
-      "example": {
-        "id": "01G5JAVJ41T49E9TT3SKVS7X1J",
-        "type_definitions": [
-          {
-            "type": "document",
-            "relations": {
-              "reader": {
-                "union": {
-                  "child": [
-                    {
-                      "this": {}
-                    },
-                    {
-                      "computedUserset": {
-                        "object": "",
-                        "relation": "writer"
-                      }
-                    }
-                  ]
-                }
-              },
-              "writer": {
-                "this": {}
-              }
-            }
-          }
-        ]
-      },
-      "properties": {
-        "id": {
-          "type": "string",
-          "example": "01G5JAVJ41T49E9TT3SKVS7X1J"
-        },
-        "type_definitions": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/TypeDefinition"
-          }
-        }
-      }
-    },
     "CheckResponse": {
       "type": "object",
       "properties": {
@@ -1357,17 +1314,6 @@
       ],
       "default": "no_not_found_error"
     },
-    "ObjectRelation": {
-      "type": "object",
-      "properties": {
-        "object": {
-          "type": "string"
-        },
-        "relation": {
-          "type": "string"
-        }
-      }
-    },
     "PathUnknownErrorMessageResponse": {
       "type": "object",
       "example": {
@@ -1402,7 +1348,7 @@
       "type": "object",
       "properties": {
         "authorization_model": {
-          "$ref": "#/definitions/AuthorizationModel"
+          "$ref": "#/definitions/v1.AuthorizationModel"
         }
       }
     },
@@ -1412,7 +1358,7 @@
         "authorization_models": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/AuthorizationModel"
+            "$ref": "#/definitions/v1.AuthorizationModel"
           }
         },
         "continuation_token": {
@@ -1591,7 +1537,182 @@
       "default": "TUPLE_OPERATION_WRITE",
       "title": "buf:lint:ignore ENUM_ZERO_VALUE_SUFFIX"
     },
-    "TypeDefinition": {
+    "TypeDefinitions": {
+      "type": "object",
+      "properties": {
+        "type_definitions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v1.TypeDefinition"
+          },
+          "minimum": 1
+        }
+      }
+    },
+    "Users": {
+      "type": "object",
+      "properties": {
+        "users": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "UsersetTree": {
+      "type": "object",
+      "properties": {
+        "root": {
+          "$ref": "#/definitions/Node"
+        }
+      },
+      "description": "A UsersetTree contains the result of an Expansion."
+    },
+    "UsersetTree.Difference": {
+      "type": "object",
+      "properties": {
+        "base": {
+          "$ref": "#/definitions/Node"
+        },
+        "subtract": {
+          "$ref": "#/definitions/Node"
+        }
+      }
+    },
+    "UsersetTree.TupleToUserset": {
+      "type": "object",
+      "properties": {
+        "tupleset": {
+          "type": "string"
+        },
+        "computed": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Computed"
+          }
+        }
+      }
+    },
+    "Usersets": {
+      "type": "object",
+      "properties": {
+        "child": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v1.Userset"
+          }
+        }
+      }
+    },
+    "ValidationErrorMessageResponse": {
+      "type": "object",
+      "example": {
+        "code": "validation_error",
+        "message": "Generic validation error"
+      },
+      "properties": {
+        "code": {
+          "$ref": "#/definitions/ErrorCode"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    },
+    "WriteAssertionsResponse": {
+      "type": "object"
+    },
+    "WriteAuthorizationModelResponse": {
+      "type": "object",
+      "properties": {
+        "authorization_model_id": {
+          "type": "string",
+          "example": "01G5JAVJ41T49E9TT3SKVS7X1J"
+        }
+      }
+    },
+    "WriteResponse": {
+      "type": "object"
+    },
+    "v1.AuthorizationModel": {
+      "type": "object",
+      "example": {
+        "id": "01G5JAVJ41T49E9TT3SKVS7X1J",
+        "type_definitions": [
+          {
+            "type": "document",
+            "relations": {
+              "reader": {
+                "union": {
+                  "child": [
+                    {
+                      "this": {}
+                    },
+                    {
+                      "computedUserset": {
+                        "object": "",
+                        "relation": "writer"
+                      }
+                    }
+                  ]
+                }
+              },
+              "writer": {
+                "this": {}
+              }
+            }
+          }
+        ]
+      },
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "01G5JAVJ41T49E9TT3SKVS7X1J"
+        },
+        "type_definitions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v1.TypeDefinition"
+          }
+        }
+      }
+    },
+    "v1.Difference": {
+      "type": "object",
+      "properties": {
+        "base": {
+          "$ref": "#/definitions/v1.Userset"
+        },
+        "subtract": {
+          "$ref": "#/definitions/v1.Userset"
+        }
+      }
+    },
+    "v1.ObjectRelation": {
+      "type": "object",
+      "properties": {
+        "object": {
+          "type": "string"
+        },
+        "relation": {
+          "type": "string"
+        }
+      }
+    },
+    "v1.TupleToUserset": {
+      "type": "object",
+      "properties": {
+        "tupleset": {
+          "$ref": "#/definitions/v1.ObjectRelation",
+          "title": "The target object/relation"
+        },
+        "computedUserset": {
+          "$ref": "#/definitions/v1.ObjectRelation"
+        }
+      }
+    },
+    "v1.TypeDefinition": {
       "type": "object",
       "example": {
         "type": "document",
@@ -1649,7 +1770,7 @@
             }
           },
           "additionalProperties": {
-            "$ref": "#/definitions/Userset"
+            "$ref": "#/definitions/v1.Userset"
           },
           "required": [
             "relations"
@@ -1661,37 +1782,14 @@
         "relations"
       ]
     },
-    "TypeDefinitions": {
-      "type": "object",
-      "properties": {
-        "type_definitions": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/TypeDefinition"
-          },
-          "minimum": 1
-        }
-      }
-    },
-    "Users": {
-      "type": "object",
-      "properties": {
-        "users": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "Userset": {
+    "v1.Userset": {
       "type": "object",
       "properties": {
         "this": {
           "$ref": "#/definitions/DirectUserset"
         },
         "computedUserset": {
-          "$ref": "#/definitions/ObjectRelation"
+          "$ref": "#/definitions/v1.ObjectRelation"
         },
         "tupleToUserset": {
           "$ref": "#/definitions/v1.TupleToUserset"
@@ -1704,104 +1802,6 @@
         },
         "difference": {
           "$ref": "#/definitions/v1.Difference"
-        }
-      }
-    },
-    "UsersetTree": {
-      "type": "object",
-      "properties": {
-        "root": {
-          "$ref": "#/definitions/Node"
-        }
-      },
-      "description": "A UsersetTree contains the result of an Expansion."
-    },
-    "UsersetTree.Difference": {
-      "type": "object",
-      "properties": {
-        "base": {
-          "$ref": "#/definitions/Node"
-        },
-        "subtract": {
-          "$ref": "#/definitions/Node"
-        }
-      }
-    },
-    "UsersetTree.TupleToUserset": {
-      "type": "object",
-      "properties": {
-        "tupleset": {
-          "type": "string"
-        },
-        "computed": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/Computed"
-          }
-        }
-      }
-    },
-    "Usersets": {
-      "type": "object",
-      "properties": {
-        "child": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/Userset"
-          }
-        }
-      }
-    },
-    "ValidationErrorMessageResponse": {
-      "type": "object",
-      "example": {
-        "code": "validation_error",
-        "message": "Generic validation error"
-      },
-      "properties": {
-        "code": {
-          "$ref": "#/definitions/ErrorCode"
-        },
-        "message": {
-          "type": "string"
-        }
-      }
-    },
-    "WriteAssertionsResponse": {
-      "type": "object"
-    },
-    "WriteAuthorizationModelResponse": {
-      "type": "object",
-      "properties": {
-        "authorization_model_id": {
-          "type": "string",
-          "example": "01G5JAVJ41T49E9TT3SKVS7X1J"
-        }
-      }
-    },
-    "WriteResponse": {
-      "type": "object"
-    },
-    "v1.Difference": {
-      "type": "object",
-      "properties": {
-        "base": {
-          "$ref": "#/definitions/Userset"
-        },
-        "subtract": {
-          "$ref": "#/definitions/Userset"
-        }
-      }
-    },
-    "v1.TupleToUserset": {
-      "type": "object",
-      "properties": {
-        "tupleset": {
-          "$ref": "#/definitions/ObjectRelation",
-          "title": "The target object/relation"
-        },
-        "computedUserset": {
-          "$ref": "#/definitions/ObjectRelation"
         }
       }
     }
