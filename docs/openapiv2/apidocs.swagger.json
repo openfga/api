@@ -1700,6 +1700,18 @@
         }
       }
     },
+    "v1.RelationReference": {
+      "type": "object",
+      "properties": {
+        "objectType": {
+          "type": "string"
+        },
+        "relation": {
+          "type": "string"
+        }
+      },
+      "description": "RelationReference represents a relation of a particular object type (e.g. 'document#viewer')."
+    },
     "v1.TupleToUserset": {
       "type": "object",
       "properties": {
@@ -1775,12 +1787,30 @@
           "required": [
             "relations"
           ]
+        },
+        "typeInfo": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/v1.TypeInformation"
+          },
+          "description": "A map whose keys are the name of the relation and whose value is the TypeInformation for that\nrelation."
         }
       },
       "required": [
         "type",
         "relations"
       ]
+    },
+    "v1.TypeInformation": {
+      "type": "object",
+      "properties": {
+        "assignableRelations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v1.RelationReference"
+          }
+        }
+      }
     },
     "v1.Userset": {
       "type": "object",
