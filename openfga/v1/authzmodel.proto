@@ -47,7 +47,7 @@ message TypeDefinition {
       example: "\"document\""
     }
   ];
-  map<string, Userset> relations = 2 [
+  map<string, UsersetRewrite> relations = 2 [
     (validate.rules).map = {
       min_pairs: 1
     },
@@ -61,22 +61,24 @@ message TypeDefinition {
   ];
 }
 
-message Userset {
-  oneof userset {
-    DirectUserset this = 1;
+message UsersetRewrite {
+  oneof ref {
+    This this = 1;
     ComputedUserset computed_userset = 2;
     TupleToUserset tuple_to_userset = 3;
-    Usersets union = 4;
-    Usersets intersection = 5;
+    Union union = 4;
+    Intersection intersection = 5;
     Difference difference = 6;
   }
 }
 
-// A DirectUserset is a sentinel message for referencing
-// the direct members specified by an object/relation mapping.
-message DirectUserset {}
+message This {}
 
 message ComputedUserset {
+  string relation = 1 [(validate.rules).string = { max_bytes: 50 }];
+}
+
+message Tupleset {
   string relation = 1 [(validate.rules).string = { max_bytes: 50 }];
 }
 
@@ -86,21 +88,21 @@ message TupleToUserset {
   ComputedUserset computed_userset = 2;
 }
 
-message Tupleset {
-  string relation = 1 [(validate.rules).string = { max_bytes: 50 }];
+message Union {
+  repeated UsersetRewrite children = 1;
 }
 
-message Usersets {
-  repeated Userset child = 1;
+message Intersection {
+  repeated UsersetRewrite children = 1;
 }
 
 message Difference {
-  Userset base = 1 [
+  UsersetRewrite base = 1 [
     (validate.rules).message.required = true,
     (google.api.field_behavior) = REQUIRED
   ];
 
-  Userset subtract = 2 [
+  UsersetRewrite subtract = 2 [
     (validate.rules).message.required = true,
     (google.api.field_behavior) = REQUIRED
   ];
