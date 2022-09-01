@@ -38,6 +38,7 @@ message TypeDefinition {
   option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
     example: "{\"type\":\"document\",\"relations\":{\"reader\":{\"union\":{\"child\":[{\"this\":{}},{\"computedUserset\":{\"object\":\"\",\"relation\":\"writer\"}}]}},\"writer\":{\"this\":{}}}}"
   };
+
   string type = 1 [
     (validate.rules).string = {
       pattern: "^[^:#@\\s]{1,254}$"
@@ -47,6 +48,7 @@ message TypeDefinition {
       example: "\"document\""
     }
   ];
+
   map<string, Userset> relations = 2 [
     (validate.rules).map = {
       min_pairs: 1
@@ -59,6 +61,24 @@ message TypeDefinition {
       example: "{\"relations\":{\"reader\":{\"union\":{\"child\":[{\"this\":{}},{\"computedUserset\":{\"object\":\"\",\"relation\":\"writer\"}}]}},\"writer\":{\"this\":{}}}}"
     }
   ];
+
+  map<string, TypeInformation> type_info = 3;
+}
+
+message TypeInformation {
+  repeated RelationReference assignable_relations = 1;
+}
+
+// RelationReference represents a relation of a particular object type (e.g. 'document#viewer').
+message RelationReference {
+  string object_type = 1 [(validate.rules).string = {
+    pattern: "^[^:#@\\s]{1,254}$"
+  }];
+
+  string relation = 2 [(validate.rules).string = {
+    pattern: "^[^:#@\\s]{1,50}$",
+    ignore_empty: true
+  }];
 }
 
 message Usersets {

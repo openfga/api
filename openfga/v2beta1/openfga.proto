@@ -32,7 +32,6 @@ message ObjectRelation {
 }
 
 message AuthorizationModel {
-
   string id = 1 [
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       example: "\"01G5JAVJ41T49E9TT3SKVS7X1J\""
@@ -51,7 +50,6 @@ message AuthorizationModel {
 }
 
 message TypeDefinition {
-  
   string type = 1 [
     (validate.rules).string = {
       pattern: "^[^:#@\\s]{1,254}$"
@@ -74,7 +72,6 @@ message TypeDefinition {
 }
 
 message Relation {
-
   string name = 1 [
     (validate.rules).string = {
       pattern: "^[^:#@\\s]{1,50}$"
@@ -83,7 +80,7 @@ message Relation {
   ];
 
   UsersetRewrite rewrite = 2 [
-    (validate.rules).message.required = true, 
+    (validate.rules).message.required = true,
     (google.api.field_behavior) = REQUIRED
   ];
 
@@ -100,19 +97,14 @@ message TypeInformation {
 // RelationReference represents a relation of a particular object type (e.g. 'document#viewer').
 // If the relation field is omitted we assume the ellipsis relation (e.g. 'user#...')
 message RelationReference {
+  string object_type = 1 [(validate.rules).string = {
+    pattern: "^[^:#@\\s]{1,254}$"
+  }];
 
-  string object_type = 1 [
-    (validate.rules).string = {
-      pattern: "^[^:#@\\s]{1,254}$"
-    }
-  ];
-    
-  string relation = 2 [
-    (validate.rules).string = {
-      pattern: "^[^:#@\\s]{1,50}$",
-      ignore_empty: true
-    }
-  ];
+  string relation = 2 [(validate.rules).string = {
+    pattern: "^[^:#@\\s]{1,50}$",
+    ignore_empty: true
+  }];
 }
 
 message UsersetRewrite {
@@ -132,14 +124,24 @@ message SetOperation {
   }
 }
 
+// Union defines a UsersetRewrite that represents the union of one or more
+// usersets.
 message Union {
-  repeated UsersetRewrite children = 1;
+  repeated UsersetRewrite children = 1 [(validate.rules).repeated = {
+    min_items: 1
+  }];
 }
 
+// Intersection defines a UsersetRewrite that represents the set intersection
+// between one or more usersets.
 message Intersection {
-  repeated UsersetRewrite children = 1;
+  repeated UsersetRewrite children = 1 [(validate.rules).repeated = {
+    min_items: 1
+  }];
 }
 
+// Exclusion defines a UsersetRewrite that represents the set difference between
+// the base set and the excluded (subtract) set.
 message Exclusion {
   UsersetRewrite base = 1;
   UsersetRewrite subtract = 2;
