@@ -61,12 +61,12 @@ message TypeDefinition {
     }
   ];
 
-  // A map whose keys are the name of the relation and whose value is the TypeInformation for that
+  // A map whose keys are the name of the relation and whose value is the Metadata for that
   // relation.
-  map<string, TypeInformation> type_info = 3 [json_name = "type_info"];
+  map<string, Metadata> metadata = 3;
 }
 
-message TypeInformation {
+message Metadata {
   repeated RelationReference assignable_relations = 1 [json_name = "assignable_relations"];
 }
 
