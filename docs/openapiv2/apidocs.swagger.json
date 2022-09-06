@@ -1273,6 +1273,17 @@
         }
       }
     },
+    "Metadata": {
+      "type": "object",
+      "properties": {
+        "assignable_relations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v1.RelationReference"
+          }
+        }
+      }
+    },
     "Node": {
       "type": "object",
       "properties": {
@@ -1549,17 +1560,6 @@
         }
       }
     },
-    "TypeInformation": {
-      "type": "object",
-      "properties": {
-        "assignable_relations": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/v1.RelationReference"
-          }
-        }
-      }
-    },
     "Users": {
       "type": "object",
       "properties": {
@@ -1799,12 +1799,12 @@
             "relations"
           ]
         },
-        "type_info": {
+        "metadata": {
           "type": "object",
           "additionalProperties": {
-            "$ref": "#/definitions/TypeInformation"
+            "$ref": "#/definitions/Metadata"
           },
-          "description": "A map whose keys are the name of the relation and whose value is the TypeInformation for that\nrelation."
+          "description": "A map whose keys are the name of the relation and whose value is the Metadata for that\nrelation."
         }
       },
       "required": [
