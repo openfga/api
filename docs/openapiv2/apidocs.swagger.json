@@ -53,12 +53,6 @@
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
             }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Status"
-            }
           }
         },
         "parameters": [
@@ -85,12 +79,6 @@
         "description": "Create a unique OpenFGA store which will be used to store authorization models and relationship tuples.",
         "operationId": "CreateStore",
         "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/CreateStoreResponse"
-            }
-          },
           "201": {
             "description": "A successful response.",
             "schema": {
@@ -113,12 +101,6 @@
             "description": "Request failed due to internal server error.",
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Status"
             }
           }
         },
@@ -166,12 +148,6 @@
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
             }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Status"
-            }
           }
         },
         "parameters": [
@@ -191,17 +167,8 @@
         "description": "Delete an OpenFGA store. This does not delete the data associated to it, like tuples or authorization models.",
         "operationId": "DeleteStore",
         "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/DeleteStoreResponse"
-            }
-          },
           "204": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/DeleteStoreResponse"
-            }
+            "description": "A successful response."
           },
           "400": {
             "description": "Request failed due to invalid input.",
@@ -219,12 +186,6 @@
             "description": "Request failed due to internal server error.",
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Status"
             }
           }
         },
@@ -270,12 +231,6 @@
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
             }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Status"
-            }
           }
         },
         "parameters": [
@@ -301,17 +256,8 @@
         "description": "The Write Assertions API will add new assertions for an authorization model id, or overwrite the existing ones. An assertion is an object that contains a tuple key, and the expectation of whether a call to the Check API of that tuple key will return true or false. ",
         "operationId": "WriteAssertions",
         "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/WriteAssertionsResponse"
-            }
-          },
           "204": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/WriteAssertionsResponse"
-            }
+            "description": "A successful response."
           },
           "400": {
             "description": "Request failed due to invalid input.",
@@ -329,12 +275,6 @@
             "description": "Request failed due to internal server error.",
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Status"
             }
           }
         },
@@ -409,12 +349,6 @@
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
             }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Status"
-            }
           }
         },
         "parameters": [
@@ -447,12 +381,6 @@
         "description": "The POST authorization-model API will update the authorization model for a certain store.\nPath parameter `store_id` and `type_definitions` array in the body are required.  Each item in the `type_definitions` array is a type definition as specified in the field `type_definition`.\nThe response will return the authorization model's ID in the `id` field.\n\n## Example\nTo update the authorization model with a single `document` authorization model, call POST authorization-models API with the body: \n```json\n{\n  \"type_definitions\":[\n    {\n      \"type\":\"document\",\n      \"relations\":{\n        \"reader\":{\n          \"union\":{\n            \"child\":[\n              {\n                \"this\":{}\n              },\n              {\n                \"computedUserset\":{\n                  \"object\":\"\",\n                  \"relation\":\"writer\"\n                }\n              }\n            ]\n          }\n        },\n        \"writer\":{\n          \"this\":{}\n        }\n      }\n    }\n  ]\n}\n```\nOpenFGA's response will include the version id for this authorization model, which will look like \n```\n{\"authorization_model_id\": \"01G50QVV17PECNVAHX1GG4Y5NC\"}\n```\n",
         "operationId": "WriteAuthorizationModel",
         "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/WriteAuthorizationModelResponse"
-            }
-          },
           "201": {
             "description": "A successful response.",
             "schema": {
@@ -475,12 +403,6 @@
             "description": "Request failed due to internal server error.",
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Status"
             }
           }
         },
@@ -534,12 +456,6 @@
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
             }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Status"
-            }
           }
         },
         "parameters": [
@@ -589,12 +505,6 @@
             "description": "Request failed due to internal server error.",
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Status"
             }
           }
         },
@@ -658,12 +568,6 @@
             "description": "Request failed due to internal server error.",
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Status"
             }
           }
         },
@@ -735,12 +639,6 @@
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
             }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Status"
-            }
           }
         },
         "parameters": [
@@ -800,12 +698,6 @@
             "description": "Request failed due to internal server error.",
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Status"
             }
           }
         },
@@ -877,12 +769,6 @@
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
             }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Status"
-            }
           }
         },
         "parameters": [
@@ -952,12 +838,6 @@
             "description": "Request failed due to internal server error.",
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Status"
             }
           }
         },
@@ -1031,12 +911,6 @@
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
             }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Status"
-            }
           }
         },
         "parameters": [
@@ -1106,12 +980,6 @@
             "description": "Request failed due to internal server error.",
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Status"
             }
           }
         },
