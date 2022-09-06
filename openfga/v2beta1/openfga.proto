@@ -84,7 +84,7 @@ message Relation {
     (google.api.field_behavior) = REQUIRED
   ];
 
-  repeated RelationReference assignable_relationships = 1 [
+  repeated RelationReference assignable_relationships = 3 [
     json_name = "assignable_relationships",
     (validate.rules).message.required = true,
     (google.api.field_behavior) = REQUIRED
