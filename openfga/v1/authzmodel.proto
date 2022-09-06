@@ -24,7 +24,6 @@ message AuthorizationModel {
 message TypeDefinitions {
   repeated TypeDefinition type_definitions = 1 [
     json_name = "type_definitions",
-
     (validate.rules).repeated = {
       min_items: 1
     },
@@ -64,11 +63,11 @@ message TypeDefinition {
 
   // A map whose keys are the name of the relation and whose value is the TypeInformation for that
   // relation.
-  map<string, TypeInformation> type_info = 3;
+  map<string, TypeInformation> type_info = 3 [json_name = "type_info"];
 }
 
 message TypeInformation {
-  repeated RelationReference assignable_relations = 1;
+  repeated RelationReference assignable_relations = 1 [json_name = "assignable_relations"];
 }
 
 // RelationReference represents a relation of a particular object type (e.g. 'document#viewer').
