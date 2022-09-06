@@ -1703,7 +1703,7 @@
     "v1.RelationReference": {
       "type": "object",
       "properties": {
-        "objectType": {
+        "type": {
           "type": "string"
         },
         "relation": {

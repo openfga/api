@@ -97,7 +97,7 @@ message TypeInformation {
 // RelationReference represents a relation of a particular object type (e.g. 'document#viewer').
 // If the relation field is omitted we assume the ellipsis relation (e.g. 'user#...')
 message RelationReference {
-  string object_type = 1 [(validate.rules).string = {
+  string type = 1 [(validate.rules).string = {
     pattern: "^[^:#@\\s]{1,254}$"
   }];
 
@@ -149,11 +149,15 @@ message Exclusion {
 
 message This {}
 
+message Tupleset {
+  string relation = 1;
+}
+
 message ComputedUserset {
   string relation = 1;
 }
 
 message TupleToUserset {
-  ObjectRelation tupleset = 1;
-  ObjectRelation computed_userset = 2;
+  Tupleset tupleset = 1;
+  ComputedUserset computed_userset = 2;
 }
