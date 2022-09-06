@@ -84,11 +84,7 @@ message Relation {
     (google.api.field_behavior) = REQUIRED
   ];
 
-  repeated RelationReference assignable_relationships = 3 [
-    json_name = "assignable_relationships",
-    (validate.rules).message.required = true,
-    (google.api.field_behavior) = REQUIRED
-  ];
+  repeated RelationReference assignable_relationships = 3 [json_name = "assignable_relationships"];
 }
 
 // RelationReference represents a relation of a particular object type (e.g. 'document#viewer').

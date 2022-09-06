@@ -1549,6 +1549,17 @@
         }
       }
     },
+    "TypeInformation": {
+      "type": "object",
+      "properties": {
+        "assignable_relations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v1.RelationReference"
+          }
+        }
+      }
+    },
     "Users": {
       "type": "object",
       "properties": {
@@ -1788,10 +1799,10 @@
             "relations"
           ]
         },
-        "typeInfo": {
+        "type_info": {
           "type": "object",
           "additionalProperties": {
-            "$ref": "#/definitions/v1.TypeInformation"
+            "$ref": "#/definitions/TypeInformation"
           },
           "description": "A map whose keys are the name of the relation and whose value is the TypeInformation for that\nrelation."
         }
@@ -1800,17 +1811,6 @@
         "type",
         "relations"
       ]
-    },
-    "v1.TypeInformation": {
-      "type": "object",
-      "properties": {
-        "assignableRelations": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/v1.RelationReference"
-          }
-        }
-      }
     },
     "v1.Userset": {
       "type": "object",
