@@ -67,6 +67,10 @@ message TypeDefinition {
 }
 
 message Metadata {
+  RelationsMetadata relations = 1;
+}
+
+message RelationsMetadata {
   repeated RelationReference assignable_relations = 1 [json_name = "assignable_relations"];
 }
 

@@ -1276,11 +1276,8 @@
     "Metadata": {
       "type": "object",
       "properties": {
-        "assignable_relations": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/v1.RelationReference"
-          }
+        "relations": {
+          "$ref": "#/definitions/RelationsMetadata"
         }
       }
     },
@@ -1420,6 +1417,17 @@
         "continuation_token": {
           "type": "string",
           "example": "eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ=="
+        }
+      }
+    },
+    "RelationsMetadata": {
+      "type": "object",
+      "properties": {
+        "assignable_relations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v1.RelationReference"
+          }
         }
       }
     },
