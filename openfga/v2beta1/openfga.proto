@@ -1,0 +1,158 @@
+syntax = "proto3";
+
+package openfga.v2beta1;
+
+import "google/api/field_behavior.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+import "validate/validate.proto";
+
+message Object {
+  string type = 1;
+  string id = 2;
+}
+
+// User represents either a concrete object or a set of users (userset).
+message User {
+  oneof ref {
+    Object user = 1;
+    Userset userset = 2;
+  }
+}
+
+// Userset represent a set of users and is represented in string from 'objectType:objectId#relation'
+message Userset {
+  Object object = 1;
+  string relation = 2;
+}
+
+// ObjectRelation represents a relationship on a specific object.
+message ObjectRelation {
+  Object object = 1;
+  string relation = 2;
+}
+
+message AuthorizationModel {
+  string id = 1 [
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"01G5JAVJ41T49E9TT3SKVS7X1J\""
+    },
+    (validate.rules).string = {
+      pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"
+    }
+  ];
+
+  repeated TypeDefinition type_definitions = 2 [
+    json_name = "type_definitions",
+    (validate.rules).repeated = {
+      min_items: 1
+    }
+  ];
+}
+
+message TypeDefinition {
+  string type = 1 [
+    (validate.rules).string = {
+      pattern: "^[^:#@\\s]{1,254}$"
+    },
+    (google.api.field_behavior) = REQUIRED,
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"document\""
+    }
+  ];
+
+  map<string, Relation> relations = 2 [
+    (validate.rules).map = {
+      min_pairs: 1
+    },
+    (validate.rules).map.keys.string = {
+      pattern: "^[^:#@\\s]{1,50}$"
+    },
+    (google.api.field_behavior) = REQUIRED
+  ];
+}
+
+message Relation {
+  string name = 1 [
+    (validate.rules).string = {
+      pattern: "^[^:#@\\s]{1,50}$"
+    },
+    (google.api.field_behavior) = REQUIRED
+  ];
+
+  UsersetRewrite rewrite = 2 [
+    (validate.rules).message.required = true,
+    (google.api.field_behavior) = REQUIRED
+  ];
+
+  repeated RelationReference assignable_relationships = 3 [json_name = "assignable_relationships"];
+}
+
+// RelationReference represents a relation of a particular object type (e.g. 'document#viewer').
+// If the relation field is omitted we assume the ellipsis relation (e.g. 'user#...')
+message RelationReference {
+  string type = 1 [
+    (validate.rules).string = { pattern: "^[^:#@\\s]{1,254}$" },
+    (google.api.field_behavior) = REQUIRED,
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = { example: '"group"' }
+  ];
+
+  string relation = 2 [
+    (validate.rules).string = { pattern: "^[^:#@\\s]{1,50}$", ignore_empty: true },
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = { example: '"member"' }
+  ];
+}
+
+message UsersetRewrite {
+  oneof userset_rewrite {
+    This this = 1;
+    ComputedUserset computed_userset = 2;
+    TupleToUserset tuple_to_userset = 3;
+    SetOperation set_op = 4;
+  }
+}
+
+message SetOperation {
+  oneof op {
+    Union union = 1;
+    Intersection intersection = 2;
+    Exclusion exclusion = 3;
+  }
+}
+
+// Union defines a UsersetRewrite that represents the union of one or more
+// usersets.
+message Union {
+  repeated UsersetRewrite children = 1 [(validate.rules).repeated = {
+    min_items: 1
+  }];
+}
+
+// Intersection defines a UsersetRewrite that represents the set intersection
+// between one or more usersets.
+message Intersection {
+  repeated UsersetRewrite children = 1 [(validate.rules).repeated = {
+    min_items: 1
+  }];
+}
+
+// Exclusion defines a UsersetRewrite that represents the set difference between
+// the base set and the excluded (subtract) set.
+message Exclusion {
+  UsersetRewrite base = 1;
+  UsersetRewrite subtract = 2;
+}
+
+message This {}
+
+message Tupleset {
+  string relation = 1;
+}
+
+message ComputedUserset {
+  string relation = 1;
+}
+
+message TupleToUserset {
+  Tupleset tupleset = 1;
+  ComputedUserset computed_userset = 2;
+}
