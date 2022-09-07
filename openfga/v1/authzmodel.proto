@@ -63,6 +63,7 @@ message RelationalMetadata {
 message RelationReference {
   string type = 1 [
     (validate.rules).string = { pattern: "^[^:#@\\s]{1,254}$" },
+    (google.api.field_behavior) = REQUIRED,
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = { example: '"group"' }
   ];
 

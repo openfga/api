@@ -1791,14 +1791,20 @@
       "properties": {
         "type": {
           "type": "string",
-          "example": "group"
+          "example": "group",
+          "required": [
+            "type"
+          ]
         },
         "relation": {
           "type": "string",
           "example": "member"
         }
       },
-      "description": "RelationReference represents a relation of a particular object type (e.g. 'document#viewer')."
+      "description": "RelationReference represents a relation of a particular object type (e.g. 'document#viewer').",
+      "required": [
+        "type"
+      ]
     },
     "v1.TupleToUserset": {
       "type": "object",

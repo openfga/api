@@ -90,14 +90,16 @@ message Relation {
 // RelationReference represents a relation of a particular object type (e.g. 'document#viewer').
 // If the relation field is omitted we assume the ellipsis relation (e.g. 'user#...')
 message RelationReference {
-  string type = 1 [(validate.rules).string = {
-    pattern: "^[^:#@\\s]{1,254}$"
-  }];
+  string type = 1 [
+    (validate.rules).string = { pattern: "^[^:#@\\s]{1,254}$" },
+    (google.api.field_behavior) = REQUIRED,
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = { example: '"group"' }
+  ];
 
-  string relation = 2 [(validate.rules).string = {
-    pattern: "^[^:#@\\s]{1,50}$",
-    ignore_empty: true
-  }];
+  string relation = 2 [
+    (validate.rules).string = { pattern: "^[^:#@\\s]{1,50}$", ignore_empty: true },
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = { example: '"member"' }
+  ];
 }
 
 message UsersetRewrite {
