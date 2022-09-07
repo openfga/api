@@ -1044,6 +1044,67 @@
         "expectation"
       ]
     },
+    "AuthorizationModel": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "01G5JAVJ41T49E9TT3SKVS7X1J"
+        },
+        "type_definitions": {
+          "type": "array",
+          "example": [
+            {
+              "type": "user"
+            },
+            {
+              "type": "document",
+              "relations": {
+                "reader": {
+                  "union": {
+                    "child": [
+                      {
+                        "this": {}
+                      },
+                      {
+                        "computedUserset": {
+                          "object": "",
+                          "relation": "writer"
+                        }
+                      }
+                    ]
+                  }
+                },
+                "writer": {
+                  "this": {}
+                }
+              },
+              "metadata": {
+                "relations": {
+                  "reader": {
+                    "assignable_relations": [
+                      {
+                        "type": "user"
+                      }
+                    ]
+                  },
+                  "writer": {
+                    "assignable_relations": [
+                      {
+                        "type": "user"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          ],
+          "items": {
+            "$ref": "#/definitions/TypeDefinition"
+          }
+        }
+      }
+    },
     "CheckResponse": {
       "type": "object",
       "properties": {
@@ -1325,6 +1386,17 @@
       ],
       "default": "no_not_found_error"
     },
+    "ObjectRelation": {
+      "type": "object",
+      "properties": {
+        "object": {
+          "type": "string"
+        },
+        "relation": {
+          "type": "string"
+        }
+      }
+    },
     "PathUnknownErrorMessageResponse": {
       "type": "object",
       "example": {
@@ -1359,7 +1431,7 @@
       "type": "object",
       "properties": {
         "authorization_model": {
-          "$ref": "#/definitions/v1.AuthorizationModel"
+          "$ref": "#/definitions/AuthorizationModel"
         }
       }
     },
@@ -1369,7 +1441,7 @@
         "authorization_models": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/v1.AuthorizationModel"
+            "$ref": "#/definitions/AuthorizationModel"
           }
         },
         "continuation_token": {
@@ -1423,13 +1495,33 @@
         }
       }
     },
+    "RelationReference": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "example": "group",
+          "required": [
+            "type"
+          ]
+        },
+        "relation": {
+          "type": "string",
+          "example": "member"
+        }
+      },
+      "description": "RelationReference represents a relation of a particular object type (e.g. 'document#viewer').",
+      "required": [
+        "type"
+      ]
+    },
     "RelationalMetadata": {
       "type": "object",
       "properties": {
         "assignable_relations": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/v1.RelationReference"
+            "$ref": "#/definitions/RelationReference"
           }
         }
       }
@@ -1559,6 +1651,57 @@
       "default": "TUPLE_OPERATION_WRITE",
       "title": "buf:lint:ignore ENUM_ZERO_VALUE_SUFFIX"
     },
+    "TypeDefinition": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "example": "document",
+          "required": [
+            "type"
+          ]
+        },
+        "relations": {
+          "type": "object",
+          "example": {
+            "relations": {
+              "reader": {
+                "union": {
+                  "child": [
+                    {
+                      "this": {}
+                    },
+                    {
+                      "computedUserset": {
+                        "object": "",
+                        "relation": "writer"
+                      }
+                    }
+                  ]
+                }
+              },
+              "writer": {
+                "this": {}
+              }
+            }
+          },
+          "additionalProperties": {
+            "$ref": "#/definitions/Userset"
+          },
+          "required": [
+            "relations"
+          ]
+        },
+        "metadata": {
+          "$ref": "#/definitions/Metadata",
+          "description": "A map whose keys are the name of the relation and whose value is the Metadata for that\nrelation."
+        }
+      },
+      "required": [
+        "type",
+        "relations"
+      ]
+    },
     "TypeDefinitions": {
       "type": "object",
       "properties": {
@@ -1611,7 +1754,7 @@
             }
           ],
           "items": {
-            "$ref": "#/definitions/v1.TypeDefinition"
+            "$ref": "#/definitions/TypeDefinition"
           },
           "minimum": 1
         }
@@ -1625,6 +1768,29 @@
           "items": {
             "type": "string"
           }
+        }
+      }
+    },
+    "Userset": {
+      "type": "object",
+      "properties": {
+        "this": {
+          "$ref": "#/definitions/DirectUserset"
+        },
+        "computedUserset": {
+          "$ref": "#/definitions/ObjectRelation"
+        },
+        "tupleToUserset": {
+          "$ref": "#/definitions/v1.TupleToUserset"
+        },
+        "union": {
+          "$ref": "#/definitions/Usersets"
+        },
+        "intersection": {
+          "$ref": "#/definitions/Usersets"
+        },
+        "difference": {
+          "$ref": "#/definitions/v1.Difference"
         }
       }
     },
@@ -1668,7 +1834,7 @@
         "child": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/v1.Userset"
+            "$ref": "#/definitions/Userset"
           }
         }
       }
@@ -1703,192 +1869,26 @@
     "WriteResponse": {
       "type": "object"
     },
-    "v1.AuthorizationModel": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "string",
-          "example": "01G5JAVJ41T49E9TT3SKVS7X1J"
-        },
-        "type_definitions": {
-          "type": "array",
-          "example": [
-            {
-              "type": "user"
-            },
-            {
-              "type": "document",
-              "relations": {
-                "reader": {
-                  "union": {
-                    "child": [
-                      {
-                        "this": {}
-                      },
-                      {
-                        "computedUserset": {
-                          "object": "",
-                          "relation": "writer"
-                        }
-                      }
-                    ]
-                  }
-                },
-                "writer": {
-                  "this": {}
-                }
-              },
-              "metadata": {
-                "relations": {
-                  "reader": {
-                    "assignable_relations": [
-                      {
-                        "type": "user"
-                      }
-                    ]
-                  },
-                  "writer": {
-                    "assignable_relations": [
-                      {
-                        "type": "user"
-                      }
-                    ]
-                  }
-                }
-              }
-            }
-          ],
-          "items": {
-            "$ref": "#/definitions/v1.TypeDefinition"
-          }
-        }
-      }
-    },
     "v1.Difference": {
       "type": "object",
       "properties": {
         "base": {
-          "$ref": "#/definitions/v1.Userset"
+          "$ref": "#/definitions/Userset"
         },
         "subtract": {
-          "$ref": "#/definitions/v1.Userset"
+          "$ref": "#/definitions/Userset"
         }
       }
-    },
-    "v1.ObjectRelation": {
-      "type": "object",
-      "properties": {
-        "object": {
-          "type": "string"
-        },
-        "relation": {
-          "type": "string"
-        }
-      }
-    },
-    "v1.RelationReference": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "type": "string",
-          "example": "group",
-          "required": [
-            "type"
-          ]
-        },
-        "relation": {
-          "type": "string",
-          "example": "member"
-        }
-      },
-      "description": "RelationReference represents a relation of a particular object type (e.g. 'document#viewer').",
-      "required": [
-        "type"
-      ]
     },
     "v1.TupleToUserset": {
       "type": "object",
       "properties": {
         "tupleset": {
-          "$ref": "#/definitions/v1.ObjectRelation",
+          "$ref": "#/definitions/ObjectRelation",
           "title": "The target object/relation"
         },
         "computedUserset": {
-          "$ref": "#/definitions/v1.ObjectRelation"
-        }
-      }
-    },
-    "v1.TypeDefinition": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "type": "string",
-          "example": "document",
-          "required": [
-            "type"
-          ]
-        },
-        "relations": {
-          "type": "object",
-          "example": {
-            "relations": {
-              "reader": {
-                "union": {
-                  "child": [
-                    {
-                      "this": {}
-                    },
-                    {
-                      "computedUserset": {
-                        "object": "",
-                        "relation": "writer"
-                      }
-                    }
-                  ]
-                }
-              },
-              "writer": {
-                "this": {}
-              }
-            }
-          },
-          "additionalProperties": {
-            "$ref": "#/definitions/v1.Userset"
-          },
-          "required": [
-            "relations"
-          ]
-        },
-        "metadata": {
-          "$ref": "#/definitions/Metadata",
-          "description": "A map whose keys are the name of the relation and whose value is the Metadata for that\nrelation."
-        }
-      },
-      "required": [
-        "type",
-        "relations"
-      ]
-    },
-    "v1.Userset": {
-      "type": "object",
-      "properties": {
-        "this": {
-          "$ref": "#/definitions/DirectUserset"
-        },
-        "computedUserset": {
-          "$ref": "#/definitions/v1.ObjectRelation"
-        },
-        "tupleToUserset": {
-          "$ref": "#/definitions/v1.TupleToUserset"
-        },
-        "union": {
-          "$ref": "#/definitions/Usersets"
-        },
-        "intersection": {
-          "$ref": "#/definitions/Usersets"
-        },
-        "difference": {
-          "$ref": "#/definitions/v1.Difference"
+          "$ref": "#/definitions/ObjectRelation"
         }
       }
     }
