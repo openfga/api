@@ -1277,7 +1277,10 @@
       "type": "object",
       "properties": {
         "relations": {
-          "$ref": "#/definitions/RelationsMetadata"
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/RelationalMetadata"
+          }
         }
       }
     },
@@ -1420,7 +1423,7 @@
         }
       }
     },
-    "RelationsMetadata": {
+    "RelationalMetadata": {
       "type": "object",
       "properties": {
         "assignable_relations": {
@@ -1561,6 +1564,52 @@
       "properties": {
         "type_definitions": {
           "type": "array",
+          "example": [
+            {
+              "type": "user"
+            },
+            {
+              "type": "document",
+              "relations": {
+                "reader": {
+                  "union": {
+                    "child": [
+                      {
+                        "this": {}
+                      },
+                      {
+                        "computedUserset": {
+                          "object": "",
+                          "relation": "writer"
+                        }
+                      }
+                    ]
+                  }
+                },
+                "writer": {
+                  "this": {}
+                }
+              },
+              "metadata": {
+                "relations": {
+                  "reader": {
+                    "assignable_relations": [
+                      {
+                        "type": "user"
+                      }
+                    ]
+                  },
+                  "writer": {
+                    "assignable_relations": [
+                      {
+                        "type": "user"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          ],
           "items": {
             "$ref": "#/definitions/v1.TypeDefinition"
           },
@@ -1656,34 +1705,6 @@
     },
     "v1.AuthorizationModel": {
       "type": "object",
-      "example": {
-        "id": "01G5JAVJ41T49E9TT3SKVS7X1J",
-        "type_definitions": [
-          {
-            "type": "document",
-            "relations": {
-              "reader": {
-                "union": {
-                  "child": [
-                    {
-                      "this": {}
-                    },
-                    {
-                      "computedUserset": {
-                        "object": "",
-                        "relation": "writer"
-                      }
-                    }
-                  ]
-                }
-              },
-              "writer": {
-                "this": {}
-              }
-            }
-          }
-        ]
-      },
       "properties": {
         "id": {
           "type": "string",
@@ -1691,6 +1712,52 @@
         },
         "type_definitions": {
           "type": "array",
+          "example": [
+            {
+              "type": "user"
+            },
+            {
+              "type": "document",
+              "relations": {
+                "reader": {
+                  "union": {
+                    "child": [
+                      {
+                        "this": {}
+                      },
+                      {
+                        "computedUserset": {
+                          "object": "",
+                          "relation": "writer"
+                        }
+                      }
+                    ]
+                  }
+                },
+                "writer": {
+                  "this": {}
+                }
+              },
+              "metadata": {
+                "relations": {
+                  "reader": {
+                    "assignable_relations": [
+                      {
+                        "type": "user"
+                      }
+                    ]
+                  },
+                  "writer": {
+                    "assignable_relations": [
+                      {
+                        "type": "user"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          ],
           "items": {
             "$ref": "#/definitions/v1.TypeDefinition"
           }
@@ -1723,10 +1790,12 @@
       "type": "object",
       "properties": {
         "type": {
-          "type": "string"
+          "type": "string",
+          "example": "group"
         },
         "relation": {
-          "type": "string"
+          "type": "string",
+          "example": "member"
         }
       },
       "description": "RelationReference represents a relation of a particular object type (e.g. 'document#viewer')."
@@ -1745,29 +1814,6 @@
     },
     "v1.TypeDefinition": {
       "type": "object",
-      "example": {
-        "type": "document",
-        "relations": {
-          "reader": {
-            "union": {
-              "child": [
-                {
-                  "this": {}
-                },
-                {
-                  "computedUserset": {
-                    "object": "",
-                    "relation": "writer"
-                  }
-                }
-              ]
-            }
-          },
-          "writer": {
-            "this": {}
-          }
-        }
-      },
       "properties": {
         "type": {
           "type": "string",
@@ -1808,10 +1854,7 @@
           ]
         },
         "metadata": {
-          "type": "object",
-          "additionalProperties": {
-            "$ref": "#/definitions/Metadata"
-          },
+          "$ref": "#/definitions/Metadata",
           "description": "A map whose keys are the name of the relation and whose value is the Metadata for that\nrelation."
         }
       },

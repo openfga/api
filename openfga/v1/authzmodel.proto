@@ -7,83 +7,69 @@ import "protoc-gen-openapiv2/options/annotations.proto";
 import "validate/validate.proto";
 
 message AuthorizationModel {
-  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
-    example: "{\"id\": \"01G5JAVJ41T49E9TT3SKVS7X1J\", \"type_definitions\":[{\"type\":\"document\",\"relations\":{\"reader\":{\"union\":{\"child\":[{\"this\":{}},{\"computedUserset\":{\"object\":\"\",\"relation\":\"writer\"}}]}},\"writer\":{\"this\":{}}}}]}"
-  };
   string id = 1 [
+    (validate.rules).string = { pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$" },
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = { example: '"01G5JAVJ41T49E9TT3SKVS7X1J"' }
+  ];
+
+  repeated TypeDefinition type_definitions = 2 [
+    json_name = "type_definitions",
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      example: "\"01G5JAVJ41T49E9TT3SKVS7X1J\""
-    },
-    (validate.rules).string = {
-      pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"
+      example: '[{"type": "user"}, {"type":"document","relations":{"reader":{"union":{"child":[{"this":{}},{"computedUserset":{"object":"","relation":"writer"}}]}},"writer":{"this":{}}},"metadata":{"relations":{"reader":{"assignable_relations":[{"type":"user"}]},"writer":{"assignable_relations":[{"type":"user"}]}}}}]'
     }
   ];
-  repeated TypeDefinition type_definitions = 2 [json_name = "type_definitions"];
 }
 
 message TypeDefinitions {
   repeated TypeDefinition type_definitions = 1 [
     json_name = "type_definitions",
-    (validate.rules).repeated = {
-      min_items: 1
-    },
+    (validate.rules).repeated = { min_items: 1 },
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       minimum: 1,
+      example: '[{"type": "user"}, {"type":"document","relations":{"reader":{"union":{"child":[{"this":{}},{"computedUserset":{"object":"","relation":"writer"}}]}},"writer":{"this":{}}},"metadata":{"relations":{"reader":{"assignable_relations":[{"type":"user"}]},"writer":{"assignable_relations":[{"type":"user"}]}}}}]'
     }
   ];
 }
 
 message TypeDefinition {
-  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
-    example: "{\"type\":\"document\",\"relations\":{\"reader\":{\"union\":{\"child\":[{\"this\":{}},{\"computedUserset\":{\"object\":\"\",\"relation\":\"writer\"}}]}},\"writer\":{\"this\":{}}}}"
-  };
-
   string type = 1 [
-    (validate.rules).string = {
-      pattern: "^[^:#@\\s]{1,254}$"
-    },
+    (validate.rules).string = { pattern: "^[^:#@\\s]{1,254}$" },
     (google.api.field_behavior) = REQUIRED,
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      example: "\"document\""
-    }
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = { example: '"document"' }
   ];
 
   map<string, Userset> relations = 2 [
-    (validate.rules).map = {
-      min_pairs: 1
-    },
-    (validate.rules).map.keys.string = {
-      pattern: "^[^:#@\\s]{1,50}$"
-    },
+    (validate.rules).map.keys.string = { pattern: "^[^:#@\\s]{1,50}$" },
     (google.api.field_behavior) = REQUIRED,
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      example: "{\"relations\":{\"reader\":{\"union\":{\"child\":[{\"this\":{}},{\"computedUserset\":{\"object\":\"\",\"relation\":\"writer\"}}]}},\"writer\":{\"this\":{}}}}"
+      example: '{"relations":{"reader":{"union":{"child":[{"this":{}},{"computedUserset":{"object":"","relation":"writer"}}]}},"writer":{"this":{}}}}'
     }
   ];
 
   // A map whose keys are the name of the relation and whose value is the Metadata for that
   // relation.
-  map<string, Metadata> metadata = 3;
+  Metadata metadata = 3;
 }
 
 message Metadata {
-  RelationsMetadata relations = 1;
+  map<string, RelationalMetadata> relations = 1;
 }
 
-message RelationsMetadata {
-  repeated RelationReference assignable_relations = 1 [json_name = "assignable_relations"];
+message RelationalMetadata {
+  repeated RelationReference assignable_relations = 1 [ json_name = "assignable_relations" ];
 }
 
 // RelationReference represents a relation of a particular object type (e.g. 'document#viewer').
 message RelationReference {
-  string type = 1 [(validate.rules).string = {
-    pattern: "^[^:#@\\s]{1,254}$"
-  }];
+  string type = 1 [
+    (validate.rules).string = { pattern: "^[^:#@\\s]{1,254}$" },
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = { example: '"group"' }
+  ];
 
-  string relation = 2 [(validate.rules).string = {
-    pattern: "^[^:#@\\s]{1,50}$",
-    ignore_empty: true
-  }];
+  string relation = 2 [
+    (validate.rules).string = { pattern: "^[^:#@\\s]{1,50}$", ignore_empty: true },
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = { example: '"member"' }
+  ];
 }
 
 message Usersets {
