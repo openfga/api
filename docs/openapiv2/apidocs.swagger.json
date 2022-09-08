@@ -1229,7 +1229,8 @@
         "query_string_type_continuation_token_mismatch",
         "exceeded_entity_limit",
         "invalid_contextual_tuple",
-        "duplicate_contextual_tuple"
+        "duplicate_contextual_tuple",
+        "invalid_relation_type"
       ],
       "default": "no_error"
     },

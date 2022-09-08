@@ -67,6 +67,7 @@ enum ErrorCode {
   exceeded_entity_limit = 2053;
   invalid_contextual_tuple = 2054;
   duplicate_contextual_tuple = 2055;
+  invalid_relation_type = 2056;
 }
 
 enum InternalErrorCode {
