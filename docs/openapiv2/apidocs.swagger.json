@@ -1508,6 +1508,9 @@
         "relation": {
           "type": "string",
           "example": "member"
+        },
+        "any": {
+          "type": "boolean"
         }
       },
       "description": "RelationReference represents a relation of a particular object type (e.g. 'document#viewer').",

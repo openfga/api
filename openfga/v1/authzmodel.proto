@@ -71,6 +71,8 @@ message RelationReference {
     (validate.rules).string = { pattern: "^[^:#@\\s]{1,50}$", ignore_empty: true },
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = { example: '"member"' }
   ];
+
+  bool any = 3;
 }
 
 message Usersets {
