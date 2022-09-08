@@ -67,12 +67,14 @@ message RelationReference {
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = { example: '"group"' }
   ];
 
-  string relation = 2 [
-    (validate.rules).string = { pattern: "^[^:#@\\s]{1,50}$", ignore_empty: true },
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = { example: '"member"' }
-  ];
+  oneof relation_or_any {
+    string relation = 2 [
+      (validate.rules).string = { pattern: "^[^:#@\\s]{1,50}$", ignore_empty: true },
+      (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = { example: '"member"' }
+    ];
 
-  bool any = 3;
+    bool any = 3;
+  }
 }
 
 message Usersets {
