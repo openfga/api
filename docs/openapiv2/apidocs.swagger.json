@@ -1239,7 +1239,8 @@
         "exceeded_entity_limit",
         "invalid_contextual_tuple",
         "duplicate_contextual_tuple",
-        "invalid_relation_type"
+        "invalid_relation_type",
+        "unsupported_schema_version"
       ],
       "default": "no_error"
     },
