@@ -15,7 +15,7 @@ message AuthorizationModel {
   repeated TypeDefinition type_definitions = 2 [
     json_name = "type_definitions",
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      example: '[{"type": "user"}, {"type":"document","relations":{"reader":{"union":{"child":[{"this":{}},{"computedUserset":{"object":"","relation":"writer"}}]}},"writer":{"this":{}}},"metadata":{"relations":{"reader":{"assignable_relations":[{"type":"user"}]},"writer":{"assignable_relations":[{"type":"user"}]}}}}]'
+      example: '[{"type": "user"}, {"type":"document","relations":{"reader":{"union":{"child":[{"this":{}},{"computedUserset":{"object":"","relation":"writer"}}]}},"writer":{"this":{}}},"metadata":{"relations":{"reader":{"directly_related_user_types":[{"type":"user"}]},"writer":{"directly_related_user_types":[{"type":"user"}]}}}}]'
     }
   ];
 }
@@ -26,7 +26,7 @@ message TypeDefinitions {
     (validate.rules).repeated = { min_items: 1 },
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       minimum: 1,
-      example: '[{"type": "user"}, {"type":"document","relations":{"reader":{"union":{"child":[{"this":{}},{"computedUserset":{"object":"","relation":"writer"}}]}},"writer":{"this":{}}},"metadata":{"relations":{"reader":{"assignable_relations":[{"type":"user"}]},"writer":{"assignable_relations":[{"type":"user"}]}}}}]'
+      example: '[{"type": "user"}, {"type":"document","relations":{"reader":{"union":{"child":[{"this":{}},{"computedUserset":{"object":"","relation":"writer"}}]}},"writer":{"this":{}}},"metadata":{"relations":{"reader":{"directly_related_user_types":[{"type":"user"}]},"writer":{"directly_related_user_types":[{"type":"user"}]}}}}]'
     }
   ];
 }
