@@ -420,6 +420,12 @@
             "schema": {
               "$ref": "#/definitions/TypeDefinitions"
             }
+          },
+          {
+            "name": "version",
+            "in": "query",
+            "required": false,
+            "type": "string"
           }
         ],
         "tags": [
@@ -1522,7 +1528,7 @@
     "RelationalMetadata": {
       "type": "object",
       "properties": {
-        "assignable_relations": {
+        "directly_related_user_types": {
           "type": "array",
           "items": {
             "$ref": "#/definitions/RelationReference"

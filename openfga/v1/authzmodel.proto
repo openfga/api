@@ -56,7 +56,7 @@ message Metadata {
 }
 
 message RelationalMetadata {
-  repeated RelationReference assignable_relations = 1 [ json_name = "assignable_relations" ];
+  repeated RelationReference directly_related_user_types = 1 [ json_name = "directly_related_user_types" ];
 }
 
 // RelationReference represents a relation of a particular object type (e.g. 'document#viewer').
