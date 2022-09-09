@@ -18,6 +18,8 @@ message AuthorizationModel {
       example: '[{"type": "user"}, {"type":"document","relations":{"reader":{"union":{"child":[{"this":{}},{"computedUserset":{"object":"","relation":"writer"}}]}},"writer":{"this":{}}},"metadata":{"relations":{"reader":{"directly_related_user_types":[{"type":"user"}]},"writer":{"directly_related_user_types":[{"type":"user"}]}}}}]'
     }
   ];
+
+  string schema_version = 3 [json_name = "schema_version"];
 }
 
 message TypeDefinitions {
