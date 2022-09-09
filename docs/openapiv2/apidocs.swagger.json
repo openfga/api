@@ -1088,14 +1088,14 @@
               "metadata": {
                 "relations": {
                   "reader": {
-                    "assignable_relations": [
+                    "directly_related_user_types": [
                       {
                         "type": "user"
                       }
                     ]
                   },
                   "writer": {
-                    "assignable_relations": [
+                    "directly_related_user_types": [
                       {
                         "type": "user"
                       }
@@ -1746,14 +1746,14 @@
               "metadata": {
                 "relations": {
                   "reader": {
-                    "assignable_relations": [
+                    "directly_related_user_types": [
                       {
                         "type": "user"
                       }
                     ]
                   },
                   "writer": {
-                    "assignable_relations": [
+                    "directly_related_user_types": [
                       {
                         "type": "user"
                       }
