@@ -977,6 +977,8 @@ message WriteAuthorizationModelRequest {
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = { minimum: 1 }
   ];
 
+  // Until we have something like the following https://github.com/protocolbuffers/protobuf/issues/4328,
+  // we will simply validate the string.
   string schema_version = 3 [
     json_name = "schema_version",
     (validate.rules).string = {in: ["1.0", "1.1"], ignore_empty: true}
