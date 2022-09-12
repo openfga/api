@@ -973,7 +973,10 @@ message WriteAuthorizationModelRequest {
 
   TypeDefinitions type_definitions = 2 [(validate.rules).message.required = true];
 
-  string schema_version = 3 [json_name = "schema_version"];
+  string schema_version = 3 [
+    json_name = "schema_version",
+    (validate.rules).string = {in: ["1.0", "1.1"], ignore_empty: true}
+  ];
 }
 
 message WriteAuthorizationModelResponse {
