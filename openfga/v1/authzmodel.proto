@@ -22,17 +22,6 @@ message AuthorizationModel {
   string schema_version = 3 [json_name = "schema_version"];
 }
 
-message TypeDefinitions {
-  repeated TypeDefinition type_definitions = 1 [
-    json_name = "type_definitions",
-    (validate.rules).repeated = { min_items: 1 },
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      minimum: 1,
-      example: '[{"type": "user"}, {"type":"document","relations":{"reader":{"union":{"child":[{"this":{}},{"computedUserset":{"object":"","relation":"writer"}}]}},"writer":{"this":{}}},"metadata":{"relations":{"reader":{"directly_related_user_types":[{"type":"user"}]},"writer":{"directly_related_user_types":[{"type":"user"}]}}}}]'
-    }
-  ];
-}
-
 message TypeDefinition {
   string type = 1 [
     (validate.rules).string = { pattern: "^[^:#@\\s]{1,254}$" },
