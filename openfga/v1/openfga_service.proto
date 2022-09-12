@@ -424,7 +424,7 @@ service OpenFGAService {
   rpc WriteAuthorizationModel(WriteAuthorizationModelRequest) returns (WriteAuthorizationModelResponse) {
     option (google.api.http) = {
       post: "/stores/{store_id}/authorization-models"
-      body: "type_definitions"
+      body: "*"
     };
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {

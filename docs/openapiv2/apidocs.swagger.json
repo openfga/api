@@ -414,18 +414,20 @@
             "type": "string"
           },
           {
-            "name": "typeDefinitions",
+            "name": "body",
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/TypeDefinitions"
+              "type": "object",
+              "properties": {
+                "typeDefinitions": {
+                  "$ref": "#/definitions/TypeDefinitions"
+                },
+                "schema_version": {
+                  "type": "string"
+                }
+              }
             }
-          },
-          {
-            "name": "schema_version",
-            "in": "query",
-            "required": false,
-            "type": "string"
           }
         ],
         "tags": [
