@@ -1704,10 +1704,7 @@
           },
           "additionalProperties": {
             "$ref": "#/definitions/Userset"
-          },
-          "required": [
-            "relations"
-          ]
+          }
         },
         "metadata": {
           "$ref": "#/definitions/Metadata",
@@ -1715,8 +1712,7 @@
         }
       },
       "required": [
-        "type",
-        "relations"
+        "type"
       ]
     },
     "Users": {
