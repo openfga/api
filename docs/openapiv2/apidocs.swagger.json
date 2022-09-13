@@ -1650,15 +1650,11 @@
           },
           "additionalProperties": {
             "$ref": "#/definitions/Userset"
-          },
-          "required": [
-            "relations"
-          ]
+          }
         }
       },
       "required": [
-        "type",
-        "relations"
+        "type"
       ]
     },
     "TypeDefinitions": {

@@ -48,13 +48,9 @@ message TypeDefinition {
     }
   ];
   map<string, Userset> relations = 2 [
-    (validate.rules).map = {
-      min_pairs: 1
-    },
     (validate.rules).map.keys.string = {
       pattern: "^[^:#@\\s]{1,50}$"
     },
-    (google.api.field_behavior) = REQUIRED,
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       example: "{\"relations\":{\"reader\":{\"union\":{\"child\":[{\"this\":{}},{\"computedUserset\":{\"object\":\"\",\"relation\":\"writer\"}}]}},\"writer\":{\"this\":{}}}}"
     }
