@@ -42,10 +42,10 @@ message TypeDefinition {
 }
 
 message Metadata {
-  map<string, RelationalMetadata> relations = 1;
+  map<string, RelationMetadata> relations = 1;
 }
 
-message RelationalMetadata {
+message RelationMetadata {
   repeated RelationReference directly_related_user_types = 1 [ json_name = "directly_related_user_types" ];
 }
 
