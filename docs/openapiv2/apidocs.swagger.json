@@ -1357,7 +1357,7 @@
         "relations": {
           "type": "object",
           "additionalProperties": {
-            "$ref": "#/definitions/RelationalMetadata"
+            "$ref": "#/definitions/RelationMetadata"
           }
         }
       }
@@ -1512,6 +1512,17 @@
         }
       }
     },
+    "RelationMetadata": {
+      "type": "object",
+      "properties": {
+        "directly_related_user_types": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/RelationReference"
+          }
+        }
+      }
+    },
     "RelationReference": {
       "type": "object",
       "properties": {
@@ -1531,17 +1542,6 @@
       "required": [
         "type"
       ]
-    },
-    "RelationalMetadata": {
-      "type": "object",
-      "properties": {
-        "directly_related_user_types": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/RelationReference"
-          }
-        }
-      }
     },
     "Status": {
       "type": "object",
