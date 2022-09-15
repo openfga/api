@@ -12,14 +12,14 @@ message AuthorizationModel {
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = { example: '"01G5JAVJ41T49E9TT3SKVS7X1J"' }
   ];
 
-  repeated TypeDefinition type_definitions = 2 [
+  string schema_version = 2 [json_name = "schema_version"];
+
+  repeated TypeDefinition type_definitions = 3 [
     json_name = "type_definitions",
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       example: '[{"type": "user"}, {"type":"document","relations":{"reader":{"union":{"child":[{"this":{}},{"computedUserset":{"object":"","relation":"writer"}}]}},"writer":{"this":{}}},"metadata":{"relations":{"reader":{"directly_related_user_types":[{"type":"user"}]},"writer":{"directly_related_user_types":[{"type":"user"}]}}}}]'
     }
   ];
-
-  string schema_version = 3 [json_name = "schema_version"];
 }
 
 message TypeDefinition {
@@ -113,4 +113,9 @@ enum SchemaVersion {
   SCHEMA_VERSION_UNSPECIFIED = 0;
   SCHEMA_VERSION_1_0 = 1;
   SCHEMA_VERSION_1_1 = 2;
+}
+
+message TypeDefinitions {
+  SchemaVersion schema_version = 1;
+  repeated TypeDefinition type_definition = 2;
 }

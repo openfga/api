@@ -1063,6 +1063,9 @@
           "type": "string",
           "example": "01G5JAVJ41T49E9TT3SKVS7X1J"
         },
+        "schema_version": {
+          "type": "string"
+        },
         "type_definitions": {
           "type": "array",
           "example": [
@@ -1114,9 +1117,6 @@
           "items": {
             "$ref": "#/definitions/TypeDefinition"
           }
-        },
-        "schema_version": {
-          "type": "string"
         }
       }
     },
