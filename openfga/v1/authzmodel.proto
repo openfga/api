@@ -108,14 +108,3 @@ message TupleToUserset {
   ObjectRelation tupleset = 1;
   ObjectRelation computed_userset = 2;
 }
-
-enum SchemaVersion {
-  SCHEMA_VERSION_UNSPECIFIED = 0;
-  SCHEMA_VERSION_1_0 = 1;
-  SCHEMA_VERSION_1_1 = 2;
-}
-
-message TypeDefinitions {
-  SchemaVersion schema_version = 1;
-  repeated TypeDefinition type_definition = 2;
-}
