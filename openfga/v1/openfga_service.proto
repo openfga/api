@@ -973,13 +973,23 @@ message WriteAuthorizationModelRequest {
 
   repeated TypeDefinition type_definitions = 2 [
     json_name = "type_definitions",
-    (validate.rules).repeated = { min_items: 1 },
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = { minimum: 1 }
+    (validate.rules).repeated = {
+      min_items: 1
+    },
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      minimum: 1
+    }
   ];
 
   string schema_version = 3 [
     json_name = "schema_version",
-    (validate.rules).string = {in: ["1.0", "1.1"], ignore_empty: true}
+    (validate.rules).string = {
+      in: [
+        "1.0",
+        "1.1"
+      ],
+      ignore_empty: true
+    }
   ];
 }
 

@@ -8,8 +8,12 @@ import "validate/validate.proto";
 
 message AuthorizationModel {
   string id = 1 [
-    (validate.rules).string = { pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$" },
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = { example: '"01G5JAVJ41T49E9TT3SKVS7X1J"' }
+    (validate.rules).string = {
+      pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"
+    },
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: '"01G5JAVJ41T49E9TT3SKVS7X1J"'
+    }
   ];
 
   string schema_version = 2 [json_name = "schema_version"];
@@ -24,13 +28,19 @@ message AuthorizationModel {
 
 message TypeDefinition {
   string type = 1 [
-    (validate.rules).string = { pattern: "^[^:#@\\s]{1,254}$" },
+    (validate.rules).string = {
+      pattern: "^[^:#@\\s]{1,254}$"
+    },
     (google.api.field_behavior) = REQUIRED,
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = { example: '"document"' }
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: '"document"'
+    }
   ];
 
   map<string, Userset> relations = 2 [
-    (validate.rules).map.keys.string = { pattern: "^[^:#@\\s]{1,50}$" },
+    (validate.rules).map.keys.string = {
+      pattern: "^[^:#@\\s]{1,50}$"
+    },
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       example: '{"relations":{"reader":{"union":{"child":[{"this":{}},{"computedUserset":{"object":"","relation":"writer"}}]}},"writer":{"this":{}}}}'
     }
@@ -41,25 +51,51 @@ message TypeDefinition {
   Metadata metadata = 3;
 }
 
+message Relation {
+  string name = 1 [(validate.rules).string = {
+    pattern: "^[^:#@\\s]{1,50}$"
+  }];
+
+  Userset rewrite = 2 [
+    (validate.rules).message.required = true,
+    (google.api.field_behavior) = REQUIRED
+  ];
+
+  RelationTypeInfo type_info = 3;
+}
+
+message RelationTypeInfo {
+  repeated RelationReference directly_related_user_types = 1 [json_name = "directly_related_user_types"];
+}
+
 message Metadata {
   map<string, RelationMetadata> relations = 1;
 }
 
 message RelationMetadata {
-  repeated RelationReference directly_related_user_types = 1 [ json_name = "directly_related_user_types" ];
+  repeated RelationReference directly_related_user_types = 1 [json_name = "directly_related_user_types"];
 }
 
 // RelationReference represents a relation of a particular object type (e.g. 'document#viewer').
 message RelationReference {
   string type = 1 [
-    (validate.rules).string = { pattern: "^[^:#@\\s]{1,254}$" },
+    (validate.rules).string = {
+      pattern: "^[^:#@\\s]{1,254}$"
+    },
     (google.api.field_behavior) = REQUIRED,
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = { example: '"group"' }
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: '"group"'
+    }
   ];
 
   string relation = 2 [
-    (validate.rules).string = { pattern: "^[^:#@\\s]{1,50}$", ignore_empty: true },
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = { example: '"member"' }
+    (validate.rules).string = {
+      pattern: "^[^:#@\\s]{1,50}$",
+      ignore_empty: true
+    },
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: '"member"'
+    }
   ];
 }
 
