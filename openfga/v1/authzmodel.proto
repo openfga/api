@@ -12,7 +12,7 @@ message AuthorizationModel {
       pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"
     },
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      example: '"01G5JAVJ41T49E9TT3SKVS7X1J"'
+      example: "\"01G5JAVJ41T49E9TT3SKVS7X1J\""
     }
   ];
 
@@ -21,7 +21,7 @@ message AuthorizationModel {
   repeated TypeDefinition type_definitions = 3 [
     json_name = "type_definitions",
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      example: '[{"type": "user"}, {"type":"document","relations":{"reader":{"union":{"child":[{"this":{}},{"computedUserset":{"object":"","relation":"writer"}}]}},"writer":{"this":{}}},"metadata":{"relations":{"reader":{"directly_related_user_types":[{"type":"user"}]},"writer":{"directly_related_user_types":[{"type":"user"}]}}}}]'
+      example: "[{\"type\": \"user\"}, {\"type\":\"document\",\"relations\":{\"reader\":{\"union\":{\"child\":[{\"this\":{}},{\"computedUserset\":{\"object\":\"\",\"relation\":\"writer\"}}]}},\"writer\":{\"this\":{}}},\"metadata\":{\"relations\":{\"reader\":{\"directly_related_user_types\":[{\"type\":\"user\"}]},\"writer\":{\"directly_related_user_types\":[{\"type\":\"user\"}]}}}}]"
     }
   ];
 }
@@ -33,7 +33,7 @@ message TypeDefinition {
     },
     (google.api.field_behavior) = REQUIRED,
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      example: '"document"'
+      example: "\"document\""
     }
   ];
 
@@ -42,7 +42,7 @@ message TypeDefinition {
       pattern: "^[^:#@\\s]{1,50}$"
     },
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      example: '{"relations":{"reader":{"union":{"child":[{"this":{}},{"computedUserset":{"object":"","relation":"writer"}}]}},"writer":{"this":{}}}}'
+      example: "{\"relations\":{\"reader\":{\"union\":{\"child\":[{\"this\":{}},{\"computedUserset\":{\"object\":\"\",\"relation\":\"writer\"}}]}},\"writer\":{\"this\":{}}}}"
     }
   ];
 
@@ -84,7 +84,7 @@ message RelationReference {
     },
     (google.api.field_behavior) = REQUIRED,
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      example: '"group"'
+      example: "\"group\""
     }
   ];
 
@@ -94,7 +94,7 @@ message RelationReference {
       ignore_empty: true
     },
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      example: '"member"'
+      example: "\"member\""
     }
   ];
 }
