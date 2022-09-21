@@ -52,11 +52,19 @@ message TypeDefinition {
 }
 
 message Relation {
+  string name = 1 [(validate.rules).string = {
+    pattern: "^[^:#@\\s]{1,50}$"
+  }];
+  
   Userset rewrite = 2 [
     (validate.rules).message.required = true,
     (google.api.field_behavior) = REQUIRED
   ];
 
+  RelationTypeInfo type_info = 3;
+}
+
+message RelationTypeInfo {
   repeated RelationReference directly_related_user_types = 1 [json_name = "directly_related_user_types"];
 }
 
