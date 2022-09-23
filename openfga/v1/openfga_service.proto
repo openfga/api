@@ -726,10 +726,29 @@ message ListObjectsRequest {
     }
   ];
 
-  string type = 3 [json_name = "type"];
+  string type = 3 [
+    json_name = "type",
+    (validate.rules).string = {
+      pattern: "^[^:#@\\s]{1,254}$"
+    },
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"document\""
+    }
+  ];
 
-  string relation = 4;
-  string user = 5;
+  string relation = 4 [(validate.rules).string = {
+    pattern: "^[^:#@\\s]{1,50}$"
+  }];
+
+  string user = 5 [
+    (validate.rules).string = {
+      max_bytes: 512
+    },
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      max_length: 512,
+      example: "\"anne\""
+    }
+  ];
 
   openfga.v1.ContextualTupleKeys contextual_tuples = 6 [json_name = "contextual_tuples"];
 }
@@ -760,10 +779,29 @@ message StreamedListObjectsRequest {
     }
   ];
 
-  string type = 3 [json_name = "type"];
+  string type = 3 [
+    json_name = "type",
+    (validate.rules).string = {
+      pattern: "^[^:#@\\s]{1,254}$"
+    },
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"document\""
+    }
+  ];
 
-  string relation = 4;
-  string user = 5;
+  string relation = 4 [(validate.rules).string = {
+    pattern: "^[^:#@\\s]{1,50}$"
+  }];
+
+  string user = 5 [
+    (validate.rules).string = {
+      max_bytes: 512
+    },
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      max_length: 512,
+      example: "\"anne\""
+    }
+  ];
 
   openfga.v1.ContextualTupleKeys contextual_tuples = 6 [json_name = "contextual_tuples"];
 }

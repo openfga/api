@@ -732,13 +732,16 @@
                   "example": "01G5JAVJ41T49E9TT3SKVS7X1J"
                 },
                 "type": {
-                  "type": "string"
+                  "type": "string",
+                  "example": "document"
                 },
                 "relation": {
                   "type": "string"
                 },
                 "user": {
-                  "type": "string"
+                  "type": "string",
+                  "example": "anne",
+                  "maxLength": 512
                 },
                 "contextual_tuples": {
                   "$ref": "#/definitions/ContextualTupleKeys"
@@ -944,13 +947,16 @@
                   "example": "01G5JAVJ41T49E9TT3SKVS7X1J"
                 },
                 "type": {
-                  "type": "string"
+                  "type": "string",
+                  "example": "document"
                 },
                 "relation": {
                   "type": "string"
                 },
                 "user": {
-                  "type": "string"
+                  "type": "string",
+                  "example": "anne",
+                  "maxLength": 512
                 },
                 "contextual_tuples": {
                   "$ref": "#/definitions/ContextualTupleKeys"
