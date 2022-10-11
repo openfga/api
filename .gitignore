@@ -4,6 +4,7 @@
 *.sublime-workspace
 # Vim temp files
 *~
+.dccache
 
 .DS_Store
 .env

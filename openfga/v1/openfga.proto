@@ -58,7 +58,7 @@ message TupleKey {
     },
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       max_length: 512,
-      example: "\"anne\""
+      example: "\"user:anne\""
     }
   ];
 }
