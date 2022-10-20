@@ -1640,7 +1640,7 @@
         },
         "user": {
           "type": "string",
-          "example": "anne",
+          "example": "user:anne",
           "maxLength": 512
         }
       }
