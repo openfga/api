@@ -1156,7 +1156,6 @@
             "$ref": "#/definitions/TupleKey"
           },
           "maximum": 10,
-          "minimum": 1,
           "required": [
             "tuple_keys"
           ]
@@ -1641,7 +1640,7 @@
         },
         "user": {
           "type": "string",
-          "example": "user:anne",
+          "example": "anne",
           "maxLength": 512
         }
       }
