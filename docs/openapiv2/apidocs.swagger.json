@@ -1156,7 +1156,6 @@
             "$ref": "#/definitions/TupleKey"
           },
           "maximum": 10,
-          "minimum": 1,
           "required": [
             "tuple_keys"
           ]
