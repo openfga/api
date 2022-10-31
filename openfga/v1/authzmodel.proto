@@ -51,6 +51,10 @@ message TypeDefinition {
   Metadata metadata = 3;
 }
 
+message TypeDefinitions {
+  repeated TypeDefinition type_definitions = 1 [json_name = "type_definitions"];
+}
+
 message Relation {
   string name = 1 [(validate.rules).string = {
     pattern: "^[^:#@\\s]{1,50}$"
