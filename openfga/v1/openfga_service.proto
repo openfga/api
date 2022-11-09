@@ -25,17 +25,16 @@ service OpenFGAService {
       ]
       operation_id: "Read"
       description:
-        "The POST read API will return the tuples for a certain store that matches a "
-        "query filter specified in the body. Tuples and "
-        "type definitions allow OpenFGA to determine whether a "
-        "relationship exists between an object and an user.\n"
-        "It is different from the `/stores/{store_id}/expand` API in that only "
-        "read returns relationship tuples that are stored in the system and satisfy the query.\n"
-        "It does not expand or traverse the graph by taking the authorization model into account."
-        "Path parameter `store_id` is required.  In the body:\n"
-        "1. Object is mandatory. An object can be a full object (e.g., "
+        "The POST read API will return the tuples for a certain store that match a "
+        "query filter specified in the body of the request. "
+        "It is different from the `/stores/{store_id}/expand` API in that it only "
+        "returns relationship tuples that are stored in the system and satisfy the query. "
+        "Path parameter `store_id` is required. \nIn the body:\n"
+        "1. `tuple_key.object` is mandatory. It can be a full object (e.g., "
         "`type:object_id`) or type only (e.g., `type:`).\n"
-        "2. User is mandatory in the case the object is type only.\n"
+        "2. `tuple_key.user` is mandatory in the case the `tuple_key.object` is a type only.\n"
+        "3. `authorization_model_id` is optional. If specified, it will be used to assert that the input `tuple_key` is valid for this model. "
+        "If not specified, the latest authorization model ID will be used. \n"
         "## Examples\n"
         "### Query for all objects in a type definition\n"
         "To query for all objects that `bob` has `reader` relationship in "
@@ -147,11 +146,13 @@ service OpenFGAService {
       ]
       operation_id: "Write"
       description:
-        "The POST write API will update the tuples for a certain store.  Tuples and "
+        "The POST write API will update the tuples for a certain store. Tuples and "
         "type definitions allow OpenFGA to determine whether a "
         "relationship exists between an object and an user.\n"
         "Path parameter `store_id` is required.  In the body, `writes` "
         "adds new tuples while `deletes` removes existing tuples.\n"
+        "An `authorization_model_id` may be specified in the body. If it is, it will be used to assert that each written tuple (not deleted) "
+        "is valid for this model. If it is not specified, the latest authorization model ID will be used.\n"
         "## Example\n"
         "### Adding relationships\n"
         "To add `user:anne` as a `writer` for `document:2021-budget`, call "
@@ -204,6 +205,8 @@ service OpenFGAService {
         "The Check API queries to check if the user has a certain relationship with an object in a certain store.\n"
         "Path parameter `store_id` as well as the body parameter `tuple_key` with specified `object`, `relation` and `user` subfields are all required.\n"
         "Optionally, a `contextual_tuples` object may also be included in the body of the request. This object contains one field `tuple_keys`, which is an array of tuple keys.\n"
+        "You may also provide an `authorization_model_id` in the body. This will be used to assert that the input `tuple_key` is valid for this model. "
+        "If not specified, the assertion will be made against the latest authorization model ID.\n"
         "The response will return whether the relationship exists in the field `allowed`.\n\n"
         "## Example\n"
         "In order to check if user `anne` of type `user` has a `can_read` relationship with object `document:2021-budget` given the following contextual tuple\n"
@@ -251,12 +254,14 @@ service OpenFGAService {
       ]
       operation_id: "Expand"
       description:
-        "The Expand API will return all users (including user and userset) "
+        "The Expand API will return all users and usersets "
         "that have certain relationship with an object in a certain store.\n"
         "This is different from the `/stores/{store_id}/read` API in that both users and "
-        "computed references are returned.\n"
-        "Path parameter `store_id` as well as body parameter `object`, `relation` are all required.\n"
-        "The response will return a userset tree whose leaves are the user id and usersets.  "
+        "computed usersets are returned.\n"
+        "Path parameter `store_id` as well as body parameters `tuple_key.object` and `tuple_key.relation` are all required.\n"
+        "An `authorization_model_id` may also be specified in the body. If it is, it will be used to assert that the input `tuple_key` is valid for this model. "
+        "If it is not, the latest authorization model ID will be used.\n"
+        "The response will return a tree whose leaves are the specific users and usersets. "
         "Union, intersection and difference operator are located in the intermediate nodes.\n\n"
         "## Example\n"
         "Assume the following type definition for document:\n"
@@ -267,7 +272,7 @@ service OpenFGAService {
         "      define writer as self\n"
         "```\n"
         "In order to expand all users that have `reader` relationship with object `document:2021-budget`, "
-        "an expand API call should be fired with the following body\n"
+        "a call to expand API should be made with the following body\n"
         "```json\n"
         "{\n"
         "  \"tuple_key\": {\n"
@@ -672,7 +677,6 @@ service OpenFGAService {
     };
   }
 
-  // StreamedListObjects is a streaming variation of the ListObjects API (see ListObjects for more info).
   rpc StreamedListObjects(StreamedListObjectsRequest) returns (stream StreamedListObjectsResponse) {
     option (google.api.http) = {
       post: "/stores/{store_id}/streamed-list-objects",
@@ -680,6 +684,7 @@ service OpenFGAService {
     };
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "[EXPERIMENTAL] Streaming variation of the ListObjects API (see ListObjects for more info)"
       tags: [
         "Relationship Queries"
       ]
@@ -687,8 +692,6 @@ service OpenFGAService {
     };
   }
 
-  // ListObjects lists all of the object ids for objects of the provided type that the given user
-  // has a specific relation with.
   rpc ListObjects(ListObjectsRequest) returns (ListObjectsResponse) {
     option (google.api.http) = {
       post: "/stores/{store_id}/list-objects",
@@ -696,10 +699,18 @@ service OpenFGAService {
     };
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "[EXPERIMENTAL] Get all object ids of the given type that the given user has a given relation with"
       tags: [
         "Relationship Queries"
       ]
       operation_id: "ListObjects"
+      description:
+          "The ListObjects API returns a list of all the object ids of the given type that the given user "
+          "has a given relation with. To achieve this, both the store tuples and the authorization model are used.\n"
+          "Path parameter `store_id` as well as body parameters `type`, `relation` and `user` are all required.\n"
+          "An `authorization_model_id` may be specified in the body. If it is, it will be used to decide the underlying implementation used. "
+          "If it is not specified, the latest authorization model ID will be used.\n"
+          "You may also specify `contextual_tuples` that will be treated as regular tuples.\n"
     };
   }
 }
