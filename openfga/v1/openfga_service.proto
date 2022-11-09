@@ -705,12 +705,12 @@ service OpenFGAService {
       ]
       operation_id: "ListObjects"
       description:
-          "The ListObjects API returns a list of all the object ids of the given type that the given user "
-          "has a given relation with. To achieve this, both the store tuples and the authorization model are used.\n"
-          "Path parameter `store_id` as well as body parameters `type`, `relation` and `user` are all required.\n"
-          "An `authorization_model_id` may be specified in the body. If it is, it will be used to decide the underlying implementation used. "
-          "If it is not specified, the latest authorization model ID will be used.\n"
-          "You may also specify `contextual_tuples` that will be treated as regular tuples.\n"
+        "The ListObjects API returns a list of all the object ids of the given type that the given user "
+        "has a given relation with. To achieve this, both the store tuples and the authorization model are used.\n"
+        "Path parameter `store_id` as well as body parameters `type`, `relation` and `user` are all required.\n"
+        "An `authorization_model_id` may be specified in the body. If it is, it will be used to decide the underlying implementation used. "
+        "If it is not specified, the latest authorization model ID will be used.\n"
+        "You may also specify `contextual_tuples` that will be treated as regular tuples.\n"
     };
   }
 }
