@@ -38,7 +38,7 @@ service OpenFGAService {
         "2. User is mandatory in the case the object is type only.\n"
         "## Examples\n"
         "### Query for all objects in a type definition\n"
-        "To query for all objects that `bob` has `reader` relationship in "
+        "To query for all objects that `user:bob` has `reader` relationship in "
         "the document type definition, call read API with body of\n"
         "```json\n"
         "{\n"
@@ -64,7 +64,7 @@ service OpenFGAService {
         "  ]\n"
         "}\n"
         "```\n"
-        "This means that `bob` has a `reader` relationship with 1 document "
+        "This means that `user:bob` has a `reader` relationship with 1 document "
         "`document:2021-budget`.\n"
         "### Query for all users with particular relationships for a particular document\n"
         "To query for all users that have `reader` relationship with "
@@ -92,9 +92,9 @@ service OpenFGAService {
         "  ]\n"
         "}\n"
         "```\n"
-        "This means that `document:2021-budget` has 1 `reader` (`bob`).  "
+        "This means that `document:2021-budget` has 1 `reader` (`user:bob`).  "
         "Note that the API will not return writers such as "
-        "`anne` even when all writers are readers.  "
+        "`user:anne` even when all writers are readers.  "
         "This is because only direct relationship are returned for the READ API.\n"
         "### Query for all users with all relationships for a particular document\n"
         "To query for all users that have any relationship with "
@@ -206,7 +206,7 @@ service OpenFGAService {
         "Optionally, a `contextual_tuples` object may also be included in the body of the request. This object contains one field `tuple_keys`, which is an array of tuple keys.\n"
         "The response will return whether the relationship exists in the field `allowed`.\n\n"
         "## Example\n"
-        "In order to check if user `anne` of type `user` has a `can_read` relationship with object `document:2021-budget` given the following contextual tuple\n"
+        "In order to check if user `user:anne` of type `user` has a `can_read` relationship with object `document:2021-budget` given the following contextual tuple\n"
         "```json\n"
         "{\n"
         "  \"user\": \"user:anne\",\n"
@@ -746,7 +746,7 @@ message ListObjectsRequest {
     },
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       max_length: 512,
-      example: "\"anne\""
+      example: "\"user:anne\""
     }
   ];
 
