@@ -33,7 +33,7 @@ service OpenFGAService {
         "1. `tuple_key.object` is mandatory. It can be a full object (e.g., "
         "`type:object_id`) or type only (e.g., `type:`).\n"
         "2. `tuple_key.user` is mandatory in the case the `tuple_key.object` is a type only.\n"
-        "3. `authorization_model_id` is optional. If specified, it will be used to assert that the input `tuple_key` is valid for this model. "
+        "3. `authorization_model_id` is optional. If specified, it will be used to assert that the input `tuple_key` is valid for the model specified. "
         "If not specified, the latest authorization model ID will be used. \n"
         "## Examples\n"
         "### Query for all objects in a type definition\n"
@@ -152,7 +152,7 @@ service OpenFGAService {
         "Path parameter `store_id` is required.  In the body, `writes` "
         "adds new tuples while `deletes` removes existing tuples.\n"
         "An `authorization_model_id` may be specified in the body. If it is, it will be used to assert that each written tuple (not deleted) "
-        "is valid for this model. If it is not specified, the latest authorization model ID will be used.\n"
+        "is valid for the model specified. If it is not specified, the latest authorization model ID will be used.\n"
         "## Example\n"
         "### Adding relationships\n"
         "To add `user:anne` as a `writer` for `document:2021-budget`, call "
@@ -205,7 +205,7 @@ service OpenFGAService {
         "The Check API queries to check if the user has a certain relationship with an object in a certain store.\n"
         "Path parameter `store_id` as well as the body parameter `tuple_key` with specified `object`, `relation` and `user` subfields are all required.\n"
         "Optionally, a `contextual_tuples` object may also be included in the body of the request. This object contains one field `tuple_keys`, which is an array of tuple keys.\n"
-        "You may also provide an `authorization_model_id` in the body. This will be used to assert that the input `tuple_key` is valid for this model. "
+        "You may also provide an `authorization_model_id` in the body. This will be used to assert that the input `tuple_key` is valid for the model specified. "
         "If not specified, the assertion will be made against the latest authorization model ID.\n"
         "The response will return whether the relationship exists in the field `allowed`.\n\n"
         "## Example\n"
@@ -259,7 +259,7 @@ service OpenFGAService {
         "This is different from the `/stores/{store_id}/read` API in that both users and "
         "computed usersets are returned.\n"
         "Path parameter `store_id` as well as body parameters `tuple_key.object` and `tuple_key.relation` are all required.\n"
-        "An `authorization_model_id` may also be specified in the body. If it is, it will be used to assert that the input `tuple_key` is valid for this model. "
+        "An `authorization_model_id` may also be specified in the body. If it is, it will be used to assert that the input `tuple_key` is valid for the model specified. "
         "If it is not, the latest authorization model ID will be used.\n"
         "The response will return a tree whose leaves are the specific users and usersets. "
         "Union, intersection and difference operator are located in the intermediate nodes.\n\n"
@@ -699,14 +699,14 @@ service OpenFGAService {
     };
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      summary: "[EXPERIMENTAL] Get all object ids of the given type that the given user has a given relation with"
+      summary: "[EXPERIMENTAL] Get all object ids of the given type that the user has a relation with"
       tags: [
         "Relationship Queries"
       ]
       operation_id: "ListObjects"
       description:
-        "The ListObjects API returns a list of all the object ids of the given type that the given user "
-        "has a given relation with. To achieve this, both the store tuples and the authorization model are used.\n"
+        "The ListObjects API returns a list of all the object ids of the given type that the user "
+        "has a relation with. To achieve this, both the store tuples and the authorization model are used.\n"
         "Path parameter `store_id` as well as body parameters `type`, `relation` and `user` are all required.\n"
         "An `authorization_model_id` may be specified in the body. If it is, it will be used to decide the underlying implementation used. "
         "If it is not specified, the latest authorization model ID will be used.\n"
