@@ -1542,6 +1542,9 @@
         "relation": {
           "type": "string",
           "example": "member"
+        },
+        "wildcard": {
+          "$ref": "#/definitions/Wildcard"
         }
       },
       "description": "RelationReference represents a relation of a particular object type (e.g. 'document#viewer').",
@@ -1714,7 +1717,7 @@
         },
         "metadata": {
           "$ref": "#/definitions/Metadata",
-          "description": "A map whose keys are the name of the relation and whose value is the Metadata for that\nrelation."
+          "description": "A map whose keys are the name of the relation and whose value is the Metadata for that relation."
         }
       },
       "required": [
@@ -1814,6 +1817,9 @@
           "type": "string"
         }
       }
+    },
+    "Wildcard": {
+      "type": "object"
     },
     "WriteAssertionsResponse": {
       "type": "object"
