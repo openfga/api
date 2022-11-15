@@ -8,6 +8,7 @@ on:
       - buf.md
       - buf.lock
       - README.md
+      - .github/workflows/push.yaml
 
 jobs:
   build:
