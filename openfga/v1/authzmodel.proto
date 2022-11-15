@@ -46,8 +46,7 @@ message TypeDefinition {
     }
   ];
 
-  // A map whose keys are the name of the relation and whose value is the Metadata for that
-  // relation.
+  // A map whose keys are the name of the relation and whose value is the Metadata for that relation.
   Metadata metadata = 3;
 }
 
@@ -88,16 +87,22 @@ message RelationReference {
     }
   ];
 
-  string relation = 2 [
-    (validate.rules).string = {
-      pattern: "^[^:#@\\s]{1,50}$",
-      ignore_empty: true
-    },
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      example: "\"member\""
-    }
-  ];
+  oneof relation_or_wildcard {
+    string relation = 2 [
+      (validate.rules).string = {
+        pattern: "^[^:#@\\s]{1,50}$",
+        ignore_empty: true
+      },
+      (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+        example: "\"member\""
+      }
+    ];
+
+    Wildcard wildcard = 3;
+  }
 }
+
+message Wildcard {}
 
 message Usersets {
   repeated Userset child = 1;
