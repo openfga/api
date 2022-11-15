@@ -8,9 +8,10 @@ on:
       - buf.md
       - buf.lock
       - README.md
+  workflow_dispatch:
 
 jobs:
-  build:
+  push:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
