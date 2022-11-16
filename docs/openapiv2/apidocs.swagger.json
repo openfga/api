@@ -301,12 +301,9 @@
                 "assertions": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/definitions/Assertion"
-                  },
-                  "maximum": 100,
-                  "required": [
-                    "assertions"
-                  ]
+                    "$ref": "#/definitions/Assertion",
+                    "maximum": 100
+                  }
                 }
               },
               "required": [
@@ -323,7 +320,7 @@
     "/stores/{store_id}/authorization-models": {
       "get": {
         "summary": "Return all the authorization models for a particular store",
-        "description": "The GET authorization-models API will return all the authorization models for a certain store.\nPath parameter `store_id` is required.\nOpenFGA's response will contain an array of all authorization models, sorted in descending order of creation.\n\n## Example\nAssume that a store's authorization model has been configured twice. To get all the authorization models that have been created in this store, call GET authorization-models. The API will return a response that looks like:\n```json\n{\n  \"authorization_models\": [\n    {\n      \"id\": \"01G50QVV17PECNVAHX1GG4Y5NC\",\n      \"type_definitions\": [...]\n    },\n    {\n      \"id\": \"01G4ZW8F4A07AKQ8RHSVG9RW04\",\n      \"type_definitions\": [...]\n    },\n  ]\n}\n```\nIf there are more authorization models available, the response will contain an extra field `continuation_token`:\n```json\n{\n  \"authorization_models\": [\n    {\n      \"id\": \"01G50QVV17PECNVAHX1GG4Y5NC\",\n      \"type_definitions\": [...]\n    },\n    {\n      \"id\": \"01G4ZW8F4A07AKQ8RHSVG9RW04\",\n      \"type_definitions\": [...]\n    },\n  ],\n  \"continuation_token\": \"eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ==\"\n}\n```\n",
+        "description": "The GET authorization-models API will return all the authorization models for a certain store.\nOpenFGA's response will contain an array of all authorization models, sorted in descending order of creation.\n\n## Example\nAssume that a store's authorization model has been configured twice. To get all the authorization models that have been created in this store, call GET authorization-models. The API will return a response that looks like:\n```json\n{\n  \"authorization_models\": [\n    {\n      \"id\": \"01G50QVV17PECNVAHX1GG4Y5NC\",\n      \"type_definitions\": [...]\n    },\n    {\n      \"id\": \"01G4ZW8F4A07AKQ8RHSVG9RW04\",\n      \"type_definitions\": [...]\n    },\n  ]\n}\n```\nIf there are more authorization models available, the response will contain an extra field `continuation_token`:\n```json\n{\n  \"authorization_models\": [\n    {\n      \"id\": \"01G50QVV17PECNVAHX1GG4Y5NC\",\n      \"type_definitions\": [...]\n    },\n    {\n      \"id\": \"01G4ZW8F4A07AKQ8RHSVG9RW04\",\n      \"type_definitions\": [...]\n    },\n  ],\n  \"continuation_token\": \"eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ==\"\n}\n```\n",
         "operationId": "ReadAuthorizationModels",
         "responses": {
           "200": {
@@ -378,7 +375,7 @@
       },
       "post": {
         "summary": "Create a new authorization model",
-        "description": "The POST authorization-model API will update the authorization model for a certain store.\nPath parameter `store_id` and `type_definitions` array in the body are required.  Each item in the `type_definitions` array is a type definition as specified in the field `type_definition`.\nThe response will return the authorization model's ID in the `id` field.\n\n## Example\nTo update the authorization model with a single `document` authorization model, call POST authorization-models API with the body: \n```json\n{\n  \"type_definitions\":[\n    {\n      \"type\":\"document\",\n      \"relations\":{\n        \"reader\":{\n          \"union\":{\n            \"child\":[\n              {\n                \"this\":{}\n              },\n              {\n                \"computedUserset\":{\n                  \"object\":\"\",\n                  \"relation\":\"writer\"\n                }\n              }\n            ]\n          }\n        },\n        \"writer\":{\n          \"this\":{}\n        }\n      }\n    }\n  ]\n}\n```\nOpenFGA's response will include the version id for this authorization model, which will look like \n```\n{\"authorization_model_id\": \"01G50QVV17PECNVAHX1GG4Y5NC\"}\n```\n",
+        "description": "The POST authorization-model API will update the authorization model for a certain store.\nEach item in the `type_definitions` array is a type definition as specified in the field `type_definition`.\nThe response will return the authorization model's ID in the `id` field.\n\n## Example\nTo update the authorization model with a single `document` authorization model, call POST authorization-models API with the body: \n```json\n{\n  \"type_definitions\":[\n    {\n      \"type\":\"document\",\n      \"relations\":{\n        \"reader\":{\n          \"union\":{\n            \"child\":[\n              {\n                \"this\":{}\n              },\n              {\n                \"computedUserset\":{\n                  \"object\":\"\",\n                  \"relation\":\"writer\"\n                }\n              }\n            ]\n          }\n        },\n        \"writer\":{\n          \"this\":{}\n        }\n      }\n    }\n  ]\n}\n```\nOpenFGA's response will include the version id for this authorization model, which will look like \n```\n{\"authorization_model_id\": \"01G50QVV17PECNVAHX1GG4Y5NC\"}\n```\n",
         "operationId": "WriteAuthorizationModel",
         "responses": {
           "201": {
@@ -423,14 +420,17 @@
                 "type_definitions": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/definitions/TypeDefinition"
-                  },
-                  "minimum": 1
+                    "$ref": "#/definitions/TypeDefinition",
+                    "minimum": 1
+                  }
                 },
                 "schema_version": {
                   "type": "string"
                 }
-              }
+              },
+              "required": [
+                "type_definitions"
+              ]
             }
           }
         ],
@@ -442,7 +442,7 @@
     "/stores/{store_id}/authorization-models/{id}": {
       "get": {
         "summary": "Return a particular version of an authorization model",
-        "description": "The GET authorization-models by ID API will return a particular version of authorization model that had been configured for a certain store.  \nPath parameter `store_id` and `id` are required.\nThe response will return the authorization model for the particular version.\n\n## Example\nTo retrieve the authorization model with ID `01G5JAVJ41T49E9TT3SKVS7X1J` for the store, call the GET authorization-models by ID API with `01G5JAVJ41T49E9TT3SKVS7X1J` as the `id` path parameter.  The API will return:\n```json\n{\n  \"authorization_model\":{\n    \"id\":\"01G5JAVJ41T49E9TT3SKVS7X1J\",\n    \"type_definitions\":[\n      {\n        \"type\":\"document\",\n        \"relations\":{\n          \"reader\":{\n            \"union\":{\n              \"child\":[\n                {\n                  \"this\":{}\n                },\n                {\n                  \"computedUserset\":{\n                    \"object\":\"\",\n                    \"relation\":\"writer\"\n                  }\n                }\n              ]\n            }\n          },\n          \"writer\":{\n            \"this\":{}\n          }\n        }\n      }\n    ]\n  }\n}\n```\nIn the above example, there is only 1 type (`document`) with 2 relations (`writer` and `reader`).",
+        "description": "The GET authorization-models by ID API will return a particular version of authorization model that had been configured for a certain store.  \nThe response will return the authorization model for the particular version.\n\n## Example\nTo retrieve the authorization model with ID `01G5JAVJ41T49E9TT3SKVS7X1J` for the store, call the GET authorization-models by ID API with `01G5JAVJ41T49E9TT3SKVS7X1J` as the `id` path parameter.  The API will return:\n```json\n{\n  \"authorization_model\":{\n    \"id\":\"01G5JAVJ41T49E9TT3SKVS7X1J\",\n    \"type_definitions\":[\n      {\n        \"type\":\"document\",\n        \"relations\":{\n          \"reader\":{\n            \"union\":{\n              \"child\":[\n                {\n                  \"this\":{}\n                },\n                {\n                  \"computedUserset\":{\n                    \"object\":\"\",\n                    \"relation\":\"writer\"\n                  }\n                }\n              ]\n            }\n          },\n          \"writer\":{\n            \"this\":{}\n          }\n        }\n      }\n    ]\n  }\n}\n```\nIn the above example, there is only 1 type (`document`) with 2 relations (`writer` and `reader`).",
         "operationId": "ReadAuthorizationModel",
         "responses": {
           "200": {
@@ -555,7 +555,7 @@
     "/stores/{store_id}/check": {
       "post": {
         "summary": "Check whether a user is authorized to access an object",
-        "description": "The Check API queries to check if the user has a certain relationship with an object in a certain store.\nPath parameter `store_id` as well as the body parameter `tuple_key` with specified `object`, `relation` and `user` subfields are all required.\nOptionally, a `contextual_tuples` object may also be included in the body of the request. This object contains one field `tuple_keys`, which is an array of tuple keys.\nYou may also provide an `authorization_model_id` in the body. This will be used to assert that the input `tuple_key` is valid for the model specified. If not specified, the assertion will be made against the latest authorization model ID.\nThe response will return whether the relationship exists in the field `allowed`.\n\n## Example\nIn order to check if user `user:anne` of type `user` has a `can_read` relationship with object `document:2021-budget` given the following contextual tuple\n```json\n{\n  \"user\": \"user:anne\",\n  \"relation\": \"member\",\n  \"object\": \"time_slot:office_hours\"\n}\n```\na check API call should be fired with the following body:\n```json\n{\n  \"tuple_key\": {\n    \"user\": \"user:anne\",\n    \"relation\": \"can_read\",\n    \"object\": \"document:2021-budget\"\n  },\n  \"contextual_tuples\": {\n    \"tuple_keys\": [\n      {\n        \"user\": \"user:anne\",\n        \"relation\": \"member\",\n        \"object\": \"time_slot:office_hours\"\n      }\n    ]\n  }\n}\n```\nOpenFGA's response will include `{ \"allowed\": true }` if there is a relationship and `{ \"allowed\": false }` if there isn't.",
+        "description": "The Check API queries to check if the user has a certain relationship with an object in a certain store.\nA `contextual_tuples` object may also be included in the body of the request. This object contains one field `tuple_keys`, which is an array of tuple keys.\nYou may also provide an `authorization_model_id` in the body. This will be used to assert that the input `tuple_key` is valid for the model specified. If not specified, the assertion will be made against the latest authorization model ID.\nThe response will return whether the relationship exists in the field `allowed`.\n\n## Example\nIn order to check if user `user:anne` of type `user` has a `can_read` relationship with object `document:2021-budget` given the following contextual tuple\n```json\n{\n  \"user\": \"user:anne\",\n  \"relation\": \"member\",\n  \"object\": \"time_slot:office_hours\"\n}\n```\na check API call should be fired with the following body:\n```json\n{\n  \"tuple_key\": {\n    \"user\": \"user:anne\",\n    \"relation\": \"can_read\",\n    \"object\": \"document:2021-budget\"\n  },\n  \"contextual_tuples\": {\n    \"tuple_keys\": [\n      {\n        \"user\": \"user:anne\",\n        \"relation\": \"member\",\n        \"object\": \"time_slot:office_hours\"\n      }\n    ]\n  }\n}\n```\nOpenFGA's response will include `{ \"allowed\": true }` if there is a relationship and `{ \"allowed\": false }` if there isn't.",
         "operationId": "Check",
         "responses": {
           "200": {
@@ -613,7 +613,10 @@
                   "description": "Defaults to false. Making it true has performance implications.",
                   "readOnly": true
                 }
-              }
+              },
+              "required": [
+                "tuple_key"
+              ]
             }
           }
         ],
@@ -625,7 +628,7 @@
     "/stores/{store_id}/expand": {
       "post": {
         "summary": "Expand all relationships in userset tree format, and following userset rewrite rules.  Useful to reason about and debug a certain relationship",
-        "description": "The Expand API will return all users and usersets that have certain relationship with an object in a certain store.\nThis is different from the `/stores/{store_id}/read` API in that both users and computed usersets are returned.\nPath parameter `store_id` as well as body parameters `tuple_key.object` and `tuple_key.relation` are all required.\nAn `authorization_model_id` may also be specified in the body. If it is, it will be used to assert that the input `tuple_key` is valid for the model specified. If it is not, the latest authorization model ID will be used.\nThe response will return a tree whose leaves are the specific users and usersets. Union, intersection and difference operator are located in the intermediate nodes.\n\n## Example\nAssume the following type definition for document:\n```yaml\n  type document\n    relations\n      define reader as self or writer\n      define writer as self\n```\nIn order to expand all users that have `reader` relationship with object `document:2021-budget`, a call to expand API should be made with the following body\n```json\n{\n  \"tuple_key\": {\n    \"object\": \"document:2021-budget\",\n    \"relation\": \"reader\"\n  }\n}\n```\nOpenFGA's response will be a userset tree of the users and computed usersets that have read access to the document.\n```json\n{\n  \"tree\":{\n    \"root\":{\n      \"type\":\"document:2021-budget#reader\",\n      \"union\":{\n        \"nodes\":[\n          {\n            \"type\":\"document:2021-budget#reader\",\n            \"leaf\":{\n              \"users\":{\n                \"users\":[\n                  \"user:bob\"\n                ]\n              }\n            }\n          },\n          {\n            \"type\":\"document:2021-budget#reader\",\n            \"leaf\":{\n              \"computed\":{\n                \"userset\":\"document:2021-budget#writer\"\n              }\n            }\n          }\n        ]\n      }\n    }\n  }\n}\n```\nThe caller can then call expand API for the `writer` relationship for the `document:2021-budget`.",
+        "description": "The Expand API will return all users and usersets that have certain relationship with an object in a certain store.\nThis is different from the `/stores/{store_id}/read` API in that both users and computed usersets are returned.\nBody parameters `tuple_key.object` and `tuple_key.relation` are all required.\nAn `authorization_model_id` may also be specified in the body. If it is, it will be used to assert that the input `tuple_key` is valid for the model specified. If it is not, the latest authorization model ID will be used.\nThe response will return a tree whose leaves are the specific users and usersets. Union, intersection and difference operator are located in the intermediate nodes.\n\n## Example\nAssume the following type definition for document:\n```yaml\n  type document\n    relations\n      define reader as self or writer\n      define writer as self\n```\nIn order to expand all users that have `reader` relationship with object `document:2021-budget`, a call to expand API should be made with the following body\n```json\n{\n  \"tuple_key\": {\n    \"object\": \"document:2021-budget\",\n    \"relation\": \"reader\"\n  }\n}\n```\nOpenFGA's response will be a userset tree of the users and computed usersets that have read access to the document.\n```json\n{\n  \"tree\":{\n    \"root\":{\n      \"type\":\"document:2021-budget#reader\",\n      \"union\":{\n        \"nodes\":[\n          {\n            \"type\":\"document:2021-budget#reader\",\n            \"leaf\":{\n              \"users\":{\n                \"users\":[\n                  \"user:bob\"\n                ]\n              }\n            }\n          },\n          {\n            \"type\":\"document:2021-budget#reader\",\n            \"leaf\":{\n              \"computed\":{\n                \"userset\":\"document:2021-budget#writer\"\n              }\n            }\n          }\n        ]\n      }\n    }\n  }\n}\n```\nThe caller can then call expand API for the `writer` relationship for the `document:2021-budget`.",
         "operationId": "Expand",
         "responses": {
           "200": {
@@ -674,7 +677,10 @@
                   "type": "string",
                   "example": "01G5JAVJ41T49E9TT3SKVS7X1J"
                 }
-              }
+              },
+              "required": [
+                "tuple_key"
+              ]
             }
           }
         ],
@@ -686,7 +692,7 @@
     "/stores/{store_id}/list-objects": {
       "post": {
         "summary": "[EXPERIMENTAL] Get all object ids of the given type that the user has a relation with",
-        "description": "The ListObjects API returns a list of all the object ids of the given type that the user has a relation with. To achieve this, both the store tuples and the authorization model are used.\nPath parameter `store_id` as well as body parameters `type`, `relation` and `user` are all required.\nAn `authorization_model_id` may be specified in the body. If it is, it will be used to decide the underlying implementation used. If it is not specified, the latest authorization model ID will be used.\nYou may also specify `contextual_tuples` that will be treated as regular tuples.\n",
+        "description": "The ListObjects API returns a list of all the object ids of the given type that the user has a relation with. To achieve this, both the store tuples and the authorization model are used.\nAn `authorization_model_id` may be specified in the body. If it is, it will be used to decide the underlying implementation used. If it is not specified, the latest authorization model ID will be used.\nYou may also specify `contextual_tuples` that will be treated as regular tuples.\n",
         "operationId": "ListObjects",
         "responses": {
           "200": {
@@ -747,7 +753,12 @@
                 "contextual_tuples": {
                   "$ref": "#/definitions/ContextualTupleKeys"
                 }
-              }
+              },
+              "required": [
+                "type",
+                "relation",
+                "user"
+              ]
             }
           }
         ],
@@ -759,7 +770,7 @@
     "/stores/{store_id}/read": {
       "post": {
         "summary": "Get tuples from the store that matches a query, without following userset rewrite rules",
-        "description": "The POST read API will return the tuples for a certain store that match a query filter specified in the body of the request. It is different from the `/stores/{store_id}/expand` API in that it only returns relationship tuples that are stored in the system and satisfy the query. Path parameter `store_id` is required. \nIn the body:\n1. `tuple_key.object` is mandatory. It can be a full object (e.g., `type:object_id`) or type only (e.g., `type:`).\n2. `tuple_key.user` is mandatory in the case the `tuple_key.object` is a type only.\n3. `authorization_model_id` is optional. If specified, it will be used to assert that the input `tuple_key` is valid for the model specified. If not specified, the latest authorization model ID will be used. \n## Examples\n### Query for all objects in a type definition\nTo query for all objects that `user:bob` has `reader` relationship in the document type definition, call read API with body of\n```json\n{\n \"tuple_key\": {\n     \"user\": \"user:bob\",\n     \"relation\": \"reader\",\n     \"object\": \"document:\"\n  }\n}\n```\nThe API will return tuples and an optional continuation token, something like\n```json\n{\n  \"tuples\": [\n    {\n      \"key\": {\n        \"user\": \"user:bob\",\n        \"relation\": \"reader\",\n        \"object\": \"document:2021-budget\"\n      },\n      \"timestamp\": \"2021-10-06T15:32:11.128Z\"\n    }\n  ]\n}\n```\nThis means that `user:bob` has a `reader` relationship with 1 document `document:2021-budget`.\n### Query for all users with particular relationships for a particular document\nTo query for all users that have `reader` relationship with `document:2021-budget`, call read API with body of \n```json\n{\n  \"tuple_key\": {\n     \"object\": \"document:2021-budget\",\n     \"relation\": \"reader\"\n   }\n}\n```\nThe API will return something like \n```json\n{\n  \"tuples\": [\n    {\n      \"key\": {\n        \"user\": \"user:bob\",\n        \"relation\": \"reader\",\n        \"object\": \"document:2021-budget\"\n      },\n      \"timestamp\": \"2021-10-06T15:32:11.128Z\"\n    }\n  ]\n}\n```\nThis means that `document:2021-budget` has 1 `reader` (`user:bob`).  Note that the API will not return writers such as `user:anne` even when all writers are readers.  This is because only direct relationship are returned for the READ API.\n### Query for all users with all relationships for a particular document\nTo query for all users that have any relationship with `document:2021-budget`, call read API with body of \n```json\n{\n  \"tuple_key\": {\n      \"object\": \"document:2021-budget\"\n   }\n}\n```\nThe API will return something like \n```json\n{\n  \"tuples\": [\n    {\n      \"key\": {\n        \"user\": \"user:anne\",\n        \"relation\": \"writer\",\n        \"object\": \"document:2021-budget\"\n      },\n      \"timestamp\": \"2021-10-05T13:42:12.356Z\"\n    },\n    {\n      \"key\": {\n        \"user\": \"user:bob\",\n        \"relation\": \"reader\",\n        \"object\": \"document:2021-budget\"\n      },\n      \"timestamp\": \"2021-10-06T15:32:11.128Z\"\n    }\n  ]\n}\n```\nThis means that `document:2021-budget` has 1 `reader` (`user:bob`) and 1 `writer` (`user:anne`).\n",
+        "description": "The POST read API will return the tuples for a certain store that match a query filter specified in the body of the request. It is different from the `/stores/{store_id}/expand` API in that it only returns relationship tuples that are stored in the system and satisfy the query. \nIn the body:\n1. `tuple_key.object` is mandatory. It can be a full object (e.g., `type:object_id`) or type only (e.g., `type:`).\n2. `tuple_key.user` is mandatory in the case the `tuple_key.object` is a type only.\n3. `authorization_model_id` is optional. If specified, it will be used to assert that the input `tuple_key` is valid for the model specified. If not specified, the latest authorization model ID will be used. \n## Examples\n### Query for all objects in a type definition\nTo query for all objects that `user:bob` has `reader` relationship in the document type definition, call read API with body of\n```json\n{\n \"tuple_key\": {\n     \"user\": \"user:bob\",\n     \"relation\": \"reader\",\n     \"object\": \"document:\"\n  }\n}\n```\nThe API will return tuples and an optional continuation token, something like\n```json\n{\n  \"tuples\": [\n    {\n      \"key\": {\n        \"user\": \"user:bob\",\n        \"relation\": \"reader\",\n        \"object\": \"document:2021-budget\"\n      },\n      \"timestamp\": \"2021-10-06T15:32:11.128Z\"\n    }\n  ]\n}\n```\nThis means that `user:bob` has a `reader` relationship with 1 document `document:2021-budget`.\n### Query for all users with particular relationships for a particular document\nTo query for all users that have `reader` relationship with `document:2021-budget`, call read API with body of \n```json\n{\n  \"tuple_key\": {\n     \"object\": \"document:2021-budget\",\n     \"relation\": \"reader\"\n   }\n}\n```\nThe API will return something like \n```json\n{\n  \"tuples\": [\n    {\n      \"key\": {\n        \"user\": \"user:bob\",\n        \"relation\": \"reader\",\n        \"object\": \"document:2021-budget\"\n      },\n      \"timestamp\": \"2021-10-06T15:32:11.128Z\"\n    }\n  ]\n}\n```\nThis means that `document:2021-budget` has 1 `reader` (`user:bob`).  Note that the API will not return writers such as `user:anne` even when all writers are readers.  This is because only direct relationship are returned for the READ API.\n### Query for all users with all relationships for a particular document\nTo query for all users that have any relationship with `document:2021-budget`, call read API with body of \n```json\n{\n  \"tuple_key\": {\n      \"object\": \"document:2021-budget\"\n   }\n}\n```\nThe API will return something like \n```json\n{\n  \"tuples\": [\n    {\n      \"key\": {\n        \"user\": \"user:anne\",\n        \"relation\": \"writer\",\n        \"object\": \"document:2021-budget\"\n      },\n      \"timestamp\": \"2021-10-05T13:42:12.356Z\"\n    },\n    {\n      \"key\": {\n        \"user\": \"user:bob\",\n        \"relation\": \"reader\",\n        \"object\": \"document:2021-budget\"\n      },\n      \"timestamp\": \"2021-10-06T15:32:11.128Z\"\n    }\n  ]\n}\n```\nThis means that `document:2021-budget` has 1 `reader` (`user:bob`) and 1 `writer` (`user:anne`).\n",
         "operationId": "Read",
         "responses": {
           "200": {
@@ -817,7 +828,10 @@
                   "type": "string",
                   "example": "eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ=="
                 }
-              }
+              },
+              "required": [
+                "tuple_key"
+              ]
             }
           }
         ],
@@ -962,7 +976,12 @@
                 "contextual_tuples": {
                   "$ref": "#/definitions/ContextualTupleKeys"
                 }
-              }
+              },
+              "required": [
+                "type",
+                "relation",
+                "user"
+              ]
             }
           }
         ],
@@ -974,7 +993,7 @@
     "/stores/{store_id}/write": {
       "post": {
         "summary": "Add or delete tuples from the store",
-        "description": "The POST write API will update the tuples for a certain store. Tuples and type definitions allow OpenFGA to determine whether a relationship exists between an object and an user.\nPath parameter `store_id` is required.  In the body, `writes` adds new tuples while `deletes` removes existing tuples.\nAn `authorization_model_id` may be specified in the body. If it is, it will be used to assert that each written tuple (not deleted) is valid for the model specified. If it is not specified, the latest authorization model ID will be used.\n## Example\n### Adding relationships\nTo add `user:anne` as a `writer` for `document:2021-budget`, call write API with the following \n```json\n{\n  \"writes\": {\n    \"tuple_keys\": [\n      {\n        \"user\": \"user:anne\",\n        \"relation\": \"writer\",\n        \"object\": \"document:2021-budget\"\n      }\n    ]\n  }\n}\n```\n### Removing relationships\nTo remove `user:bob` as a `reader` for `document:2021-budget`, call write API with the following \n```json\n{\n  \"deletes\": {\n    \"tuple_keys\": [\n      {\n        \"user\": \"user:bob\",\n        \"relation\": \"reader\",\n        \"object\": \"document:2021-budget\"\n      }\n    ]\n  }\n}\n```\n",
+        "description": "The POST write API will update the tuples for a certain store. Tuples and type definitions allow OpenFGA to determine whether a relationship exists between an object and an user.\nIn the body, `writes` adds new tuples while `deletes` removes existing tuples.\nAn `authorization_model_id` may be specified in the body. If it is, it will be used to assert that each written tuple (not deleted) is valid for the model specified. If it is not specified, the latest authorization model ID will be used.\n## Example\n### Adding relationships\nTo add `user:anne` as a `writer` for `document:2021-budget`, call write API with the following \n```json\n{\n  \"writes\": {\n    \"tuple_keys\": [\n      {\n        \"user\": \"user:anne\",\n        \"relation\": \"writer\",\n        \"object\": \"document:2021-budget\"\n      }\n    ]\n  }\n}\n```\n### Removing relationships\nTo remove `user:bob` as a `reader` for `document:2021-budget`, call write API with the following \n```json\n{\n  \"deletes\": {\n    \"tuple_keys\": [\n      {\n        \"user\": \"user:bob\",\n        \"relation\": \"reader\",\n        \"object\": \"document:2021-budget\"\n      }\n    ]\n  }\n}\n```\n",
         "operationId": "Write",
         "responses": {
           "200": {
@@ -1053,13 +1072,11 @@
           "$ref": "#/definitions/TupleKey"
         },
         "expectation": {
-          "type": "boolean",
-          "required": [
-            "expectation"
-          ]
+          "type": "boolean"
         }
       },
       "required": [
+        "tuple_key",
         "expectation"
       ]
     },
@@ -1154,12 +1171,9 @@
         "tuple_keys": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/TupleKey"
-          },
-          "maximum": 10,
-          "required": [
-            "tuple_keys"
-          ]
+            "$ref": "#/definitions/TupleKey",
+            "maximum": 10
+          }
         }
       },
       "required": [
@@ -1173,7 +1187,10 @@
           "type": "string",
           "example": "my-store-name"
         }
-      }
+      },
+      "required": [
+        "name"
+      ]
     },
     "CreateStoreResponse": {
       "type": "object",
@@ -1534,10 +1551,7 @@
       "properties": {
         "type": {
           "type": "string",
-          "example": "group",
-          "required": [
-            "type"
-          ]
+          "example": "group"
         },
         "relation": {
           "type": "string",
@@ -1655,13 +1669,10 @@
         "tuple_keys": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/TupleKey"
-          },
-          "maximum": 25,
-          "minimum": 1,
-          "required": [
-            "tuple_keys"
-          ]
+            "$ref": "#/definitions/TupleKey",
+            "maximum": 25,
+            "minimum": 1
+          }
         }
       },
       "required": [
@@ -1682,10 +1693,7 @@
       "properties": {
         "type": {
           "type": "string",
-          "example": "document",
-          "required": [
-            "type"
-          ]
+          "example": "document"
         },
         "relations": {
           "type": "object",
@@ -1845,7 +1853,11 @@
         "subtract": {
           "$ref": "#/definitions/Userset"
         }
-      }
+      },
+      "required": [
+        "base",
+        "subtract"
+      ]
     },
     "v1.TupleToUserset": {
       "type": "object",

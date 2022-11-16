@@ -28,8 +28,8 @@ service OpenFGAService {
         "The POST read API will return the tuples for a certain store that match a "
         "query filter specified in the body of the request. "
         "It is different from the `/stores/{store_id}/expand` API in that it only "
-        "returns relationship tuples that are stored in the system and satisfy the query. "
-        "Path parameter `store_id` is required. \nIn the body:\n"
+        "returns relationship tuples that are stored in the system and satisfy the query. \n"
+        "In the body:\n"
         "1. `tuple_key.object` is mandatory. It can be a full object (e.g., "
         "`type:object_id`) or type only (e.g., `type:`).\n"
         "2. `tuple_key.user` is mandatory in the case the `tuple_key.object` is a type only.\n"
@@ -149,7 +149,7 @@ service OpenFGAService {
         "The POST write API will update the tuples for a certain store. Tuples and "
         "type definitions allow OpenFGA to determine whether a "
         "relationship exists between an object and an user.\n"
-        "Path parameter `store_id` is required.  In the body, `writes` "
+        "In the body, `writes` "
         "adds new tuples while `deletes` removes existing tuples.\n"
         "An `authorization_model_id` may be specified in the body. If it is, it will be used to assert that each written tuple (not deleted) "
         "is valid for the model specified. If it is not specified, the latest authorization model ID will be used.\n"
@@ -203,8 +203,7 @@ service OpenFGAService {
       operation_id: "Check"
       description:
         "The Check API queries to check if the user has a certain relationship with an object in a certain store.\n"
-        "Path parameter `store_id` as well as the body parameter `tuple_key` with specified `object`, `relation` and `user` subfields are all required.\n"
-        "Optionally, a `contextual_tuples` object may also be included in the body of the request. This object contains one field `tuple_keys`, which is an array of tuple keys.\n"
+        "A `contextual_tuples` object may also be included in the body of the request. This object contains one field `tuple_keys`, which is an array of tuple keys.\n"
         "You may also provide an `authorization_model_id` in the body. This will be used to assert that the input `tuple_key` is valid for the model specified. "
         "If not specified, the assertion will be made against the latest authorization model ID.\n"
         "The response will return whether the relationship exists in the field `allowed`.\n\n"
@@ -258,7 +257,7 @@ service OpenFGAService {
         "that have certain relationship with an object in a certain store.\n"
         "This is different from the `/stores/{store_id}/read` API in that both users and "
         "computed usersets are returned.\n"
-        "Path parameter `store_id` as well as body parameters `tuple_key.object` and `tuple_key.relation` are all required.\n"
+        "Body parameters `tuple_key.object` and `tuple_key.relation` are all required.\n"
         "An `authorization_model_id` may also be specified in the body. If it is, it will be used to assert that the input `tuple_key` is valid for the model specified. "
         "If it is not, the latest authorization model ID will be used.\n"
         "The response will return a tree whose leaves are the specific users and usersets. "
@@ -331,7 +330,6 @@ service OpenFGAService {
       operation_id: "ReadAuthorizationModels"
       description:
         "The GET authorization-models API will return all the authorization models for a certain store.\n"
-        "Path parameter `store_id` is required.\n"
         "OpenFGA's response will contain an array of all authorization models, sorted in descending order of creation.\n\n"
         "## Example\n"
         "Assume that a store's authorization model has been configured twice. To get all the authorization models that have been created in this store, call GET authorization-models. The API will return a response that looks like:\n"
@@ -383,7 +381,6 @@ service OpenFGAService {
       description:
         "The GET authorization-models by ID API will return a particular version of "
         "authorization model that had been configured for a certain store.  \n"
-        "Path parameter `store_id` and `id` are required.\n"
         "The response will return the authorization model for the particular version.\n\n"
         "## Example\n"
         "To retrieve the authorization model with ID `01G5JAVJ41T49E9TT3SKVS7X1J` for the store, "
@@ -441,8 +438,7 @@ service OpenFGAService {
       description:
         "The POST authorization-model API will update the authorization model "
         "for a certain store.\n"
-        "Path parameter `store_id` and `type_definitions` array in the body are "
-        "required.  Each item in the `type_definitions` array is a type "
+        "Each item in the `type_definitions` array is a type "
         "definition as specified in the field `type_definition`.\n"
         "The response will return the authorization model's ID in the `id` field.\n\n"
         "## Example\n"
@@ -707,7 +703,6 @@ service OpenFGAService {
       description:
         "The ListObjects API returns a list of all the object ids of the given type that the user "
         "has a relation with. To achieve this, both the store tuples and the authorization model are used.\n"
-        "Path parameter `store_id` as well as body parameters `type`, `relation` and `user` are all required.\n"
         "An `authorization_model_id` may be specified in the body. If it is, it will be used to decide the underlying implementation used. "
         "If it is not specified, the latest authorization model ID will be used.\n"
         "You may also specify `contextual_tuples` that will be treated as regular tuples.\n"
@@ -744,12 +739,16 @@ message ListObjectsRequest {
     },
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       example: "\"document\""
-    }
+    },
+    (google.api.field_behavior) = REQUIRED
   ];
 
-  string relation = 4 [(validate.rules).string = {
-    pattern: "^[^:#@\\s]{1,50}$"
-  }];
+  string relation = 4 [
+    (validate.rules).string = {
+      pattern: "^[^:#@\\s]{1,50}$"
+    },
+    (google.api.field_behavior) = REQUIRED
+  ];
 
   string user = 5 [
     (validate.rules).string = {
@@ -758,7 +757,8 @@ message ListObjectsRequest {
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       max_length: 512,
       example: "\"user:anne\""
-    }
+    },
+    (google.api.field_behavior) = REQUIRED
   ];
 
   openfga.v1.ContextualTupleKeys contextual_tuples = 6 [json_name = "contextual_tuples"];
@@ -797,12 +797,16 @@ message StreamedListObjectsRequest {
     },
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       example: "\"document\""
-    }
+    },
+    (google.api.field_behavior) = REQUIRED
   ];
 
-  string relation = 4 [(validate.rules).string = {
-    pattern: "^[^:#@\\s]{1,50}$"
-  }];
+  string relation = 4 [
+    (validate.rules).string = {
+      pattern: "^[^:#@\\s]{1,50}$"
+    },
+    (google.api.field_behavior) = REQUIRED
+  ];
 
   string user = 5 [
     (validate.rules).string = {
@@ -811,7 +815,8 @@ message StreamedListObjectsRequest {
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       max_length: 512,
       example: "\"user:anne\""
-    }
+    },
+    (google.api.field_behavior) = REQUIRED
   ];
 
   openfga.v1.ContextualTupleKeys contextual_tuples = 6 [json_name = "contextual_tuples"];
@@ -839,7 +844,8 @@ message ReadRequest {
 
   openfga.v1.TupleKey tuple_key = 2 [
     json_name = "tuple_key",
-    (validate.rules).message.required = true
+    (validate.rules).message.required = true,
+    (google.api.field_behavior) = REQUIRED
   ];
 
   string authorization_model_id = 3 [
@@ -927,7 +933,8 @@ message CheckRequest {
 
   openfga.v1.TupleKey tuple_key = 2 [
     json_name = "tuple_key",
-    (validate.rules).message.required = true
+    (validate.rules).message.required = true,
+    (google.api.field_behavior) = REQUIRED
   ];
 
   openfga.v1.ContextualTupleKeys contextual_tuples = 3 [json_name = "contextual_tuples"];
@@ -972,7 +979,8 @@ message ExpandRequest {
 
   openfga.v1.TupleKey tuple_key = 2 [
     json_name = "tuple_key",
-    (validate.rules).message.required = true
+    (validate.rules).message.required = true,
+    (google.api.field_behavior) = REQUIRED
   ];
 
   string authorization_model_id = 3 [
@@ -1021,6 +1029,7 @@ message WriteAuthorizationModelRequest {
   ];
 
   repeated TypeDefinition type_definitions = 2 [
+    (google.api.field_behavior) = REQUIRED,
     json_name = "type_definitions",
     (validate.rules).repeated = {
       min_items: 1
@@ -1264,6 +1273,7 @@ message ReadChangesResponse {
 
 message CreateStoreRequest {
   string name = 1 [
+    (google.api.field_behavior) = REQUIRED,
     (validate.rules).string = {
       pattern: "^[a-zA-Z0-9\\s\\.\\-\\/^_&@]{3,64}$"
     },
