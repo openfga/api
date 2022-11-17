@@ -22,9 +22,7 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
     value: {
       description: "Request failed due to invalid input."
       schema: {
-        json_schema: {
-          ref: ".openfga.v1.ValidationErrorMessageResponse"
-        }
+        json_schema: {ref: ".openfga.v1.ValidationErrorMessageResponse"}
       }
     }
   }
@@ -33,9 +31,7 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
     value: {
       description: "Request failed due to incorrect path."
       schema: {
-        json_schema: {
-          ref: ".openfga.v1.PathUnknownErrorMessageResponse"
-        }
+        json_schema: {ref: ".openfga.v1.PathUnknownErrorMessageResponse"}
       }
     }
   }
@@ -44,9 +40,7 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
     value: {
       description: "Request failed due to internal server error."
       schema: {
-        json_schema: {
-          ref: ".openfga.v1.InternalErrorMessageResponse"
-        }
+        json_schema: {ref: ".openfga.v1.InternalErrorMessageResponse"}
       }
     }
   }

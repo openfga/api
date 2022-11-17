@@ -14,19 +14,13 @@ import "validate/validate.proto";
 // See https://openfga.dev/docs/concepts#what-is-an-object
 message Object {
   string type = 1 [
-    (validate.rules).string = {
-      pattern: "^[^:#@\\s]{1,254}$"
-    },
+    (validate.rules).string = {pattern: "^[^:#@\\s]{1,254}$"},
     (google.api.field_behavior) = REQUIRED,
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      example: "\"document\""
-    }
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"document\""}
   ];
 
   string id = 2 [
-    (validate.rules).string = {
-      pattern: "[^#:\\s]+$"
-    },
+    (validate.rules).string = {pattern: "[^#:\\s]+$"},
     (google.api.field_behavior) = REQUIRED
   ];
 }
@@ -53,9 +47,7 @@ message TupleKey {
     }
   ];
   string user = 3 [
-    (validate.rules).string = {
-      max_bytes: 512
-    },
+    (validate.rules).string = {max_bytes: 512},
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       max_length: 512,
       example: "\"user:anne\""

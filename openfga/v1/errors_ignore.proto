@@ -97,25 +97,19 @@ enum NotFoundErrorCode {
 }
 
 message ValidationErrorMessageResponse {
-  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
-    example: "{\"code\":\"validation_error\", \"message\":\"Generic validation error\"}"
-  };
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {example: "{\"code\":\"validation_error\", \"message\":\"Generic validation error\"}"};
   ErrorCode code = 1;
   string message = 2;
 }
 
 message InternalErrorMessageResponse {
-  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
-    example: "{\"code\":\"internal_error\", \"message\":\"Internal Server Error\"}"
-  };
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {example: "{\"code\":\"internal_error\", \"message\":\"Internal Server Error\"}"};
   InternalErrorCode code = 1;
   string message = 2;
 }
 
 message PathUnknownErrorMessageResponse {
-  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
-    example: "{\"code\":\"undefined_endpoint\", \"message\":\"Endpoint not enabled\"}"
-  };
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {example: "{\"code\":\"undefined_endpoint\", \"message\":\"Endpoint not enabled\"}"};
   NotFoundErrorCode code = 1;
   string message = 2;
 }

@@ -8,42 +8,28 @@ import "validate/validate.proto";
 
 message AuthorizationModel {
   string id = 1 [
-    (validate.rules).string = {
-      pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"
-    },
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      example: "\"01G5JAVJ41T49E9TT3SKVS7X1J\""
-    }
+    (validate.rules).string = {pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"},
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01G5JAVJ41T49E9TT3SKVS7X1J\""}
   ];
 
   string schema_version = 2 [json_name = "schema_version"];
 
   repeated TypeDefinition type_definitions = 3 [
     json_name = "type_definitions",
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      example: "[{\"type\": \"user\"}, {\"type\":\"document\",\"relations\":{\"reader\":{\"union\":{\"child\":[{\"this\":{}},{\"computedUserset\":{\"object\":\"\",\"relation\":\"writer\"}}]}},\"writer\":{\"this\":{}}},\"metadata\":{\"relations\":{\"reader\":{\"directly_related_user_types\":[{\"type\":\"user\"}]},\"writer\":{\"directly_related_user_types\":[{\"type\":\"user\"}]}}}}]"
-    }
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "[{\"type\": \"user\"}, {\"type\":\"document\",\"relations\":{\"reader\":{\"union\":{\"child\":[{\"this\":{}},{\"computedUserset\":{\"object\":\"\",\"relation\":\"writer\"}}]}},\"writer\":{\"this\":{}}},\"metadata\":{\"relations\":{\"reader\":{\"directly_related_user_types\":[{\"type\":\"user\"}]},\"writer\":{\"directly_related_user_types\":[{\"type\":\"user\"}]}}}}]"}
   ];
 }
 
 message TypeDefinition {
   string type = 1 [
-    (validate.rules).string = {
-      pattern: "^[^:#@\\s]{1,254}$"
-    },
+    (validate.rules).string = {pattern: "^[^:#@\\s]{1,254}$"},
     (google.api.field_behavior) = REQUIRED,
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      example: "\"document\""
-    }
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"document\""}
   ];
 
   map<string, Userset> relations = 2 [
-    (validate.rules).map.keys.string = {
-      pattern: "^[^:#@\\s]{1,50}$"
-    },
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      example: "{\"relations\":{\"reader\":{\"union\":{\"child\":[{\"this\":{}},{\"computedUserset\":{\"object\":\"\",\"relation\":\"writer\"}}]}},\"writer\":{\"this\":{}}}}"
-    }
+    (validate.rules).map.keys.string = {pattern: "^[^:#@\\s]{1,50}$"},
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "{\"relations\":{\"reader\":{\"union\":{\"child\":[{\"this\":{}},{\"computedUserset\":{\"object\":\"\",\"relation\":\"writer\"}}]}},\"writer\":{\"this\":{}}}}"}
   ];
 
   // A map whose keys are the name of the relation and whose value is the Metadata for that relation.
@@ -51,9 +37,7 @@ message TypeDefinition {
 }
 
 message Relation {
-  string name = 1 [(validate.rules).string = {
-    pattern: "^[^:#@\\s]{1,50}$"
-  }];
+  string name = 1 [(validate.rules).string = {pattern: "^[^:#@\\s]{1,50}$"}];
 
   Userset rewrite = 2 [
     (validate.rules).message.required = true,
@@ -78,13 +62,9 @@ message RelationMetadata {
 // RelationReference represents a relation of a particular object type (e.g. 'document#viewer').
 message RelationReference {
   string type = 1 [
-    (validate.rules).string = {
-      pattern: "^[^:#@\\s]{1,254}$"
-    },
+    (validate.rules).string = {pattern: "^[^:#@\\s]{1,254}$"},
     (google.api.field_behavior) = REQUIRED,
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      example: "\"group\""
-    }
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"group\""}
   ];
 
   oneof relation_or_wildcard {
@@ -93,9 +73,7 @@ message RelationReference {
         pattern: "^[^:#@\\s]{1,50}$",
         ignore_empty: true
       },
-      (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-        example: "\"member\""
-      }
+      (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"member\""}
     ];
 
     Wildcard wildcard = 3;
@@ -136,12 +114,8 @@ message Userset {
 message DirectUserset {}
 
 message ObjectRelation {
-  string object = 1 [(validate.rules).string = {
-    max_bytes: 256
-  }];
-  string relation = 2 [(validate.rules).string = {
-    max_bytes: 50
-  }];
+  string object = 1 [(validate.rules).string = {max_bytes: 256}];
+  string relation = 2 [(validate.rules).string = {max_bytes: 50}];
 }
 
 message TupleToUserset {

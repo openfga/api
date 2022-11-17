@@ -20,9 +20,7 @@ service OpenFGAService {
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       summary: "Get tuples from the store that matches a query, without following userset rewrite rules"
-      tags: [
-        "Relationship Tuples"
-      ]
+      tags: ["Relationship Tuples"]
       operation_id: "Read"
       description:
         "The POST read API will return the tuples for a certain store that match a "
@@ -141,9 +139,7 @@ service OpenFGAService {
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       summary: "Add or delete tuples from the store"
-      tags: [
-        "Relationship Tuples"
-      ]
+      tags: ["Relationship Tuples"]
       operation_id: "Write"
       description:
         "The POST write API will update the tuples for a certain store. Tuples and "
@@ -197,9 +193,7 @@ service OpenFGAService {
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       summary: "Check whether a user is authorized to access an object"
-      tags: [
-        "Relationship Queries"
-      ]
+      tags: ["Relationship Queries"]
       operation_id: "Check"
       description:
         "The Check API queries to check if the user has a certain relationship with an object in a certain store.\n"
@@ -248,9 +242,7 @@ service OpenFGAService {
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       summary: "Expand all relationships in userset tree format, and following userset rewrite rules.  Useful to reason about and debug a certain relationship"
-      tags: [
-        "Relationship Queries"
-      ]
+      tags: ["Relationship Queries"]
       operation_id: "Expand"
       description:
         "The Expand API will return all users and usersets "
@@ -318,15 +310,11 @@ service OpenFGAService {
   }
 
   rpc ReadAuthorizationModels(ReadAuthorizationModelsRequest) returns (ReadAuthorizationModelsResponse) {
-    option (google.api.http) = {
-      get: "/stores/{store_id}/authorization-models"
-    };
+    option (google.api.http) = {get: "/stores/{store_id}/authorization-models"};
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       summary: "Return all the authorization models for a particular store"
-      tags: [
-        "Authorization Models"
-      ]
+      tags: ["Authorization Models"]
       operation_id: "ReadAuthorizationModels"
       description:
         "The GET authorization-models API will return all the authorization models for a certain store.\n"
@@ -368,15 +356,11 @@ service OpenFGAService {
   }
 
   rpc ReadAuthorizationModel(ReadAuthorizationModelRequest) returns (ReadAuthorizationModelResponse) {
-    option (google.api.http) = {
-      get: "/stores/{store_id}/authorization-models/{id}"
-    };
+    option (google.api.http) = {get: "/stores/{store_id}/authorization-models/{id}"};
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       summary: "Return a particular version of an authorization model"
-      tags: [
-        "Authorization Models"
-      ]
+      tags: ["Authorization Models"]
       operation_id: "ReadAuthorizationModel"
       description:
         "The GET authorization-models by ID API will return a particular version of "
@@ -431,9 +415,7 @@ service OpenFGAService {
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       summary: "Create a new authorization model"
-      tags: [
-        "Authorization Models"
-      ]
+      tags: ["Authorization Models"]
       operation_id: "WriteAuthorizationModel"
       description:
         "The POST authorization-model API will update the authorization model "
@@ -483,9 +465,7 @@ service OpenFGAService {
         value: {
           description: "A successful response."
           schema: {
-            json_schema: {
-              ref: ".openfga.v1.WriteAuthorizationModelResponse"
-            }
+            json_schema: {ref: ".openfga.v1.WriteAuthorizationModelResponse"}
           }
         }
       }
@@ -500,9 +480,7 @@ service OpenFGAService {
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       summary: "Read all the tuples from a given store"
-      tags: [
-        "Relationship Tuples"
-      ]
+      tags: ["Relationship Tuples"]
       operation_id: "ReadTuples"
       description: "The GET read-tuples API will return a paginated list of tuples that exist in a given store. The response will include a continuation token if there are more tuples to be returned."
       responses: {
@@ -510,9 +488,7 @@ service OpenFGAService {
         value: {
           description: "A successful response."
           schema: {
-            json_schema: {
-              ref: ".openfga.v1.ReadTuplesResponse"
-            }
+            json_schema: {ref: ".openfga.v1.ReadTuplesResponse"}
           }
         }
       }
@@ -527,9 +503,7 @@ service OpenFGAService {
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       summary: "Upsert assertions for an authorization model ID"
-      tags: [
-        "Assertions"
-      ]
+      tags: ["Assertions"]
       operation_id: "WriteAssertions"
       description:
         "The Write Assertions API will add new assertions for an authorization model id, "
@@ -541,9 +515,7 @@ service OpenFGAService {
         value: {
           description: "A successful response."
           schema: {
-            json_schema: {
-              ref: ".openfga.v1.WriteAssertionsResponse"
-            }
+            json_schema: {ref: ".openfga.v1.WriteAssertionsResponse"}
           }
         }
       }
@@ -551,15 +523,11 @@ service OpenFGAService {
   }
 
   rpc ReadAssertions(ReadAssertionsRequest) returns (ReadAssertionsResponse) {
-    option (google.api.http) = {
-      get: "/stores/{store_id}/assertions/{authorization_model_id}"
-    };
+    option (google.api.http) = {get: "/stores/{store_id}/assertions/{authorization_model_id}"};
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       summary: "Read assertions for an authorization model ID"
-      tags: [
-        "Assertions"
-      ]
+      tags: ["Assertions"]
       operation_id: "ReadAssertions"
       description:
         "The GET assertions API will return, for a given authorization model id, "
@@ -570,15 +538,11 @@ service OpenFGAService {
   }
 
   rpc ReadChanges(ReadChangesRequest) returns (ReadChangesResponse) {
-    option (google.api.http) = {
-      get: "/stores/{store_id}/changes"
-    };
+    option (google.api.http) = {get: "/stores/{store_id}/changes"};
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       summary: "Return a list of all the tuple changes"
-      tags: [
-        "Relationship Tuples"
-      ]
+      tags: ["Relationship Tuples"]
       operation_id: "ReadChanges"
       description:
         "The GET changes API will return a paginated list of tuple changes (additions and deletions) that occurred "
@@ -598,9 +562,7 @@ service OpenFGAService {
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       summary: "Create a store"
-      tags: [
-        "Stores"
-      ]
+      tags: ["Stores"]
       operation_id: "CreateStore"
       description: "Create a unique OpenFGA store which will be used to store authorization models and relationship tuples."
       responses: {
@@ -608,9 +570,7 @@ service OpenFGAService {
         value: {
           description: "A successful response."
           schema: {
-            json_schema: {
-              ref: ".openfga.v1.CreateStoreResponse"
-            }
+            json_schema: {ref: ".openfga.v1.CreateStoreResponse"}
           }
         }
       }
@@ -618,15 +578,11 @@ service OpenFGAService {
   }
 
   rpc DeleteStore(DeleteStoreRequest) returns (DeleteStoreResponse) {
-    option (google.api.http) = {
-      delete: "/stores/{store_id}",
-    };
+    option (google.api.http) = {delete: "/stores/{store_id}"};
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       summary: "Delete a store"
-      tags: [
-        "Stores"
-      ]
+      tags: ["Stores"]
       operation_id: "DeleteStore"
       description: "Delete an OpenFGA store. This does not delete the data associated to it, like tuples or authorization models."
       responses: {
@@ -634,9 +590,7 @@ service OpenFGAService {
         value: {
           description: "A successful response."
           schema: {
-            json_schema: {
-              ref: ".openfga.v1.DeleteStoreResponse"
-            }
+            json_schema: {ref: ".openfga.v1.DeleteStoreResponse"}
           }
         }
       }
@@ -644,30 +598,22 @@ service OpenFGAService {
   }
 
   rpc GetStore(GetStoreRequest) returns (GetStoreResponse) {
-    option (google.api.http) = {
-      get: "/stores/{store_id}"
-    };
+    option (google.api.http) = {get: "/stores/{store_id}"};
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       summary: "Get a store"
-      tags: [
-        "Stores"
-      ]
+      tags: ["Stores"]
       operation_id: "GetStore"
       description: "Returns an OpenFGA store."
     };
   }
 
   rpc ListStores(ListStoresRequest) returns (ListStoresResponse) {
-    option (google.api.http) = {
-      get: "/stores"
-    };
+    option (google.api.http) = {get: "/stores"};
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       summary: "Get all stores"
-      tags: [
-        "Stores"
-      ]
+      tags: ["Stores"]
       operation_id: "ListStores"
       description: "Returns a paginated list of OpenFGA stores."
     };
@@ -681,9 +627,7 @@ service OpenFGAService {
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       summary: "[EXPERIMENTAL] Streaming variation of the ListObjects API (see ListObjects for more info)"
-      tags: [
-        "Relationship Queries"
-      ]
+      tags: ["Relationship Queries"]
       operation_id: "StreamedListObjects"
     };
   }
@@ -696,9 +640,7 @@ service OpenFGAService {
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       summary: "[EXPERIMENTAL] Get all object ids of the given type that the user has a relation with"
-      tags: [
-        "Relationship Queries"
-      ]
+      tags: ["Relationship Queries"]
       operation_id: "ListObjects"
       description:
         "The ListObjects API returns a list of all the object ids of the given type that the user "
@@ -713,12 +655,8 @@ service OpenFGAService {
 message ListObjectsRequest {
   string store_id = 1 [
     json_name = "store_id",
-    (validate.rules).string = {
-      pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"
-    },
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""
-    }
+    (validate.rules).string = {pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"},
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""}
   ];
 
   string authorization_model_id = 2 [
@@ -727,33 +665,23 @@ message ListObjectsRequest {
       pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$",
       ignore_empty: true
     },
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      example: "\"01G5JAVJ41T49E9TT3SKVS7X1J\""
-    }
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01G5JAVJ41T49E9TT3SKVS7X1J\""}
   ];
 
   string type = 3 [
     json_name = "type",
-    (validate.rules).string = {
-      pattern: "^[^:#@\\s]{1,254}$"
-    },
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      example: "\"document\""
-    },
+    (validate.rules).string = {pattern: "^[^:#@\\s]{1,254}$"},
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"document\""},
     (google.api.field_behavior) = REQUIRED
   ];
 
   string relation = 4 [
-    (validate.rules).string = {
-      pattern: "^[^:#@\\s]{1,50}$"
-    },
+    (validate.rules).string = {pattern: "^[^:#@\\s]{1,50}$"},
     (google.api.field_behavior) = REQUIRED
   ];
 
   string user = 5 [
-    (validate.rules).string = {
-      max_bytes: 512
-    },
+    (validate.rules).string = {max_bytes: 512},
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       max_length: 512,
       example: "\"user:anne\""
@@ -771,12 +699,8 @@ message ListObjectsResponse {
 message StreamedListObjectsRequest {
   string store_id = 1 [
     json_name = "store_id",
-    (validate.rules).string = {
-      pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"
-    },
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""
-    }
+    (validate.rules).string = {pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"},
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""}
   ];
 
   string authorization_model_id = 2 [
@@ -785,33 +709,23 @@ message StreamedListObjectsRequest {
       pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$",
       ignore_empty: true
     },
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      example: "\"01G5JAVJ41T49E9TT3SKVS7X1J\""
-    }
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01G5JAVJ41T49E9TT3SKVS7X1J\""}
   ];
 
   string type = 3 [
     json_name = "type",
-    (validate.rules).string = {
-      pattern: "^[^:#@\\s]{1,254}$"
-    },
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      example: "\"document\""
-    },
+    (validate.rules).string = {pattern: "^[^:#@\\s]{1,254}$"},
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"document\""},
     (google.api.field_behavior) = REQUIRED
   ];
 
   string relation = 4 [
-    (validate.rules).string = {
-      pattern: "^[^:#@\\s]{1,50}$"
-    },
+    (validate.rules).string = {pattern: "^[^:#@\\s]{1,50}$"},
     (google.api.field_behavior) = REQUIRED
   ];
 
   string user = 5 [
-    (validate.rules).string = {
-      max_bytes: 512
-    },
+    (validate.rules).string = {max_bytes: 512},
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       max_length: 512,
       example: "\"user:anne\""
@@ -834,12 +748,9 @@ message StreamedListObjectsResponse {
 message ReadRequest {
   string store_id = 1 [
     json_name = "store_id",
-    (validate.rules).string = {
-      pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"
-    },
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""
-    }
+    (google.api.field_behavior) = REQUIRED,
+    (validate.rules).string = {pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"},
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""}
   ];
 
   openfga.v1.TupleKey tuple_key = 2 [
@@ -854,9 +765,7 @@ message ReadRequest {
       pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$",
       ignore_empty: true
     },
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      example: "\"01G5JAVJ41T49E9TT3SKVS7X1J\""
-    }
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01G5JAVJ41T49E9TT3SKVS7X1J\""}
   ];
 
   google.protobuf.Int32Value page_size = 4 [
@@ -865,17 +774,13 @@ message ReadRequest {
       gte: 1,
       lte: 100
     },
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      example: "50"
-    }
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "50"}
   ];
 
   string continuation_token = 5 [
     json_name = "continuation_token",
     (validate.rules).string.max_bytes = 5120,
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      example: "\"eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ==\""
-    }
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ==\""}
   ];
 }
 
@@ -885,21 +790,16 @@ message ReadResponse {
   string continuation_token = 2 [
     json_name = "continuation_token",
     (validate.rules).string.max_bytes = 5120,
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      example: "\"eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ==\""
-    }
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ==\""}
   ];
 }
 
 message WriteRequest {
   string store_id = 1 [
     json_name = "store_id",
-    (validate.rules).string = {
-      pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"
-    },
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""
-    }
+    (google.api.field_behavior) = REQUIRED,
+    (validate.rules).string = {pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"},
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""}
   ];
 
   openfga.v1.TupleKeys writes = 2;
@@ -912,9 +812,7 @@ message WriteRequest {
       pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$",
       ignore_empty: true
     },
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      example: "\"01G5JAVJ41T49E9TT3SKVS7X1J\""
-    }
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01G5JAVJ41T49E9TT3SKVS7X1J\""}
   ];
 }
 
@@ -923,12 +821,9 @@ message WriteResponse {}
 message CheckRequest {
   string store_id = 1 [
     json_name = "store_id",
-    (validate.rules).string = {
-      pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"
-    },
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""
-    }
+    (google.api.field_behavior) = REQUIRED,
+    (validate.rules).string = {pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"},
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""}
   ];
 
   openfga.v1.TupleKey tuple_key = 2 [
@@ -945,9 +840,7 @@ message CheckRequest {
       pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$",
       ignore_empty: true
     },
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      example: "\"01G5JAVJ41T49E9TT3SKVS7X1J\""
-    }
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01G5JAVJ41T49E9TT3SKVS7X1J\""}
   ];
 
   // Defaults to false. Making it true has performance implications.
@@ -958,9 +851,7 @@ message CheckRequest {
 }
 
 message CheckResponse {
-  bool allowed = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-    example: "true"
-  }];
+  bool allowed = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "true"}];
 
   // For internal use only.
   string resolution = 2;
@@ -969,12 +860,9 @@ message CheckResponse {
 message ExpandRequest {
   string store_id = 1 [
     json_name = "store_id",
-    (validate.rules).string = {
-      pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"
-    },
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""
-    }
+    (google.api.field_behavior) = REQUIRED,
+    (validate.rules).string = {pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"},
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""}
   ];
 
   openfga.v1.TupleKey tuple_key = 2 [
@@ -989,9 +877,7 @@ message ExpandRequest {
       pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$",
       ignore_empty: true
     },
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      example: "\"01G5JAVJ41T49E9TT3SKVS7X1J\""
-    }
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01G5JAVJ41T49E9TT3SKVS7X1J\""}
   ];
 }
 
@@ -1002,12 +888,9 @@ message ExpandResponse {
 message ReadAuthorizationModelRequest {
   string store_id = 1 [
     json_name = "store_id",
-    (validate.rules).string = {
-      pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"
-    },
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""
-    }
+    (google.api.field_behavior) = REQUIRED,
+    (validate.rules).string = {pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"},
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""}
   ];
 
   string id = 2 [(validate.rules).string.max_len = 26];
@@ -1020,23 +903,16 @@ message ReadAuthorizationModelResponse {
 message WriteAuthorizationModelRequest {
   string store_id = 1 [
     json_name = "store_id",
-    (validate.rules).string = {
-      pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"
-    },
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""
-    }
+    (google.api.field_behavior) = REQUIRED,
+    (validate.rules).string = {pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"},
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""}
   ];
 
   repeated TypeDefinition type_definitions = 2 [
     (google.api.field_behavior) = REQUIRED,
     json_name = "type_definitions",
-    (validate.rules).repeated = {
-      min_items: 1
-    },
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      minimum: 1
-    }
+    (validate.rules).repeated = {min_items: 1},
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {minimum: 1}
   ];
 
   string schema_version = 3 [
@@ -1054,24 +930,17 @@ message WriteAuthorizationModelRequest {
 message WriteAuthorizationModelResponse {
   string authorization_model_id = 1 [
     json_name = "authorization_model_id",
-    (validate.rules).string = {
-      pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"
-    },
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      example: "\"01G5JAVJ41T49E9TT3SKVS7X1J\""
-    }
+    (validate.rules).string = {pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"},
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01G5JAVJ41T49E9TT3SKVS7X1J\""}
   ];
 }
 
 message ReadAuthorizationModelsRequest {
   string store_id = 1 [
     json_name = "store_id",
-    (validate.rules).string = {
-      pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"
-    },
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""
-    }
+    (google.api.field_behavior) = REQUIRED,
+    (validate.rules).string = {pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"},
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""}
   ];
 
   google.protobuf.Int32Value page_size = 2 [
@@ -1080,17 +949,13 @@ message ReadAuthorizationModelsRequest {
       gte: 1,
       lte: 100
     },
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      example: "50"
-    }
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "50"}
   ];
 
   string continuation_token = 3 [
     json_name = "continuation_token",
     (validate.rules).string.max_bytes = 5120,
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      example: "\"eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ==\""
-    }
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ==\""}
   ];
 }
 
@@ -1100,9 +965,7 @@ message ReadAuthorizationModelsResponse {
   string continuation_token = 2 [
     json_name = "continuation_token",
     (validate.rules).string.max_bytes = 5120,
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      example: "\"eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ==\""
-    }
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ==\""}
   ];
 }
 
@@ -1110,12 +973,9 @@ message ReadAuthorizationModelsResponse {
 message ReadTuplesRequest {
   string store_id = 1 [
     json_name = "store_id",
-    (validate.rules).string = {
-      pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"
-    },
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""
-    }
+    (google.api.field_behavior) = REQUIRED,
+    (validate.rules).string = {pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"},
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""}
   ];
 
   google.protobuf.Int32Value page_size = 2 [
@@ -1124,17 +984,13 @@ message ReadTuplesRequest {
       gte: 1,
       lte: 100
     },
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      example: "50"
-    }
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "50"}
   ];
 
   string continuation_token = 3 [
     json_name = "continuation_token",
     (validate.rules).string.max_bytes = 5120,
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      example: "\"eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ==\""
-    }
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ==\""}
   ];
 }
 
@@ -1144,31 +1000,22 @@ message ReadTuplesResponse {
   string continuation_token = 2 [
     json_name = "continuation_token",
     (validate.rules).string.max_bytes = 5120,
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      example: "\"eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ==\""
-    }
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ==\""}
   ];
 }
 
 message WriteAssertionsRequest {
   string store_id = 1 [
     json_name = "store_id",
-    (validate.rules).string = {
-      pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"
-    },
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""
-    }
+    (google.api.field_behavior) = REQUIRED,
+    (validate.rules).string = {pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"},
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""}
   ];
 
   string authorization_model_id = 2 [
     json_name = "authorization_model_id",
-    (validate.rules).string = {
-      pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"
-    },
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      example: "\"01G5JAVJ41T49E9TT3SKVS7X1J\""
-    }
+    (validate.rules).string = {pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"},
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01G5JAVJ41T49E9TT3SKVS7X1J\""}
   ];
 
   repeated openfga.v1.Assertion assertions = 3 [
@@ -1190,34 +1037,23 @@ message WriteAssertionsResponse {}
 message ReadAssertionsRequest {
   string store_id = 1 [
     json_name = "store_id",
-    (validate.rules).string = {
-      pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"
-    },
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""
-    }
+    (google.api.field_behavior) = REQUIRED,
+    (validate.rules).string = {pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"},
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""}
   ];
 
   string authorization_model_id = 2 [
     json_name = "authorization_model_id",
-    (validate.rules).string = {
-      pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"
-    },
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      example: "\"01G5JAVJ41T49E9TT3SKVS7X1J\""
-    }
+    (validate.rules).string = {pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"},
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01G5JAVJ41T49E9TT3SKVS7X1J\""}
   ];
 }
 
 message ReadAssertionsResponse {
   string authorization_model_id = 1 [
     json_name = "authorization_model_id",
-    (validate.rules).string = {
-      pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"
-    },
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      example: "\"01G5JAVJ41T49E9TT3SKVS7X1J\""
-    }
+    (validate.rules).string = {pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"},
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01G5JAVJ41T49E9TT3SKVS7X1J\""}
   ];
 
   repeated openfga.v1.Assertion assertions = 2;
@@ -1226,12 +1062,9 @@ message ReadAssertionsResponse {
 message ReadChangesRequest {
   string store_id = 1 [
     json_name = "store_id",
-    (validate.rules).string = {
-      pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"
-    },
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""
-    }
+    (google.api.field_behavior) = REQUIRED,
+    (validate.rules).string = {pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"},
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""}
   ];
 
   string type = 2 [(validate.rules).string = {
@@ -1245,17 +1078,13 @@ message ReadChangesRequest {
       gte: 1,
       lte: 100
     },
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      example: "50"
-    }
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "50"}
   ];
 
   string continuation_token = 4 [
     json_name = "continuation_token",
     (validate.rules).string.max_bytes = 5120,
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      example: "\"eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ==\""
-    }
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ==\""}
   ];
 }
 
@@ -1265,28 +1094,20 @@ message ReadChangesResponse {
   string continuation_token = 2 [
     json_name = "continuation_token",
     (validate.rules).string.max_bytes = 5120,
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      example: "\"eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ==\""
-    }
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ==\""}
   ];
 }
 
 message CreateStoreRequest {
   string name = 1 [
     (google.api.field_behavior) = REQUIRED,
-    (validate.rules).string = {
-      pattern: "^[a-zA-Z0-9\\s\\.\\-\\/^_&@]{3,64}$"
-    },
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      example: "\"my-store-name\""
-    }
+    (validate.rules).string = {pattern: "^[a-zA-Z0-9\\s\\.\\-\\/^_&@]{3,64}$"},
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"my-store-name\""}
   ];
 }
 
 message CreateStoreResponse {
-  string id = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-    example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""
-  }];
+  string id = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""}];
   string name = 2;
   google.protobuf.Timestamp created_at = 3 [json_name = "created_at"];
   google.protobuf.Timestamp updated_at = 4 [json_name = "updated_at"];
@@ -1295,12 +1116,9 @@ message CreateStoreResponse {
 message DeleteStoreRequest {
   string store_id = 1 [
     json_name = "store_id",
-    (validate.rules).string = {
-      pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"
-    },
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""
-    }
+    (google.api.field_behavior) = REQUIRED,
+    (validate.rules).string = {pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"},
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""}
   ];
 }
 
@@ -1309,19 +1127,14 @@ message DeleteStoreResponse {}
 message GetStoreRequest {
   string store_id = 1 [
     json_name = "store_id",
-    (validate.rules).string = {
-      pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"
-    },
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""
-    }
+    (google.api.field_behavior) = REQUIRED,
+    (validate.rules).string = {pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"},
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""}
   ];
 }
 
 message GetStoreResponse {
-  string id = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-    example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""
-  }];
+  string id = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""}];
   string name = 2;
   google.protobuf.Timestamp created_at = 3 [json_name = "created_at"];
   google.protobuf.Timestamp updated_at = 4 [json_name = "updated_at"];
@@ -1335,12 +1148,11 @@ message ListStoresRequest {
       lte: 100
     }
   ];
+
   string continuation_token = 2 [
     json_name = "continuation_token",
     (validate.rules).string.max_bytes = 5120,
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      example: "\"eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ==\""
-    }
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ==\""}
   ];
 }
 
@@ -1349,8 +1161,6 @@ message ListStoresResponse {
   string continuation_token = 2 [
     json_name = "continuation_token",
     (validate.rules).string.max_bytes = 5120,
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      example: "\"eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ==\""
-    }
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ==\""}
   ];
 }
