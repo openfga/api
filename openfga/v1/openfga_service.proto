@@ -23,7 +23,7 @@ service OpenFGAService {
       tags: ["Relationship Tuples"]
       operation_id: "Read"
       description:
-        "The POST read API will return the tuples for a certain store that match a "
+        "The Read API will return the tuples for a certain store that match a "
         "query filter specified in the body of the request. "
         "It is different from the `/stores/{store_id}/expand` API in that it only "
         "returns relationship tuples that are stored in the system and satisfy the query. \n"
@@ -142,7 +142,7 @@ service OpenFGAService {
       tags: ["Relationship Tuples"]
       operation_id: "Write"
       description:
-        "The POST write API will update the tuples for a certain store. Tuples and "
+        "The Write API will update the tuples for a certain store. Tuples and "
         "type definitions allow OpenFGA to determine whether a "
         "relationship exists between an object and an user.\n"
         "In the body, `writes` "
@@ -210,12 +210,12 @@ service OpenFGAService {
         "  \"object\": \"time_slot:office_hours\"\n"
         "}\n"
         "```\n"
-        "a check API call should be fired with the following body:\n"
+        "the Check API can be used with the following request body:\n"
         "```json\n"
         "{\n"
         "  \"tuple_key\": {\n"
         "    \"user\": \"user:anne\",\n"
-        "    \"relation\": \"can_read\",\n"
+        "    \"relation\": \"reader\",\n"
         "    \"object\": \"document:2021-budget\"\n"
         "  },\n"
         "  \"contextual_tuples\": {\n"
@@ -250,19 +250,17 @@ service OpenFGAService {
         "This is different from the `/stores/{store_id}/read` API in that both users and "
         "computed usersets are returned.\n"
         "Body parameters `tuple_key.object` and `tuple_key.relation` are all required.\n"
-        "An `authorization_model_id` may also be specified in the body. If it is, it will be used to assert that the input `tuple_key` is valid for the model specified. "
-        "If it is not, the latest authorization model ID will be used.\n"
         "The response will return a tree whose leaves are the specific users and usersets. "
         "Union, intersection and difference operator are located in the intermediate nodes.\n\n"
         "## Example\n"
         "Assume the following type definition for document:\n"
         "```yaml\n"
-        "  type document\n"
-        "    relations\n"
-        "      define reader as self or writer\n"
-        "      define writer as self\n"
+        "type document\n"
+        "  relations\n"
+        "    define reader as self or writer\n"
+        "    define writer as self\n"
         "```\n"
-        "In order to expand all users that have `reader` relationship with object `document:2021-budget`, "
+        "To expand all users that have the `reader` relationship with object `document:2021-budget`, "
         "a call to expand API should be made with the following body\n"
         "```json\n"
         "{\n"
@@ -317,7 +315,7 @@ service OpenFGAService {
       tags: ["Authorization Models"]
       operation_id: "ReadAuthorizationModels"
       description:
-        "The GET authorization-models API will return all the authorization models for a certain store.\n"
+        "The ReadAuthorizationModels API will return all the authorization models for a certain store.\n"
         "OpenFGA's response will contain an array of all authorization models, sorted in descending order of creation.\n\n"
         "## Example\n"
         "Assume that a store's authorization model has been configured twice. To get all the authorization models that have been created in this store, call GET authorization-models. The API will return a response that looks like:\n"
@@ -363,8 +361,7 @@ service OpenFGAService {
       tags: ["Authorization Models"]
       operation_id: "ReadAuthorizationModel"
       description:
-        "The GET authorization-models by ID API will return a particular version of "
-        "authorization model that had been configured for a certain store.  \n"
+        "The ReadAuthorizationModel API returns an authorization model by its identifier.\n"
         "The response will return the authorization model for the particular version.\n\n"
         "## Example\n"
         "To retrieve the authorization model with ID `01G5JAVJ41T49E9TT3SKVS7X1J` for the store, "
@@ -375,6 +372,9 @@ service OpenFGAService {
         "  \"authorization_model\":{\n"
         "    \"id\":\"01G5JAVJ41T49E9TT3SKVS7X1J\",\n"
         "    \"type_definitions\":[\n"
+        "      {\n"
+        "        \"type\":\"user\"\n"
+        "      },\n"
         "      {\n"
         "        \"type\":\"document\",\n"
         "        \"relations\":{\n"
@@ -402,8 +402,8 @@ service OpenFGAService {
         "  }\n"
         "}\n"
         "```\n"
-        "In the above example, there is only 1 type (`document`) "
-        "with 2 relations (`writer` and `reader`)."
+        "In the above example, there are 2 types (`user` and `document`). The `document` type "
+        "has 2 relations (`writer` and `reader`)."
     };
   }
 
@@ -418,17 +418,20 @@ service OpenFGAService {
       tags: ["Authorization Models"]
       operation_id: "WriteAuthorizationModel"
       description:
-        "The POST authorization-model API will update the authorization model "
-        "for a certain store.\n"
+        "The WriteAuthorizationModel API will add a new authorization model "
+        "to a store.\n"
         "Each item in the `type_definitions` array is a type "
         "definition as specified in the field `type_definition`.\n"
         "The response will return the authorization model's ID in the `id` field.\n\n"
         "## Example\n"
-        "To update the authorization model with a single `document` authorization model, call POST "
+        "To add an authorization model with a single `document` type definition, call POST "
         "authorization-models API with the body: \n"
         "```json\n"
         "{\n"
         "  \"type_definitions\":[\n"
+        "    {\n"
+        "      \"type\":\"user\"\n"
+        "    },\n"
         "    {\n"
         "      \"type\":\"document\",\n"
         "      \"relations\":{\n"
@@ -482,7 +485,7 @@ service OpenFGAService {
       summary: "Read all the tuples from a given store"
       tags: ["Relationship Tuples"]
       operation_id: "ReadTuples"
-      description: "The GET read-tuples API will return a paginated list of tuples that exist in a given store. The response will include a continuation token if there are more tuples to be returned."
+      description: "The ReadTuples API will return a paginated list of tuples that exist in a given store. The response will include a continuation token if there are more tuples to be returned."
       responses: {
         key: "200"
         value: {
@@ -506,7 +509,7 @@ service OpenFGAService {
       tags: ["Assertions"]
       operation_id: "WriteAssertions"
       description:
-        "The Write Assertions API will add new assertions for an authorization model id, "
+        "The WriteAssertions API will upsert new assertions for an authorization model id, "
         "or overwrite the existing ones. An assertion is an object that contains a "
         "tuple key, and the expectation of whether a call to the Check API of that tuple key "
         "will return true or false. "
@@ -530,7 +533,7 @@ service OpenFGAService {
       tags: ["Assertions"]
       operation_id: "ReadAssertions"
       description:
-        "The GET assertions API will return, for a given authorization model id, "
+        "The ReadAssertions API will return, for a given authorization model id, "
         "all the assertions stored for it. An assertion is an object that contains a "
         "tuple key, and the expectation of whether a call to the Check API of that tuple key "
         "will return true or false. "
@@ -545,7 +548,7 @@ service OpenFGAService {
       tags: ["Relationship Tuples"]
       operation_id: "ReadChanges"
       description:
-        "The GET changes API will return a paginated list of tuple changes (additions and deletions) that occurred "
+        "The ReadChanges API will return a paginated list of tuple changes (additions and deletions) that occurred "
         "in a given store, sorted by ascending time. The response will include a continuation token "
         "that is used to get the next set of changes. If there are no changes after the provided continuation token, "
         "the same token will be returned in order for it to be used when new changes are recorded. "
@@ -584,7 +587,7 @@ service OpenFGAService {
       summary: "Delete a store"
       tags: ["Stores"]
       operation_id: "DeleteStore"
-      description: "Delete an OpenFGA store. This does not delete the data associated to it, like tuples or authorization models."
+      description: "Delete an OpenFGA store. This does not delete the data associated with the store, like tuples or authorization models."
       responses: {
         key: "204"
         value: {
@@ -604,7 +607,7 @@ service OpenFGAService {
       summary: "Get a store"
       tags: ["Stores"]
       operation_id: "GetStore"
-      description: "Returns an OpenFGA store."
+      description: "Returns an OpenFGA store by it's identifier"
     };
   }
 
@@ -612,7 +615,7 @@ service OpenFGAService {
     option (google.api.http) = {get: "/stores"};
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      summary: "Get all stores"
+      summary: "List all stores"
       tags: ["Stores"]
       operation_id: "ListStores"
       description: "Returns a paginated list of OpenFGA stores."
@@ -677,7 +680,8 @@ message ListObjectsRequest {
 
   string relation = 4 [
     (validate.rules).string = {pattern: "^[^:#@\\s]{1,50}$"},
-    (google.api.field_behavior) = REQUIRED
+    (google.api.field_behavior) = REQUIRED,
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"reader\""}
   ];
 
   string user = 5 [
@@ -721,7 +725,8 @@ message StreamedListObjectsRequest {
 
   string relation = 4 [
     (validate.rules).string = {pattern: "^[^:#@\\s]{1,50}$"},
-    (google.api.field_behavior) = REQUIRED
+    (google.api.field_behavior) = REQUIRED,
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"reader\""}
   ];
 
   string user = 5 [

@@ -29,7 +29,7 @@ message TypeDefinition {
 
   map<string, Userset> relations = 2 [
     (validate.rules).map.keys.string = {pattern: "^[^:#@\\s]{1,50}$"},
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "{\"relations\":{\"reader\":{\"union\":{\"child\":[{\"this\":{}},{\"computedUserset\":{\"object\":\"\",\"relation\":\"writer\"}}]}},\"writer\":{\"this\":{}}}}"}
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "{\"reader\":{\"union\":{\"child\":[{\"this\":{}},{\"computedUserset\":{\"object\":\"\",\"relation\":\"writer\"}}]}},\"writer\":{\"this\":{}}}"}
   ];
 
   // A map whose keys are the name of the relation and whose value is the Metadata for that relation.
