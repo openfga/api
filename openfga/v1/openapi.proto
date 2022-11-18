@@ -13,6 +13,10 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
       name: "community@openfga.dev";
       url: "https://openfga.dev";
     };
+    license: {
+      name: "Apache-2.0";
+      url: "https://github.com/openfga/openfga/blob/main/LICENSE";
+    };
   };
   consumes: "application/json";
   produces: "application/json";
