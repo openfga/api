@@ -833,10 +833,7 @@
                   "type": "string",
                   "example": "eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ=="
                 }
-              },
-              "required": [
-                "tuple_key"
-              ]
+              }
             }
           }
         ],
