@@ -752,11 +752,7 @@ message ReadRequest {
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""}
   ];
 
-  openfga.v1.TupleKey tuple_key = 2 [
-    json_name = "tuple_key",
-    (validate.rules).message.required = true,
-    (google.api.field_behavior) = REQUIRED
-  ];
+  openfga.v1.TupleKey tuple_key = 2 [json_name = "tuple_key"];
 
   string authorization_model_id = 3 [
     json_name = "authorization_model_id",
