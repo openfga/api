@@ -63,7 +63,7 @@ service OpenFGAService {
         "```\n"
         "This means that `user:bob` has a `reader` relationship with 1 document "
         "`document:2021-budget`.\n"
-        "### Query for all users with particular relationships for a particular document\n"
+        "### Query for all stored relationship tuples that have a particular relation and object\n"
         "To query for all users that have `reader` relationship with "
         "`document:2021-budget`, call read API with body of \n"
         "```json\n"
