@@ -469,29 +469,6 @@ service OpenFGAService {
     };
   }
 
-  rpc ReadTuples(ReadTuplesRequest) returns (ReadTuplesResponse) {
-    option (google.api.http) = {
-      post: "/stores/{store_id}/read-tuples"
-      body: "*"
-    };
-
-    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      summary: "Read all the tuples from a given store"
-      tags: ["Relationship Tuples"]
-      operation_id: "ReadTuples"
-      description: "The ReadTuples API will return a paginated list of tuples that exist in a given store. The response will include a continuation token if there are more tuples to be returned."
-      responses: {
-        key: "200"
-        value: {
-          description: "A successful response."
-          schema: {
-            json_schema: {ref: ".openfga.v1.ReadTuplesResponse"}
-          }
-        }
-      }
-    };
-  }
-
   rpc WriteAssertions(WriteAssertionsRequest) returns (WriteAssertionsResponse) {
     option (google.api.http) = {
       put: "/stores/{store_id}/assertions/{authorization_model_id}"
@@ -956,41 +933,6 @@ message ReadAuthorizationModelsRequest {
 
 message ReadAuthorizationModelsResponse {
   repeated AuthorizationModel authorization_models = 1 [json_name = "authorization_models"];
-
-  string continuation_token = 2 [
-    json_name = "continuation_token",
-    (validate.rules).string.max_bytes = 5120,
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ==\""}
-  ];
-}
-
-// ReadTuples should only be used for the playground. do not enable it for prod deployments
-message ReadTuplesRequest {
-  string store_id = 1 [
-    json_name = "store_id",
-    (google.api.field_behavior) = REQUIRED,
-    (validate.rules).string = {pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"},
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""}
-  ];
-
-  google.protobuf.Int32Value page_size = 2 [
-    json_name = "page_size",
-    (validate.rules).int32 = {
-      gte: 1,
-      lte: 100
-    },
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "50"}
-  ];
-
-  string continuation_token = 3 [
-    json_name = "continuation_token",
-    (validate.rules).string.max_bytes = 5120,
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ==\""}
-  ];
-}
-
-message ReadTuplesResponse {
-  repeated openfga.v1.Tuple tuples = 1;
 
   string continuation_token = 2 [
     json_name = "continuation_token",
