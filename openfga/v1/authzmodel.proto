@@ -3,6 +3,7 @@ syntax = "proto3";
 package openfga.v1;
 
 import "google/api/field_behavior.proto";
+import "google/protobuf/empty.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 import "validate/validate.proto";
 
@@ -76,11 +77,9 @@ message RelationReference {
       (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"member\""}
     ];
 
-    Wildcard wildcard = 3;
+    google.protobuf.Empty wildcard = 3;
   }
 }
-
-message Wildcard {}
 
 message Usersets {
   repeated Userset child = 1;

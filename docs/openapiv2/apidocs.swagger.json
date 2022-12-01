@@ -1564,7 +1564,8 @@
           "example": "member"
         },
         "wildcard": {
-          "$ref": "#/definitions/Wildcard"
+          "type": "object",
+          "properties": {}
         }
       },
       "description": "RelationReference represents a relation of a particular object type (e.g. 'document#viewer').",
@@ -1829,9 +1830,6 @@
           "type": "string"
         }
       }
-    },
-    "Wildcard": {
-      "type": "object"
     },
     "WriteAssertionsResponse": {
       "type": "object"
