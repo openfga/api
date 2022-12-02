@@ -476,7 +476,7 @@ service OpenFGAService {
       post: "/stores/{store_id}/read-tuples"
       body: "*"
     };
-  
+
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       summary: "Read all the tuples from a given store"
       tags: ["Relationship Tuples"]
