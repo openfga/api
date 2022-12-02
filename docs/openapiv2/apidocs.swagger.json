@@ -838,6 +838,69 @@
         ]
       }
     },
+    "/stores/{store_id}/read-tuples": {
+      "post": {
+        "summary": "Read all the tuples from a given store",
+        "description": "The ReadTuples API will return a paginated list of tuples that exist in a given store. The response will include a continuation token if there are more tuples to be returned.",
+        "operationId": "ReadTuples",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ReadTuplesResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "store_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "page_size": {
+                  "type": "integer",
+                  "format": "int32",
+                  "example": 50
+                },
+                "continuation_token": {
+                  "type": "string",
+                  "example": "eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ=="
+                }
+              }
+            }
+          }
+        ],
+        "tags": [
+          "Relationship Tuples"
+        ]
+      }
+    },
     "/stores/{store_id}/streamed-list-objects": {
       "post": {
         "summary": "[EXPERIMENTAL] Streaming variation of the ListObjects API (see ListObjects for more info)",
@@ -1441,6 +1504,21 @@
       }
     },
     "ReadResponse": {
+      "type": "object",
+      "properties": {
+        "tuples": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Tuple"
+          }
+        },
+        "continuation_token": {
+          "type": "string",
+          "example": "eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ=="
+        }
+      }
+    },
+    "ReadTuplesResponse": {
       "type": "object",
       "properties": {
         "tuples": {
