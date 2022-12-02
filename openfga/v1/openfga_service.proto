@@ -959,6 +959,8 @@ message ReadAuthorizationModelsResponse {
 }
 
 message ReadTuplesRequest {
+  option deprecated = true;
+
   string store_id = 1 [
     json_name = "store_id",
     (google.api.field_behavior) = REQUIRED,
@@ -983,6 +985,8 @@ message ReadTuplesRequest {
 }
 
 message ReadTuplesResponse {
+  option deprecated = true;
+
   repeated openfga.v1.Tuple tuples = 1;
 
   string continuation_token = 2 [
