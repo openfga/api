@@ -478,10 +478,10 @@ service OpenFGAService {
     };
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      summary: "Read all the tuples from a given store"
+      summary: "[Deprecated: Please use the Read API with an empty tuple to read all tuples of a store.] Read all the tuples from a given store"
       tags: ["Relationship Tuples"]
       operation_id: "ReadTuples"
-      description: "The ReadTuples API will return a paginated list of tuples that exist in a given store. The response will include a continuation token if there are more tuples to be returned."
+      description: "[Deprecated: Please use the Read API with an empty tuple to read all tuples of a store.] The ReadTuples API will return a paginated list of tuples that exist in a given store. The response will include a continuation token if there are more tuples to be returned."
       responses: {
         key: "200"
         value: {
