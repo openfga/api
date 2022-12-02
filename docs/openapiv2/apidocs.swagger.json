@@ -898,7 +898,8 @@
         ],
         "tags": [
           "Relationship Tuples"
-        ]
+        ],
+        "deprecated": true
       }
     },
     "/stores/{store_id}/streamed-list-objects": {

@@ -482,6 +482,7 @@ service OpenFGAService {
       tags: ["Relationship Tuples"]
       operation_id: "ReadTuples"
       description: "[Deprecated: Please use the Read API with an empty tuple to read all tuples of a store.] The ReadTuples API will return a paginated list of tuples that exist in a given store. The response will include a continuation token if there are more tuples to be returned."
+      deprecated: true
       responses: {
         key: "200"
         value: {
