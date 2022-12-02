@@ -820,10 +820,6 @@
                 "tuple_key": {
                   "$ref": "#/definitions/TupleKey"
                 },
-                "authorization_model_id": {
-                  "type": "string",
-                  "example": "01G5JAVJ41T49E9TT3SKVS7X1J"
-                },
                 "page_size": {
                   "type": "integer",
                   "format": "int32",

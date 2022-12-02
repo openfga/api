@@ -731,16 +731,7 @@ message ReadRequest {
 
   openfga.v1.TupleKey tuple_key = 2 [json_name = "tuple_key"];
 
-  string authorization_model_id = 3 [
-    json_name = "authorization_model_id",
-    (validate.rules).string = {
-      pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$",
-      ignore_empty: true
-    },
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01G5JAVJ41T49E9TT3SKVS7X1J\""}
-  ];
-
-  google.protobuf.Int32Value page_size = 4 [
+  google.protobuf.Int32Value page_size = 3 [
     json_name = "page_size",
     (validate.rules).int32 = {
       gte: 1,
@@ -749,7 +740,7 @@ message ReadRequest {
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "50"}
   ];
 
-  string continuation_token = 5 [
+  string continuation_token = 4 [
     json_name = "continuation_token",
     (validate.rules).string.max_bytes = 5120,
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ==\""}
