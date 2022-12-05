@@ -820,10 +820,6 @@
                 "tuple_key": {
                   "$ref": "#/definitions/TupleKey"
                 },
-                "authorization_model_id": {
-                  "type": "string",
-                  "example": "01G5JAVJ41T49E9TT3SKVS7X1J"
-                },
                 "page_size": {
                   "type": "integer",
                   "format": "int32",
@@ -833,10 +829,7 @@
                   "type": "string",
                   "example": "eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ=="
                 }
-              },
-              "required": [
-                "tuple_key"
-              ]
+              }
             }
           }
         ],
@@ -847,8 +840,8 @@
     },
     "/stores/{store_id}/read-tuples": {
       "post": {
-        "summary": "Read all the tuples from a given store",
-        "description": "The ReadTuples API will return a paginated list of tuples that exist in a given store. The response will include a continuation token if there are more tuples to be returned.",
+        "summary": "[Deprecated: Please use the Read API with an empty tuple to read all tuples of a store.] Read all the tuples from a given store",
+        "description": "[Deprecated: Please use the Read API with an empty tuple to read all tuples of a store.] The ReadTuples API will return a paginated list of tuples that exist in a given store. The response will include a continuation token if there are more tuples to be returned.",
         "operationId": "ReadTuples",
         "responses": {
           "200": {
@@ -899,14 +892,14 @@
                   "type": "string",
                   "example": "eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ=="
                 }
-              },
-              "title": "ReadTuples should only be used for the playground. do not enable it for prod deployments"
+              }
             }
           }
         ],
         "tags": [
           "Relationship Tuples"
-        ]
+        ],
+        "deprecated": true
       }
     },
     "/stores/{store_id}/streamed-list-objects": {

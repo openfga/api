@@ -470,16 +470,19 @@ service OpenFGAService {
   }
 
   rpc ReadTuples(ReadTuplesRequest) returns (ReadTuplesResponse) {
+    option deprecated = true;
+
     option (google.api.http) = {
       post: "/stores/{store_id}/read-tuples"
       body: "*"
     };
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      summary: "Read all the tuples from a given store"
+      summary: "[Deprecated: Please use the Read API with an empty tuple to read all tuples of a store.] Read all the tuples from a given store"
       tags: ["Relationship Tuples"]
       operation_id: "ReadTuples"
-      description: "The ReadTuples API will return a paginated list of tuples that exist in a given store. The response will include a continuation token if there are more tuples to be returned."
+      description: "[Deprecated: Please use the Read API with an empty tuple to read all tuples of a store.] The ReadTuples API will return a paginated list of tuples that exist in a given store. The response will include a continuation token if there are more tuples to be returned."
+      deprecated: true
       responses: {
         key: "200"
         value: {
@@ -752,22 +755,9 @@ message ReadRequest {
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""}
   ];
 
-  openfga.v1.TupleKey tuple_key = 2 [
-    json_name = "tuple_key",
-    (validate.rules).message.required = true,
-    (google.api.field_behavior) = REQUIRED
-  ];
+  openfga.v1.TupleKey tuple_key = 2 [json_name = "tuple_key"];
 
-  string authorization_model_id = 3 [
-    json_name = "authorization_model_id",
-    (validate.rules).string = {
-      pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$",
-      ignore_empty: true
-    },
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01G5JAVJ41T49E9TT3SKVS7X1J\""}
-  ];
-
-  google.protobuf.Int32Value page_size = 4 [
+  google.protobuf.Int32Value page_size = 3 [
     json_name = "page_size",
     (validate.rules).int32 = {
       gte: 1,
@@ -776,7 +766,7 @@ message ReadRequest {
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "50"}
   ];
 
-  string continuation_token = 5 [
+  string continuation_token = 4 [
     json_name = "continuation_token",
     (validate.rules).string.max_bytes = 5120,
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ==\""}
@@ -968,8 +958,9 @@ message ReadAuthorizationModelsResponse {
   ];
 }
 
-// ReadTuples should only be used for the playground. do not enable it for prod deployments
 message ReadTuplesRequest {
+  option deprecated = true;
+
   string store_id = 1 [
     json_name = "store_id",
     (google.api.field_behavior) = REQUIRED,
@@ -994,6 +985,8 @@ message ReadTuplesRequest {
 }
 
 message ReadTuplesResponse {
+  option deprecated = true;
+
   repeated openfga.v1.Tuple tuples = 1;
 
   string continuation_token = 2 [
