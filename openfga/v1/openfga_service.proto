@@ -643,7 +643,7 @@ service OpenFGAService {
       tags: ["Relationship Queries"]
       operation_id: "ListObjects"
       description:
-        "The ListObjects API returns a list of all the object ids of the given type that the user "
+        "The ListObjects API returns a list of all the objects of the given type that the user "
         "has a relation with. To achieve this, both the store tuples and the authorization model are used.\n"
         "An `authorization_model_id` may be specified in the body. If it is, it will be used to decide the underlying implementation used. "
         "If it is not specified, the latest authorization model ID will be used.\n"
@@ -694,7 +694,7 @@ message ListObjectsRequest {
 }
 
 message ListObjectsResponse {
-  repeated string object_ids = 1 [json_name = "object_ids"];
+  repeated string objects = 1 [json_name = "objects"];
 }
 
 message StreamedListObjectsRequest {
@@ -740,7 +740,7 @@ message StreamedListObjectsRequest {
 
 // The response for a StreamedListObjects RPC.
 message StreamedListObjectsResponse {
-  string object_id = 1 [json_name = "object_id"];
+  string object = 1 [json_name = "object"];
 }
 
 // Note: store_id is a ULID using pattern ^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$
