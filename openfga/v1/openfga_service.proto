@@ -682,8 +682,12 @@ message ListObjectsRequest {
   ];
 
   string user = 5 [
-    (validate.rules).string = {max_bytes: 512},
+    (validate.rules).string = {
+      min_bytes: 1,
+      max_bytes: 512
+    },
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      min_length: 1,
       max_length: 512,
       example: "\"user:anne\""
     },
@@ -727,8 +731,12 @@ message StreamedListObjectsRequest {
   ];
 
   string user = 5 [
-    (validate.rules).string = {max_bytes: 512},
+    (validate.rules).string = {
+      min_bytes: 1,
+      max_bytes: 512
+    },
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      min_length: 1,
       max_length: 512,
       example: "\"user:anne\""
     },
