@@ -753,7 +753,8 @@
                 "user": {
                   "type": "string",
                   "example": "user:anne",
-                  "maxLength": 512
+                  "maxLength": 512,
+                  "minLength": 1
                 },
                 "contextual_tuples": {
                   "$ref": "#/definitions/ContextualTupleKeys"
@@ -970,7 +971,8 @@
                 "user": {
                   "type": "string",
                   "example": "user:anne",
-                  "maxLength": 512
+                  "maxLength": 512,
+                  "minLength": 1
                 },
                 "contextual_tuples": {
                   "$ref": "#/definitions/ContextualTupleKeys"
