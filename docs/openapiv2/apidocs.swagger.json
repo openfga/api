@@ -5,8 +5,9 @@
     "description": "A high performance and flexible authorization/permission engine built for developers and inspired by Google Zanzibar.",
     "version": "0.1",
     "contact": {
-      "name": "community@openfga.dev",
-      "url": "https://openfga.dev"
+      "name": "OpenFGA",
+      "url": "https://openfga.dev",
+      "email": "community@openfga.dev"
     },
     "license": {
       "name": "Apache-2.0",
