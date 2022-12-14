@@ -10,7 +10,8 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
     description: "A high performance and flexible authorization/permission engine built for developers and inspired by Google Zanzibar.";
     version: "0.1";
     contact: {
-      name: "community@openfga.dev";
+      name: "OpenFGA";
+      email: "community@openfga.dev";
       url: "https://openfga.dev";
     };
     license: {
