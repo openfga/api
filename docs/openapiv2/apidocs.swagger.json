@@ -1677,7 +1677,6 @@
           "type": "array",
           "items": {
             "$ref": "#/definitions/TupleKey",
-            "maximum": 25,
             "minimum": 1
           }
         }
