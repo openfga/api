@@ -1673,18 +1673,13 @@
     "TupleKeys": {
       "type": "object",
       "properties": {
-        "tuple_keys": {
+        "tupleKeys": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/TupleKey",
-            "maximum": 25,
-            "minimum": 1
+            "$ref": "#/definitions/TupleKey"
           }
         }
-      },
-      "required": [
-        "tuple_keys"
-      ]
+      }
     },
     "TupleOperation": {
       "type": "string",

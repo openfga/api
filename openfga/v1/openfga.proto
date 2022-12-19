@@ -61,18 +61,7 @@ message Tuple {
 }
 
 message TupleKeys {
-  repeated TupleKey tuple_keys = 1 [
-    (validate.rules).repeated = {
-      min_items: 1,
-      max_items: 25
-    },
-    json_name = "tuple_keys",
-    (google.api.field_behavior) = REQUIRED,
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      minimum: 1,
-      maximum: 25
-    }
-  ];
+  repeated TupleKey tuple_keys = 1;
 }
 
 message ContextualTupleKeys {
