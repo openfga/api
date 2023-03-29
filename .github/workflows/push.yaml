@@ -21,3 +21,9 @@ jobs:
       - uses: bufbuild/buf-push-action@v1
         with:
           buf_token: ${{ secrets.BUF_TOKEN }}
+      - name: Send PagerDuty alert on failure
+        if: ${{ failure() }}
+        uses: miparnisari/action-pagerduty-alert@0.3.1
+        with:
+          pagerduty-integration-key: ${{ secrets.PAGERDUTY_INTEGRATION_KEY }}
+          incident-summary: "Problem pushing OpenFGA Buf module to Buf Registry"
