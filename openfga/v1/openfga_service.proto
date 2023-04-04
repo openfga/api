@@ -903,7 +903,7 @@ message WriteAuthorizationModelRequest {
         "1.0",
         "1.1"
       ],
-      ignore_empty: true
+      ignore_empty: false
     }
   ];
 }

@@ -12,7 +12,10 @@ message AuthorizationModel {
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01G5JAVJ41T49E9TT3SKVS7X1J\""}
   ];
 
-  string schema_version = 2 [json_name = "schema_version"];
+  string schema_version = 2 [
+    (google.api.field_behavior) = REQUIRED,
+    json_name = "schema_version"
+  ];
 
   repeated TypeDefinition type_definitions = 3 [
     json_name = "type_definitions",
