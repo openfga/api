@@ -1080,7 +1080,10 @@
             "$ref": "#/definitions/TypeDefinition"
           }
         }
-      }
+      },
+      "required": [
+        "schema_version"
+      ]
     },
     "CheckResponse": {
       "type": "object",
