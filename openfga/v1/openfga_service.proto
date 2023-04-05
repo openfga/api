@@ -615,7 +615,7 @@ service OpenFGAService {
     };
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      summary: "[EXPERIMENTAL] Get all objects of the given type that the user has a relation with"
+      summary: "Get all objects of the given type that the user has a relation with"
       tags: ["Relationship Queries"]
       operation_id: "ListObjects"
       description:
@@ -625,7 +625,8 @@ service OpenFGAService {
         "If it is not specified, the latest authorization model ID will be used. It is strongly recommended to specify authorization model id for better performance.\n"
         "You may also specify `contextual_tuples` that will be treated as regular tuples.\n"
         "The response will contain the related objects in an array in the \"objects\" field of the response and they will "
-        "be strings in the object format `<type>:<id>` (e.g. \"document:roadmap\") \n"
+        "be strings in the object format `<type>:<id>` (e.g. \"document:roadmap\").\n"
+        "Note: If you have `and` or `but not` in your model while using ListObjects, checkout the [caveats](https://openfga.dev/docs/interacting/relationship-queries#caveats-and-when-not-to-use-it-3).\n"
     };
   }
 }
