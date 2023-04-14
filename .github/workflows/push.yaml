@@ -10,6 +10,9 @@ on:
       - README.md
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   push:
     runs-on: ubuntu-latest
