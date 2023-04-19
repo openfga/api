@@ -247,13 +247,13 @@
             "schema": {
               "type": "object",
               "properties": {
-                "newName": {
+                "name": {
                   "type": "string",
                   "example": "my-new-store-name"
                 }
               },
               "required": [
-                "newName"
+                "name"
               ]
             }
           }

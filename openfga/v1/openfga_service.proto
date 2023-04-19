@@ -1090,7 +1090,7 @@ message RenameStoreRequest {
     (validate.rules).string = {pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"},
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""}
   ];
-  string new_name = 2 [
+  string name = 2 [
     (google.api.field_behavior) = REQUIRED,
     (validate.rules).string = {pattern: "^[a-zA-Z0-9\\s\\.\\-\\/^_&@]{3,64}$"},
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"my-new-store-name\""}
