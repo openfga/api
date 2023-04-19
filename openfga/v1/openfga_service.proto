@@ -553,6 +553,29 @@ service OpenFGAService {
     };
   }
 
+  rpc UpdateStore(UpdateStoreRequest) returns (UpdateStoreResponse) {
+    option (google.api.http) = {
+      patch: "/stores/{store_id}",
+      body: "*"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Update a store"
+      tags: ["Stores"]
+      operation_id: "UpdateStore"
+      description: "Updates an existing store."
+      responses: {
+        key: "200"
+        value: {
+          description: "A successful response."
+          schema: {
+            json_schema: {ref: ".openfga.v1.UpdateStoreResponse"}
+          }
+        }
+      }
+    };
+  }
+
   rpc DeleteStore(DeleteStoreRequest) returns (DeleteStoreResponse) {
     option (google.api.http) = {delete: "/stores/{store_id}"};
 
@@ -1054,6 +1077,27 @@ message CreateStoreRequest {
 }
 
 message CreateStoreResponse {
+  string id = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""}];
+  string name = 2;
+  google.protobuf.Timestamp created_at = 3 [json_name = "created_at"];
+  google.protobuf.Timestamp updated_at = 4 [json_name = "updated_at"];
+}
+
+message UpdateStoreRequest {
+  string store_id = 1 [
+    json_name = "store_id",
+    (google.api.field_behavior) = REQUIRED,
+    (validate.rules).string = {pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"},
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""}
+  ];
+  string name = 2 [
+    (google.api.field_behavior) = REQUIRED,
+    (validate.rules).string = {pattern: "^[a-zA-Z0-9\\s\\.\\-\\/^_&@]{3,64}$"},
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"my-new-store-name\""}
+  ];
+}
+
+message UpdateStoreResponse {
   string id = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""}];
   string name = 2;
   google.protobuf.Timestamp created_at = 3 [json_name = "created_at"];
