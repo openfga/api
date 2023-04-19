@@ -553,23 +553,23 @@ service OpenFGAService {
     };
   }
 
-  rpc RenameStore(RenameStoreRequest) returns (RenameStoreResponse) {
+  rpc UpdateStore(UpdateStoreRequest) returns (UpdateStoreResponse) {
     option (google.api.http) = {
       patch: "/stores/{store_id}",
       body: "*"
     };
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      summary: "Rename a store"
+      summary: "Update a store"
       tags: ["Stores"]
-      operation_id: "RenameStore"
-      description: "Renames an existing store."
+      operation_id: "UpdateStore"
+      description: "Updates an existing store."
       responses: {
         key: "204"
         value: {
           description: "A successful response."
           schema: {
-            json_schema: {ref: ".openfga.v1.RenameStoreResponse"}
+            json_schema: {ref: ".openfga.v1.UpdateStoreResponse"}
           }
         }
       }
@@ -1083,7 +1083,7 @@ message CreateStoreResponse {
   google.protobuf.Timestamp updated_at = 4 [json_name = "updated_at"];
 }
 
-message RenameStoreRequest {
+message UpdateStoreRequest {
   string store_id = 1 [
     json_name = "store_id",
     (google.api.field_behavior) = REQUIRED,
@@ -1097,7 +1097,7 @@ message RenameStoreRequest {
   ];
 }
 
-message RenameStoreResponse {}
+message UpdateStoreResponse {}
 
 message DeleteStoreRequest {
   string store_id = 1 [

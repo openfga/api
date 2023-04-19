@@ -207,9 +207,9 @@
         ]
       },
       "patch": {
-        "summary": "Rename a store",
-        "description": "Renames an existing store.",
-        "operationId": "RenameStore",
+        "summary": "Update a store",
+        "description": "Updates an existing store.",
+        "operationId": "UpdateStore",
         "responses": {
           "204": {
             "description": "A successful response."
@@ -1552,9 +1552,6 @@
         "type"
       ]
     },
-    "RenameStoreResponse": {
-      "type": "object"
-    },
     "Status": {
       "type": "object",
       "properties": {
@@ -1718,6 +1715,9 @@
       "required": [
         "type"
       ]
+    },
+    "UpdateStoreResponse": {
+      "type": "object"
     },
     "Users": {
       "type": "object",
