@@ -565,7 +565,7 @@ service OpenFGAService {
       operation_id: "UpdateStore"
       description: "Updates an existing store."
       responses: {
-        key: "204"
+        key: "200"
         value: {
           description: "A successful response."
           schema: {
@@ -1097,7 +1097,12 @@ message UpdateStoreRequest {
   ];
 }
 
-message UpdateStoreResponse {}
+message UpdateStoreResponse {
+  string id = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""}];
+  string name = 2;
+  google.protobuf.Timestamp created_at = 3 [json_name = "created_at"];
+  google.protobuf.Timestamp updated_at = 4 [json_name = "updated_at"];
+}
 
 message DeleteStoreRequest {
   string store_id = 1 [

@@ -211,8 +211,11 @@
         "description": "Updates an existing store.",
         "operationId": "UpdateStore",
         "responses": {
-          "204": {
-            "description": "A successful response."
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/UpdateStoreResponse"
+            }
           },
           "400": {
             "description": "Request failed due to invalid input.",
@@ -1717,7 +1720,24 @@
       ]
     },
     "UpdateStoreResponse": {
-      "type": "object"
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "01YCP46JKYM8FJCQ37NMBYHE5X"
+        },
+        "name": {
+          "type": "string"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
     },
     "Users": {
       "type": "object",
