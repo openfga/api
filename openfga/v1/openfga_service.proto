@@ -555,7 +555,7 @@ service OpenFGAService {
 
   rpc RenameStore(RenameStoreRequest) returns (RenameStoreResponse) {
     option (google.api.http) = {
-      post: "/stores/{store_id}/rename",
+      patch: "/stores/{store_id}",
       body: "*"
     };
 

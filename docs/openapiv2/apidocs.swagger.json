@@ -205,6 +205,62 @@
         "tags": [
           "Stores"
         ]
+      },
+      "patch": {
+        "summary": "Rename a store",
+        "description": "Renames an existing store.",
+        "operationId": "RenameStore",
+        "responses": {
+          "204": {
+            "description": "A successful response."
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "store_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "newName": {
+                  "type": "string",
+                  "example": "my-new-store-name"
+                }
+              },
+              "required": [
+                "newName"
+              ]
+            }
+          }
+        ],
+        "tags": [
+          "Stores"
+        ]
       }
     },
     "/stores/{store_id}/assertions/{authorization_model_id}": {
@@ -837,64 +893,6 @@
         ],
         "tags": [
           "Relationship Tuples"
-        ]
-      }
-    },
-    "/stores/{store_id}/rename": {
-      "post": {
-        "summary": "Rename a store",
-        "description": "Renames an existing store.",
-        "operationId": "RenameStore",
-        "responses": {
-          "204": {
-            "description": "A successful response."
-          },
-          "400": {
-            "description": "Request failed due to invalid input.",
-            "schema": {
-              "$ref": "#/definitions/ValidationErrorMessageResponse"
-            }
-          },
-          "404": {
-            "description": "Request failed due to incorrect path.",
-            "schema": {
-              "$ref": "#/definitions/PathUnknownErrorMessageResponse"
-            }
-          },
-          "500": {
-            "description": "Request failed due to internal server error.",
-            "schema": {
-              "$ref": "#/definitions/InternalErrorMessageResponse"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "store_id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "type": "object",
-              "properties": {
-                "newName": {
-                  "type": "string",
-                  "example": "my-new-store-name"
-                }
-              },
-              "required": [
-                "newName"
-              ]
-            }
-          }
-        ],
-        "tags": [
-          "Stores"
         ]
       }
     },
