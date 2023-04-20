@@ -205,65 +205,6 @@
         "tags": [
           "Stores"
         ]
-      },
-      "patch": {
-        "summary": "Update a store",
-        "description": "Updates an existing store.",
-        "operationId": "UpdateStore",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/UpdateStoreResponse"
-            }
-          },
-          "400": {
-            "description": "Request failed due to invalid input.",
-            "schema": {
-              "$ref": "#/definitions/ValidationErrorMessageResponse"
-            }
-          },
-          "404": {
-            "description": "Request failed due to incorrect path.",
-            "schema": {
-              "$ref": "#/definitions/PathUnknownErrorMessageResponse"
-            }
-          },
-          "500": {
-            "description": "Request failed due to internal server error.",
-            "schema": {
-              "$ref": "#/definitions/InternalErrorMessageResponse"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "store_id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "type": "string",
-                  "example": "my-new-store-name"
-                }
-              },
-              "required": [
-                "name"
-              ]
-            }
-          }
-        ],
-        "tags": [
-          "Stores"
-        ]
       }
     },
     "/stores/{store_id}/assertions/{authorization_model_id}": {
@@ -1718,26 +1659,6 @@
       "required": [
         "type"
       ]
-    },
-    "UpdateStoreResponse": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "string",
-          "example": "01YCP46JKYM8FJCQ37NMBYHE5X"
-        },
-        "name": {
-          "type": "string"
-        },
-        "created_at": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "updated_at": {
-          "type": "string",
-          "format": "date-time"
-        }
-      }
     },
     "Users": {
       "type": "object",
