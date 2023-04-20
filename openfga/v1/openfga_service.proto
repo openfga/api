@@ -4,6 +4,7 @@ package openfga.v1;
 
 import "google/api/annotations.proto";
 import "google/api/field_behavior.proto";
+import "google/api/visibility.proto";
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/wrappers.proto";
 import "openfga/v1/authzmodel.proto";
@@ -554,6 +555,8 @@ service OpenFGAService {
   }
 
   rpc UpdateStore(UpdateStoreRequest) returns (UpdateStoreResponse) {
+    option (google.api.method_visibility).restriction = "UNIMPLEMENTED";
+
     option (google.api.http) = {
       patch: "/stores/{store_id}",
       body: "*"
