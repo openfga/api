@@ -628,9 +628,13 @@ service OpenFGAService {
     };
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      summary: "[EXPERIMENTAL] Streaming variation of the ListObjects API (see ListObjects for more info)"
+      summary: "[EXPERIMENTAL] Stream all objects of the given type that the user has a relation with"
       tags: ["Relationship Queries"]
       operation_id: "StreamedListObjects"
+      description:
+        "The Streamed ListObjects API is very similar to the the ListObjects API, with two differences: \n"
+        "1. Instead of collecting all objects before returning a response, it streams them to the client as they are collected. \n"
+        "2. The number of results returned is only limited by the execution timeout specified in the flag OPENFGA_LIST_OBJECTS_DEADLINE. \n"
     };
   }
 
@@ -641,7 +645,7 @@ service OpenFGAService {
     };
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      summary: "Get all objects of the given type that the user has a relation with"
+      summary: "List all objects of the given type that the user has a relation with"
       tags: ["Relationship Queries"]
       operation_id: "ListObjects"
       description:
@@ -652,6 +656,8 @@ service OpenFGAService {
         "You may also specify `contextual_tuples` that will be treated as regular tuples.\n"
         "The response will contain the related objects in an array in the \"objects\" field of the response and they will "
         "be strings in the object format `<type>:<id>` (e.g. \"document:roadmap\").\n"
+        "The number of objects in the response array will be limited by the execution timeout specified in the flag OPENFGA_LIST_OBJECTS_DEADLINE "
+        "and by the upper bound specified in the flag OPENFGA_LIST_OBJECTS_MAX_RESULTS, whichever is hit first. \n"
         "Note: If you have `and` or `but not` in your model while using ListObjects, checkout the [caveats](https://openfga.dev/docs/interacting/relationship-queries#caveats-and-when-not-to-use-it-3).\n"
     };
   }
