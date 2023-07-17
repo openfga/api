@@ -7,6 +7,8 @@ are pushed to the [`buf.build/openfga/api`](https://buf.build/openfga/api) repos
 ## Building the Generated Sources
 To generate source code from the protobuf definitions contained in this project you can run the following command:
 
+> **Note**: You must have [Buf CLI](https://docs.buf.build/installation) installed to run the following command.
+> 
 ```bash
 ./buf.gen.yaml
 ```
