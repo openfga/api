@@ -1,4 +1,4 @@
-module github.com/openfga/api
+module github.com/openfga/api/proto
 
 go 1.20
 
