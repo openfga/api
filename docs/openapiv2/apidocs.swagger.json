@@ -58,6 +58,12 @@
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
             }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
           }
         },
         "parameters": [
@@ -84,6 +90,12 @@
         "description": "Create a unique OpenFGA store which will be used to store authorization models and relationship tuples.",
         "operationId": "CreateStore",
         "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/CreateStoreResponse"
+            }
+          },
           "201": {
             "description": "A successful response.",
             "schema": {
@@ -106,6 +118,12 @@
             "description": "Request failed due to internal server error.",
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
             }
           }
         },
@@ -153,6 +171,12 @@
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
             }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
           }
         },
         "parameters": [
@@ -172,8 +196,17 @@
         "description": "Delete an OpenFGA store. This does not delete the data associated with the store, like tuples or authorization models.",
         "operationId": "DeleteStore",
         "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/DeleteStoreResponse"
+            }
+          },
           "204": {
-            "description": "A successful response."
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/DeleteStoreResponse"
+            }
           },
           "400": {
             "description": "Request failed due to invalid input.",
@@ -191,6 +224,12 @@
             "description": "Request failed due to internal server error.",
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
             }
           }
         },
@@ -236,6 +275,12 @@
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
             }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
           }
         },
         "parameters": [
@@ -261,8 +306,17 @@
         "description": "The WriteAssertions API will upsert new assertions for an authorization model id, or overwrite the existing ones. An assertion is an object that contains a tuple key, and the expectation of whether a call to the Check API of that tuple key will return true or false. ",
         "operationId": "WriteAssertions",
         "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/WriteAssertionsResponse"
+            }
+          },
           "204": {
-            "description": "A successful response."
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/WriteAssertionsResponse"
+            }
           },
           "400": {
             "description": "Request failed due to invalid input.",
@@ -280,6 +334,12 @@
             "description": "Request failed due to internal server error.",
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
             }
           }
         },
@@ -351,6 +411,12 @@
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
             }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
           }
         },
         "parameters": [
@@ -383,6 +449,12 @@
         "description": "The WriteAuthorizationModel API will add a new authorization model to a store.\nEach item in the `type_definitions` array is a type definition as specified in the field `type_definition`.\nThe response will return the authorization model's ID in the `id` field.\n\n## Example\nTo add an authorization model with `user` and `document` type definitions, call POST authorization-models API with the body: \n```json\n{\n  \"type_definitions\":[\n    {\n      \"type\":\"user\"\n    },\n    {\n      \"type\":\"document\",\n      \"relations\":{\n        \"reader\":{\n          \"union\":{\n            \"child\":[\n              {\n                \"this\":{}\n              },\n              {\n                \"computedUserset\":{\n                  \"object\":\"\",\n                  \"relation\":\"writer\"\n                }\n              }\n            ]\n          }\n        },\n        \"writer\":{\n          \"this\":{}\n        }\n      }\n    }\n  ]\n}\n```\nOpenFGA's response will include the version id for this authorization model, which will look like \n```\n{\"authorization_model_id\": \"01G50QVV17PECNVAHX1GG4Y5NC\"}\n```\n",
         "operationId": "WriteAuthorizationModel",
         "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/WriteAuthorizationModelResponse"
+            }
+          },
           "201": {
             "description": "A successful response.",
             "schema": {
@@ -405,6 +477,12 @@
             "description": "Request failed due to internal server error.",
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
             }
           }
         },
@@ -473,6 +551,12 @@
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
             }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
           }
         },
         "parameters": [
@@ -522,6 +606,12 @@
             "description": "Request failed due to internal server error.",
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
             }
           }
         },
@@ -585,6 +675,12 @@
             "description": "Request failed due to internal server error.",
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
             }
           }
         },
@@ -659,6 +755,12 @@
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
             }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
           }
         },
         "parameters": [
@@ -697,7 +799,7 @@
     "/stores/{store_id}/list-objects": {
       "post": {
         "summary": "List all objects of the given type that the user has a relation with",
-        "description": "The ListObjects API returns a list of all the objects of the given type that the user has a relation with. To achieve this, both the store tuples and the authorization model are used.\nAn `authorization_model_id` may be specified in the body. If it is not specified, the latest authorization model ID will be used. It is strongly recommended to specify authorization model id for better performance.\nYou may also specify `contextual_tuples` that will be treated as regular tuples.\nThe response will contain the related objects in an array in the \"objects\" field of the response and they will be strings in the object format `<type>:<id>` (e.g. \"document:roadmap\").\nThe number of objects in the response array will be limited by the execution timeout specified in the flag OPENFGA_LIST_OBJECTS_DEADLINE and by the upper bound specified in the flag OPENFGA_LIST_OBJECTS_MAX_RESULTS, whichever is hit first.",
+        "description": "The ListObjects API returns a list of all the objects of the given type that the user has a relation with. To achieve this, both the store tuples and the authorization model are used.\nAn `authorization_model_id` may be specified in the body. If it is not specified, the latest authorization model ID will be used. It is strongly recommended to specify authorization model id for better performance.\nYou may also specify `contextual_tuples` that will be treated as regular tuples.\nThe response will contain the related objects in an array in the \"objects\" field of the response and they will be strings in the object format `\u003ctype\u003e:\u003cid\u003e` (e.g. \"document:roadmap\").\nThe number of objects in the response array will be limited by the execution timeout specified in the flag OPENFGA_LIST_OBJECTS_DEADLINE and by the upper bound specified in the flag OPENFGA_LIST_OBJECTS_MAX_RESULTS, whichever is hit first.",
         "operationId": "ListObjects",
         "responses": {
           "200": {
@@ -722,6 +824,12 @@
             "description": "Request failed due to internal server error.",
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
             }
           }
         },
@@ -803,6 +911,12 @@
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
             }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
           }
         },
         "parameters": [
@@ -877,6 +991,12 @@
             "description": "Request failed due to internal server error.",
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
             }
           }
         },
@@ -957,6 +1077,12 @@
             "description": "Request failed due to internal server error.",
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
             }
           }
         },
@@ -1494,6 +1620,10 @@
         },
         "wildcard": {
           "$ref": "#/definitions/Wildcard"
+        },
+        "condition": {
+          "type": "string",
+          "description": "The name of a condition that is enforced over the allowed relation."
         }
       },
       "description": "RelationReference represents a relation of a particular object type (e.g. 'document#viewer').",

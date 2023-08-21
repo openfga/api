@@ -1012,6 +1012,8 @@ func (m *RelationReference) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
+	// no validation rules for Condition
+
 	switch v := m.RelationOrWildcard.(type) {
 	case *RelationReference_Relation:
 		if v == nil {

@@ -81,6 +81,9 @@ message RelationReference {
 
     Wildcard wildcard = 3;
   }
+
+  // The name of a condition that is enforced over the allowed relation.
+  string condition = 4;
 }
 
 message Wildcard {}
