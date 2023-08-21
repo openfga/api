@@ -1206,6 +1206,12 @@
           "items": {
             "$ref": "#/definitions/TypeDefinition"
           }
+        },
+        "conditions": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/Condition"
+          }
         }
       },
       "required": [
@@ -1230,6 +1236,40 @@
       "properties": {
         "userset": {
           "type": "string"
+        }
+      }
+    },
+    "Condition": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "title": "A unique name for the condition"
+        },
+        "expression": {
+          "type": "string",
+          "description": "A Google CEL expression, expressed as a string."
+        },
+        "parameters": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/ConditionParamTypeRef"
+          },
+          "description": "A map of parameter names to the parameter's defined type reference."
+        }
+      }
+    },
+    "ConditionParamTypeRef": {
+      "type": "object",
+      "properties": {
+        "typeName": {
+          "type": "string"
+        },
+        "genericTypes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ConditionParamTypeRef"
+          }
         }
       }
     },
