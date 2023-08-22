@@ -947,6 +947,8 @@ message WriteAuthorizationModelRequest {
       ignore_empty: false
     }
   ];
+
+  map<string, openfga.v1.Condition> conditions = 4 [json_name = "conditions"];
 }
 
 message WriteAuthorizationModelResponse {

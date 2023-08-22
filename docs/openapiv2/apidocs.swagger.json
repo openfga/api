@@ -431,6 +431,12 @@
                 },
                 "schema_version": {
                   "type": "string"
+                },
+                "conditions": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "$ref": "#/definitions/Condition"
+                  }
                 }
               },
               "required": [
@@ -1118,18 +1124,18 @@
       "properties": {
         "name": {
           "type": "string",
-          "title": "A unique name for the condition"
+          "title": "A unique name for the condition\nTODO(@jpadilla): Add validation rules"
         },
         "expression": {
           "type": "string",
-          "description": "A Google CEL expression, expressed as a string."
+          "title": "A Google CEL expression, expressed as a string.\nTODO(@jpadilla): Add validation rules"
         },
         "parameters": {
           "type": "object",
           "additionalProperties": {
             "$ref": "#/definitions/ConditionParamTypeRef"
           },
-          "description": "A map of parameter names to the parameter's defined type reference."
+          "title": "A map of parameter names to the parameter's defined type reference.\nTODO(@jpadilla): Add validation rules"
         }
       }
     },
@@ -1137,13 +1143,15 @@
       "type": "object",
       "properties": {
         "typeName": {
-          "type": "string"
+          "type": "string",
+          "title": "TODO(@jpadilla): Add validation rules"
         },
         "genericTypes": {
           "type": "array",
           "items": {
             "$ref": "#/definitions/ConditionParamTypeRef"
-          }
+          },
+          "title": "TODO(@jpadilla): Add validation rules"
         }
       }
     },
