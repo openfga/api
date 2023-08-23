@@ -623,6 +623,10 @@
                   "example": false,
                   "description": "Defaults to false. Making it true has performance implications.",
                   "readOnly": true
+                },
+                "context": {
+                  "type": "object",
+                  "description": "Additional request context that will be used to evaluate any ABAC conditions encountered\nin the query evaluation."
                 }
               },
               "required": [
@@ -765,6 +769,10 @@
                 },
                 "contextual_tuples": {
                   "$ref": "#/definitions/ContextualTupleKeys"
+                },
+                "context": {
+                  "type": "object",
+                  "description": "Additional request context that will be used to evaluate any ABAC conditions encountered\nin the query evaluation."
                 }
               },
               "required": [
@@ -920,6 +928,10 @@
                 },
                 "contextual_tuples": {
                   "$ref": "#/definitions/ContextualTupleKeys"
+                },
+                "context": {
+                  "type": "object",
+                  "description": "Additional request context that will be used to evaluate any ABAC conditions encountered\nin the query evaluation."
                 }
               },
               "required": [
@@ -1420,6 +1432,14 @@
         "unimplemented"
       ],
       "default": "no_not_found_error"
+    },
+    "NullValue": {
+      "type": "string",
+      "enum": [
+        "NULL_VALUE"
+      ],
+      "default": "NULL_VALUE",
+      "description": "`NullValue` is a singleton enumeration to represent the null value for the\n`Value` type union.\n\n The JSON representation for `NullValue` is JSON `null`.\n\n - NULL_VALUE: Null value."
     },
     "ObjectRelation": {
       "type": "object",

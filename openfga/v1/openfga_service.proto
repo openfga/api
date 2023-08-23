@@ -7,6 +7,7 @@ import "google/api/field_behavior.proto";
 import "google/api/visibility.proto";
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/wrappers.proto";
+import "google/protobuf/struct.proto";
 import "openfga/v1/authzmodel.proto";
 import "openfga/v1/openfga.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
@@ -711,6 +712,10 @@ message ListObjectsRequest {
   ];
 
   openfga.v1.ContextualTupleKeys contextual_tuples = 6 [json_name = "contextual_tuples"];
+
+  // Additional request context that will be used to evaluate any ABAC conditions encountered
+  // in the query evaluation.
+  google.protobuf.Struct context = 7;
 }
 
 message ListObjectsResponse {
@@ -763,6 +768,10 @@ message StreamedListObjectsRequest {
   ];
 
   openfga.v1.ContextualTupleKeys contextual_tuples = 6 [json_name = "contextual_tuples"];
+
+  // Additional request context that will be used to evaluate any ABAC conditions encountered
+  // in the query evaluation.
+  google.protobuf.Struct context = 7;
 }
 
 // The response for a StreamedListObjects RPC.
@@ -870,6 +879,10 @@ message CheckRequest {
     read_only: true,
     example: "false"
   }];
+
+  // Additional request context that will be used to evaluate any ABAC conditions encountered
+  // in the query evaluation.
+  google.protobuf.Struct context = 6;
 }
 
 message CheckResponse {
