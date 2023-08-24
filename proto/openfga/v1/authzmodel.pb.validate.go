@@ -2528,7 +2528,16 @@ func (m *ConditionParamTypeRef) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for TypeName
+	if _, ok := ConditionParamTypeRef_TypeName_name[int32(m.GetTypeName())]; !ok {
+		err := ConditionParamTypeRefValidationError{
+			field:  "TypeName",
+			reason: "value must be one of the defined enum values",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
 
 	for idx, item := range m.GetGenericTypes() {
 		_, _ = idx, item

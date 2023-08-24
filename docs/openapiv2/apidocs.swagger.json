@@ -1155,7 +1155,7 @@
       "type": "object",
       "properties": {
         "typeName": {
-          "type": "string",
+          "$ref": "#/definitions/TypeName",
           "title": "TODO(@jpadilla): Add validation rules"
         },
         "genericTypes": {
@@ -1736,6 +1736,22 @@
       "required": [
         "type"
       ]
+    },
+    "TypeName": {
+      "type": "string",
+      "enum": [
+        "UNSPECIFIED",
+        "ANY",
+        "BOOL",
+        "INT",
+        "UINT",
+        "DOUBLE",
+        "DURATION",
+        "TIMESTAMP",
+        "MAP",
+        "LIST"
+      ],
+      "default": "UNSPECIFIED"
     },
     "Users": {
       "type": "object",

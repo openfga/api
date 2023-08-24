@@ -23,6 +23,76 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+type ConditionParamTypeRef_TypeName int32
+
+const (
+	ConditionParamTypeRef_UNSPECIFIED ConditionParamTypeRef_TypeName = 0
+	ConditionParamTypeRef_ANY         ConditionParamTypeRef_TypeName = 1
+	ConditionParamTypeRef_BOOL        ConditionParamTypeRef_TypeName = 2
+	ConditionParamTypeRef_INT         ConditionParamTypeRef_TypeName = 3
+	ConditionParamTypeRef_UINT        ConditionParamTypeRef_TypeName = 4
+	ConditionParamTypeRef_DOUBLE      ConditionParamTypeRef_TypeName = 5
+	ConditionParamTypeRef_DURATION    ConditionParamTypeRef_TypeName = 6
+	ConditionParamTypeRef_TIMESTAMP   ConditionParamTypeRef_TypeName = 7
+	ConditionParamTypeRef_MAP         ConditionParamTypeRef_TypeName = 8
+	ConditionParamTypeRef_LIST        ConditionParamTypeRef_TypeName = 9
+)
+
+// Enum value maps for ConditionParamTypeRef_TypeName.
+var (
+	ConditionParamTypeRef_TypeName_name = map[int32]string{
+		0: "UNSPECIFIED",
+		1: "ANY",
+		2: "BOOL",
+		3: "INT",
+		4: "UINT",
+		5: "DOUBLE",
+		6: "DURATION",
+		7: "TIMESTAMP",
+		8: "MAP",
+		9: "LIST",
+	}
+	ConditionParamTypeRef_TypeName_value = map[string]int32{
+		"UNSPECIFIED": 0,
+		"ANY":         1,
+		"BOOL":        2,
+		"INT":         3,
+		"UINT":        4,
+		"DOUBLE":      5,
+		"DURATION":    6,
+		"TIMESTAMP":   7,
+		"MAP":         8,
+		"LIST":        9,
+	}
+)
+
+func (x ConditionParamTypeRef_TypeName) Enum() *ConditionParamTypeRef_TypeName {
+	p := new(ConditionParamTypeRef_TypeName)
+	*p = x
+	return p
+}
+
+func (x ConditionParamTypeRef_TypeName) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (ConditionParamTypeRef_TypeName) Descriptor() protoreflect.EnumDescriptor {
+	return file_openfga_v1_authzmodel_proto_enumTypes[0].Descriptor()
+}
+
+func (ConditionParamTypeRef_TypeName) Type() protoreflect.EnumType {
+	return &file_openfga_v1_authzmodel_proto_enumTypes[0]
+}
+
+func (x ConditionParamTypeRef_TypeName) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use ConditionParamTypeRef_TypeName.Descriptor instead.
+func (ConditionParamTypeRef_TypeName) EnumDescriptor() ([]byte, []int) {
+	return file_openfga_v1_authzmodel_proto_rawDescGZIP(), []int{15, 0}
+}
+
 type AuthorizationModel struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -964,7 +1034,7 @@ type ConditionParamTypeRef struct {
 	unknownFields protoimpl.UnknownFields
 
 	// TODO(@jpadilla): Add validation rules
-	TypeName string `protobuf:"bytes,1,opt,name=type_name,json=typeName,proto3" json:"type_name,omitempty"`
+	TypeName ConditionParamTypeRef_TypeName `protobuf:"varint,1,opt,name=type_name,json=typeName,proto3,enum=openfga.v1.ConditionParamTypeRef_TypeName" json:"type_name,omitempty"`
 	// TODO(@jpadilla): Add validation rules
 	GenericTypes []*ConditionParamTypeRef `protobuf:"bytes,2,rep,name=generic_types,json=genericTypes,proto3" json:"generic_types,omitempty"`
 }
@@ -1001,11 +1071,11 @@ func (*ConditionParamTypeRef) Descriptor() ([]byte, []int) {
 	return file_openfga_v1_authzmodel_proto_rawDescGZIP(), []int{15}
 }
 
-func (x *ConditionParamTypeRef) GetTypeName() string {
+func (x *ConditionParamTypeRef) GetTypeName() ConditionParamTypeRef_TypeName {
 	if x != nil {
 		return x.TypeName
 	}
-	return ""
+	return ConditionParamTypeRef_UNSPECIFIED
 }
 
 func (x *ConditionParamTypeRef) GetGenericTypes() []*ConditionParamTypeRef {
@@ -1219,25 +1289,37 @@ var file_openfga_v1_authzmodel_proto_rawDesc = []byte{
 	0x76, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x21, 0x2e, 0x6f, 0x70,
 	0x65, 0x6e, 0x66, 0x67, 0x61, 0x2e, 0x76, 0x31, 0x2e, 0x43, 0x6f, 0x6e, 0x64, 0x69, 0x74, 0x69,
 	0x6f, 0x6e, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x54, 0x79, 0x70, 0x65, 0x52, 0x65, 0x66, 0x52, 0x05,
-	0x76, 0x61, 0x6c, 0x75, 0x65, 0x3a, 0x02, 0x38, 0x01, 0x22, 0x7c, 0x0a, 0x15, 0x43, 0x6f, 0x6e,
-	0x64, 0x69, 0x74, 0x69, 0x6f, 0x6e, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x54, 0x79, 0x70, 0x65, 0x52,
-	0x65, 0x66, 0x12, 0x1b, 0x0a, 0x09, 0x74, 0x79, 0x70, 0x65, 0x5f, 0x6e, 0x61, 0x6d, 0x65, 0x18,
-	0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x74, 0x79, 0x70, 0x65, 0x4e, 0x61, 0x6d, 0x65, 0x12,
-	0x46, 0x0a, 0x0d, 0x67, 0x65, 0x6e, 0x65, 0x72, 0x69, 0x63, 0x5f, 0x74, 0x79, 0x70, 0x65, 0x73,
-	0x18, 0x02, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x21, 0x2e, 0x6f, 0x70, 0x65, 0x6e, 0x66, 0x67, 0x61,
+	0x76, 0x61, 0x6c, 0x75, 0x65, 0x3a, 0x02, 0x38, 0x01, 0x22, 0xb1, 0x02, 0x0a, 0x15, 0x43, 0x6f,
+	0x6e, 0x64, 0x69, 0x74, 0x69, 0x6f, 0x6e, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x54, 0x79, 0x70, 0x65,
+	0x52, 0x65, 0x66, 0x12, 0x51, 0x0a, 0x09, 0x74, 0x79, 0x70, 0x65, 0x5f, 0x6e, 0x61, 0x6d, 0x65,
+	0x18, 0x01, 0x20, 0x01, 0x28, 0x0e, 0x32, 0x2a, 0x2e, 0x6f, 0x70, 0x65, 0x6e, 0x66, 0x67, 0x61,
 	0x2e, 0x76, 0x31, 0x2e, 0x43, 0x6f, 0x6e, 0x64, 0x69, 0x74, 0x69, 0x6f, 0x6e, 0x50, 0x61, 0x72,
-	0x61, 0x6d, 0x54, 0x79, 0x70, 0x65, 0x52, 0x65, 0x66, 0x52, 0x0c, 0x67, 0x65, 0x6e, 0x65, 0x72,
-	0x69, 0x63, 0x54, 0x79, 0x70, 0x65, 0x73, 0x42, 0x9d, 0x01, 0x0a, 0x0e, 0x63, 0x6f, 0x6d, 0x2e,
-	0x6f, 0x70, 0x65, 0x6e, 0x66, 0x67, 0x61, 0x2e, 0x76, 0x31, 0x42, 0x0f, 0x41, 0x75, 0x74, 0x68,
-	0x7a, 0x6d, 0x6f, 0x64, 0x65, 0x6c, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x31, 0x67,
-	0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x6f, 0x70, 0x65, 0x6e, 0x66, 0x67,
-	0x61, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2f, 0x6f, 0x70, 0x65, 0x6e,
-	0x66, 0x67, 0x61, 0x2f, 0x76, 0x31, 0x3b, 0x6f, 0x70, 0x65, 0x6e, 0x66, 0x67, 0x61, 0x76, 0x31,
-	0xa2, 0x02, 0x03, 0x4f, 0x58, 0x58, 0xaa, 0x02, 0x0a, 0x4f, 0x70, 0x65, 0x6e, 0x66, 0x67, 0x61,
-	0x2e, 0x56, 0x31, 0xca, 0x02, 0x0a, 0x4f, 0x70, 0x65, 0x6e, 0x66, 0x67, 0x61, 0x5c, 0x56, 0x31,
-	0xe2, 0x02, 0x16, 0x4f, 0x70, 0x65, 0x6e, 0x66, 0x67, 0x61, 0x5c, 0x56, 0x31, 0x5c, 0x47, 0x50,
-	0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea, 0x02, 0x0b, 0x4f, 0x70, 0x65, 0x6e,
-	0x66, 0x67, 0x61, 0x3a, 0x3a, 0x56, 0x31, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x61, 0x6d, 0x54, 0x79, 0x70, 0x65, 0x52, 0x65, 0x66, 0x2e, 0x54, 0x79, 0x70, 0x65, 0x4e, 0x61,
+	0x6d, 0x65, 0x42, 0x08, 0xfa, 0x42, 0x05, 0x82, 0x01, 0x02, 0x10, 0x01, 0x52, 0x08, 0x74, 0x79,
+	0x70, 0x65, 0x4e, 0x61, 0x6d, 0x65, 0x12, 0x46, 0x0a, 0x0d, 0x67, 0x65, 0x6e, 0x65, 0x72, 0x69,
+	0x63, 0x5f, 0x74, 0x79, 0x70, 0x65, 0x73, 0x18, 0x02, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x21, 0x2e,
+	0x6f, 0x70, 0x65, 0x6e, 0x66, 0x67, 0x61, 0x2e, 0x76, 0x31, 0x2e, 0x43, 0x6f, 0x6e, 0x64, 0x69,
+	0x74, 0x69, 0x6f, 0x6e, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x54, 0x79, 0x70, 0x65, 0x52, 0x65, 0x66,
+	0x52, 0x0c, 0x67, 0x65, 0x6e, 0x65, 0x72, 0x69, 0x63, 0x54, 0x79, 0x70, 0x65, 0x73, 0x22, 0x7d,
+	0x0a, 0x08, 0x54, 0x79, 0x70, 0x65, 0x4e, 0x61, 0x6d, 0x65, 0x12, 0x0f, 0x0a, 0x0b, 0x55, 0x4e,
+	0x53, 0x50, 0x45, 0x43, 0x49, 0x46, 0x49, 0x45, 0x44, 0x10, 0x00, 0x12, 0x07, 0x0a, 0x03, 0x41,
+	0x4e, 0x59, 0x10, 0x01, 0x12, 0x08, 0x0a, 0x04, 0x42, 0x4f, 0x4f, 0x4c, 0x10, 0x02, 0x12, 0x07,
+	0x0a, 0x03, 0x49, 0x4e, 0x54, 0x10, 0x03, 0x12, 0x08, 0x0a, 0x04, 0x55, 0x49, 0x4e, 0x54, 0x10,
+	0x04, 0x12, 0x0a, 0x0a, 0x06, 0x44, 0x4f, 0x55, 0x42, 0x4c, 0x45, 0x10, 0x05, 0x12, 0x0c, 0x0a,
+	0x08, 0x44, 0x55, 0x52, 0x41, 0x54, 0x49, 0x4f, 0x4e, 0x10, 0x06, 0x12, 0x0d, 0x0a, 0x09, 0x54,
+	0x49, 0x4d, 0x45, 0x53, 0x54, 0x41, 0x4d, 0x50, 0x10, 0x07, 0x12, 0x07, 0x0a, 0x03, 0x4d, 0x41,
+	0x50, 0x10, 0x08, 0x12, 0x08, 0x0a, 0x04, 0x4c, 0x49, 0x53, 0x54, 0x10, 0x09, 0x42, 0x9d, 0x01,
+	0x0a, 0x0e, 0x63, 0x6f, 0x6d, 0x2e, 0x6f, 0x70, 0x65, 0x6e, 0x66, 0x67, 0x61, 0x2e, 0x76, 0x31,
+	0x42, 0x0f, 0x41, 0x75, 0x74, 0x68, 0x7a, 0x6d, 0x6f, 0x64, 0x65, 0x6c, 0x50, 0x72, 0x6f, 0x74,
+	0x6f, 0x50, 0x01, 0x5a, 0x31, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f,
+	0x6f, 0x70, 0x65, 0x6e, 0x66, 0x67, 0x61, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x70, 0x72, 0x6f, 0x74,
+	0x6f, 0x2f, 0x6f, 0x70, 0x65, 0x6e, 0x66, 0x67, 0x61, 0x2f, 0x76, 0x31, 0x3b, 0x6f, 0x70, 0x65,
+	0x6e, 0x66, 0x67, 0x61, 0x76, 0x31, 0xa2, 0x02, 0x03, 0x4f, 0x58, 0x58, 0xaa, 0x02, 0x0a, 0x4f,
+	0x70, 0x65, 0x6e, 0x66, 0x67, 0x61, 0x2e, 0x56, 0x31, 0xca, 0x02, 0x0a, 0x4f, 0x70, 0x65, 0x6e,
+	0x66, 0x67, 0x61, 0x5c, 0x56, 0x31, 0xe2, 0x02, 0x16, 0x4f, 0x70, 0x65, 0x6e, 0x66, 0x67, 0x61,
+	0x5c, 0x56, 0x31, 0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea,
+	0x02, 0x0b, 0x4f, 0x70, 0x65, 0x6e, 0x66, 0x67, 0x61, 0x3a, 0x3a, 0x56, 0x31, 0x62, 0x06, 0x70,
+	0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -1252,62 +1334,65 @@ func file_openfga_v1_authzmodel_proto_rawDescGZIP() []byte {
 	return file_openfga_v1_authzmodel_proto_rawDescData
 }
 
+var file_openfga_v1_authzmodel_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
 var file_openfga_v1_authzmodel_proto_msgTypes = make([]protoimpl.MessageInfo, 20)
 var file_openfga_v1_authzmodel_proto_goTypes = []interface{}{
-	(*AuthorizationModel)(nil),    // 0: openfga.v1.AuthorizationModel
-	(*TypeDefinition)(nil),        // 1: openfga.v1.TypeDefinition
-	(*Relation)(nil),              // 2: openfga.v1.Relation
-	(*RelationTypeInfo)(nil),      // 3: openfga.v1.RelationTypeInfo
-	(*Metadata)(nil),              // 4: openfga.v1.Metadata
-	(*RelationMetadata)(nil),      // 5: openfga.v1.RelationMetadata
-	(*RelationReference)(nil),     // 6: openfga.v1.RelationReference
-	(*Wildcard)(nil),              // 7: openfga.v1.Wildcard
-	(*Usersets)(nil),              // 8: openfga.v1.Usersets
-	(*Difference)(nil),            // 9: openfga.v1.Difference
-	(*Userset)(nil),               // 10: openfga.v1.Userset
-	(*DirectUserset)(nil),         // 11: openfga.v1.DirectUserset
-	(*ObjectRelation)(nil),        // 12: openfga.v1.ObjectRelation
-	(*TupleToUserset)(nil),        // 13: openfga.v1.TupleToUserset
-	(*Condition)(nil),             // 14: openfga.v1.Condition
-	(*ConditionParamTypeRef)(nil), // 15: openfga.v1.ConditionParamTypeRef
-	nil,                           // 16: openfga.v1.AuthorizationModel.ConditionsEntry
-	nil,                           // 17: openfga.v1.TypeDefinition.RelationsEntry
-	nil,                           // 18: openfga.v1.Metadata.RelationsEntry
-	nil,                           // 19: openfga.v1.Condition.ParametersEntry
+	(ConditionParamTypeRef_TypeName)(0), // 0: openfga.v1.ConditionParamTypeRef.TypeName
+	(*AuthorizationModel)(nil),          // 1: openfga.v1.AuthorizationModel
+	(*TypeDefinition)(nil),              // 2: openfga.v1.TypeDefinition
+	(*Relation)(nil),                    // 3: openfga.v1.Relation
+	(*RelationTypeInfo)(nil),            // 4: openfga.v1.RelationTypeInfo
+	(*Metadata)(nil),                    // 5: openfga.v1.Metadata
+	(*RelationMetadata)(nil),            // 6: openfga.v1.RelationMetadata
+	(*RelationReference)(nil),           // 7: openfga.v1.RelationReference
+	(*Wildcard)(nil),                    // 8: openfga.v1.Wildcard
+	(*Usersets)(nil),                    // 9: openfga.v1.Usersets
+	(*Difference)(nil),                  // 10: openfga.v1.Difference
+	(*Userset)(nil),                     // 11: openfga.v1.Userset
+	(*DirectUserset)(nil),               // 12: openfga.v1.DirectUserset
+	(*ObjectRelation)(nil),              // 13: openfga.v1.ObjectRelation
+	(*TupleToUserset)(nil),              // 14: openfga.v1.TupleToUserset
+	(*Condition)(nil),                   // 15: openfga.v1.Condition
+	(*ConditionParamTypeRef)(nil),       // 16: openfga.v1.ConditionParamTypeRef
+	nil,                                 // 17: openfga.v1.AuthorizationModel.ConditionsEntry
+	nil,                                 // 18: openfga.v1.TypeDefinition.RelationsEntry
+	nil,                                 // 19: openfga.v1.Metadata.RelationsEntry
+	nil,                                 // 20: openfga.v1.Condition.ParametersEntry
 }
 var file_openfga_v1_authzmodel_proto_depIdxs = []int32{
-	1,  // 0: openfga.v1.AuthorizationModel.type_definitions:type_name -> openfga.v1.TypeDefinition
-	16, // 1: openfga.v1.AuthorizationModel.conditions:type_name -> openfga.v1.AuthorizationModel.ConditionsEntry
-	17, // 2: openfga.v1.TypeDefinition.relations:type_name -> openfga.v1.TypeDefinition.RelationsEntry
-	4,  // 3: openfga.v1.TypeDefinition.metadata:type_name -> openfga.v1.Metadata
-	10, // 4: openfga.v1.Relation.rewrite:type_name -> openfga.v1.Userset
-	3,  // 5: openfga.v1.Relation.type_info:type_name -> openfga.v1.RelationTypeInfo
-	6,  // 6: openfga.v1.RelationTypeInfo.directly_related_user_types:type_name -> openfga.v1.RelationReference
-	18, // 7: openfga.v1.Metadata.relations:type_name -> openfga.v1.Metadata.RelationsEntry
-	6,  // 8: openfga.v1.RelationMetadata.directly_related_user_types:type_name -> openfga.v1.RelationReference
-	7,  // 9: openfga.v1.RelationReference.wildcard:type_name -> openfga.v1.Wildcard
-	10, // 10: openfga.v1.Usersets.child:type_name -> openfga.v1.Userset
-	10, // 11: openfga.v1.Difference.base:type_name -> openfga.v1.Userset
-	10, // 12: openfga.v1.Difference.subtract:type_name -> openfga.v1.Userset
-	11, // 13: openfga.v1.Userset.this:type_name -> openfga.v1.DirectUserset
-	12, // 14: openfga.v1.Userset.computed_userset:type_name -> openfga.v1.ObjectRelation
-	13, // 15: openfga.v1.Userset.tuple_to_userset:type_name -> openfga.v1.TupleToUserset
-	8,  // 16: openfga.v1.Userset.union:type_name -> openfga.v1.Usersets
-	8,  // 17: openfga.v1.Userset.intersection:type_name -> openfga.v1.Usersets
-	9,  // 18: openfga.v1.Userset.difference:type_name -> openfga.v1.Difference
-	12, // 19: openfga.v1.TupleToUserset.tupleset:type_name -> openfga.v1.ObjectRelation
-	12, // 20: openfga.v1.TupleToUserset.computed_userset:type_name -> openfga.v1.ObjectRelation
-	19, // 21: openfga.v1.Condition.parameters:type_name -> openfga.v1.Condition.ParametersEntry
-	15, // 22: openfga.v1.ConditionParamTypeRef.generic_types:type_name -> openfga.v1.ConditionParamTypeRef
-	14, // 23: openfga.v1.AuthorizationModel.ConditionsEntry.value:type_name -> openfga.v1.Condition
-	10, // 24: openfga.v1.TypeDefinition.RelationsEntry.value:type_name -> openfga.v1.Userset
-	5,  // 25: openfga.v1.Metadata.RelationsEntry.value:type_name -> openfga.v1.RelationMetadata
-	15, // 26: openfga.v1.Condition.ParametersEntry.value:type_name -> openfga.v1.ConditionParamTypeRef
-	27, // [27:27] is the sub-list for method output_type
-	27, // [27:27] is the sub-list for method input_type
-	27, // [27:27] is the sub-list for extension type_name
-	27, // [27:27] is the sub-list for extension extendee
-	0,  // [0:27] is the sub-list for field type_name
+	2,  // 0: openfga.v1.AuthorizationModel.type_definitions:type_name -> openfga.v1.TypeDefinition
+	17, // 1: openfga.v1.AuthorizationModel.conditions:type_name -> openfga.v1.AuthorizationModel.ConditionsEntry
+	18, // 2: openfga.v1.TypeDefinition.relations:type_name -> openfga.v1.TypeDefinition.RelationsEntry
+	5,  // 3: openfga.v1.TypeDefinition.metadata:type_name -> openfga.v1.Metadata
+	11, // 4: openfga.v1.Relation.rewrite:type_name -> openfga.v1.Userset
+	4,  // 5: openfga.v1.Relation.type_info:type_name -> openfga.v1.RelationTypeInfo
+	7,  // 6: openfga.v1.RelationTypeInfo.directly_related_user_types:type_name -> openfga.v1.RelationReference
+	19, // 7: openfga.v1.Metadata.relations:type_name -> openfga.v1.Metadata.RelationsEntry
+	7,  // 8: openfga.v1.RelationMetadata.directly_related_user_types:type_name -> openfga.v1.RelationReference
+	8,  // 9: openfga.v1.RelationReference.wildcard:type_name -> openfga.v1.Wildcard
+	11, // 10: openfga.v1.Usersets.child:type_name -> openfga.v1.Userset
+	11, // 11: openfga.v1.Difference.base:type_name -> openfga.v1.Userset
+	11, // 12: openfga.v1.Difference.subtract:type_name -> openfga.v1.Userset
+	12, // 13: openfga.v1.Userset.this:type_name -> openfga.v1.DirectUserset
+	13, // 14: openfga.v1.Userset.computed_userset:type_name -> openfga.v1.ObjectRelation
+	14, // 15: openfga.v1.Userset.tuple_to_userset:type_name -> openfga.v1.TupleToUserset
+	9,  // 16: openfga.v1.Userset.union:type_name -> openfga.v1.Usersets
+	9,  // 17: openfga.v1.Userset.intersection:type_name -> openfga.v1.Usersets
+	10, // 18: openfga.v1.Userset.difference:type_name -> openfga.v1.Difference
+	13, // 19: openfga.v1.TupleToUserset.tupleset:type_name -> openfga.v1.ObjectRelation
+	13, // 20: openfga.v1.TupleToUserset.computed_userset:type_name -> openfga.v1.ObjectRelation
+	20, // 21: openfga.v1.Condition.parameters:type_name -> openfga.v1.Condition.ParametersEntry
+	0,  // 22: openfga.v1.ConditionParamTypeRef.type_name:type_name -> openfga.v1.ConditionParamTypeRef.TypeName
+	16, // 23: openfga.v1.ConditionParamTypeRef.generic_types:type_name -> openfga.v1.ConditionParamTypeRef
+	15, // 24: openfga.v1.AuthorizationModel.ConditionsEntry.value:type_name -> openfga.v1.Condition
+	11, // 25: openfga.v1.TypeDefinition.RelationsEntry.value:type_name -> openfga.v1.Userset
+	6,  // 26: openfga.v1.Metadata.RelationsEntry.value:type_name -> openfga.v1.RelationMetadata
+	16, // 27: openfga.v1.Condition.ParametersEntry.value:type_name -> openfga.v1.ConditionParamTypeRef
+	28, // [28:28] is the sub-list for method output_type
+	28, // [28:28] is the sub-list for method input_type
+	28, // [28:28] is the sub-list for extension type_name
+	28, // [28:28] is the sub-list for extension extendee
+	0,  // [0:28] is the sub-list for field type_name
 }
 
 func init() { file_openfga_v1_authzmodel_proto_init() }
@@ -1526,13 +1611,14 @@ func file_openfga_v1_authzmodel_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_openfga_v1_authzmodel_proto_rawDesc,
-			NumEnums:      0,
+			NumEnums:      1,
 			NumMessages:   20,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
 		GoTypes:           file_openfga_v1_authzmodel_proto_goTypes,
 		DependencyIndexes: file_openfga_v1_authzmodel_proto_depIdxs,
+		EnumInfos:         file_openfga_v1_authzmodel_proto_enumTypes,
 		MessageInfos:      file_openfga_v1_authzmodel_proto_msgTypes,
 	}.Build()
 	File_openfga_v1_authzmodel_proto = out.File
