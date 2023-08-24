@@ -1136,18 +1136,18 @@
       "properties": {
         "name": {
           "type": "string",
-          "title": "A unique name for the condition\nTODO(@jpadilla): Add validation rules"
+          "title": "A unique name for the condition"
         },
         "expression": {
           "type": "string",
-          "title": "A Google CEL expression, expressed as a string.\nTODO(@jpadilla): Add validation rules"
+          "description": "A Google CEL expression, expressed as a string."
         },
         "parameters": {
           "type": "object",
           "additionalProperties": {
             "$ref": "#/definitions/ConditionParamTypeRef"
           },
-          "title": "A map of parameter names to the parameter's defined type reference.\nTODO(@jpadilla): Add validation rules"
+          "description": "A map of parameter names to the parameter's defined type reference."
         }
       }
     },
@@ -1155,15 +1155,13 @@
       "type": "object",
       "properties": {
         "typeName": {
-          "$ref": "#/definitions/TypeName",
-          "title": "TODO(@jpadilla): Add validation rules"
+          "$ref": "#/definitions/TypeName"
         },
         "genericTypes": {
           "type": "array",
           "items": {
             "$ref": "#/definitions/ConditionParamTypeRef"
-          },
-          "title": "TODO(@jpadilla): Add validation rules"
+          }
         }
       }
     },

@@ -965,13 +965,10 @@ type Condition struct {
 	unknownFields protoimpl.UnknownFields
 
 	// A unique name for the condition
-	// TODO(@jpadilla): Add validation rules
 	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	// A Google CEL expression, expressed as a string.
-	// TODO(@jpadilla): Add validation rules
 	Expression string `protobuf:"bytes,2,opt,name=expression,proto3" json:"expression,omitempty"`
 	// A map of parameter names to the parameter's defined type reference.
-	// TODO(@jpadilla): Add validation rules
 	Parameters map[string]*ConditionParamTypeRef `protobuf:"bytes,3,rep,name=parameters,proto3" json:"parameters,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
 }
 
@@ -1033,10 +1030,8 @@ type ConditionParamTypeRef struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// TODO(@jpadilla): Add validation rules
-	TypeName ConditionParamTypeRef_TypeName `protobuf:"varint,1,opt,name=type_name,json=typeName,proto3,enum=openfga.v1.ConditionParamTypeRef_TypeName" json:"type_name,omitempty"`
-	// TODO(@jpadilla): Add validation rules
-	GenericTypes []*ConditionParamTypeRef `protobuf:"bytes,2,rep,name=generic_types,json=genericTypes,proto3" json:"generic_types,omitempty"`
+	TypeName     ConditionParamTypeRef_TypeName `protobuf:"varint,1,opt,name=type_name,json=typeName,proto3,enum=openfga.v1.ConditionParamTypeRef_TypeName" json:"type_name,omitempty"`
+	GenericTypes []*ConditionParamTypeRef       `protobuf:"bytes,2,rep,name=generic_types,json=genericTypes,proto3" json:"generic_types,omitempty"`
 }
 
 func (x *ConditionParamTypeRef) Reset() {
