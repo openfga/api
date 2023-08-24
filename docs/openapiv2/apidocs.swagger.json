@@ -1738,18 +1738,18 @@
     "TypeName": {
       "type": "string",
       "enum": [
-        "UNSPECIFIED",
-        "ANY",
-        "BOOL",
-        "INT",
-        "UINT",
-        "DOUBLE",
-        "DURATION",
-        "TIMESTAMP",
-        "MAP",
-        "LIST"
+        "TYPE_NAME_UNSPECIFIED",
+        "TYPE_NAME_ANY",
+        "TYPE_NAME_BOOL",
+        "TYPE_NAME_INT",
+        "TYPE_NAME_UINT",
+        "TYPE_NAME_DOUBLE",
+        "TYPE_NAME_DURATION",
+        "TYPE_NAME_TIMESTAMP",
+        "TYPE_NAME_MAP",
+        "TYPE_NAME_LIST"
       ],
-      "default": "UNSPECIFIED"
+      "default": "TYPE_NAME_UNSPECIFIED"
     },
     "Users": {
       "type": "object",
