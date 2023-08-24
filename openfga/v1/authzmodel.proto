@@ -148,13 +148,14 @@ message ConditionParamTypeRef {
     TYPE_NAME_UNSPECIFIED = 0;
     TYPE_NAME_ANY = 1;
     TYPE_NAME_BOOL = 2;
-    TYPE_NAME_INT = 3;
-    TYPE_NAME_UINT = 4;
-    TYPE_NAME_DOUBLE = 5;
-    TYPE_NAME_DURATION = 6;
-    TYPE_NAME_TIMESTAMP = 7;
-    TYPE_NAME_MAP = 8;
-    TYPE_NAME_LIST = 9;
+    TYPE_NAME_STRING = 3;
+    TYPE_NAME_INT = 4;
+    TYPE_NAME_UINT = 5;
+    TYPE_NAME_DOUBLE = 6;
+    TYPE_NAME_DURATION = 7;
+    TYPE_NAME_TIMESTAMP = 8;
+    TYPE_NAME_MAP = 9;
+    TYPE_NAME_LIST = 10;
   }
 
   TypeName type_name = 1 [(validate.rules).enum.defined_only = true];

@@ -1741,6 +1741,7 @@
         "TYPE_NAME_UNSPECIFIED",
         "TYPE_NAME_ANY",
         "TYPE_NAME_BOOL",
+        "TYPE_NAME_STRING",
         "TYPE_NAME_INT",
         "TYPE_NAME_UINT",
         "TYPE_NAME_DOUBLE",
