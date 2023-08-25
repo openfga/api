@@ -2274,6 +2274,17 @@ func (m *WriteAuthorizationModelRequest) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
+	if len(m.GetConditions()) > 100 {
+		err := WriteAuthorizationModelRequestValidationError{
+			field:  "Conditions",
+			reason: "value must contain no more than 100 pair(s)",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
 	{
 		sorted_keys := make([]string, len(m.GetConditions()))
 		i := 0
@@ -2286,7 +2297,27 @@ func (m *WriteAuthorizationModelRequest) validate(all bool) error {
 			val := m.GetConditions()[key]
 			_ = val
 
-			// no validation rules for Conditions[key]
+			if l := utf8.RuneCountInString(key); l < 1 || l > 25 {
+				err := WriteAuthorizationModelRequestValidationError{
+					field:  fmt.Sprintf("Conditions[%v]", key),
+					reason: "value length must be between 1 and 25 runes, inclusive",
+				}
+				if !all {
+					return err
+				}
+				errors = append(errors, err)
+			}
+
+			if !_WriteAuthorizationModelRequest_Conditions_Pattern.MatchString(key) {
+				err := WriteAuthorizationModelRequestValidationError{
+					field:  fmt.Sprintf("Conditions[%v]", key),
+					reason: "value does not match regex pattern \"^[a-zA-Z0-9]{1,25}$\"",
+				}
+				if !all {
+					return err
+				}
+				errors = append(errors, err)
+			}
 
 			if all {
 				switch v := interface{}(val).(type) {
@@ -2407,6 +2438,8 @@ var _WriteAuthorizationModelRequest_SchemaVersion_InLookup = map[string]struct{}
 	"1.0": {},
 	"1.1": {},
 }
+
+var _WriteAuthorizationModelRequest_Conditions_Pattern = regexp.MustCompile("^[a-zA-Z0-9]{1,25}$")
 
 // Validate checks the field values on WriteAuthorizationModelResponse with the
 // rules defined in the proto definition for this message. If any rules are

@@ -1149,7 +1149,10 @@
           },
           "description": "A map of parameter names to the parameter's defined type reference."
         }
-      }
+      },
+      "required": [
+        "expression"
+      ]
     },
     "ConditionParamTypeRef": {
       "type": "object",

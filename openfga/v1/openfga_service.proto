@@ -961,7 +961,15 @@ message WriteAuthorizationModelRequest {
     }
   ];
 
-  map<string, openfga.v1.Condition> conditions = 4 [json_name = "conditions"];
+  map<string, openfga.v1.Condition> conditions = 4 [
+    json_name = "conditions",
+    (validate.rules).map.max_pairs = 100,
+    (validate.rules).map.keys.string = {
+      pattern: "^[a-zA-Z0-9]{1,25}$",
+      min_len: 1,
+      max_len: 25
+    }
+  ];
 }
 
 message WriteAuthorizationModelResponse {

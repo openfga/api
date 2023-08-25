@@ -104,6 +104,17 @@ func (m *AuthorizationModel) validate(all bool) error {
 
 	}
 
+	if len(m.GetConditions()) > 100 {
+		err := AuthorizationModelValidationError{
+			field:  "Conditions",
+			reason: "value must contain no more than 100 pair(s)",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
 	{
 		sorted_keys := make([]string, len(m.GetConditions()))
 		i := 0
@@ -116,7 +127,27 @@ func (m *AuthorizationModel) validate(all bool) error {
 			val := m.GetConditions()[key]
 			_ = val
 
-			// no validation rules for Conditions[key]
+			if l := utf8.RuneCountInString(key); l < 1 || l > 25 {
+				err := AuthorizationModelValidationError{
+					field:  fmt.Sprintf("Conditions[%v]", key),
+					reason: "value length must be between 1 and 25 runes, inclusive",
+				}
+				if !all {
+					return err
+				}
+				errors = append(errors, err)
+			}
+
+			if !_AuthorizationModel_Conditions_Pattern.MatchString(key) {
+				err := AuthorizationModelValidationError{
+					field:  fmt.Sprintf("Conditions[%v]", key),
+					reason: "value does not match regex pattern \"^[a-zA-Z0-9]{1,25}$\"",
+				}
+				if !all {
+					return err
+				}
+				errors = append(errors, err)
+			}
 
 			if all {
 				switch v := interface{}(val).(type) {
@@ -231,6 +262,8 @@ var _ interface {
 } = AuthorizationModelValidationError{}
 
 var _AuthorizationModel_Id_Pattern = regexp.MustCompile("^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$")
+
+var _AuthorizationModel_Conditions_Pattern = regexp.MustCompile("^[a-zA-Z0-9]{1,25}$")
 
 // Validate checks the field values on TypeDefinition with the rules defined in
 // the proto definition for this message. If any rules are violated, the first
@@ -2379,9 +2412,49 @@ func (m *Condition) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for Name
+	if l := utf8.RuneCountInString(m.GetName()); l < 1 || l > 25 {
+		err := ConditionValidationError{
+			field:  "Name",
+			reason: "value length must be between 1 and 25 runes, inclusive",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
 
-	// no validation rules for Expression
+	if !_Condition_Name_Pattern.MatchString(m.GetName()) {
+		err := ConditionValidationError{
+			field:  "Name",
+			reason: "value does not match regex pattern \"^[a-zA-Z0-9]{1,25}$\"",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if len(m.GetExpression()) > 5120 {
+		err := ConditionValidationError{
+			field:  "Expression",
+			reason: "value length must be at most 5120 bytes",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if len(m.GetParameters()) > 25 {
+		err := ConditionValidationError{
+			field:  "Parameters",
+			reason: "value must contain no more than 25 pair(s)",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
 
 	{
 		sorted_keys := make([]string, len(m.GetParameters()))
@@ -2395,7 +2468,27 @@ func (m *Condition) validate(all bool) error {
 			val := m.GetParameters()[key]
 			_ = val
 
-			// no validation rules for Parameters[key]
+			if l := utf8.RuneCountInString(key); l < 1 || l > 25 {
+				err := ConditionValidationError{
+					field:  fmt.Sprintf("Parameters[%v]", key),
+					reason: "value length must be between 1 and 25 runes, inclusive",
+				}
+				if !all {
+					return err
+				}
+				errors = append(errors, err)
+			}
+
+			if !_Condition_Parameters_Pattern.MatchString(key) {
+				err := ConditionValidationError{
+					field:  fmt.Sprintf("Parameters[%v]", key),
+					reason: "value does not match regex pattern \"^[a-zA-Z0-9]{1,25}$\"",
+				}
+				if !all {
+					return err
+				}
+				errors = append(errors, err)
+			}
 
 			if all {
 				switch v := interface{}(val).(type) {
@@ -2506,6 +2599,10 @@ var _ interface {
 	ErrorName() string
 } = ConditionValidationError{}
 
+var _Condition_Name_Pattern = regexp.MustCompile("^[a-zA-Z0-9]{1,25}$")
+
+var _Condition_Parameters_Pattern = regexp.MustCompile("^[a-zA-Z0-9]{1,25}$")
+
 // Validate checks the field values on ConditionParamTypeRef with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
@@ -2532,6 +2629,17 @@ func (m *ConditionParamTypeRef) validate(all bool) error {
 		err := ConditionParamTypeRefValidationError{
 			field:  "TypeName",
 			reason: "value must be one of the defined enum values",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if len(m.GetGenericTypes()) > 5 {
+		err := ConditionParamTypeRefValidationError{
+			field:  "GenericTypes",
+			reason: "value must contain no more than 5 item(s)",
 		}
 		if !all {
 			return err
