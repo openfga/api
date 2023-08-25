@@ -1151,6 +1151,7 @@
         }
       },
       "required": [
+        "name",
         "expression"
       ]
     },
@@ -1166,7 +1167,10 @@
             "$ref": "#/definitions/ConditionParamTypeRef"
           }
         }
-      }
+      },
+      "required": [
+        "typeName"
+      ]
     },
     "ContextualTupleKeys": {
       "type": "object",
@@ -1751,7 +1755,8 @@
         "TYPE_NAME_DURATION",
         "TYPE_NAME_TIMESTAMP",
         "TYPE_NAME_MAP",
-        "TYPE_NAME_LIST"
+        "TYPE_NAME_LIST",
+        "TYPE_NAME_IPADDRESS"
       ],
       "default": "TYPE_NAME_UNSPECIFIED"
     },
