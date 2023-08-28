@@ -104,10 +104,10 @@ func (m *AuthorizationModel) validate(all bool) error {
 
 	}
 
-	if len(m.GetConditions()) > 100 {
+	if len(m.GetConditions()) > 25 {
 		err := AuthorizationModelValidationError{
 			field:  "Conditions",
-			reason: "value must contain no more than 100 pair(s)",
+			reason: "value must contain no more than 25 pair(s)",
 		}
 		if !all {
 			return err
@@ -127,10 +127,10 @@ func (m *AuthorizationModel) validate(all bool) error {
 			val := m.GetConditions()[key]
 			_ = val
 
-			if l := utf8.RuneCountInString(key); l < 1 || l > 25 {
+			if l := utf8.RuneCountInString(key); l < 1 || l > 50 {
 				err := AuthorizationModelValidationError{
 					field:  fmt.Sprintf("Conditions[%v]", key),
-					reason: "value length must be between 1 and 25 runes, inclusive",
+					reason: "value length must be between 1 and 50 runes, inclusive",
 				}
 				if !all {
 					return err
@@ -141,7 +141,7 @@ func (m *AuthorizationModel) validate(all bool) error {
 			if !_AuthorizationModel_Conditions_Pattern.MatchString(key) {
 				err := AuthorizationModelValidationError{
 					field:  fmt.Sprintf("Conditions[%v]", key),
-					reason: "value does not match regex pattern \"^[a-zA-Z0-9]{1,25}$\"",
+					reason: "value does not match regex pattern \"^[^:#@\\\\s]{1,50}$\"",
 				}
 				if !all {
 					return err
@@ -263,7 +263,7 @@ var _ interface {
 
 var _AuthorizationModel_Id_Pattern = regexp.MustCompile("^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$")
 
-var _AuthorizationModel_Conditions_Pattern = regexp.MustCompile("^[a-zA-Z0-9]{1,25}$")
+var _AuthorizationModel_Conditions_Pattern = regexp.MustCompile("^[^:#@\\s]{1,50}$")
 
 // Validate checks the field values on TypeDefinition with the rules defined in
 // the proto definition for this message. If any rules are violated, the first
@@ -2434,10 +2434,10 @@ func (m *Condition) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
-	if len(m.GetExpression()) > 5120 {
+	if len(m.GetExpression()) > 512 {
 		err := ConditionValidationError{
 			field:  "Expression",
-			reason: "value length must be at most 5120 bytes",
+			reason: "value length must be at most 512 bytes",
 		}
 		if !all {
 			return err
@@ -2468,10 +2468,10 @@ func (m *Condition) validate(all bool) error {
 			val := m.GetParameters()[key]
 			_ = val
 
-			if l := utf8.RuneCountInString(key); l < 1 || l > 25 {
+			if l := utf8.RuneCountInString(key); l < 1 || l > 50 {
 				err := ConditionValidationError{
 					field:  fmt.Sprintf("Parameters[%v]", key),
-					reason: "value length must be between 1 and 25 runes, inclusive",
+					reason: "value length must be between 1 and 50 runes, inclusive",
 				}
 				if !all {
 					return err
@@ -2482,7 +2482,7 @@ func (m *Condition) validate(all bool) error {
 			if !_Condition_Parameters_Pattern.MatchString(key) {
 				err := ConditionValidationError{
 					field:  fmt.Sprintf("Parameters[%v]", key),
-					reason: "value does not match regex pattern \"^[a-zA-Z0-9]{1,25}$\"",
+					reason: "value does not match regex pattern \"^[^:#@\\\\s]{1,50}$\"",
 				}
 				if !all {
 					return err
@@ -2601,7 +2601,7 @@ var _ interface {
 
 var _Condition_Name_Pattern = regexp.MustCompile("^[a-zA-Z0-9]{1,25}$")
 
-var _Condition_Parameters_Pattern = regexp.MustCompile("^[a-zA-Z0-9]{1,25}$")
+var _Condition_Parameters_Pattern = regexp.MustCompile("^[^:#@\\s]{1,50}$")
 
 // Validate checks the field values on ConditionParamTypeRef with the rules
 // defined in the proto definition for this message. If any rules are
