@@ -1209,7 +1209,7 @@
           "type": "array",
           "items": {
             "$ref": "#/definitions/TupleKey",
-            "maximum": 10
+            "maximum": 20
           }
         }
       },
