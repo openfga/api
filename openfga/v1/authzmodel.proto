@@ -145,9 +145,9 @@ message Condition {
   string name = 1 [
     (google.api.field_behavior) = REQUIRED,
     (validate.rules).string = {
-      pattern: "^[a-zA-Z0-9]{1,25}$",
+      pattern: "^[^:#@\\s]{1,50}$",
       min_len: 1,
-      max_len: 25
+      max_len: 50,
     }
   ];
 

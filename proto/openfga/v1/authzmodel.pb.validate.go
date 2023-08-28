@@ -2412,10 +2412,10 @@ func (m *Condition) validate(all bool) error {
 
 	var errors []error
 
-	if l := utf8.RuneCountInString(m.GetName()); l < 1 || l > 25 {
+	if l := utf8.RuneCountInString(m.GetName()); l < 1 || l > 50 {
 		err := ConditionValidationError{
 			field:  "Name",
-			reason: "value length must be between 1 and 25 runes, inclusive",
+			reason: "value length must be between 1 and 50 runes, inclusive",
 		}
 		if !all {
 			return err
@@ -2426,7 +2426,7 @@ func (m *Condition) validate(all bool) error {
 	if !_Condition_Name_Pattern.MatchString(m.GetName()) {
 		err := ConditionValidationError{
 			field:  "Name",
-			reason: "value does not match regex pattern \"^[a-zA-Z0-9]{1,25}$\"",
+			reason: "value does not match regex pattern \"^[^:#@\\\\s]{1,50}$\"",
 		}
 		if !all {
 			return err
@@ -2599,7 +2599,7 @@ var _ interface {
 	ErrorName() string
 } = ConditionValidationError{}
 
-var _Condition_Name_Pattern = regexp.MustCompile("^[a-zA-Z0-9]{1,25}$")
+var _Condition_Name_Pattern = regexp.MustCompile("^[^:#@\\s]{1,50}$")
 
 var _Condition_Parameters_Pattern = regexp.MustCompile("^[^:#@\\s]{1,50}$")
 
