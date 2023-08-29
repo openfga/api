@@ -130,23 +130,6 @@ message UsersetTree {
   Node root = 1;
 }
 
-message Assertion {
-  TupleKey tuple_key = 1 [
-    (validate.rules).message.required = true,
-    json_name = "tuple_key",
-    (google.api.field_behavior) = REQUIRED
-  ];
-
-  bool expectation = 2 [
-    json_name = "expectation",
-    (google.api.field_behavior) = REQUIRED
-  ];
-}
-
-message Assertions {
-  repeated Assertion assertions = 1;
-}
-
 // buf:lint:ignore ENUM_ZERO_VALUE_SUFFIX
 enum TupleOperation {
   TUPLE_OPERATION_WRITE = 0;

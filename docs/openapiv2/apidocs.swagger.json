@@ -609,7 +609,7 @@
               "type": "object",
               "properties": {
                 "tuple_key": {
-                  "$ref": "#/definitions/TupleKey"
+                  "$ref": "#/definitions/CheckRequestTupleKey"
                 },
                 "contextual_tuples": {
                   "$ref": "#/definitions/ContextualTupleKeys"
@@ -686,7 +686,7 @@
               "type": "object",
               "properties": {
                 "tuple_key": {
-                  "$ref": "#/definitions/TupleKey"
+                  "$ref": "#/definitions/ExpandRequestTupleKey"
                 },
                 "authorization_model_id": {
                   "type": "string",
@@ -834,7 +834,7 @@
               "type": "object",
               "properties": {
                 "tuple_key": {
-                  "$ref": "#/definitions/TupleKey"
+                  "$ref": "#/definitions/ReadRequestTupleKey"
                 },
                 "page_size": {
                   "type": "integer",
@@ -1026,7 +1026,7 @@
       "type": "object",
       "properties": {
         "tuple_key": {
-          "$ref": "#/definitions/TupleKey"
+          "$ref": "#/definitions/CheckRequestTupleKey"
         },
         "expectation": {
           "type": "boolean"
@@ -1109,6 +1109,26 @@
       "required": [
         "schema_version"
       ]
+    },
+    "CheckRequestTupleKey": {
+      "type": "object",
+      "properties": {
+        "user": {
+          "type": "string",
+          "example": "user:anne",
+          "maxLength": 512
+        },
+        "relation": {
+          "type": "string",
+          "example": "reader",
+          "maxLength": 50
+        },
+        "object": {
+          "type": "string",
+          "example": "document:2021-budget",
+          "maxLength": 256
+        }
+      }
     },
     "CheckResponse": {
       "type": "object",
@@ -1279,6 +1299,21 @@
         "unsupported_schema_version"
       ],
       "default": "no_error"
+    },
+    "ExpandRequestTupleKey": {
+      "type": "object",
+      "properties": {
+        "object": {
+          "type": "string",
+          "example": "document:2021-budget",
+          "maxLength": 256
+        },
+        "relation": {
+          "type": "string",
+          "example": "reader",
+          "maxLength": 50
+        }
+      }
     },
     "ExpandResponse": {
       "type": "object",
@@ -1524,6 +1559,26 @@
           "type": "string",
           "example": "eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ==",
           "description": "The continuation token will be identical if there are no new changes."
+        }
+      }
+    },
+    "ReadRequestTupleKey": {
+      "type": "object",
+      "properties": {
+        "user": {
+          "type": "string",
+          "example": "user:anne",
+          "maxLength": 512
+        },
+        "relation": {
+          "type": "string",
+          "example": "reader",
+          "maxLength": 50
+        },
+        "object": {
+          "type": "string",
+          "example": "document:2021-budget",
+          "maxLength": 256
         }
       }
     },
