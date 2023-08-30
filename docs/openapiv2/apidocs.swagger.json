@@ -1633,6 +1633,24 @@
         "type"
       ]
     },
+    "RelationshipCondition": {
+      "type": "object",
+      "properties": {
+        "conditionName": {
+          "type": "string",
+          "example": "condition1",
+          "description": "A reference (by name) of the relationship condition defined in the authorization model.",
+          "maxLength": 256
+        },
+        "context": {
+          "type": "object",
+          "description": "Additional context/data to persist along with the condition.\nThe keys must match the parameters defined by the condition, and the value types must\nmatch the parameter type definitions."
+        }
+      },
+      "required": [
+        "conditionName"
+      ]
+    },
     "Status": {
       "type": "object",
       "properties": {
@@ -1728,6 +1746,9 @@
           "type": "string",
           "example": "user:anne",
           "maxLength": 512
+        },
+        "condition": {
+          "$ref": "#/definitions/RelationshipCondition"
         }
       }
     },
