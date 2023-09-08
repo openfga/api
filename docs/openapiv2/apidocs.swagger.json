@@ -975,10 +975,16 @@
               "type": "object",
               "properties": {
                 "writes": {
-                  "$ref": "#/definitions/TupleKeys"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/WriteRequestTupleKey"
+                  }
                 },
                 "deletes": {
-                  "$ref": "#/definitions/TupleKeys"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/WriteRequestTupleKey"
+                  }
                 },
                 "authorization_model_id": {
                   "type": "string",
@@ -1373,6 +1379,14 @@
       ],
       "default": "no_not_found_error"
     },
+    "NullValue": {
+      "type": "string",
+      "enum": [
+        "NULL_VALUE"
+      ],
+      "default": "NULL_VALUE",
+      "description": "`NullValue` is a singleton enumeration to represent the null value for the\n`Value` type union.\n\n The JSON representation for `NullValue` is JSON `null`.\n\n - NULL_VALUE: Null value."
+    },
     "ObjectRelation": {
       "type": "object",
       "properties": {
@@ -1501,6 +1515,24 @@
         "type"
       ]
     },
+    "RelationshipCondition": {
+      "type": "object",
+      "properties": {
+        "conditionName": {
+          "type": "string",
+          "example": "condition1",
+          "description": "A reference (by name) of the relationship condition defined in the authorization model.",
+          "maxLength": 256
+        },
+        "context": {
+          "type": "object",
+          "description": "Additional context/data to persist along with the condition.\nThe keys must match the parameters defined by the condition, and the value types must\nmatch the parameter type definitions."
+        }
+      },
+      "required": [
+        "conditionName"
+      ]
+    },
     "Status": {
       "type": "object",
       "properties": {
@@ -1598,21 +1630,6 @@
           "maxLength": 512
         }
       }
-    },
-    "TupleKeys": {
-      "type": "object",
-      "properties": {
-        "tuple_keys": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/TupleKey",
-            "minimum": 1
-          }
-        }
-      },
-      "required": [
-        "tuple_keys"
-      ]
     },
     "TupleOperation": {
       "type": "string",
@@ -1771,6 +1788,29 @@
         "authorization_model_id": {
           "type": "string",
           "example": "01G5JAVJ41T49E9TT3SKVS7X1J"
+        }
+      }
+    },
+    "WriteRequestTupleKey": {
+      "type": "object",
+      "properties": {
+        "user": {
+          "type": "string",
+          "example": "user:anne",
+          "maxLength": 512
+        },
+        "relation": {
+          "type": "string",
+          "example": "reader",
+          "maxLength": 50
+        },
+        "object": {
+          "type": "string",
+          "example": "document:2021-budget",
+          "maxLength": 256
+        },
+        "condition": {
+          "$ref": "#/definitions/RelationshipCondition"
         }
       }
     },

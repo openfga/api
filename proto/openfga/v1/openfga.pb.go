@@ -12,6 +12,7 @@ import (
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	structpb "google.golang.org/protobuf/types/known/structpb"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 	reflect "reflect"
 	sync "sync"
@@ -131,6 +132,65 @@ func (x *Object) GetId() string {
 	return ""
 }
 
+type RelationshipCondition struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	// A reference (by name) of the relationship condition defined in the authorization model.
+	ConditionName string `protobuf:"bytes,1,opt,name=condition_name,json=conditionName,proto3" json:"condition_name,omitempty"`
+	// Additional context/data to persist along with the condition.
+	// The keys must match the parameters defined by the condition, and the value types must
+	// match the parameter type definitions.
+	Context *structpb.Struct `protobuf:"bytes,2,opt,name=context,proto3" json:"context,omitempty"`
+}
+
+func (x *RelationshipCondition) Reset() {
+	*x = RelationshipCondition{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_openfga_v1_openfga_proto_msgTypes[1]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *RelationshipCondition) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RelationshipCondition) ProtoMessage() {}
+
+func (x *RelationshipCondition) ProtoReflect() protoreflect.Message {
+	mi := &file_openfga_v1_openfga_proto_msgTypes[1]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RelationshipCondition.ProtoReflect.Descriptor instead.
+func (*RelationshipCondition) Descriptor() ([]byte, []int) {
+	return file_openfga_v1_openfga_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *RelationshipCondition) GetConditionName() string {
+	if x != nil {
+		return x.ConditionName
+	}
+	return ""
+}
+
+func (x *RelationshipCondition) GetContext() *structpb.Struct {
+	if x != nil {
+		return x.Context
+	}
+	return nil
+}
+
 type TupleKey struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -144,7 +204,7 @@ type TupleKey struct {
 func (x *TupleKey) Reset() {
 	*x = TupleKey{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_openfga_v1_openfga_proto_msgTypes[1]
+		mi := &file_openfga_v1_openfga_proto_msgTypes[2]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -157,7 +217,7 @@ func (x *TupleKey) String() string {
 func (*TupleKey) ProtoMessage() {}
 
 func (x *TupleKey) ProtoReflect() protoreflect.Message {
-	mi := &file_openfga_v1_openfga_proto_msgTypes[1]
+	mi := &file_openfga_v1_openfga_proto_msgTypes[2]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -170,7 +230,7 @@ func (x *TupleKey) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TupleKey.ProtoReflect.Descriptor instead.
 func (*TupleKey) Descriptor() ([]byte, []int) {
-	return file_openfga_v1_openfga_proto_rawDescGZIP(), []int{1}
+	return file_openfga_v1_openfga_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *TupleKey) GetObject() string {
@@ -206,7 +266,7 @@ type Tuple struct {
 func (x *Tuple) Reset() {
 	*x = Tuple{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_openfga_v1_openfga_proto_msgTypes[2]
+		mi := &file_openfga_v1_openfga_proto_msgTypes[3]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -219,7 +279,7 @@ func (x *Tuple) String() string {
 func (*Tuple) ProtoMessage() {}
 
 func (x *Tuple) ProtoReflect() protoreflect.Message {
-	mi := &file_openfga_v1_openfga_proto_msgTypes[2]
+	mi := &file_openfga_v1_openfga_proto_msgTypes[3]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -232,7 +292,7 @@ func (x *Tuple) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Tuple.ProtoReflect.Descriptor instead.
 func (*Tuple) Descriptor() ([]byte, []int) {
-	return file_openfga_v1_openfga_proto_rawDescGZIP(), []int{2}
+	return file_openfga_v1_openfga_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *Tuple) GetKey() *TupleKey {
@@ -260,7 +320,7 @@ type TupleKeys struct {
 func (x *TupleKeys) Reset() {
 	*x = TupleKeys{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_openfga_v1_openfga_proto_msgTypes[3]
+		mi := &file_openfga_v1_openfga_proto_msgTypes[4]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -273,7 +333,7 @@ func (x *TupleKeys) String() string {
 func (*TupleKeys) ProtoMessage() {}
 
 func (x *TupleKeys) ProtoReflect() protoreflect.Message {
-	mi := &file_openfga_v1_openfga_proto_msgTypes[3]
+	mi := &file_openfga_v1_openfga_proto_msgTypes[4]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -286,7 +346,7 @@ func (x *TupleKeys) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TupleKeys.ProtoReflect.Descriptor instead.
 func (*TupleKeys) Descriptor() ([]byte, []int) {
-	return file_openfga_v1_openfga_proto_rawDescGZIP(), []int{3}
+	return file_openfga_v1_openfga_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *TupleKeys) GetTupleKeys() []*TupleKey {
@@ -307,7 +367,7 @@ type ContextualTupleKeys struct {
 func (x *ContextualTupleKeys) Reset() {
 	*x = ContextualTupleKeys{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_openfga_v1_openfga_proto_msgTypes[4]
+		mi := &file_openfga_v1_openfga_proto_msgTypes[5]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -320,7 +380,7 @@ func (x *ContextualTupleKeys) String() string {
 func (*ContextualTupleKeys) ProtoMessage() {}
 
 func (x *ContextualTupleKeys) ProtoReflect() protoreflect.Message {
-	mi := &file_openfga_v1_openfga_proto_msgTypes[4]
+	mi := &file_openfga_v1_openfga_proto_msgTypes[5]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -333,7 +393,7 @@ func (x *ContextualTupleKeys) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ContextualTupleKeys.ProtoReflect.Descriptor instead.
 func (*ContextualTupleKeys) Descriptor() ([]byte, []int) {
-	return file_openfga_v1_openfga_proto_rawDescGZIP(), []int{4}
+	return file_openfga_v1_openfga_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *ContextualTupleKeys) GetTupleKeys() []*TupleKey {
@@ -355,7 +415,7 @@ type UsersetTree struct {
 func (x *UsersetTree) Reset() {
 	*x = UsersetTree{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_openfga_v1_openfga_proto_msgTypes[5]
+		mi := &file_openfga_v1_openfga_proto_msgTypes[6]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -368,7 +428,7 @@ func (x *UsersetTree) String() string {
 func (*UsersetTree) ProtoMessage() {}
 
 func (x *UsersetTree) ProtoReflect() protoreflect.Message {
-	mi := &file_openfga_v1_openfga_proto_msgTypes[5]
+	mi := &file_openfga_v1_openfga_proto_msgTypes[6]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -381,7 +441,7 @@ func (x *UsersetTree) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UsersetTree.ProtoReflect.Descriptor instead.
 func (*UsersetTree) Descriptor() ([]byte, []int) {
-	return file_openfga_v1_openfga_proto_rawDescGZIP(), []int{5}
+	return file_openfga_v1_openfga_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *UsersetTree) GetRoot() *UsersetTree_Node {
@@ -403,7 +463,7 @@ type Assertion struct {
 func (x *Assertion) Reset() {
 	*x = Assertion{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_openfga_v1_openfga_proto_msgTypes[6]
+		mi := &file_openfga_v1_openfga_proto_msgTypes[7]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -416,7 +476,7 @@ func (x *Assertion) String() string {
 func (*Assertion) ProtoMessage() {}
 
 func (x *Assertion) ProtoReflect() protoreflect.Message {
-	mi := &file_openfga_v1_openfga_proto_msgTypes[6]
+	mi := &file_openfga_v1_openfga_proto_msgTypes[7]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -429,7 +489,7 @@ func (x *Assertion) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Assertion.ProtoReflect.Descriptor instead.
 func (*Assertion) Descriptor() ([]byte, []int) {
-	return file_openfga_v1_openfga_proto_rawDescGZIP(), []int{6}
+	return file_openfga_v1_openfga_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *Assertion) GetTupleKey() *TupleKey {
@@ -457,7 +517,7 @@ type Assertions struct {
 func (x *Assertions) Reset() {
 	*x = Assertions{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_openfga_v1_openfga_proto_msgTypes[7]
+		mi := &file_openfga_v1_openfga_proto_msgTypes[8]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -470,7 +530,7 @@ func (x *Assertions) String() string {
 func (*Assertions) ProtoMessage() {}
 
 func (x *Assertions) ProtoReflect() protoreflect.Message {
-	mi := &file_openfga_v1_openfga_proto_msgTypes[7]
+	mi := &file_openfga_v1_openfga_proto_msgTypes[8]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -483,7 +543,7 @@ func (x *Assertions) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Assertions.ProtoReflect.Descriptor instead.
 func (*Assertions) Descriptor() ([]byte, []int) {
-	return file_openfga_v1_openfga_proto_rawDescGZIP(), []int{7}
+	return file_openfga_v1_openfga_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *Assertions) GetAssertions() []*Assertion {
@@ -506,7 +566,7 @@ type TupleChange struct {
 func (x *TupleChange) Reset() {
 	*x = TupleChange{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_openfga_v1_openfga_proto_msgTypes[8]
+		mi := &file_openfga_v1_openfga_proto_msgTypes[9]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -519,7 +579,7 @@ func (x *TupleChange) String() string {
 func (*TupleChange) ProtoMessage() {}
 
 func (x *TupleChange) ProtoReflect() protoreflect.Message {
-	mi := &file_openfga_v1_openfga_proto_msgTypes[8]
+	mi := &file_openfga_v1_openfga_proto_msgTypes[9]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -532,7 +592,7 @@ func (x *TupleChange) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TupleChange.ProtoReflect.Descriptor instead.
 func (*TupleChange) Descriptor() ([]byte, []int) {
-	return file_openfga_v1_openfga_proto_rawDescGZIP(), []int{8}
+	return file_openfga_v1_openfga_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *TupleChange) GetTupleKey() *TupleKey {
@@ -571,7 +631,7 @@ type Store struct {
 func (x *Store) Reset() {
 	*x = Store{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_openfga_v1_openfga_proto_msgTypes[9]
+		mi := &file_openfga_v1_openfga_proto_msgTypes[10]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -584,7 +644,7 @@ func (x *Store) String() string {
 func (*Store) ProtoMessage() {}
 
 func (x *Store) ProtoReflect() protoreflect.Message {
-	mi := &file_openfga_v1_openfga_proto_msgTypes[9]
+	mi := &file_openfga_v1_openfga_proto_msgTypes[10]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -597,7 +657,7 @@ func (x *Store) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Store.ProtoReflect.Descriptor instead.
 func (*Store) Descriptor() ([]byte, []int) {
-	return file_openfga_v1_openfga_proto_rawDescGZIP(), []int{9}
+	return file_openfga_v1_openfga_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *Store) GetId() string {
@@ -658,7 +718,7 @@ type UsersetTree_Leaf struct {
 func (x *UsersetTree_Leaf) Reset() {
 	*x = UsersetTree_Leaf{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_openfga_v1_openfga_proto_msgTypes[10]
+		mi := &file_openfga_v1_openfga_proto_msgTypes[11]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -671,7 +731,7 @@ func (x *UsersetTree_Leaf) String() string {
 func (*UsersetTree_Leaf) ProtoMessage() {}
 
 func (x *UsersetTree_Leaf) ProtoReflect() protoreflect.Message {
-	mi := &file_openfga_v1_openfga_proto_msgTypes[10]
+	mi := &file_openfga_v1_openfga_proto_msgTypes[11]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -684,7 +744,7 @@ func (x *UsersetTree_Leaf) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UsersetTree_Leaf.ProtoReflect.Descriptor instead.
 func (*UsersetTree_Leaf) Descriptor() ([]byte, []int) {
-	return file_openfga_v1_openfga_proto_rawDescGZIP(), []int{5, 0}
+	return file_openfga_v1_openfga_proto_rawDescGZIP(), []int{6, 0}
 }
 
 func (m *UsersetTree_Leaf) GetValue() isUsersetTree_Leaf_Value {
@@ -748,7 +808,7 @@ type UsersetTree_Nodes struct {
 func (x *UsersetTree_Nodes) Reset() {
 	*x = UsersetTree_Nodes{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_openfga_v1_openfga_proto_msgTypes[11]
+		mi := &file_openfga_v1_openfga_proto_msgTypes[12]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -761,7 +821,7 @@ func (x *UsersetTree_Nodes) String() string {
 func (*UsersetTree_Nodes) ProtoMessage() {}
 
 func (x *UsersetTree_Nodes) ProtoReflect() protoreflect.Message {
-	mi := &file_openfga_v1_openfga_proto_msgTypes[11]
+	mi := &file_openfga_v1_openfga_proto_msgTypes[12]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -774,7 +834,7 @@ func (x *UsersetTree_Nodes) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UsersetTree_Nodes.ProtoReflect.Descriptor instead.
 func (*UsersetTree_Nodes) Descriptor() ([]byte, []int) {
-	return file_openfga_v1_openfga_proto_rawDescGZIP(), []int{5, 1}
+	return file_openfga_v1_openfga_proto_rawDescGZIP(), []int{6, 1}
 }
 
 func (x *UsersetTree_Nodes) GetNodes() []*UsersetTree_Node {
@@ -795,7 +855,7 @@ type UsersetTree_Users struct {
 func (x *UsersetTree_Users) Reset() {
 	*x = UsersetTree_Users{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_openfga_v1_openfga_proto_msgTypes[12]
+		mi := &file_openfga_v1_openfga_proto_msgTypes[13]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -808,7 +868,7 @@ func (x *UsersetTree_Users) String() string {
 func (*UsersetTree_Users) ProtoMessage() {}
 
 func (x *UsersetTree_Users) ProtoReflect() protoreflect.Message {
-	mi := &file_openfga_v1_openfga_proto_msgTypes[12]
+	mi := &file_openfga_v1_openfga_proto_msgTypes[13]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -821,7 +881,7 @@ func (x *UsersetTree_Users) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UsersetTree_Users.ProtoReflect.Descriptor instead.
 func (*UsersetTree_Users) Descriptor() ([]byte, []int) {
-	return file_openfga_v1_openfga_proto_rawDescGZIP(), []int{5, 2}
+	return file_openfga_v1_openfga_proto_rawDescGZIP(), []int{6, 2}
 }
 
 func (x *UsersetTree_Users) GetUsers() []string {
@@ -842,7 +902,7 @@ type UsersetTree_Computed struct {
 func (x *UsersetTree_Computed) Reset() {
 	*x = UsersetTree_Computed{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_openfga_v1_openfga_proto_msgTypes[13]
+		mi := &file_openfga_v1_openfga_proto_msgTypes[14]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -855,7 +915,7 @@ func (x *UsersetTree_Computed) String() string {
 func (*UsersetTree_Computed) ProtoMessage() {}
 
 func (x *UsersetTree_Computed) ProtoReflect() protoreflect.Message {
-	mi := &file_openfga_v1_openfga_proto_msgTypes[13]
+	mi := &file_openfga_v1_openfga_proto_msgTypes[14]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -868,7 +928,7 @@ func (x *UsersetTree_Computed) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UsersetTree_Computed.ProtoReflect.Descriptor instead.
 func (*UsersetTree_Computed) Descriptor() ([]byte, []int) {
-	return file_openfga_v1_openfga_proto_rawDescGZIP(), []int{5, 3}
+	return file_openfga_v1_openfga_proto_rawDescGZIP(), []int{6, 3}
 }
 
 func (x *UsersetTree_Computed) GetUserset() string {
@@ -890,7 +950,7 @@ type UsersetTree_TupleToUserset struct {
 func (x *UsersetTree_TupleToUserset) Reset() {
 	*x = UsersetTree_TupleToUserset{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_openfga_v1_openfga_proto_msgTypes[14]
+		mi := &file_openfga_v1_openfga_proto_msgTypes[15]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -903,7 +963,7 @@ func (x *UsersetTree_TupleToUserset) String() string {
 func (*UsersetTree_TupleToUserset) ProtoMessage() {}
 
 func (x *UsersetTree_TupleToUserset) ProtoReflect() protoreflect.Message {
-	mi := &file_openfga_v1_openfga_proto_msgTypes[14]
+	mi := &file_openfga_v1_openfga_proto_msgTypes[15]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -916,7 +976,7 @@ func (x *UsersetTree_TupleToUserset) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UsersetTree_TupleToUserset.ProtoReflect.Descriptor instead.
 func (*UsersetTree_TupleToUserset) Descriptor() ([]byte, []int) {
-	return file_openfga_v1_openfga_proto_rawDescGZIP(), []int{5, 4}
+	return file_openfga_v1_openfga_proto_rawDescGZIP(), []int{6, 4}
 }
 
 func (x *UsersetTree_TupleToUserset) GetTupleset() string {
@@ -945,7 +1005,7 @@ type UsersetTree_Difference struct {
 func (x *UsersetTree_Difference) Reset() {
 	*x = UsersetTree_Difference{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_openfga_v1_openfga_proto_msgTypes[15]
+		mi := &file_openfga_v1_openfga_proto_msgTypes[16]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -958,7 +1018,7 @@ func (x *UsersetTree_Difference) String() string {
 func (*UsersetTree_Difference) ProtoMessage() {}
 
 func (x *UsersetTree_Difference) ProtoReflect() protoreflect.Message {
-	mi := &file_openfga_v1_openfga_proto_msgTypes[15]
+	mi := &file_openfga_v1_openfga_proto_msgTypes[16]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -971,7 +1031,7 @@ func (x *UsersetTree_Difference) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UsersetTree_Difference.ProtoReflect.Descriptor instead.
 func (*UsersetTree_Difference) Descriptor() ([]byte, []int) {
-	return file_openfga_v1_openfga_proto_rawDescGZIP(), []int{5, 5}
+	return file_openfga_v1_openfga_proto_rawDescGZIP(), []int{6, 5}
 }
 
 func (x *UsersetTree_Difference) GetBase() *UsersetTree_Node {
@@ -1006,7 +1066,7 @@ type UsersetTree_Node struct {
 func (x *UsersetTree_Node) Reset() {
 	*x = UsersetTree_Node{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_openfga_v1_openfga_proto_msgTypes[16]
+		mi := &file_openfga_v1_openfga_proto_msgTypes[17]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1019,7 +1079,7 @@ func (x *UsersetTree_Node) String() string {
 func (*UsersetTree_Node) ProtoMessage() {}
 
 func (x *UsersetTree_Node) ProtoReflect() protoreflect.Message {
-	mi := &file_openfga_v1_openfga_proto_msgTypes[16]
+	mi := &file_openfga_v1_openfga_proto_msgTypes[17]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1032,7 +1092,7 @@ func (x *UsersetTree_Node) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UsersetTree_Node.ProtoReflect.Descriptor instead.
 func (*UsersetTree_Node) Descriptor() ([]byte, []int) {
-	return file_openfga_v1_openfga_proto_rawDescGZIP(), []int{5, 6}
+	return file_openfga_v1_openfga_proto_rawDescGZIP(), []int{6, 6}
 }
 
 func (x *UsersetTree_Node) GetName() string {
@@ -1112,20 +1172,32 @@ var file_openfga_v1_openfga_proto_rawDesc = []byte{
 	0x6e, 0x66, 0x67, 0x61, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x0a, 0x6f, 0x70, 0x65, 0x6e,
 	0x66, 0x67, 0x61, 0x2e, 0x76, 0x31, 0x1a, 0x1f, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2f, 0x61,
 	0x70, 0x69, 0x2f, 0x66, 0x69, 0x65, 0x6c, 0x64, 0x5f, 0x62, 0x65, 0x68, 0x61, 0x76, 0x69, 0x6f,
-	0x72, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x1f, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2f,
-	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2f, 0x74, 0x69, 0x6d, 0x65, 0x73, 0x74, 0x61,
-	0x6d, 0x70, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x63,
-	0x2d, 0x67, 0x65, 0x6e, 0x2d, 0x6f, 0x70, 0x65, 0x6e, 0x61, 0x70, 0x69, 0x76, 0x32, 0x2f, 0x6f,
-	0x70, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x2f, 0x61, 0x6e, 0x6e, 0x6f, 0x74, 0x61, 0x74, 0x69, 0x6f,
-	0x6e, 0x73, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x17, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x61,
-	0x74, 0x65, 0x2f, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x61, 0x74, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74,
-	0x6f, 0x22, 0x6d, 0x0a, 0x06, 0x4f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x12, 0x3e, 0x0a, 0x04, 0x74,
-	0x79, 0x70, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x42, 0x2a, 0x92, 0x41, 0x0c, 0x4a, 0x0a,
-	0x22, 0x64, 0x6f, 0x63, 0x75, 0x6d, 0x65, 0x6e, 0x74, 0x22, 0xe0, 0x41, 0x02, 0xfa, 0x42, 0x15,
-	0x72, 0x13, 0x32, 0x11, 0x5e, 0x5b, 0x5e, 0x3a, 0x23, 0x40, 0x5c, 0x73, 0x5d, 0x7b, 0x31, 0x2c,
-	0x32, 0x35, 0x34, 0x7d, 0x24, 0x52, 0x04, 0x74, 0x79, 0x70, 0x65, 0x12, 0x23, 0x0a, 0x02, 0x69,
-	0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x42, 0x13, 0xe0, 0x41, 0x02, 0xfa, 0x42, 0x0d, 0x72,
-	0x0b, 0x32, 0x09, 0x5b, 0x5e, 0x23, 0x3a, 0x5c, 0x73, 0x5d, 0x2b, 0x24, 0x52, 0x02, 0x69, 0x64,
+	0x72, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x1c, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2f,
+	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2f, 0x73, 0x74, 0x72, 0x75, 0x63, 0x74, 0x2e,
+	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x1f, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2f, 0x70, 0x72,
+	0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2f, 0x74, 0x69, 0x6d, 0x65, 0x73, 0x74, 0x61, 0x6d, 0x70,
+	0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x63, 0x2d, 0x67,
+	0x65, 0x6e, 0x2d, 0x6f, 0x70, 0x65, 0x6e, 0x61, 0x70, 0x69, 0x76, 0x32, 0x2f, 0x6f, 0x70, 0x74,
+	0x69, 0x6f, 0x6e, 0x73, 0x2f, 0x61, 0x6e, 0x6e, 0x6f, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73,
+	0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x17, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x61, 0x74, 0x65,
+	0x2f, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x61, 0x74, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22,
+	0x6d, 0x0a, 0x06, 0x4f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x12, 0x3e, 0x0a, 0x04, 0x74, 0x79, 0x70,
+	0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x42, 0x2a, 0x92, 0x41, 0x0c, 0x4a, 0x0a, 0x22, 0x64,
+	0x6f, 0x63, 0x75, 0x6d, 0x65, 0x6e, 0x74, 0x22, 0xe0, 0x41, 0x02, 0xfa, 0x42, 0x15, 0x72, 0x13,
+	0x32, 0x11, 0x5e, 0x5b, 0x5e, 0x3a, 0x23, 0x40, 0x5c, 0x73, 0x5d, 0x7b, 0x31, 0x2c, 0x32, 0x35,
+	0x34, 0x7d, 0x24, 0x52, 0x04, 0x74, 0x79, 0x70, 0x65, 0x12, 0x23, 0x0a, 0x02, 0x69, 0x64, 0x18,
+	0x02, 0x20, 0x01, 0x28, 0x09, 0x42, 0x13, 0xe0, 0x41, 0x02, 0xfa, 0x42, 0x0d, 0x72, 0x0b, 0x32,
+	0x09, 0x5b, 0x5e, 0x23, 0x3a, 0x5c, 0x73, 0x5d, 0x2b, 0x24, 0x52, 0x02, 0x69, 0x64, 0x22, 0x9f,
+	0x01, 0x0a, 0x15, 0x52, 0x65, 0x6c, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x68, 0x69, 0x70, 0x43,
+	0x6f, 0x6e, 0x64, 0x69, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x53, 0x0a, 0x0e, 0x63, 0x6f, 0x6e, 0x64,
+	0x69, 0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09,
+	0x42, 0x2c, 0x92, 0x41, 0x11, 0x4a, 0x0c, 0x22, 0x63, 0x6f, 0x6e, 0x64, 0x69, 0x74, 0x69, 0x6f,
+	0x6e, 0x31, 0x22, 0x78, 0x80, 0x02, 0xe0, 0x41, 0x02, 0xfa, 0x42, 0x12, 0x72, 0x10, 0x32, 0x0e,
+	0x5e, 0x5b, 0x5e, 0x5c, 0x73, 0x5d, 0x7b, 0x32, 0x2c, 0x32, 0x35, 0x36, 0x7d, 0x24, 0x52, 0x0d,
+	0x63, 0x6f, 0x6e, 0x64, 0x69, 0x74, 0x69, 0x6f, 0x6e, 0x4e, 0x61, 0x6d, 0x65, 0x12, 0x31, 0x0a,
+	0x07, 0x63, 0x6f, 0x6e, 0x74, 0x65, 0x78, 0x74, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x17,
+	0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66,
+	0x2e, 0x53, 0x74, 0x72, 0x75, 0x63, 0x74, 0x52, 0x07, 0x63, 0x6f, 0x6e, 0x74, 0x65, 0x78, 0x74,
 	0x22, 0xd2, 0x01, 0x0a, 0x08, 0x54, 0x75, 0x70, 0x6c, 0x65, 0x4b, 0x65, 0x79, 0x12, 0x4e, 0x0a,
 	0x06, 0x6f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x42, 0x36, 0x92,
 	0x41, 0x1b, 0x4a, 0x16, 0x22, 0x64, 0x6f, 0x63, 0x75, 0x6d, 0x65, 0x6e, 0x74, 0x3a, 0x32, 0x30,
@@ -1285,58 +1357,61 @@ func file_openfga_v1_openfga_proto_rawDescGZIP() []byte {
 }
 
 var file_openfga_v1_openfga_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_openfga_v1_openfga_proto_msgTypes = make([]protoimpl.MessageInfo, 17)
+var file_openfga_v1_openfga_proto_msgTypes = make([]protoimpl.MessageInfo, 18)
 var file_openfga_v1_openfga_proto_goTypes = []interface{}{
 	(TupleOperation)(0),                // 0: openfga.v1.TupleOperation
 	(*Object)(nil),                     // 1: openfga.v1.Object
-	(*TupleKey)(nil),                   // 2: openfga.v1.TupleKey
-	(*Tuple)(nil),                      // 3: openfga.v1.Tuple
-	(*TupleKeys)(nil),                  // 4: openfga.v1.TupleKeys
-	(*ContextualTupleKeys)(nil),        // 5: openfga.v1.ContextualTupleKeys
-	(*UsersetTree)(nil),                // 6: openfga.v1.UsersetTree
-	(*Assertion)(nil),                  // 7: openfga.v1.Assertion
-	(*Assertions)(nil),                 // 8: openfga.v1.Assertions
-	(*TupleChange)(nil),                // 9: openfga.v1.TupleChange
-	(*Store)(nil),                      // 10: openfga.v1.Store
-	(*UsersetTree_Leaf)(nil),           // 11: openfga.v1.UsersetTree.Leaf
-	(*UsersetTree_Nodes)(nil),          // 12: openfga.v1.UsersetTree.Nodes
-	(*UsersetTree_Users)(nil),          // 13: openfga.v1.UsersetTree.Users
-	(*UsersetTree_Computed)(nil),       // 14: openfga.v1.UsersetTree.Computed
-	(*UsersetTree_TupleToUserset)(nil), // 15: openfga.v1.UsersetTree.TupleToUserset
-	(*UsersetTree_Difference)(nil),     // 16: openfga.v1.UsersetTree.Difference
-	(*UsersetTree_Node)(nil),           // 17: openfga.v1.UsersetTree.Node
-	(*timestamppb.Timestamp)(nil),      // 18: google.protobuf.Timestamp
+	(*RelationshipCondition)(nil),      // 2: openfga.v1.RelationshipCondition
+	(*TupleKey)(nil),                   // 3: openfga.v1.TupleKey
+	(*Tuple)(nil),                      // 4: openfga.v1.Tuple
+	(*TupleKeys)(nil),                  // 5: openfga.v1.TupleKeys
+	(*ContextualTupleKeys)(nil),        // 6: openfga.v1.ContextualTupleKeys
+	(*UsersetTree)(nil),                // 7: openfga.v1.UsersetTree
+	(*Assertion)(nil),                  // 8: openfga.v1.Assertion
+	(*Assertions)(nil),                 // 9: openfga.v1.Assertions
+	(*TupleChange)(nil),                // 10: openfga.v1.TupleChange
+	(*Store)(nil),                      // 11: openfga.v1.Store
+	(*UsersetTree_Leaf)(nil),           // 12: openfga.v1.UsersetTree.Leaf
+	(*UsersetTree_Nodes)(nil),          // 13: openfga.v1.UsersetTree.Nodes
+	(*UsersetTree_Users)(nil),          // 14: openfga.v1.UsersetTree.Users
+	(*UsersetTree_Computed)(nil),       // 15: openfga.v1.UsersetTree.Computed
+	(*UsersetTree_TupleToUserset)(nil), // 16: openfga.v1.UsersetTree.TupleToUserset
+	(*UsersetTree_Difference)(nil),     // 17: openfga.v1.UsersetTree.Difference
+	(*UsersetTree_Node)(nil),           // 18: openfga.v1.UsersetTree.Node
+	(*structpb.Struct)(nil),            // 19: google.protobuf.Struct
+	(*timestamppb.Timestamp)(nil),      // 20: google.protobuf.Timestamp
 }
 var file_openfga_v1_openfga_proto_depIdxs = []int32{
-	2,  // 0: openfga.v1.Tuple.key:type_name -> openfga.v1.TupleKey
-	18, // 1: openfga.v1.Tuple.timestamp:type_name -> google.protobuf.Timestamp
-	2,  // 2: openfga.v1.TupleKeys.tuple_keys:type_name -> openfga.v1.TupleKey
-	2,  // 3: openfga.v1.ContextualTupleKeys.tuple_keys:type_name -> openfga.v1.TupleKey
-	17, // 4: openfga.v1.UsersetTree.root:type_name -> openfga.v1.UsersetTree.Node
-	2,  // 5: openfga.v1.Assertion.tuple_key:type_name -> openfga.v1.TupleKey
-	7,  // 6: openfga.v1.Assertions.assertions:type_name -> openfga.v1.Assertion
-	2,  // 7: openfga.v1.TupleChange.tuple_key:type_name -> openfga.v1.TupleKey
-	0,  // 8: openfga.v1.TupleChange.operation:type_name -> openfga.v1.TupleOperation
-	18, // 9: openfga.v1.TupleChange.timestamp:type_name -> google.protobuf.Timestamp
-	18, // 10: openfga.v1.Store.created_at:type_name -> google.protobuf.Timestamp
-	18, // 11: openfga.v1.Store.updated_at:type_name -> google.protobuf.Timestamp
-	18, // 12: openfga.v1.Store.deleted_at:type_name -> google.protobuf.Timestamp
-	13, // 13: openfga.v1.UsersetTree.Leaf.users:type_name -> openfga.v1.UsersetTree.Users
-	14, // 14: openfga.v1.UsersetTree.Leaf.computed:type_name -> openfga.v1.UsersetTree.Computed
-	15, // 15: openfga.v1.UsersetTree.Leaf.tuple_to_userset:type_name -> openfga.v1.UsersetTree.TupleToUserset
-	17, // 16: openfga.v1.UsersetTree.Nodes.nodes:type_name -> openfga.v1.UsersetTree.Node
-	14, // 17: openfga.v1.UsersetTree.TupleToUserset.computed:type_name -> openfga.v1.UsersetTree.Computed
-	17, // 18: openfga.v1.UsersetTree.Difference.base:type_name -> openfga.v1.UsersetTree.Node
-	17, // 19: openfga.v1.UsersetTree.Difference.subtract:type_name -> openfga.v1.UsersetTree.Node
-	11, // 20: openfga.v1.UsersetTree.Node.leaf:type_name -> openfga.v1.UsersetTree.Leaf
-	16, // 21: openfga.v1.UsersetTree.Node.difference:type_name -> openfga.v1.UsersetTree.Difference
-	12, // 22: openfga.v1.UsersetTree.Node.union:type_name -> openfga.v1.UsersetTree.Nodes
-	12, // 23: openfga.v1.UsersetTree.Node.intersection:type_name -> openfga.v1.UsersetTree.Nodes
-	24, // [24:24] is the sub-list for method output_type
-	24, // [24:24] is the sub-list for method input_type
-	24, // [24:24] is the sub-list for extension type_name
-	24, // [24:24] is the sub-list for extension extendee
-	0,  // [0:24] is the sub-list for field type_name
+	19, // 0: openfga.v1.RelationshipCondition.context:type_name -> google.protobuf.Struct
+	3,  // 1: openfga.v1.Tuple.key:type_name -> openfga.v1.TupleKey
+	20, // 2: openfga.v1.Tuple.timestamp:type_name -> google.protobuf.Timestamp
+	3,  // 3: openfga.v1.TupleKeys.tuple_keys:type_name -> openfga.v1.TupleKey
+	3,  // 4: openfga.v1.ContextualTupleKeys.tuple_keys:type_name -> openfga.v1.TupleKey
+	18, // 5: openfga.v1.UsersetTree.root:type_name -> openfga.v1.UsersetTree.Node
+	3,  // 6: openfga.v1.Assertion.tuple_key:type_name -> openfga.v1.TupleKey
+	8,  // 7: openfga.v1.Assertions.assertions:type_name -> openfga.v1.Assertion
+	3,  // 8: openfga.v1.TupleChange.tuple_key:type_name -> openfga.v1.TupleKey
+	0,  // 9: openfga.v1.TupleChange.operation:type_name -> openfga.v1.TupleOperation
+	20, // 10: openfga.v1.TupleChange.timestamp:type_name -> google.protobuf.Timestamp
+	20, // 11: openfga.v1.Store.created_at:type_name -> google.protobuf.Timestamp
+	20, // 12: openfga.v1.Store.updated_at:type_name -> google.protobuf.Timestamp
+	20, // 13: openfga.v1.Store.deleted_at:type_name -> google.protobuf.Timestamp
+	14, // 14: openfga.v1.UsersetTree.Leaf.users:type_name -> openfga.v1.UsersetTree.Users
+	15, // 15: openfga.v1.UsersetTree.Leaf.computed:type_name -> openfga.v1.UsersetTree.Computed
+	16, // 16: openfga.v1.UsersetTree.Leaf.tuple_to_userset:type_name -> openfga.v1.UsersetTree.TupleToUserset
+	18, // 17: openfga.v1.UsersetTree.Nodes.nodes:type_name -> openfga.v1.UsersetTree.Node
+	15, // 18: openfga.v1.UsersetTree.TupleToUserset.computed:type_name -> openfga.v1.UsersetTree.Computed
+	18, // 19: openfga.v1.UsersetTree.Difference.base:type_name -> openfga.v1.UsersetTree.Node
+	18, // 20: openfga.v1.UsersetTree.Difference.subtract:type_name -> openfga.v1.UsersetTree.Node
+	12, // 21: openfga.v1.UsersetTree.Node.leaf:type_name -> openfga.v1.UsersetTree.Leaf
+	17, // 22: openfga.v1.UsersetTree.Node.difference:type_name -> openfga.v1.UsersetTree.Difference
+	13, // 23: openfga.v1.UsersetTree.Node.union:type_name -> openfga.v1.UsersetTree.Nodes
+	13, // 24: openfga.v1.UsersetTree.Node.intersection:type_name -> openfga.v1.UsersetTree.Nodes
+	25, // [25:25] is the sub-list for method output_type
+	25, // [25:25] is the sub-list for method input_type
+	25, // [25:25] is the sub-list for extension type_name
+	25, // [25:25] is the sub-list for extension extendee
+	0,  // [0:25] is the sub-list for field type_name
 }
 
 func init() { file_openfga_v1_openfga_proto_init() }
@@ -1358,7 +1433,7 @@ func file_openfga_v1_openfga_proto_init() {
 			}
 		}
 		file_openfga_v1_openfga_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*TupleKey); i {
+			switch v := v.(*RelationshipCondition); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1370,7 +1445,7 @@ func file_openfga_v1_openfga_proto_init() {
 			}
 		}
 		file_openfga_v1_openfga_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Tuple); i {
+			switch v := v.(*TupleKey); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1382,7 +1457,7 @@ func file_openfga_v1_openfga_proto_init() {
 			}
 		}
 		file_openfga_v1_openfga_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*TupleKeys); i {
+			switch v := v.(*Tuple); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1394,7 +1469,7 @@ func file_openfga_v1_openfga_proto_init() {
 			}
 		}
 		file_openfga_v1_openfga_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ContextualTupleKeys); i {
+			switch v := v.(*TupleKeys); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1406,7 +1481,7 @@ func file_openfga_v1_openfga_proto_init() {
 			}
 		}
 		file_openfga_v1_openfga_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*UsersetTree); i {
+			switch v := v.(*ContextualTupleKeys); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1418,7 +1493,7 @@ func file_openfga_v1_openfga_proto_init() {
 			}
 		}
 		file_openfga_v1_openfga_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Assertion); i {
+			switch v := v.(*UsersetTree); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1430,7 +1505,7 @@ func file_openfga_v1_openfga_proto_init() {
 			}
 		}
 		file_openfga_v1_openfga_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Assertions); i {
+			switch v := v.(*Assertion); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1442,7 +1517,7 @@ func file_openfga_v1_openfga_proto_init() {
 			}
 		}
 		file_openfga_v1_openfga_proto_msgTypes[8].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*TupleChange); i {
+			switch v := v.(*Assertions); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1454,7 +1529,7 @@ func file_openfga_v1_openfga_proto_init() {
 			}
 		}
 		file_openfga_v1_openfga_proto_msgTypes[9].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Store); i {
+			switch v := v.(*TupleChange); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1466,7 +1541,7 @@ func file_openfga_v1_openfga_proto_init() {
 			}
 		}
 		file_openfga_v1_openfga_proto_msgTypes[10].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*UsersetTree_Leaf); i {
+			switch v := v.(*Store); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1478,7 +1553,7 @@ func file_openfga_v1_openfga_proto_init() {
 			}
 		}
 		file_openfga_v1_openfga_proto_msgTypes[11].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*UsersetTree_Nodes); i {
+			switch v := v.(*UsersetTree_Leaf); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1490,7 +1565,7 @@ func file_openfga_v1_openfga_proto_init() {
 			}
 		}
 		file_openfga_v1_openfga_proto_msgTypes[12].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*UsersetTree_Users); i {
+			switch v := v.(*UsersetTree_Nodes); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1502,7 +1577,7 @@ func file_openfga_v1_openfga_proto_init() {
 			}
 		}
 		file_openfga_v1_openfga_proto_msgTypes[13].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*UsersetTree_Computed); i {
+			switch v := v.(*UsersetTree_Users); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1514,7 +1589,7 @@ func file_openfga_v1_openfga_proto_init() {
 			}
 		}
 		file_openfga_v1_openfga_proto_msgTypes[14].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*UsersetTree_TupleToUserset); i {
+			switch v := v.(*UsersetTree_Computed); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1526,7 +1601,7 @@ func file_openfga_v1_openfga_proto_init() {
 			}
 		}
 		file_openfga_v1_openfga_proto_msgTypes[15].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*UsersetTree_Difference); i {
+			switch v := v.(*UsersetTree_TupleToUserset); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1538,6 +1613,18 @@ func file_openfga_v1_openfga_proto_init() {
 			}
 		}
 		file_openfga_v1_openfga_proto_msgTypes[16].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*UsersetTree_Difference); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_openfga_v1_openfga_proto_msgTypes[17].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*UsersetTree_Node); i {
 			case 0:
 				return &v.state
@@ -1550,12 +1637,12 @@ func file_openfga_v1_openfga_proto_init() {
 			}
 		}
 	}
-	file_openfga_v1_openfga_proto_msgTypes[10].OneofWrappers = []interface{}{
+	file_openfga_v1_openfga_proto_msgTypes[11].OneofWrappers = []interface{}{
 		(*UsersetTree_Leaf_Users)(nil),
 		(*UsersetTree_Leaf_Computed)(nil),
 		(*UsersetTree_Leaf_TupleToUserset)(nil),
 	}
-	file_openfga_v1_openfga_proto_msgTypes[16].OneofWrappers = []interface{}{
+	file_openfga_v1_openfga_proto_msgTypes[17].OneofWrappers = []interface{}{
 		(*UsersetTree_Node_Leaf)(nil),
 		(*UsersetTree_Node_Difference)(nil),
 		(*UsersetTree_Node_Union)(nil),
@@ -1567,7 +1654,7 @@ func file_openfga_v1_openfga_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_openfga_v1_openfga_proto_rawDesc,
 			NumEnums:      1,
-			NumMessages:   17,
+			NumMessages:   18,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

@@ -5,6 +5,7 @@ package openfga.v1;
 import "google/api/annotations.proto";
 import "google/api/field_behavior.proto";
 import "google/api/visibility.proto";
+import "google/protobuf/struct.proto";
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/wrappers.proto";
 import "openfga/v1/authzmodel.proto";
@@ -816,6 +817,40 @@ message ReadResponse {
   ];
 }
 
+message WriteRequestTupleKey {
+  string user = 1 [
+    (validate.rules).string = {max_bytes: 512},
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      max_length: 512,
+      example: "\"user:anne\""
+    }
+  ];
+
+  string relation = 2 [
+    (validate.rules).string = {
+      pattern: "^[^:#@\\s]{1,50}$",
+      ignore_empty: true
+    },
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      max_length: 50,
+      example: "\"reader\""
+    }
+  ];
+
+  string object = 3 [
+    (validate.rules).string = {
+      pattern: "^[^\\s]{2,256}$",
+      ignore_empty: true
+    },
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      max_length: 256,
+      example: "\"document:2021-budget\""
+    }
+  ];
+
+  RelationshipCondition condition = 4;
+}
+
 message WriteRequest {
   string store_id = 1 [
     json_name = "store_id",
@@ -824,9 +859,9 @@ message WriteRequest {
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""}
   ];
 
-  openfga.v1.TupleKeys writes = 2;
+  repeated WriteRequestTupleKey writes = 2;
 
-  openfga.v1.TupleKeys deletes = 3;
+  repeated WriteRequestTupleKey deletes = 3;
 
   string authorization_model_id = 4 [
     json_name = "authorization_model_id",
