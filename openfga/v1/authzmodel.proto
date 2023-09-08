@@ -21,6 +21,16 @@ message AuthorizationModel {
     json_name = "type_definitions",
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "[{\"type\": \"user\"}, {\"type\":\"document\",\"relations\":{\"reader\":{\"union\":{\"child\":[{\"this\":{}},{\"computedUserset\":{\"object\":\"\",\"relation\":\"writer\"}}]}},\"writer\":{\"this\":{}}},\"metadata\":{\"relations\":{\"reader\":{\"directly_related_user_types\":[{\"type\":\"user\"}]},\"writer\":{\"directly_related_user_types\":[{\"type\":\"user\"}]}}}}]"}
   ];
+
+  map<string, Condition> conditions = 4 [
+    json_name = "conditions",
+    (validate.rules).map.max_pairs = 25,
+    (validate.rules).map.keys.string = {
+      pattern: "^[^:#@\\s]{1,50}$",
+      min_len: 1,
+      max_len: 50,
+    }
+  ];
 }
 
 message TypeDefinition {
@@ -81,6 +91,9 @@ message RelationReference {
 
     Wildcard wildcard = 3;
   }
+
+  // The name of a condition that is enforced over the allowed relation.
+  string condition = 4;
 }
 
 message Wildcard {}
@@ -125,4 +138,56 @@ message TupleToUserset {
   // The target object/relation
   ObjectRelation tupleset = 1;
   ObjectRelation computed_userset = 2;
+}
+
+message Condition {
+  // A unique name for the condition
+  string name = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (validate.rules).string = {
+      pattern: "^[^:#@\\s]{1,50}$",
+      min_len: 1,
+      max_len: 50,
+    }
+  ];
+
+  // A Google CEL expression, expressed as a string.
+  string expression = 2 [
+    (google.api.field_behavior) = REQUIRED,
+    (validate.rules).string = {max_bytes: 512}
+  ];
+
+  // A map of parameter names to the parameter's defined type reference.
+  map<string, ConditionParamTypeRef> parameters = 3 [
+    (validate.rules).map.max_pairs = 25,
+    (validate.rules).map.keys.string = {
+      pattern: "^[^:#@\\s]{1,50}$",
+      min_len: 1,
+      max_len: 50,
+    }
+  ];
+}
+
+message ConditionParamTypeRef {
+  enum TypeName {
+    TYPE_NAME_UNSPECIFIED = 0;
+    TYPE_NAME_ANY = 1;
+    TYPE_NAME_BOOL = 2;
+    TYPE_NAME_STRING = 3;
+    TYPE_NAME_INT = 4;
+    TYPE_NAME_UINT = 5;
+    TYPE_NAME_DOUBLE = 6;
+    TYPE_NAME_DURATION = 7;
+    TYPE_NAME_TIMESTAMP = 8;
+    TYPE_NAME_MAP = 9;
+    TYPE_NAME_LIST = 10;
+    TYPE_NAME_IPADDRESS = 11;
+  }
+
+  TypeName type_name = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (validate.rules).enum.defined_only = true
+  ];
+
+  repeated ConditionParamTypeRef generic_types = 2 [(validate.rules).repeated.max_items = 5];
 }

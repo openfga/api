@@ -104,6 +104,83 @@ func (m *AuthorizationModel) validate(all bool) error {
 
 	}
 
+	if len(m.GetConditions()) > 25 {
+		err := AuthorizationModelValidationError{
+			field:  "Conditions",
+			reason: "value must contain no more than 25 pair(s)",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	{
+		sorted_keys := make([]string, len(m.GetConditions()))
+		i := 0
+		for key := range m.GetConditions() {
+			sorted_keys[i] = key
+			i++
+		}
+		sort.Slice(sorted_keys, func(i, j int) bool { return sorted_keys[i] < sorted_keys[j] })
+		for _, key := range sorted_keys {
+			val := m.GetConditions()[key]
+			_ = val
+
+			if l := utf8.RuneCountInString(key); l < 1 || l > 50 {
+				err := AuthorizationModelValidationError{
+					field:  fmt.Sprintf("Conditions[%v]", key),
+					reason: "value length must be between 1 and 50 runes, inclusive",
+				}
+				if !all {
+					return err
+				}
+				errors = append(errors, err)
+			}
+
+			if !_AuthorizationModel_Conditions_Pattern.MatchString(key) {
+				err := AuthorizationModelValidationError{
+					field:  fmt.Sprintf("Conditions[%v]", key),
+					reason: "value does not match regex pattern \"^[^:#@\\\\s]{1,50}$\"",
+				}
+				if !all {
+					return err
+				}
+				errors = append(errors, err)
+			}
+
+			if all {
+				switch v := interface{}(val).(type) {
+				case interface{ ValidateAll() error }:
+					if err := v.ValidateAll(); err != nil {
+						errors = append(errors, AuthorizationModelValidationError{
+							field:  fmt.Sprintf("Conditions[%v]", key),
+							reason: "embedded message failed validation",
+							cause:  err,
+						})
+					}
+				case interface{ Validate() error }:
+					if err := v.Validate(); err != nil {
+						errors = append(errors, AuthorizationModelValidationError{
+							field:  fmt.Sprintf("Conditions[%v]", key),
+							reason: "embedded message failed validation",
+							cause:  err,
+						})
+					}
+				}
+			} else if v, ok := interface{}(val).(interface{ Validate() error }); ok {
+				if err := v.Validate(); err != nil {
+					return AuthorizationModelValidationError{
+						field:  fmt.Sprintf("Conditions[%v]", key),
+						reason: "embedded message failed validation",
+						cause:  err,
+					}
+				}
+			}
+
+		}
+	}
+
 	if len(errors) > 0 {
 		return AuthorizationModelMultiError(errors)
 	}
@@ -185,6 +262,8 @@ var _ interface {
 } = AuthorizationModelValidationError{}
 
 var _AuthorizationModel_Id_Pattern = regexp.MustCompile("^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$")
+
+var _AuthorizationModel_Conditions_Pattern = regexp.MustCompile("^[^:#@\\s]{1,50}$")
 
 // Validate checks the field values on TypeDefinition with the rules defined in
 // the proto definition for this message. If any rules are violated, the first
@@ -1011,6 +1090,8 @@ func (m *RelationReference) validate(all bool) error {
 		}
 		errors = append(errors, err)
 	}
+
+	// no validation rules for Condition
 
 	switch v := m.RelationOrWildcard.(type) {
 	case *RelationReference_Relation:
@@ -2308,3 +2389,374 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = TupleToUsersetValidationError{}
+
+// Validate checks the field values on Condition with the rules defined in the
+// proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *Condition) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on Condition with the rules defined in
+// the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in ConditionMultiError, or nil
+// if none found.
+func (m *Condition) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *Condition) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if l := utf8.RuneCountInString(m.GetName()); l < 1 || l > 50 {
+		err := ConditionValidationError{
+			field:  "Name",
+			reason: "value length must be between 1 and 50 runes, inclusive",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if !_Condition_Name_Pattern.MatchString(m.GetName()) {
+		err := ConditionValidationError{
+			field:  "Name",
+			reason: "value does not match regex pattern \"^[^:#@\\\\s]{1,50}$\"",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if len(m.GetExpression()) > 512 {
+		err := ConditionValidationError{
+			field:  "Expression",
+			reason: "value length must be at most 512 bytes",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if len(m.GetParameters()) > 25 {
+		err := ConditionValidationError{
+			field:  "Parameters",
+			reason: "value must contain no more than 25 pair(s)",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	{
+		sorted_keys := make([]string, len(m.GetParameters()))
+		i := 0
+		for key := range m.GetParameters() {
+			sorted_keys[i] = key
+			i++
+		}
+		sort.Slice(sorted_keys, func(i, j int) bool { return sorted_keys[i] < sorted_keys[j] })
+		for _, key := range sorted_keys {
+			val := m.GetParameters()[key]
+			_ = val
+
+			if l := utf8.RuneCountInString(key); l < 1 || l > 50 {
+				err := ConditionValidationError{
+					field:  fmt.Sprintf("Parameters[%v]", key),
+					reason: "value length must be between 1 and 50 runes, inclusive",
+				}
+				if !all {
+					return err
+				}
+				errors = append(errors, err)
+			}
+
+			if !_Condition_Parameters_Pattern.MatchString(key) {
+				err := ConditionValidationError{
+					field:  fmt.Sprintf("Parameters[%v]", key),
+					reason: "value does not match regex pattern \"^[^:#@\\\\s]{1,50}$\"",
+				}
+				if !all {
+					return err
+				}
+				errors = append(errors, err)
+			}
+
+			if all {
+				switch v := interface{}(val).(type) {
+				case interface{ ValidateAll() error }:
+					if err := v.ValidateAll(); err != nil {
+						errors = append(errors, ConditionValidationError{
+							field:  fmt.Sprintf("Parameters[%v]", key),
+							reason: "embedded message failed validation",
+							cause:  err,
+						})
+					}
+				case interface{ Validate() error }:
+					if err := v.Validate(); err != nil {
+						errors = append(errors, ConditionValidationError{
+							field:  fmt.Sprintf("Parameters[%v]", key),
+							reason: "embedded message failed validation",
+							cause:  err,
+						})
+					}
+				}
+			} else if v, ok := interface{}(val).(interface{ Validate() error }); ok {
+				if err := v.Validate(); err != nil {
+					return ConditionValidationError{
+						field:  fmt.Sprintf("Parameters[%v]", key),
+						reason: "embedded message failed validation",
+						cause:  err,
+					}
+				}
+			}
+
+		}
+	}
+
+	if len(errors) > 0 {
+		return ConditionMultiError(errors)
+	}
+
+	return nil
+}
+
+// ConditionMultiError is an error wrapping multiple validation errors returned
+// by Condition.ValidateAll() if the designated constraints aren't met.
+type ConditionMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ConditionMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ConditionMultiError) AllErrors() []error { return m }
+
+// ConditionValidationError is the validation error returned by
+// Condition.Validate if the designated constraints aren't met.
+type ConditionValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ConditionValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ConditionValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ConditionValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ConditionValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ConditionValidationError) ErrorName() string { return "ConditionValidationError" }
+
+// Error satisfies the builtin error interface
+func (e ConditionValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sCondition.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ConditionValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ConditionValidationError{}
+
+var _Condition_Name_Pattern = regexp.MustCompile("^[^:#@\\s]{1,50}$")
+
+var _Condition_Parameters_Pattern = regexp.MustCompile("^[^:#@\\s]{1,50}$")
+
+// Validate checks the field values on ConditionParamTypeRef with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *ConditionParamTypeRef) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ConditionParamTypeRef with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// ConditionParamTypeRefMultiError, or nil if none found.
+func (m *ConditionParamTypeRef) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ConditionParamTypeRef) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if _, ok := ConditionParamTypeRef_TypeName_name[int32(m.GetTypeName())]; !ok {
+		err := ConditionParamTypeRefValidationError{
+			field:  "TypeName",
+			reason: "value must be one of the defined enum values",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if len(m.GetGenericTypes()) > 5 {
+		err := ConditionParamTypeRefValidationError{
+			field:  "GenericTypes",
+			reason: "value must contain no more than 5 item(s)",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	for idx, item := range m.GetGenericTypes() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ConditionParamTypeRefValidationError{
+						field:  fmt.Sprintf("GenericTypes[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ConditionParamTypeRefValidationError{
+						field:  fmt.Sprintf("GenericTypes[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return ConditionParamTypeRefValidationError{
+					field:  fmt.Sprintf("GenericTypes[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	if len(errors) > 0 {
+		return ConditionParamTypeRefMultiError(errors)
+	}
+
+	return nil
+}
+
+// ConditionParamTypeRefMultiError is an error wrapping multiple validation
+// errors returned by ConditionParamTypeRef.ValidateAll() if the designated
+// constraints aren't met.
+type ConditionParamTypeRefMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ConditionParamTypeRefMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ConditionParamTypeRefMultiError) AllErrors() []error { return m }
+
+// ConditionParamTypeRefValidationError is the validation error returned by
+// ConditionParamTypeRef.Validate if the designated constraints aren't met.
+type ConditionParamTypeRefValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ConditionParamTypeRefValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ConditionParamTypeRefValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ConditionParamTypeRefValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ConditionParamTypeRefValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ConditionParamTypeRefValidationError) ErrorName() string {
+	return "ConditionParamTypeRefValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ConditionParamTypeRefValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sConditionParamTypeRef.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ConditionParamTypeRefValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ConditionParamTypeRefValidationError{}

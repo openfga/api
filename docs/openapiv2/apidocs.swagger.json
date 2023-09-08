@@ -1086,6 +1086,12 @@
           "items": {
             "$ref": "#/definitions/TypeDefinition"
           }
+        },
+        "conditions": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/Condition"
+          }
         }
       },
       "required": [
@@ -1112,6 +1118,47 @@
           "type": "string"
         }
       }
+    },
+    "Condition": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "title": "A unique name for the condition"
+        },
+        "expression": {
+          "type": "string",
+          "description": "A Google CEL expression, expressed as a string."
+        },
+        "parameters": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/ConditionParamTypeRef"
+          },
+          "description": "A map of parameter names to the parameter's defined type reference."
+        }
+      },
+      "required": [
+        "name",
+        "expression"
+      ]
+    },
+    "ConditionParamTypeRef": {
+      "type": "object",
+      "properties": {
+        "typeName": {
+          "$ref": "#/definitions/TypeName"
+        },
+        "genericTypes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ConditionParamTypeRef"
+          }
+        }
+      },
+      "required": [
+        "typeName"
+      ]
     },
     "ContextualTupleKeys": {
       "type": "object",
@@ -1508,6 +1555,10 @@
         },
         "wildcard": {
           "$ref": "#/definitions/Wildcard"
+        },
+        "condition": {
+          "type": "string",
+          "description": "The name of a condition that is enforced over the allowed relation."
         }
       },
       "description": "RelationReference represents a relation of a particular object type (e.g. 'document#viewer').",
@@ -1681,6 +1732,24 @@
       "required": [
         "type"
       ]
+    },
+    "TypeName": {
+      "type": "string",
+      "enum": [
+        "TYPE_NAME_UNSPECIFIED",
+        "TYPE_NAME_ANY",
+        "TYPE_NAME_BOOL",
+        "TYPE_NAME_STRING",
+        "TYPE_NAME_INT",
+        "TYPE_NAME_UINT",
+        "TYPE_NAME_DOUBLE",
+        "TYPE_NAME_DURATION",
+        "TYPE_NAME_TIMESTAMP",
+        "TYPE_NAME_MAP",
+        "TYPE_NAME_LIST",
+        "TYPE_NAME_IPADDRESS"
+      ],
+      "default": "TYPE_NAME_UNSPECIFIED"
     },
     "Users": {
       "type": "object",
