@@ -27,15 +27,14 @@ message Object {
 }
 
 message RelationshipCondition {
-
   // A reference (by name) of the relationship condition defined in the authorization model.
   string condition_name = 1 [
     (validate.rules).string = {pattern: "^[^\\s]{2,256}$"},
-      (google.api.field_behavior) = REQUIRED,
-      (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-        max_length: 256,
-        example: "\"condition1\""
-      }
+    (google.api.field_behavior) = REQUIRED,
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      max_length: 256,
+      example: "\"condition1\""
+    }
   ];
 
   // Additional context/data to persist along with the condition.
@@ -45,7 +44,6 @@ message RelationshipCondition {
 }
 
 message TupleKey {
-
   string object = 1 [
     (validate.rules).string = {
       pattern: "^[^\\s]{2,256}$",

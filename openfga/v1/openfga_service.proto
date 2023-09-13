@@ -813,7 +813,6 @@ message ReadRequest {
 }
 
 message ReadRequestTupleKey {
-
   string user = 1 [
     (validate.rules).string = {max_bytes: 512},
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
@@ -982,7 +981,6 @@ message ExpandRequest {
 }
 
 message ExpandRequestTupleKey {
-
   string object = 1 [
     (validate.rules).string = {
       pattern: "^[^\\s]{2,256}$",
@@ -1054,11 +1052,7 @@ message WriteAuthorizationModelRequest {
   map<string, openfga.v1.Condition> conditions = 4 [
     json_name = "conditions",
     (validate.rules).map.max_pairs = 25,
-    (validate.rules).map.keys.string = {
-      pattern: "^[^:#@\\s]{1,50}$",
-      min_len: 1,
-      max_len: 50,
-    }
+    (validate.rules).map.keys.string = {pattern: "^[^:#@\\s]{1,50}$"}
   ];
 }
 

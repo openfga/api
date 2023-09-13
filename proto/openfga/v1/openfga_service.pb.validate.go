@@ -2727,17 +2727,6 @@ func (m *WriteAuthorizationModelRequest) validate(all bool) error {
 			val := m.GetConditions()[key]
 			_ = val
 
-			if l := utf8.RuneCountInString(key); l < 1 || l > 50 {
-				err := WriteAuthorizationModelRequestValidationError{
-					field:  fmt.Sprintf("Conditions[%v]", key),
-					reason: "value length must be between 1 and 50 runes, inclusive",
-				}
-				if !all {
-					return err
-				}
-				errors = append(errors, err)
-			}
-
 			if !_WriteAuthorizationModelRequest_Conditions_Pattern.MatchString(key) {
 				err := WriteAuthorizationModelRequestValidationError{
 					field:  fmt.Sprintf("Conditions[%v]", key),

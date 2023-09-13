@@ -127,17 +127,6 @@ func (m *AuthorizationModel) validate(all bool) error {
 			val := m.GetConditions()[key]
 			_ = val
 
-			if l := utf8.RuneCountInString(key); l < 1 || l > 50 {
-				err := AuthorizationModelValidationError{
-					field:  fmt.Sprintf("Conditions[%v]", key),
-					reason: "value length must be between 1 and 50 runes, inclusive",
-				}
-				if !all {
-					return err
-				}
-				errors = append(errors, err)
-			}
-
 			if !_AuthorizationModel_Conditions_Pattern.MatchString(key) {
 				err := AuthorizationModelValidationError{
 					field:  fmt.Sprintf("Conditions[%v]", key),
@@ -2412,17 +2401,6 @@ func (m *Condition) validate(all bool) error {
 
 	var errors []error
 
-	if l := utf8.RuneCountInString(m.GetName()); l < 1 || l > 50 {
-		err := ConditionValidationError{
-			field:  "Name",
-			reason: "value length must be between 1 and 50 runes, inclusive",
-		}
-		if !all {
-			return err
-		}
-		errors = append(errors, err)
-	}
-
 	if !_Condition_Name_Pattern.MatchString(m.GetName()) {
 		err := ConditionValidationError{
 			field:  "Name",
@@ -2467,17 +2445,6 @@ func (m *Condition) validate(all bool) error {
 		for _, key := range sorted_keys {
 			val := m.GetParameters()[key]
 			_ = val
-
-			if l := utf8.RuneCountInString(key); l < 1 || l > 50 {
-				err := ConditionValidationError{
-					field:  fmt.Sprintf("Parameters[%v]", key),
-					reason: "value length must be between 1 and 50 runes, inclusive",
-				}
-				if !all {
-					return err
-				}
-				errors = append(errors, err)
-			}
 
 			if !_Condition_Parameters_Pattern.MatchString(key) {
 				err := ConditionValidationError{
