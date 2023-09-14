@@ -431,6 +431,12 @@
                 },
                 "schema_version": {
                   "type": "string"
+                },
+                "conditions": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "$ref": "#/definitions/Condition"
+                  }
                 }
               },
               "required": [
@@ -603,7 +609,7 @@
               "type": "object",
               "properties": {
                 "tuple_key": {
-                  "$ref": "#/definitions/TupleKey"
+                  "$ref": "#/definitions/CheckRequestTupleKey"
                 },
                 "contextual_tuples": {
                   "$ref": "#/definitions/ContextualTupleKeys"
@@ -617,6 +623,10 @@
                   "example": false,
                   "description": "Defaults to false. Making it true has performance implications.",
                   "readOnly": true
+                },
+                "context": {
+                  "type": "object",
+                  "description": "Additional request context that will be used to evaluate any ABAC conditions encountered\nin the query evaluation."
                 }
               },
               "required": [
@@ -676,7 +686,7 @@
               "type": "object",
               "properties": {
                 "tuple_key": {
-                  "$ref": "#/definitions/TupleKey"
+                  "$ref": "#/definitions/ExpandRequestTupleKey"
                 },
                 "authorization_model_id": {
                   "type": "string",
@@ -759,6 +769,10 @@
                 },
                 "contextual_tuples": {
                   "$ref": "#/definitions/ContextualTupleKeys"
+                },
+                "context": {
+                  "type": "object",
+                  "description": "Additional request context that will be used to evaluate any ABAC conditions encountered\nin the query evaluation."
                 }
               },
               "required": [
@@ -820,7 +834,7 @@
               "type": "object",
               "properties": {
                 "tuple_key": {
-                  "$ref": "#/definitions/TupleKey"
+                  "$ref": "#/definitions/ReadRequestTupleKey"
                 },
                 "page_size": {
                   "type": "integer",
@@ -914,6 +928,10 @@
                 },
                 "contextual_tuples": {
                   "$ref": "#/definitions/ContextualTupleKeys"
+                },
+                "context": {
+                  "type": "object",
+                  "description": "Additional request context that will be used to evaluate any ABAC conditions encountered\nin the query evaluation."
                 }
               },
               "required": [
@@ -1008,7 +1026,7 @@
       "type": "object",
       "properties": {
         "tuple_key": {
-          "$ref": "#/definitions/TupleKey"
+          "$ref": "#/definitions/CheckRequestTupleKey"
         },
         "expectation": {
           "type": "boolean"
@@ -1080,11 +1098,37 @@
           "items": {
             "$ref": "#/definitions/TypeDefinition"
           }
+        },
+        "conditions": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/Condition"
+          }
         }
       },
       "required": [
         "schema_version"
       ]
+    },
+    "CheckRequestTupleKey": {
+      "type": "object",
+      "properties": {
+        "user": {
+          "type": "string",
+          "example": "user:anne",
+          "maxLength": 512
+        },
+        "relation": {
+          "type": "string",
+          "example": "reader",
+          "maxLength": 50
+        },
+        "object": {
+          "type": "string",
+          "example": "document:2021-budget",
+          "maxLength": 256
+        }
+      }
     },
     "CheckResponse": {
       "type": "object",
@@ -1106,6 +1150,47 @@
           "type": "string"
         }
       }
+    },
+    "Condition": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "title": "A unique name for the condition"
+        },
+        "expression": {
+          "type": "string",
+          "description": "A Google CEL expression, expressed as a string."
+        },
+        "parameters": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/ConditionParamTypeRef"
+          },
+          "description": "A map of parameter names to the parameter's defined type reference."
+        }
+      },
+      "required": [
+        "name",
+        "expression"
+      ]
+    },
+    "ConditionParamTypeRef": {
+      "type": "object",
+      "properties": {
+        "typeName": {
+          "$ref": "#/definitions/TypeName"
+        },
+        "genericTypes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ConditionParamTypeRef"
+          }
+        }
+      },
+      "required": [
+        "typeName"
+      ]
     },
     "ContextualTupleKeys": {
       "type": "object",
@@ -1214,6 +1299,21 @@
         "unsupported_schema_version"
       ],
       "default": "no_error"
+    },
+    "ExpandRequestTupleKey": {
+      "type": "object",
+      "properties": {
+        "object": {
+          "type": "string",
+          "example": "document:2021-budget",
+          "maxLength": 256
+        },
+        "relation": {
+          "type": "string",
+          "example": "reader",
+          "maxLength": 50
+        }
+      }
     },
     "ExpandResponse": {
       "type": "object",
@@ -1373,6 +1473,14 @@
       ],
       "default": "no_not_found_error"
     },
+    "NullValue": {
+      "type": "string",
+      "enum": [
+        "NULL_VALUE"
+      ],
+      "default": "NULL_VALUE",
+      "description": "`NullValue` is a singleton enumeration to represent the null value for the\n`Value` type union.\n\n The JSON representation for `NullValue` is JSON `null`.\n\n - NULL_VALUE: Null value."
+    },
     "ObjectRelation": {
       "type": "object",
       "properties": {
@@ -1454,6 +1562,26 @@
         }
       }
     },
+    "ReadRequestTupleKey": {
+      "type": "object",
+      "properties": {
+        "user": {
+          "type": "string",
+          "example": "user:anne",
+          "maxLength": 512
+        },
+        "relation": {
+          "type": "string",
+          "example": "reader",
+          "maxLength": 50
+        },
+        "object": {
+          "type": "string",
+          "example": "document:2021-budget",
+          "maxLength": 256
+        }
+      }
+    },
     "ReadResponse": {
       "type": "object",
       "properties": {
@@ -1494,11 +1622,33 @@
         },
         "wildcard": {
           "$ref": "#/definitions/Wildcard"
+        },
+        "condition": {
+          "type": "string",
+          "description": "The name of a condition that is enforced over the allowed relation."
         }
       },
       "description": "RelationReference represents a relation of a particular object type (e.g. 'document#viewer').",
       "required": [
         "type"
+      ]
+    },
+    "RelationshipCondition": {
+      "type": "object",
+      "properties": {
+        "conditionName": {
+          "type": "string",
+          "example": "condition1",
+          "description": "A reference (by name) of the relationship condition defined in the authorization model.",
+          "maxLength": 256
+        },
+        "context": {
+          "type": "object",
+          "description": "Additional context/data to persist along with the condition.\nThe keys must match the parameters defined by the condition, and the value types must\nmatch the parameter type definitions."
+        }
+      },
+      "required": [
+        "conditionName"
       ]
     },
     "Status": {
@@ -1596,6 +1746,9 @@
           "type": "string",
           "example": "user:anne",
           "maxLength": 512
+        },
+        "condition": {
+          "$ref": "#/definitions/RelationshipCondition"
         }
       }
     },
@@ -1664,6 +1817,24 @@
       "required": [
         "type"
       ]
+    },
+    "TypeName": {
+      "type": "string",
+      "enum": [
+        "TYPE_NAME_UNSPECIFIED",
+        "TYPE_NAME_ANY",
+        "TYPE_NAME_BOOL",
+        "TYPE_NAME_STRING",
+        "TYPE_NAME_INT",
+        "TYPE_NAME_UINT",
+        "TYPE_NAME_DOUBLE",
+        "TYPE_NAME_DURATION",
+        "TYPE_NAME_TIMESTAMP",
+        "TYPE_NAME_MAP",
+        "TYPE_NAME_LIST",
+        "TYPE_NAME_IPADDRESS"
+      ],
+      "default": "TYPE_NAME_UNSPECIFIED"
     },
     "Users": {
       "type": "object",
