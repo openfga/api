@@ -712,6 +712,10 @@ message ListObjectsRequest {
   ];
 
   openfga.v1.ContextualTupleKeys contextual_tuples = 6 [json_name = "contextual_tuples"];
+
+  // Additional request context that will be used to evaluate any ABAC conditions encountered
+  // in the query evaluation.
+  google.protobuf.Struct context = 7;
 }
 
 message ListObjectsResponse {
@@ -764,6 +768,10 @@ message StreamedListObjectsRequest {
   ];
 
   openfga.v1.ContextualTupleKeys contextual_tuples = 6 [json_name = "contextual_tuples"];
+
+  // Additional request context that will be used to evaluate any ABAC conditions encountered
+  // in the query evaluation.
+  google.protobuf.Struct context = 7;
 }
 
 // The response for a StreamedListObjects RPC.
@@ -786,7 +794,7 @@ message ReadRequest {
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""}
   ];
 
-  openfga.v1.TupleKey tuple_key = 2 [json_name = "tuple_key"];
+  ReadRequestTupleKey tuple_key = 2 [json_name = "tuple_key"];
 
   google.protobuf.Int32Value page_size = 3 [
     json_name = "page_size",
@@ -801,6 +809,38 @@ message ReadRequest {
     json_name = "continuation_token",
     (validate.rules).string.max_bytes = 5120,
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ==\""}
+  ];
+}
+
+message ReadRequestTupleKey {
+  string user = 1 [
+    (validate.rules).string = {max_bytes: 512},
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      max_length: 512,
+      example: "\"user:anne\""
+    }
+  ];
+
+  string relation = 2 [
+    (validate.rules).string = {
+      pattern: "^[^:#@\\s]{1,50}$",
+      ignore_empty: true
+    },
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      max_length: 50,
+      example: "\"reader\""
+    }
+  ];
+
+  string object = 3 [
+    (validate.rules).string = {
+      pattern: "^[^\\s]{2,256}$",
+      ignore_empty: true
+    },
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      max_length: 256,
+      example: "\"document:2021-budget\""
+    }
   ];
 }
 
@@ -883,7 +923,7 @@ message CheckRequest {
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""}
   ];
 
-  openfga.v1.TupleKey tuple_key = 2 [
+  CheckRequestTupleKey tuple_key = 2 [
     json_name = "tuple_key",
     (validate.rules).message.required = true,
     (google.api.field_behavior) = REQUIRED
@@ -905,6 +945,42 @@ message CheckRequest {
     read_only: true,
     example: "false"
   }];
+
+  // Additional request context that will be used to evaluate any ABAC conditions encountered
+  // in the query evaluation.
+  google.protobuf.Struct context = 6;
+}
+
+message CheckRequestTupleKey {
+  string user = 1 [
+    (validate.rules).string = {max_bytes: 512},
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      max_length: 512,
+      example: "\"user:anne\""
+    }
+  ];
+
+  string relation = 2 [
+    (validate.rules).string = {
+      pattern: "^[^:#@\\s]{1,50}$",
+      ignore_empty: true
+    },
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      max_length: 50,
+      example: "\"reader\""
+    }
+  ];
+
+  string object = 3 [
+    (validate.rules).string = {
+      pattern: "^[^\\s]{2,256}$",
+      ignore_empty: true
+    },
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      max_length: 256,
+      example: "\"document:2021-budget\""
+    }
+  ];
 }
 
 message CheckResponse {
@@ -922,7 +998,7 @@ message ExpandRequest {
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""}
   ];
 
-  openfga.v1.TupleKey tuple_key = 2 [
+  ExpandRequestTupleKey tuple_key = 2 [
     json_name = "tuple_key",
     (validate.rules).message.required = true,
     (google.api.field_behavior) = REQUIRED
@@ -935,6 +1011,30 @@ message ExpandRequest {
       ignore_empty: true
     },
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01G5JAVJ41T49E9TT3SKVS7X1J\""}
+  ];
+}
+
+message ExpandRequestTupleKey {
+  string object = 1 [
+    (validate.rules).string = {
+      pattern: "^[^\\s]{2,256}$",
+      ignore_empty: true
+    },
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      max_length: 256,
+      example: "\"document:2021-budget\""
+    }
+  ];
+
+  string relation = 2 [
+    (validate.rules).string = {
+      pattern: "^[^:#@\\s]{1,50}$",
+      ignore_empty: true
+    },
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      max_length: 50,
+      example: "\"reader\""
+    }
   ];
 }
 
@@ -981,6 +1081,12 @@ message WriteAuthorizationModelRequest {
       ],
       ignore_empty: false
     }
+  ];
+
+  map<string, openfga.v1.Condition> conditions = 4 [
+    json_name = "conditions",
+    (validate.rules).map.max_pairs = 25,
+    (validate.rules).map.keys.string = {pattern: "^[^:#@\\s]{1,50}$"}
   ];
 }
 
@@ -1215,4 +1321,21 @@ message ListStoresResponse {
       example: "\"eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ==\""
     }
   ];
+}
+
+message Assertion {
+  CheckRequestTupleKey tuple_key = 1 [
+    (validate.rules).message.required = true,
+    json_name = "tuple_key",
+    (google.api.field_behavior) = REQUIRED
+  ];
+
+  bool expectation = 2 [
+    json_name = "expectation",
+    (google.api.field_behavior) = REQUIRED
+  ];
+}
+
+message Assertions {
+  repeated Assertion assertions = 1;
 }

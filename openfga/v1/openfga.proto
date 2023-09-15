@@ -27,7 +27,6 @@ message Object {
 }
 
 message RelationshipCondition {
-
   // A reference (by name) of the relationship condition defined in the authorization model.
   string condition_name = 1 [
     (validate.rules).string = {pattern: "^[^\\s]{2,256}$"},
@@ -55,6 +54,7 @@ message TupleKey {
       example: "\"document:2021-budget\""
     }
   ];
+
   string relation = 2 [
     (validate.rules).string = {
       pattern: "^[^:#@\\s]{1,50}$",
@@ -65,6 +65,7 @@ message TupleKey {
       example: "\"reader\""
     }
   ];
+
   string user = 3 [
     (validate.rules).string = {max_bytes: 512},
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
@@ -72,6 +73,8 @@ message TupleKey {
       example: "\"user:anne\""
     }
   ];
+
+  RelationshipCondition condition = 4;
 }
 
 message Tuple {
@@ -147,23 +150,6 @@ message UsersetTree {
   }
 
   Node root = 1;
-}
-
-message Assertion {
-  TupleKey tuple_key = 1 [
-    (validate.rules).message.required = true,
-    json_name = "tuple_key",
-    (google.api.field_behavior) = REQUIRED
-  ];
-
-  bool expectation = 2 [
-    json_name = "expectation",
-    (google.api.field_behavior) = REQUIRED
-  ];
-}
-
-message Assertions {
-  repeated Assertion assertions = 1;
 }
 
 // buf:lint:ignore ENUM_ZERO_VALUE_SUFFIX

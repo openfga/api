@@ -25,11 +25,7 @@ message AuthorizationModel {
   map<string, Condition> conditions = 4 [
     json_name = "conditions",
     (validate.rules).map.max_pairs = 25,
-    (validate.rules).map.keys.string = {
-      pattern: "^[^:#@\\s]{1,50}$",
-      min_len: 1,
-      max_len: 50,
-    }
+    (validate.rules).map.keys.string = {pattern: "^[^:#@\\s]{1,50}$"}
   ];
 }
 
@@ -144,11 +140,7 @@ message Condition {
   // A unique name for the condition
   string name = 1 [
     (google.api.field_behavior) = REQUIRED,
-    (validate.rules).string = {
-      pattern: "^[^:#@\\s]{1,50}$",
-      min_len: 1,
-      max_len: 50,
-    }
+    (validate.rules).string = {pattern: "^[^:#@\\s]{1,50}$"}
   ];
 
   // A Google CEL expression, expressed as a string.
@@ -160,11 +152,7 @@ message Condition {
   // A map of parameter names to the parameter's defined type reference.
   map<string, ConditionParamTypeRef> parameters = 3 [
     (validate.rules).map.max_pairs = 25,
-    (validate.rules).map.keys.string = {
-      pattern: "^[^:#@\\s]{1,50}$",
-      min_len: 1,
-      max_len: 50,
-    }
+    (validate.rules).map.keys.string = {pattern: "^[^:#@\\s]{1,50}$"}
   ];
 }
 

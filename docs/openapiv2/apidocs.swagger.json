@@ -431,6 +431,12 @@
                 },
                 "schema_version": {
                   "type": "string"
+                },
+                "conditions": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "$ref": "#/definitions/Condition"
+                  }
                 }
               },
               "required": [
@@ -603,7 +609,7 @@
               "type": "object",
               "properties": {
                 "tuple_key": {
-                  "$ref": "#/definitions/TupleKey"
+                  "$ref": "#/definitions/CheckRequestTupleKey"
                 },
                 "contextual_tuples": {
                   "$ref": "#/definitions/ContextualTupleKeys"
@@ -617,6 +623,10 @@
                   "example": false,
                   "description": "Defaults to false. Making it true has performance implications.",
                   "readOnly": true
+                },
+                "context": {
+                  "type": "object",
+                  "description": "Additional request context that will be used to evaluate any ABAC conditions encountered\nin the query evaluation."
                 }
               },
               "required": [
@@ -676,7 +686,7 @@
               "type": "object",
               "properties": {
                 "tuple_key": {
-                  "$ref": "#/definitions/TupleKey"
+                  "$ref": "#/definitions/ExpandRequestTupleKey"
                 },
                 "authorization_model_id": {
                   "type": "string",
@@ -759,6 +769,10 @@
                 },
                 "contextual_tuples": {
                   "$ref": "#/definitions/ContextualTupleKeys"
+                },
+                "context": {
+                  "type": "object",
+                  "description": "Additional request context that will be used to evaluate any ABAC conditions encountered\nin the query evaluation."
                 }
               },
               "required": [
@@ -820,7 +834,7 @@
               "type": "object",
               "properties": {
                 "tuple_key": {
-                  "$ref": "#/definitions/TupleKey"
+                  "$ref": "#/definitions/ReadRequestTupleKey"
                 },
                 "page_size": {
                   "type": "integer",
@@ -914,6 +928,10 @@
                 },
                 "contextual_tuples": {
                   "$ref": "#/definitions/ContextualTupleKeys"
+                },
+                "context": {
+                  "type": "object",
+                  "description": "Additional request context that will be used to evaluate any ABAC conditions encountered\nin the query evaluation."
                 }
               },
               "required": [
@@ -1014,7 +1032,7 @@
       "type": "object",
       "properties": {
         "tuple_key": {
-          "$ref": "#/definitions/TupleKey"
+          "$ref": "#/definitions/CheckRequestTupleKey"
         },
         "expectation": {
           "type": "boolean"
@@ -1097,6 +1115,26 @@
       "required": [
         "schema_version"
       ]
+    },
+    "CheckRequestTupleKey": {
+      "type": "object",
+      "properties": {
+        "user": {
+          "type": "string",
+          "example": "user:anne",
+          "maxLength": 512
+        },
+        "relation": {
+          "type": "string",
+          "example": "reader",
+          "maxLength": 50
+        },
+        "object": {
+          "type": "string",
+          "example": "document:2021-budget",
+          "maxLength": 256
+        }
+      }
     },
     "CheckResponse": {
       "type": "object",
@@ -1267,6 +1305,21 @@
         "unsupported_schema_version"
       ],
       "default": "no_error"
+    },
+    "ExpandRequestTupleKey": {
+      "type": "object",
+      "properties": {
+        "object": {
+          "type": "string",
+          "example": "document:2021-budget",
+          "maxLength": 256
+        },
+        "relation": {
+          "type": "string",
+          "example": "reader",
+          "maxLength": 50
+        }
+      }
     },
     "ExpandResponse": {
       "type": "object",
@@ -1515,6 +1568,26 @@
         }
       }
     },
+    "ReadRequestTupleKey": {
+      "type": "object",
+      "properties": {
+        "user": {
+          "type": "string",
+          "example": "user:anne",
+          "maxLength": 512
+        },
+        "relation": {
+          "type": "string",
+          "example": "reader",
+          "maxLength": 50
+        },
+        "object": {
+          "type": "string",
+          "example": "document:2021-budget",
+          "maxLength": 256
+        }
+      }
+    },
     "ReadResponse": {
       "type": "object",
       "properties": {
@@ -1679,6 +1752,9 @@
           "type": "string",
           "example": "user:anne",
           "maxLength": 512
+        },
+        "condition": {
+          "$ref": "#/definitions/RelationshipCondition"
         }
       }
     },
