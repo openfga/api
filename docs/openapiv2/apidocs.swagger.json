@@ -993,10 +993,16 @@
               "type": "object",
               "properties": {
                 "writes": {
-                  "$ref": "#/definitions/TupleKeys"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/WriteRequestTupleKey"
+                  }
                 },
                 "deletes": {
-                  "$ref": "#/definitions/TupleKeys"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/WriteRequestTupleKey"
+                  }
                 },
                 "authorization_model_id": {
                   "type": "string",
@@ -1752,21 +1758,6 @@
         }
       }
     },
-    "TupleKeys": {
-      "type": "object",
-      "properties": {
-        "tuple_keys": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/TupleKey",
-            "minimum": 1
-          }
-        }
-      },
-      "required": [
-        "tuple_keys"
-      ]
-    },
     "TupleOperation": {
       "type": "string",
       "enum": [
@@ -1942,6 +1933,29 @@
         "authorization_model_id": {
           "type": "string",
           "example": "01G5JAVJ41T49E9TT3SKVS7X1J"
+        }
+      }
+    },
+    "WriteRequestTupleKey": {
+      "type": "object",
+      "properties": {
+        "user": {
+          "type": "string",
+          "example": "user:anne",
+          "maxLength": 512
+        },
+        "relation": {
+          "type": "string",
+          "example": "reader",
+          "maxLength": 50
+        },
+        "object": {
+          "type": "string",
+          "example": "document:2021-budget",
+          "maxLength": 256
+        },
+        "condition": {
+          "$ref": "#/definitions/RelationshipCondition"
         }
       }
     },
