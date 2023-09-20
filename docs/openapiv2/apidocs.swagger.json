@@ -993,16 +993,10 @@
               "type": "object",
               "properties": {
                 "writes": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/definitions/WriteRequestTupleKey"
-                  }
+                  "$ref": "#/definitions/WriteRequestTupleKeys"
                 },
                 "deletes": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/definitions/WriteRequestTupleKey"
-                  }
+                  "$ref": "#/definitions/WriteRequestTupleKeys"
                 },
                 "authorization_model_id": {
                   "type": "string",
@@ -1958,6 +1952,21 @@
           "$ref": "#/definitions/RelationshipCondition"
         }
       }
+    },
+    "WriteRequestTupleKeys": {
+      "type": "object",
+      "properties": {
+        "tuple_keys": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/WriteRequestTupleKey",
+            "minimum": 1
+          }
+        }
+      },
+      "required": [
+        "tuple_keys"
+      ]
     },
     "WriteResponse": {
       "type": "object"
