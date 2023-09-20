@@ -1330,6 +1330,153 @@ var _WriteRequestTupleKey_Relation_Pattern = regexp.MustCompile("^[^:#@\\s]{1,50
 
 var _WriteRequestTupleKey_Object_Pattern = regexp.MustCompile("^[^\\s]{2,256}$")
 
+// Validate checks the field values on WriteRequestTupleKeys with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *WriteRequestTupleKeys) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on WriteRequestTupleKeys with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// WriteRequestTupleKeysMultiError, or nil if none found.
+func (m *WriteRequestTupleKeys) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *WriteRequestTupleKeys) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if len(m.GetTupleKeys()) < 1 {
+		err := WriteRequestTupleKeysValidationError{
+			field:  "TupleKeys",
+			reason: "value must contain at least 1 item(s)",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	for idx, item := range m.GetTupleKeys() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, WriteRequestTupleKeysValidationError{
+						field:  fmt.Sprintf("TupleKeys[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, WriteRequestTupleKeysValidationError{
+						field:  fmt.Sprintf("TupleKeys[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return WriteRequestTupleKeysValidationError{
+					field:  fmt.Sprintf("TupleKeys[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	if len(errors) > 0 {
+		return WriteRequestTupleKeysMultiError(errors)
+	}
+
+	return nil
+}
+
+// WriteRequestTupleKeysMultiError is an error wrapping multiple validation
+// errors returned by WriteRequestTupleKeys.ValidateAll() if the designated
+// constraints aren't met.
+type WriteRequestTupleKeysMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m WriteRequestTupleKeysMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m WriteRequestTupleKeysMultiError) AllErrors() []error { return m }
+
+// WriteRequestTupleKeysValidationError is the validation error returned by
+// WriteRequestTupleKeys.Validate if the designated constraints aren't met.
+type WriteRequestTupleKeysValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e WriteRequestTupleKeysValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e WriteRequestTupleKeysValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e WriteRequestTupleKeysValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e WriteRequestTupleKeysValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e WriteRequestTupleKeysValidationError) ErrorName() string {
+	return "WriteRequestTupleKeysValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e WriteRequestTupleKeysValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sWriteRequestTupleKeys.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = WriteRequestTupleKeysValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = WriteRequestTupleKeysValidationError{}
+
 // Validate checks the field values on WriteRequest with the rules defined in
 // the proto definition for this message. If any rules are violated, the first
 // error encountered is returned, or nil if there are no violations.
@@ -1363,72 +1510,62 @@ func (m *WriteRequest) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
-	for idx, item := range m.GetWrites() {
-		_, _ = idx, item
-
-		if all {
-			switch v := interface{}(item).(type) {
-			case interface{ ValidateAll() error }:
-				if err := v.ValidateAll(); err != nil {
-					errors = append(errors, WriteRequestValidationError{
-						field:  fmt.Sprintf("Writes[%v]", idx),
-						reason: "embedded message failed validation",
-						cause:  err,
-					})
-				}
-			case interface{ Validate() error }:
-				if err := v.Validate(); err != nil {
-					errors = append(errors, WriteRequestValidationError{
-						field:  fmt.Sprintf("Writes[%v]", idx),
-						reason: "embedded message failed validation",
-						cause:  err,
-					})
-				}
-			}
-		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
-			if err := v.Validate(); err != nil {
-				return WriteRequestValidationError{
-					field:  fmt.Sprintf("Writes[%v]", idx),
+	if all {
+		switch v := interface{}(m.GetWrites()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, WriteRequestValidationError{
+					field:  "Writes",
 					reason: "embedded message failed validation",
 					cause:  err,
-				}
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, WriteRequestValidationError{
+					field:  "Writes",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
 			}
 		}
-
+	} else if v, ok := interface{}(m.GetWrites()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return WriteRequestValidationError{
+				field:  "Writes",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
 	}
 
-	for idx, item := range m.GetDeletes() {
-		_, _ = idx, item
-
-		if all {
-			switch v := interface{}(item).(type) {
-			case interface{ ValidateAll() error }:
-				if err := v.ValidateAll(); err != nil {
-					errors = append(errors, WriteRequestValidationError{
-						field:  fmt.Sprintf("Deletes[%v]", idx),
-						reason: "embedded message failed validation",
-						cause:  err,
-					})
-				}
-			case interface{ Validate() error }:
-				if err := v.Validate(); err != nil {
-					errors = append(errors, WriteRequestValidationError{
-						field:  fmt.Sprintf("Deletes[%v]", idx),
-						reason: "embedded message failed validation",
-						cause:  err,
-					})
-				}
-			}
-		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
-			if err := v.Validate(); err != nil {
-				return WriteRequestValidationError{
-					field:  fmt.Sprintf("Deletes[%v]", idx),
+	if all {
+		switch v := interface{}(m.GetDeletes()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, WriteRequestValidationError{
+					field:  "Deletes",
 					reason: "embedded message failed validation",
 					cause:  err,
-				}
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, WriteRequestValidationError{
+					field:  "Deletes",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
 			}
 		}
-
+	} else if v, ok := interface{}(m.GetDeletes()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return WriteRequestValidationError{
+				field:  "Deletes",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
 	}
 
 	if m.GetAuthorizationModelId() != "" {
