@@ -859,6 +859,7 @@ message ReadResponse {
 
 message WriteRequestTupleKey {
   string user = 1 [
+    (google.api.field_behavior) = REQUIRED,
     (validate.rules).string = {max_bytes: 512},
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       max_length: 512,
@@ -867,6 +868,7 @@ message WriteRequestTupleKey {
   ];
 
   string relation = 2 [
+    (google.api.field_behavior) = REQUIRED,
     (validate.rules).string = {
       pattern: "^[^:#@\\s]{1,50}$",
       ignore_empty: true
@@ -878,6 +880,7 @@ message WriteRequestTupleKey {
   ];
 
   string object = 3 [
+    (google.api.field_behavior) = REQUIRED,
     (validate.rules).string = {
       pattern: "^[^\\s]{2,256}$",
       ignore_empty: true
@@ -962,6 +965,7 @@ message CheckRequest {
 
 message CheckRequestTupleKey {
   string user = 1 [
+    (google.api.field_behavior) = REQUIRED,
     (validate.rules).string = {max_bytes: 512},
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       max_length: 512,
@@ -970,6 +974,7 @@ message CheckRequestTupleKey {
   ];
 
   string relation = 2 [
+    (google.api.field_behavior) = REQUIRED,
     (validate.rules).string = {
       pattern: "^[^:#@\\s]{1,50}$",
       ignore_empty: true
@@ -981,6 +986,7 @@ message CheckRequestTupleKey {
   ];
 
   string object = 3 [
+    (google.api.field_behavior) = REQUIRED,
     (validate.rules).string = {
       pattern: "^[^\\s]{2,256}$",
       ignore_empty: true
@@ -1024,18 +1030,8 @@ message ExpandRequest {
 }
 
 message ExpandRequestTupleKey {
-  string object = 1 [
-    (validate.rules).string = {
-      pattern: "^[^\\s]{2,256}$",
-      ignore_empty: true
-    },
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      max_length: 256,
-      example: "\"document:2021-budget\""
-    }
-  ];
-
-  string relation = 2 [
+  string relation = 1 [
+    (google.api.field_behavior) = REQUIRED,
     (validate.rules).string = {
       pattern: "^[^:#@\\s]{1,50}$",
       ignore_empty: true
@@ -1043,6 +1039,17 @@ message ExpandRequestTupleKey {
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       max_length: 50,
       example: "\"reader\""
+    }
+  ];
+  string object = 2 [
+    (google.api.field_behavior) = REQUIRED,
+    (validate.rules).string = {
+      pattern: "^[^\\s]{2,256}$",
+      ignore_empty: true
+    },
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      max_length: 256,
+      example: "\"document:2021-budget\""
     }
   ];
 }

@@ -45,6 +45,7 @@ message RelationshipCondition {
 
 message TupleKey {
   string user = 1 [
+    (google.api.field_behavior) = REQUIRED,
     (validate.rules).string = {max_bytes: 512},
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       max_length: 512,
@@ -53,6 +54,7 @@ message TupleKey {
   ];
 
   string relation = 2 [
+    (google.api.field_behavior) = REQUIRED,
     (validate.rules).string = {
       pattern: "^[^:#@\\s]{1,50}$",
       ignore_empty: true
@@ -64,6 +66,7 @@ message TupleKey {
   ];
 
   string object = 3 [
+    (google.api.field_behavior) = REQUIRED,
     (validate.rules).string = {
       pattern: "^[^\\s]{2,256}$",
       ignore_empty: true

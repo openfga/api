@@ -2436,12 +2436,12 @@ func (m *ExpandRequestTupleKey) validate(all bool) error {
 
 	var errors []error
 
-	if m.GetObject() != "" {
+	if m.GetRelation() != "" {
 
-		if !_ExpandRequestTupleKey_Object_Pattern.MatchString(m.GetObject()) {
+		if !_ExpandRequestTupleKey_Relation_Pattern.MatchString(m.GetRelation()) {
 			err := ExpandRequestTupleKeyValidationError{
-				field:  "Object",
-				reason: "value does not match regex pattern \"^[^\\\\s]{2,256}$\"",
+				field:  "Relation",
+				reason: "value does not match regex pattern \"^[^:#@\\\\s]{1,50}$\"",
 			}
 			if !all {
 				return err
@@ -2451,12 +2451,12 @@ func (m *ExpandRequestTupleKey) validate(all bool) error {
 
 	}
 
-	if m.GetRelation() != "" {
+	if m.GetObject() != "" {
 
-		if !_ExpandRequestTupleKey_Relation_Pattern.MatchString(m.GetRelation()) {
+		if !_ExpandRequestTupleKey_Object_Pattern.MatchString(m.GetObject()) {
 			err := ExpandRequestTupleKeyValidationError{
-				field:  "Relation",
-				reason: "value does not match regex pattern \"^[^:#@\\\\s]{1,50}$\"",
+				field:  "Object",
+				reason: "value does not match regex pattern \"^[^\\\\s]{2,256}$\"",
 			}
 			if !all {
 				return err
@@ -2546,9 +2546,9 @@ var _ interface {
 	ErrorName() string
 } = ExpandRequestTupleKeyValidationError{}
 
-var _ExpandRequestTupleKey_Object_Pattern = regexp.MustCompile("^[^\\s]{2,256}$")
-
 var _ExpandRequestTupleKey_Relation_Pattern = regexp.MustCompile("^[^:#@\\s]{1,50}$")
+
+var _ExpandRequestTupleKey_Object_Pattern = regexp.MustCompile("^[^\\s]{2,256}$")
 
 // Validate checks the field values on ExpandResponse with the rules defined in
 // the proto definition for this message. If any rules are violated, the first
