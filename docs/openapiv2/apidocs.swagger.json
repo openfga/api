@@ -1178,10 +1178,10 @@
     "ConditionParamTypeRef": {
       "type": "object",
       "properties": {
-        "typeName": {
+        "type_name": {
           "$ref": "#/definitions/TypeName"
         },
-        "genericTypes": {
+        "generic_types": {
           "type": "array",
           "items": {
             "$ref": "#/definitions/ConditionParamTypeRef"
@@ -1189,7 +1189,7 @@
         }
       },
       "required": [
-        "typeName"
+        "type_name"
       ]
     },
     "ContextualTupleKeys": {
