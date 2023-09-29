@@ -1128,7 +1128,12 @@
           "example": "document:2021-budget",
           "maxLength": 256
         }
-      }
+      },
+      "required": [
+        "user",
+        "relation",
+        "object"
+      ]
     },
     "CheckResponse": {
       "type": "object",
@@ -1303,17 +1308,21 @@
     "ExpandRequestTupleKey": {
       "type": "object",
       "properties": {
-        "object": {
-          "type": "string",
-          "example": "document:2021-budget",
-          "maxLength": 256
-        },
         "relation": {
           "type": "string",
           "example": "reader",
           "maxLength": 50
+        },
+        "object": {
+          "type": "string",
+          "example": "document:2021-budget",
+          "maxLength": 256
         }
-      }
+      },
+      "required": [
+        "relation",
+        "object"
+      ]
     },
     "ExpandResponse": {
       "type": "object",
@@ -1732,25 +1741,30 @@
     "TupleKey": {
       "type": "object",
       "properties": {
-        "object": {
+        "user": {
           "type": "string",
-          "example": "document:2021-budget",
-          "maxLength": 256
+          "example": "user:anne",
+          "maxLength": 512
         },
         "relation": {
           "type": "string",
           "example": "reader",
           "maxLength": 50
         },
-        "user": {
+        "object": {
           "type": "string",
-          "example": "user:anne",
-          "maxLength": 512
+          "example": "document:2021-budget",
+          "maxLength": 256
         },
         "condition": {
           "$ref": "#/definitions/RelationshipCondition"
         }
-      }
+      },
+      "required": [
+        "user",
+        "relation",
+        "object"
+      ]
     },
     "TupleOperation": {
       "type": "string",
@@ -1951,7 +1965,12 @@
         "condition": {
           "$ref": "#/definitions/RelationshipCondition"
         }
-      }
+      },
+      "required": [
+        "user",
+        "relation",
+        "object"
+      ]
     },
     "WriteRequestTupleKeys": {
       "type": "object",

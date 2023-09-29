@@ -325,19 +325,15 @@ func (m *TupleKey) validate(all bool) error {
 
 	var errors []error
 
-	if m.GetObject() != "" {
-
-		if !_TupleKey_Object_Pattern.MatchString(m.GetObject()) {
-			err := TupleKeyValidationError{
-				field:  "Object",
-				reason: "value does not match regex pattern \"^[^\\\\s]{2,256}$\"",
-			}
-			if !all {
-				return err
-			}
-			errors = append(errors, err)
+	if len(m.GetUser()) > 512 {
+		err := TupleKeyValidationError{
+			field:  "User",
+			reason: "value length must be at most 512 bytes",
 		}
-
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
 	}
 
 	if m.GetRelation() != "" {
@@ -355,15 +351,19 @@ func (m *TupleKey) validate(all bool) error {
 
 	}
 
-	if len(m.GetUser()) > 512 {
-		err := TupleKeyValidationError{
-			field:  "User",
-			reason: "value length must be at most 512 bytes",
+	if m.GetObject() != "" {
+
+		if !_TupleKey_Object_Pattern.MatchString(m.GetObject()) {
+			err := TupleKeyValidationError{
+				field:  "Object",
+				reason: "value does not match regex pattern \"^[^\\\\s]{2,256}$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
 		}
-		if !all {
-			return err
-		}
-		errors = append(errors, err)
+
 	}
 
 	if all {
@@ -472,9 +472,9 @@ var _ interface {
 	ErrorName() string
 } = TupleKeyValidationError{}
 
-var _TupleKey_Object_Pattern = regexp.MustCompile("^[^\\s]{2,256}$")
-
 var _TupleKey_Relation_Pattern = regexp.MustCompile("^[^:#@\\s]{1,50}$")
+
+var _TupleKey_Object_Pattern = regexp.MustCompile("^[^\\s]{2,256}$")
 
 // Validate checks the field values on Tuple with the rules defined in the
 // proto definition for this message. If any rules are violated, the first
