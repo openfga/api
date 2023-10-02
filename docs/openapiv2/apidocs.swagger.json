@@ -1203,7 +1203,7 @@
         "tuple_keys": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/TupleKey",
+            "$ref": "#/definitions/WriteRequestTupleKey",
             "maximum": 10
           }
         }
