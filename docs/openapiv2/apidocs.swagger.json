@@ -1645,7 +1645,7 @@
     "RelationshipCondition": {
       "type": "object",
       "properties": {
-        "conditionName": {
+        "condition_name": {
           "type": "string",
           "example": "condition1",
           "description": "A reference (by name) of the relationship condition defined in the authorization model.",
@@ -1657,7 +1657,7 @@
         }
       },
       "required": [
-        "conditionName"
+        "condition_name"
       ]
     },
     "Status": {
