@@ -440,7 +440,8 @@
                 }
               },
               "required": [
-                "type_definitions"
+                "type_definitions",
+                "schema_version"
               ]
             }
           }
@@ -1107,7 +1108,8 @@
         }
       },
       "required": [
-        "schema_version"
+        "schema_version",
+        "type_definitions"
       ]
     },
     "CheckRequestTupleKey": {
@@ -1154,7 +1156,10 @@
         "userset": {
           "type": "string"
         }
-      }
+      },
+      "required": [
+        "userset"
+      ]
     },
     "Condition": {
       "type": "object",
@@ -1242,7 +1247,13 @@
           "type": "string",
           "format": "date-time"
         }
-      }
+      },
+      "required": [
+        "id",
+        "name",
+        "created_at",
+        "updated_at"
+      ]
     },
     "DeleteStoreResponse": {
       "type": "object"
@@ -1350,7 +1361,13 @@
           "type": "string",
           "format": "date-time"
         }
-      }
+      },
+      "required": [
+        "id",
+        "name",
+        "created_at",
+        "updated_at"
+      ]
     },
     "InternalErrorCode": {
       "type": "string",
@@ -1412,7 +1429,10 @@
             "type": "string"
           }
         }
-      }
+      },
+      "required": [
+        "objects"
+      ]
     },
     "ListStoresResponse": {
       "type": "object",
@@ -1428,7 +1448,11 @@
           "example": "eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ==",
           "description": "The continuation token will be empty if there are no more stores."
         }
-      }
+      },
+      "required": [
+        "stores",
+        "continuation_token"
+      ]
     },
     "Metadata": {
       "type": "object",
@@ -1459,7 +1483,10 @@
         "intersection": {
           "$ref": "#/definitions/Nodes"
         }
-      }
+      },
+      "required": [
+        "name"
+      ]
     },
     "Nodes": {
       "type": "object",
@@ -1470,7 +1497,10 @@
             "$ref": "#/definitions/Node"
           }
         }
-      }
+      },
+      "required": [
+        "nodes"
+      ]
     },
     "NotFoundErrorCode": {
       "type": "string",
@@ -1529,7 +1559,10 @@
             "$ref": "#/definitions/Assertion"
           }
         }
-      }
+      },
+      "required": [
+        "authorization_model_id"
+      ]
     },
     "ReadAuthorizationModelResponse": {
       "type": "object",
@@ -1553,7 +1586,10 @@
           "example": "eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ==",
           "description": "The continuation token will be empty if there are no more models."
         }
-      }
+      },
+      "required": [
+        "authorization_models"
+      ]
     },
     "ReadChangesResponse": {
       "type": "object",
@@ -1569,7 +1605,10 @@
           "example": "eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ==",
           "description": "The continuation token will be identical if there are no new changes."
         }
-      }
+      },
+      "required": [
+        "changes"
+      ]
     },
     "ReadRequestTupleKey": {
       "type": "object",
@@ -1605,7 +1644,11 @@
           "example": "eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ==",
           "description": "The continuation token will be empty if there are no more tuples."
         }
-      }
+      },
+      "required": [
+        "tuples",
+        "continuation_token"
+      ]
     },
     "RelationMetadata": {
       "type": "object",
@@ -1657,7 +1700,8 @@
         }
       },
       "required": [
-        "condition_name"
+        "condition_name",
+        "context"
       ]
     },
     "Status": {
@@ -1699,7 +1743,14 @@
           "type": "string",
           "format": "date-time"
         }
-      }
+      },
+      "required": [
+        "id",
+        "name",
+        "created_at",
+        "updated_at",
+        "deleted_at"
+      ]
     },
     "StreamedListObjectsResponse": {
       "type": "object",
@@ -1709,7 +1760,10 @@
           "example": "document:roadmap"
         }
       },
-      "description": "The response for a StreamedListObjects RPC."
+      "description": "The response for a StreamedListObjects RPC.",
+      "required": [
+        "object"
+      ]
     },
     "Tuple": {
       "type": "object",
@@ -1721,7 +1775,11 @@
           "type": "string",
           "format": "date-time"
         }
-      }
+      },
+      "required": [
+        "key",
+        "timestamp"
+      ]
     },
     "TupleChange": {
       "type": "object",
@@ -1736,7 +1794,12 @@
           "type": "string",
           "format": "date-time"
         }
-      }
+      },
+      "required": [
+        "tuple_key",
+        "operation",
+        "timestamp"
+      ]
     },
     "TupleKey": {
       "type": "object",
@@ -1844,7 +1907,10 @@
             "type": "string"
           }
         }
-      }
+      },
+      "required": [
+        "users"
+      ]
     },
     "Userset": {
       "type": "object",
@@ -1887,7 +1953,11 @@
         "subtract": {
           "$ref": "#/definitions/Node"
         }
-      }
+      },
+      "required": [
+        "base",
+        "subtract"
+      ]
     },
     "UsersetTree.TupleToUserset": {
       "type": "object",
@@ -1901,7 +1971,11 @@
             "$ref": "#/definitions/Computed"
           }
         }
-      }
+      },
+      "required": [
+        "tupleset",
+        "computed"
+      ]
     },
     "Usersets": {
       "type": "object",
@@ -1912,7 +1986,10 @@
             "$ref": "#/definitions/Userset"
           }
         }
-      }
+      },
+      "required": [
+        "child"
+      ]
     },
     "ValidationErrorMessageResponse": {
       "type": "object",
@@ -1942,7 +2019,10 @@
           "type": "string",
           "example": "01G5JAVJ41T49E9TT3SKVS7X1J"
         }
-      }
+      },
+      "required": [
+        "authorization_model_id"
+      ]
     },
     "WriteRequestTupleKey": {
       "type": "object",
@@ -2015,7 +2095,11 @@
         "computedUserset": {
           "$ref": "#/definitions/ObjectRelation"
         }
-      }
+      },
+      "required": [
+        "tupleset",
+        "computedUserset"
+      ]
     }
   }
 }

@@ -721,6 +721,7 @@ message ListObjectsRequest {
 message ListObjectsResponse {
   repeated string objects = 1 [
     json_name = "objects",
+    (google.api.field_behavior) = REQUIRED,
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "[\"document:roadmap\",\"document:planning\"]"}
   ];
 }
@@ -778,6 +779,7 @@ message StreamedListObjectsRequest {
 message StreamedListObjectsResponse {
   string object = 1 [
     json_name = "object",
+    (google.api.field_behavior) = REQUIRED,
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"document:roadmap\""}
   ];
 }
@@ -845,10 +847,11 @@ message ReadRequestTupleKey {
 }
 
 message ReadResponse {
-  repeated openfga.v1.Tuple tuples = 1;
+  repeated openfga.v1.Tuple tuples = 1 [(google.api.field_behavior) = REQUIRED];
 
   string continuation_token = 2 [
     json_name = "continuation_token",
+    (google.api.field_behavior) = REQUIRED,
     (validate.rules).string.max_bytes = 5120,
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       description: "The continuation token will be empty if there are no more tuples.",
@@ -1090,6 +1093,7 @@ message WriteAuthorizationModelRequest {
 
   string schema_version = 3 [
     json_name = "schema_version",
+    (google.api.field_behavior) = REQUIRED,
     (validate.rules).string = {
       in: [
         "1.0",
@@ -1109,6 +1113,7 @@ message WriteAuthorizationModelRequest {
 message WriteAuthorizationModelResponse {
   string authorization_model_id = 1 [
     json_name = "authorization_model_id",
+    (google.api.field_behavior) = REQUIRED,
     (validate.rules).string = {pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"},
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01G5JAVJ41T49E9TT3SKVS7X1J\""}
   ];
@@ -1139,7 +1144,10 @@ message ReadAuthorizationModelsRequest {
 }
 
 message ReadAuthorizationModelsResponse {
-  repeated AuthorizationModel authorization_models = 1 [json_name = "authorization_models"];
+  repeated AuthorizationModel authorization_models = 1 [
+    json_name = "authorization_models",
+    (google.api.field_behavior) = REQUIRED
+  ];
 
   string continuation_token = 2 [
     json_name = "continuation_token",
@@ -1161,17 +1169,18 @@ message WriteAssertionsRequest {
 
   string authorization_model_id = 2 [
     json_name = "authorization_model_id",
+    (google.api.field_behavior) = REQUIRED,
     (validate.rules).string = {pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"},
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01G5JAVJ41T49E9TT3SKVS7X1J\""}
   ];
 
   repeated openfga.v1.Assertion assertions = 3 [
     json_name = "assertions",
+    (google.api.field_behavior) = REQUIRED,
     (validate.rules).repeated = {
       min_items: 0,
       max_items: 100
     },
-    (google.api.field_behavior) = REQUIRED,
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       minimum: 0,
       maximum: 100
@@ -1191,6 +1200,7 @@ message ReadAssertionsRequest {
 
   string authorization_model_id = 2 [
     json_name = "authorization_model_id",
+    (google.api.field_behavior) = REQUIRED,
     (validate.rules).string = {pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"},
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01G5JAVJ41T49E9TT3SKVS7X1J\""}
   ];
@@ -1199,6 +1209,7 @@ message ReadAssertionsRequest {
 message ReadAssertionsResponse {
   string authorization_model_id = 1 [
     json_name = "authorization_model_id",
+    (google.api.field_behavior) = REQUIRED,
     (validate.rules).string = {pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"},
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01G5JAVJ41T49E9TT3SKVS7X1J\""}
   ];
@@ -1236,7 +1247,9 @@ message ReadChangesRequest {
 }
 
 message ReadChangesResponse {
-  repeated openfga.v1.TupleChange changes = 1;
+  repeated openfga.v1.TupleChange changes = 1 [
+    (google.api.field_behavior) = REQUIRED
+  ];
 
   string continuation_token = 2 [
     json_name = "continuation_token",
@@ -1257,10 +1270,19 @@ message CreateStoreRequest {
 }
 
 message CreateStoreResponse {
-  string id = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""}];
-  string name = 2;
-  google.protobuf.Timestamp created_at = 3 [json_name = "created_at"];
-  google.protobuf.Timestamp updated_at = 4 [json_name = "updated_at"];
+  string id = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""}
+  ];
+  string name = 2 [(google.api.field_behavior) = REQUIRED];
+  google.protobuf.Timestamp created_at = 3 [
+    json_name = "created_at",
+    (google.api.field_behavior) = REQUIRED
+  ];
+  google.protobuf.Timestamp updated_at = 4 [
+    json_name = "updated_at",
+    (google.api.field_behavior) = REQUIRED
+  ];
 }
 
 message UpdateStoreRequest {
@@ -1278,10 +1300,19 @@ message UpdateStoreRequest {
 }
 
 message UpdateStoreResponse {
-  string id = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""}];
-  string name = 2;
-  google.protobuf.Timestamp created_at = 3 [json_name = "created_at"];
-  google.protobuf.Timestamp updated_at = 4 [json_name = "updated_at"];
+  string id = 1 [
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""},
+    (google.api.field_behavior) = REQUIRED
+  ];
+  string name = 2 [(google.api.field_behavior) = REQUIRED];
+  google.protobuf.Timestamp created_at = 3 [
+    json_name = "created_at",
+    (google.api.field_behavior) = REQUIRED
+  ];
+  google.protobuf.Timestamp updated_at = 4 [
+    json_name = "updated_at",
+    (google.api.field_behavior) = REQUIRED
+  ];
 }
 
 message DeleteStoreRequest {
@@ -1305,10 +1336,19 @@ message GetStoreRequest {
 }
 
 message GetStoreResponse {
-  string id = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""}];
-  string name = 2;
-  google.protobuf.Timestamp created_at = 3 [json_name = "created_at"];
-  google.protobuf.Timestamp updated_at = 4 [json_name = "updated_at"];
+  string id = 1 [
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""},
+    (google.api.field_behavior) = REQUIRED
+  ];
+  string name = 2 [(google.api.field_behavior) = REQUIRED];
+  google.protobuf.Timestamp created_at = 3 [
+    json_name = "created_at",
+    (google.api.field_behavior) = REQUIRED
+  ];
+  google.protobuf.Timestamp updated_at = 4 [
+    json_name = "updated_at",
+    (google.api.field_behavior) = REQUIRED
+  ];
 }
 
 message ListStoresRequest {
@@ -1328,9 +1368,10 @@ message ListStoresRequest {
 }
 
 message ListStoresResponse {
-  repeated openfga.v1.Store stores = 1;
+  repeated openfga.v1.Store stores = 1 [(google.api.field_behavior) = REQUIRED];
   string continuation_token = 2 [
     json_name = "continuation_token",
+    (google.api.field_behavior) = REQUIRED,
     (validate.rules).string.max_bytes = 5120,
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       description: "The continuation token will be empty if there are no more stores.",
@@ -1353,5 +1394,5 @@ message Assertion {
 }
 
 message Assertions {
-  repeated Assertion assertions = 1;
+  repeated Assertion assertions = 1 [(google.api.field_behavior) = REQUIRED];
 }
