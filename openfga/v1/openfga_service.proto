@@ -1247,9 +1247,7 @@ message ReadChangesRequest {
 }
 
 message ReadChangesResponse {
-  repeated openfga.v1.TupleChange changes = 1 [
-    (google.api.field_behavior) = REQUIRED
-  ];
+  repeated openfga.v1.TupleChange changes = 1 [(google.api.field_behavior) = REQUIRED];
 
   string continuation_token = 2 [
     json_name = "continuation_token",

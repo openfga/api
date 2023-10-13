@@ -163,15 +163,30 @@ enum TupleOperation {
 }
 
 message TupleChange {
-  TupleKey tuple_key = 1 [json_name = "tuple_key", (google.api.field_behavior) = REQUIRED];
-  TupleOperation operation = 2 [(validate.rules).enum.defined_only = true, (google.api.field_behavior) = REQUIRED];
+  TupleKey tuple_key = 1 [
+    json_name = "tuple_key",
+    (google.api.field_behavior) = REQUIRED
+  ];
+  TupleOperation operation = 2 [
+    (validate.rules).enum.defined_only = true,
+    (google.api.field_behavior) = REQUIRED
+  ];
   google.protobuf.Timestamp timestamp = 3 [(google.api.field_behavior) = REQUIRED];
 }
 
 message Store {
   string id = 1 [(google.api.field_behavior) = REQUIRED];
   string name = 2 [(google.api.field_behavior) = REQUIRED];
-  google.protobuf.Timestamp created_at = 3 [json_name = "created_at", (google.api.field_behavior) = REQUIRED];
-  google.protobuf.Timestamp updated_at = 4 [json_name = "updated_at", (google.api.field_behavior) = REQUIRED];
-  google.protobuf.Timestamp deleted_at = 5 [json_name = "deleted_at", (google.api.field_behavior) = REQUIRED];
+  google.protobuf.Timestamp created_at = 3 [
+    json_name = "created_at",
+    (google.api.field_behavior) = REQUIRED
+  ];
+  google.protobuf.Timestamp updated_at = 4 [
+    json_name = "updated_at",
+    (google.api.field_behavior) = REQUIRED
+  ];
+  google.protobuf.Timestamp deleted_at = 5 [
+    json_name = "deleted_at",
+    (google.api.field_behavior) = REQUIRED
+  ];
 }
