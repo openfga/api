@@ -20,7 +20,7 @@ jobs:
       - uses: bufbuild/buf-breaking-action@v1
         with:
           # The 'main' branch of the GitHub repository that defines the module.
-          against: "https://github.com/${GITHUB_REPOSITORY}.git#branch=main"
+          against: "https://github.com/${GITHUB_REPOSITORY}.git#branch=${GITHUB_BASE_REF}"
       - run: buf format -d --exit-code
 
   diff-openapi:
