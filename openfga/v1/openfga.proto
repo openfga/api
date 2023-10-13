@@ -28,8 +28,7 @@ message Object {
 
 message RelationshipCondition {
   // A reference (by name) of the relationship condition defined in the authorization model.
-  string condition_name = 1 [
-    json_name = "condition_name",
+  string name = 1 [
     (validate.rules).string = {pattern: "^[^\\s]{2,256}$"},
     (google.api.field_behavior) = REQUIRED,
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
