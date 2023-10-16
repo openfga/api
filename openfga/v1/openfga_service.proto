@@ -663,7 +663,8 @@ service OpenFGAService {
         "The response will contain the related objects in an array in the \"objects\" field of the response and they will "
         "be strings in the object format `<type>:<id>` (e.g. \"document:roadmap\").\n"
         "The number of objects in the response array will be limited by the execution timeout specified in the flag OPENFGA_LIST_OBJECTS_DEADLINE "
-        "and by the upper bound specified in the flag OPENFGA_LIST_OBJECTS_MAX_RESULTS, whichever is hit first."
+        "and by the upper bound specified in the flag OPENFGA_LIST_OBJECTS_MAX_RESULTS, whichever is hit first.\n"
+        "The objects given will not be sorted, and therefore two identical calls can give a given different set of objects."
     };
   }
 }
