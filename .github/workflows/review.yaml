@@ -11,7 +11,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.5.4
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.5.4
         with:
           fetch-depth: 0
       - uses: bufbuild/buf-setup-action@a9cf7d0e410e4e9166fd3ffacd119a2cf0d50f2b # v1.27.1-1
@@ -27,7 +27,7 @@ jobs:
   diff-openapi:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.5.4
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.5.4
         with:
           fetch-depth: 0
       - uses: bufbuild/buf-setup-action@a9cf7d0e410e4e9166fd3ffacd119a2cf0d50f2b # v1.27.1-1
@@ -42,7 +42,7 @@ jobs:
   validate-openapi:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.5.4
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.5.4
         with:
           fetch-depth: 0
       - uses: char0n/swagger-editor-validate@65266f9d3147e446b96af879fd317ce6079529ea # v1.3.2
