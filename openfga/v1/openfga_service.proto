@@ -666,6 +666,37 @@ service OpenFGAService {
         "and by the upper bound specified in the flag OPENFGA_LIST_OBJECTS_MAX_RESULTS, whichever is hit first."
     };
   }
+
+  rpc ListUsers(ListUsersRequest) returns (ListUsersResponse);
+  rpc StreamedListUsers(StreamedListUsersRequest) returns (stream StreamedListUsersResponse);
+}
+
+message ListUsersRequest {
+  string store_id = 1;
+  string authorization_model_id = 2;
+  openfga.v1.Object object = 3;
+  string relation = 4;
+  string target_user_object_type = 5;
+  string target_user_relation = 6;
+  repeated openfga.v1.TupleKey contextual_tuples = 7;
+}
+
+message ListUsersResponse {
+  repeated openfga.v1.Object user_objects = 1;
+}
+
+message StreamedListUsersRequest {
+  string store_id = 1;
+  string authorization_model_id = 2;
+  openfga.v1.Object object = 3;
+  string relation = 4;
+  string target_user_object_type = 5;
+  string target_user_relation = 6;
+  repeated openfga.v1.TupleKey contextual_tuples = 7;
+}
+
+message StreamedListUsersResponse {
+  openfga.v1.Object user_object = 1;
 }
 
 message ListObjectsRequest {

@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package openfga.v1;
+
+import "openfga/v1/openfga.proto";
+
+service IndexCacheService {
+    rpc LookupIndexedObjects(LookupIndexedObjectsRequest) returns (LookupIndexedObjectsResponse)
+    rpc LookupIndexedUsers(LookupIndexedUsersRequest) returns (LookupIndexedUsersResponse)
+}
+
+
+message ListIndexedObjectsRequest {
+    string store_id = 1;
+    string authorization_model_id = 2;
+    string user = 3;
+}
+
+// key: stores/<storeId>/<objectType>#<relation>@<user>, value: bitmap of the objects of type <objectType>
+// e.g.
+// stores/1/document#viewer@user:jon, ["document:1", "document:2"], bitmap representation 011000....
+// stores/1/document#viewer@user:bob, ["document:3"], bitmap representation 0001000....
+// etc..
+message ListIndexedObjectsResponse {
+    uint64 objects_bitmap = 1;
+}
+
+message ListIndexedUsersRequest {
+    
+}
+
+// key: document:<id>#<relation>, value: bitmap of the users
+// e.g.
+// document:1#viewer, [user:jon, user:bob] - the array here would be more efficiently represented as a bitmap, but same idea
+// document:2#viewer, [user:bob]
+// etc..
+message ListIndexedUsersResponse {
+    uint64 users_bitmap = 1;
+}

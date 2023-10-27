@@ -16,6 +16,9 @@
   },
   "tags": [
     {
+      "name": "IndexerService"
+    },
+    {
       "name": "OpenFGAService"
     }
   ],
@@ -1223,6 +1226,17 @@
         }
       }
     },
+    "ExpandedReadChangesResponse": {
+      "type": "object",
+      "properties": {
+        "update": {
+          "$ref": "#/definitions/RelationshipUpdate"
+        },
+        "tupleChangesProcessed": {
+          "$ref": "#/definitions/TupleChangesProcessed"
+        }
+      }
+    },
     "GetStoreResponse": {
       "type": "object",
       "properties": {
@@ -1321,6 +1335,17 @@
         }
       }
     },
+    "ListUsersResponse": {
+      "type": "object",
+      "properties": {
+        "userObjects": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Object"
+          }
+        }
+      }
+    },
     "Metadata": {
       "type": "object",
       "properties": {
@@ -1372,6 +1397,23 @@
         "unimplemented"
       ],
       "default": "no_not_found_error"
+    },
+    "Object": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "example": "document"
+        },
+        "id": {
+          "type": "string"
+        }
+      },
+      "description": "Object represents an OpenFGA Object.\n\nAn Object is composed of a type and identifier (e.g. 'document:1')\n\nSee https://openfga.dev/docs/concepts#what-is-an-object",
+      "required": [
+        "type",
+        "id"
+      ]
     },
     "ObjectRelation": {
       "type": "object",
@@ -1501,6 +1543,32 @@
         "type"
       ]
     },
+    "RelationshipStatus": {
+      "type": "string",
+      "enum": [
+        "UNDEFINED",
+        "HAS_RELATIONSHIP",
+        "NO_RELATIONSHIP"
+      ],
+      "default": "UNDEFINED"
+    },
+    "RelationshipUpdate": {
+      "type": "object",
+      "properties": {
+        "object": {
+          "$ref": "#/definitions/Object"
+        },
+        "relation": {
+          "type": "string"
+        },
+        "user": {
+          "$ref": "#/definitions/Object"
+        },
+        "relationshipStatus": {
+          "$ref": "#/definitions/RelationshipStatus"
+        }
+      }
+    },
     "Status": {
       "type": "object",
       "properties": {
@@ -1552,6 +1620,14 @@
       },
       "description": "The response for a StreamedListObjects RPC."
     },
+    "StreamedListUsersResponse": {
+      "type": "object",
+      "properties": {
+        "userObject": {
+          "$ref": "#/definitions/Object"
+        }
+      }
+    },
     "Tuple": {
       "type": "object",
       "properties": {
@@ -1576,6 +1652,14 @@
         "timestamp": {
           "type": "string",
           "format": "date-time"
+        }
+      }
+    },
+    "TupleChangesProcessed": {
+      "type": "object",
+      "properties": {
+        "continuationToken": {
+          "type": "string"
         }
       }
     },

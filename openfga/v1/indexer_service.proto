@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+package openfga.v1;
+
+import "openfga/v1/openfga.proto";
+
+service IndexerService {
+    rpc ExpandedReadChanges(ExpandedReadChangesRequest) returns (stream ExpandedReadChangesResponse);
+}
+
+message ExpandedReadChangesRequest {
+    string store_id = 1;
+    string authorization_model_id = 2;
+    string target_object_type = 3;
+    string relation = 4;
+    string target_user_object_type = 5;
+    string continuation_token = 6;
+}
+
+message RelationshipUpdate {
+    openfga.v1.Object object = 1;
+    string relation = 2;
+    openfga.v1.Object user = 3;
+
+    enum RelationshipStatus {
+        UNDEFINED = 0;
+        HAS_RELATIONSHIP = 1;
+        NO_RELATIONSHIP = 2;
+    }
+
+    RelationshipStatus relationship_status = 4;
+}
+
+message TupleChangesProcessed {
+    string continuation_token = 1;
+}
+
+message ExpandedReadChangesResponse {
+
+    oneof result {
+        RelationshipUpdate update = 1;
+        TupleChangesProcessed tuple_changes_processed = 2;
+    }
+}
