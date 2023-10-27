@@ -17,11 +17,14 @@ jobs:
   push:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: bufbuild/buf-setup-action@v1
+      - uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.5.4
+        with:
+          fetch-depth: 0
+
+      - uses: bufbuild/buf-setup-action@a9cf7d0e410e4e9166fd3ffacd119a2cf0d50f2b # v1.27.1-1
         with:
           version: "1.15.1"
-      - uses: bufbuild/buf-push-action@v1
+      - uses: bufbuild/buf-push-action@1c45f6a21ec277ee4c1fa2772e49b9541ea17f38 # v1.1.1
         with:
           buf_token: ${{ secrets.BUF_TOKEN }}
       - name: Send PagerDuty alert on failure
