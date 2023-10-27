@@ -667,8 +667,19 @@ service OpenFGAService {
     };
   }
 
-  rpc ListUsers(ListUsersRequest) returns (ListUsersResponse);
-  rpc StreamedListUsers(StreamedListUsersRequest) returns (stream StreamedListUsersResponse);
+  rpc ListUsers(ListUsersRequest) returns (ListUsersResponse) {
+    option (google.api.http) = {
+      post: "/stores/{store_id}/list-users",
+      body: "*"
+    };
+  }
+
+  rpc StreamedListUsers(StreamedListUsersRequest) returns (stream StreamedListUsersResponse) {
+    option (google.api.http) = {
+      post: "/stores/{store_id}/streamed-list-users",
+      body: "*"
+    };
+  }
 }
 
 message ListUsersRequest {

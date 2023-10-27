@@ -127,6 +127,161 @@
         ]
       }
     },
+    "/stores/{storeId}/list-users": {
+      "post": {
+        "operationId": "OpenFGAService_ListUsers",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ListUsersResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "storeId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "authorizationModelId": {
+                  "type": "string"
+                },
+                "object": {
+                  "$ref": "#/definitions/Object"
+                },
+                "relation": {
+                  "type": "string"
+                },
+                "targetUserObjectType": {
+                  "type": "string"
+                },
+                "targetUserRelation": {
+                  "type": "string"
+                },
+                "contextualTuples": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/TupleKey"
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "tags": [
+          "OpenFGAService"
+        ]
+      }
+    },
+    "/stores/{storeId}/streamed-list-users": {
+      "post": {
+        "operationId": "OpenFGAService_StreamedListUsers",
+        "responses": {
+          "200": {
+            "description": "A successful response.(streaming responses)",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "result": {
+                  "$ref": "#/definitions/StreamedListUsersResponse"
+                },
+                "error": {
+                  "$ref": "#/definitions/Status"
+                }
+              },
+              "title": "Stream result of StreamedListUsersResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "storeId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "authorizationModelId": {
+                  "type": "string"
+                },
+                "object": {
+                  "$ref": "#/definitions/Object"
+                },
+                "relation": {
+                  "type": "string"
+                },
+                "targetUserObjectType": {
+                  "type": "string"
+                },
+                "targetUserRelation": {
+                  "type": "string"
+                },
+                "contextualTuples": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/TupleKey"
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "tags": [
+          "OpenFGAService"
+        ]
+      }
+    },
     "/stores/{store_id}": {
       "get": {
         "summary": "Get a store",
