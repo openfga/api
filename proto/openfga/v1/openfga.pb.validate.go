@@ -192,6 +192,17 @@ func (m *RelationshipCondition) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
+	if m.GetContext() == nil {
+		err := RelationshipConditionValidationError{
+			field:  "Context",
+			reason: "value is required",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
 	if all {
 		switch v := interface{}(m.GetContext()).(type) {
 		case interface{ ValidateAll() error }:
@@ -496,6 +507,17 @@ func (m *Tuple) validate(all bool) error {
 	}
 
 	var errors []error
+
+	if m.GetKey() == nil {
+		err := TupleValidationError{
+			field:  "Key",
+			reason: "value is required",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
 
 	if all {
 		switch v := interface{}(m.GetKey()).(type) {
@@ -1073,6 +1095,17 @@ func (m *TupleChange) validate(all bool) error {
 
 	var errors []error
 
+	if m.GetTupleKey() == nil {
+		err := TupleChangeValidationError{
+			field:  "TupleKey",
+			reason: "value is required",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
 	if all {
 		switch v := interface{}(m.GetTupleKey()).(type) {
 		case interface{ ValidateAll() error }:
@@ -1239,10 +1272,6 @@ func (m *Store) validate(all bool) error {
 	}
 
 	var errors []error
-
-	// no validation rules for Id
-
-	// no validation rules for Name
 
 	if all {
 		switch v := interface{}(m.GetCreatedAt()).(type) {
@@ -1896,8 +1925,6 @@ func (m *UsersetTree_Computed) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for Userset
-
 	if len(errors) > 0 {
 		return UsersetTree_ComputedMultiError(errors)
 	}
@@ -1999,8 +2026,6 @@ func (m *UsersetTree_TupleToUserset) validate(all bool) error {
 	}
 
 	var errors []error
-
-	// no validation rules for Tupleset
 
 	for idx, item := range m.GetComputed() {
 		_, _ = idx, item
@@ -2138,6 +2163,17 @@ func (m *UsersetTree_Difference) validate(all bool) error {
 
 	var errors []error
 
+	if m.GetBase() == nil {
+		err := UsersetTree_DifferenceValidationError{
+			field:  "Base",
+			reason: "value is required",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
 	if all {
 		switch v := interface{}(m.GetBase()).(type) {
 		case interface{ ValidateAll() error }:
@@ -2165,6 +2201,17 @@ func (m *UsersetTree_Difference) validate(all bool) error {
 				cause:  err,
 			}
 		}
+	}
+
+	if m.GetSubtract() == nil {
+		err := UsersetTree_DifferenceValidationError{
+			field:  "Subtract",
+			reason: "value is required",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
 	}
 
 	if all {

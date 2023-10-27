@@ -8,12 +8,14 @@ import "validate/validate.proto";
 
 message AuthorizationModel {
   string id = 1 [
-    (validate.rules).string = {pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"},
+    (google.api.field_behavior) = REQUIRED,
+    (validate.rules).string = {pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$", ignore_empty: false},
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01G5JAVJ41T49E9TT3SKVS7X1J\""}
   ];
 
   string schema_version = 2 [
     (google.api.field_behavior) = REQUIRED,
+    (validate.rules).string = {pattern: "^[1-9].[1-9]$", ignore_empty: false},
     json_name = "schema_version"
   ];
 
@@ -26,13 +28,13 @@ message AuthorizationModel {
   map<string, Condition> conditions = 4 [
     json_name = "conditions",
     (validate.rules).map.max_pairs = 25,
-    (validate.rules).map.keys.string = {pattern: "^[^:#@\\s]{1,50}$"}
+    (validate.rules).map.keys.string = {pattern: "^[^:#@\\s]{1,50}$", ignore_empty: false}
   ];
 }
 
 message TypeDefinition {
   string type = 1 [
-    (validate.rules).string = {pattern: "^[^:#@\\s]{1,254}$"},
+    (validate.rules).string = {pattern: "^[^:#@\\s]{1,254}$", ignore_empty: false},
     (google.api.field_behavior) = REQUIRED,
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"document\""}
   ];
@@ -47,7 +49,7 @@ message TypeDefinition {
 }
 
 message Relation {
-  string name = 1 [(validate.rules).string = {pattern: "^[^:#@\\s]{1,50}$"}];
+  string name = 1 [(validate.rules).string = {pattern: "^[^:#@\\s]{1,50}$", ignore_empty: false}];
 
   Userset rewrite = 2 [
     (validate.rules).message.required = true,
@@ -72,7 +74,7 @@ message RelationMetadata {
 // RelationReference represents a relation of a particular object type (e.g. 'document#viewer').
 message RelationReference {
   string type = 1 [
-    (validate.rules).string = {pattern: "^[^:#@\\s]{1,254}$"},
+    (validate.rules).string = {pattern: "^[^:#@\\s]{1,254}$", ignore_empty: false},
     (google.api.field_behavior) = REQUIRED,
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"group\""}
   ];
@@ -96,7 +98,9 @@ message RelationReference {
 message Wildcard {}
 
 message Usersets {
-  repeated Userset child = 1 [(google.api.field_behavior) = REQUIRED];
+  repeated Userset child = 1 [
+    (google.api.field_behavior) = REQUIRED
+  ];
 }
 
 message Difference {
@@ -114,7 +118,7 @@ message Difference {
 message Userset {
   oneof userset {
     DirectUserset this = 1;
-    ObjectRelation computed_userset = 2;
+    ComputedUserset computed_userset = 2;
     TupleToUserset tuple_to_userset = 3;
     Usersets union = 4;
     Usersets intersection = 5;
@@ -128,26 +132,42 @@ message DirectUserset {}
 
 message ObjectRelation {
   string object = 1 [(validate.rules).string = {max_bytes: 256}];
-  string relation = 2 [(validate.rules).string = {max_bytes: 50}];
+  string relation = 2 [
+    (google.api.field_behavior) = REQUIRED,
+    (validate.rules).string = {max_bytes: 50, ignore_empty: false}
+  ];
+}
+
+message ComputedUserset {
+  string relation = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (validate.rules).string = {max_bytes: 50, ignore_empty: false}
+  ];
 }
 
 message TupleToUserset {
   // The target object/relation
-  ObjectRelation tupleset = 1 [(google.api.field_behavior) = REQUIRED];
-  ObjectRelation computed_userset = 2 [(google.api.field_behavior) = REQUIRED];
+  ComputedUserset tupleset = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (validate.rules).message.required = true
+  ];
+  ComputedUserset computed_userset = 2 [
+    (google.api.field_behavior) = REQUIRED,
+    (validate.rules).message.required = true
+  ];
 }
 
 message Condition {
   // A unique name for the condition
   string name = 1 [
     (google.api.field_behavior) = REQUIRED,
-    (validate.rules).string = {pattern: "^[^:#@\\s]{1,50}$"}
+    (validate.rules).string = {pattern: "^[^:#@\\s]{1,50}$", ignore_empty: false}
   ];
 
   // A Google CEL expression, expressed as a string.
   string expression = 2 [
     (google.api.field_behavior) = REQUIRED,
-    (validate.rules).string = {max_bytes: 512}
+    (validate.rules).string = {max_bytes: 512, ignore_empty: false}
   ];
 
   // A map of parameter names to the parameter's defined type reference.

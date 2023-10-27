@@ -1108,6 +1108,7 @@
         }
       },
       "required": [
+        "id",
         "schema_version",
         "type_definitions"
       ]
@@ -1159,6 +1160,17 @@
       },
       "required": [
         "userset"
+      ]
+    },
+    "ComputedUserset": {
+      "type": "object",
+      "properties": {
+        "relation": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "relation"
       ]
     },
     "Condition": {
@@ -1519,17 +1531,6 @@
       ],
       "default": "NULL_VALUE",
       "description": "`NullValue` is a singleton enumeration to represent the null value for the\n`Value` type union.\n\n The JSON representation for `NullValue` is JSON `null`.\n\n - NULL_VALUE: Null value."
-    },
-    "ObjectRelation": {
-      "type": "object",
-      "properties": {
-        "object": {
-          "type": "string"
-        },
-        "relation": {
-          "type": "string"
-        }
-      }
     },
     "PathUnknownErrorMessageResponse": {
       "type": "object",
@@ -1919,7 +1920,7 @@
           "$ref": "#/definitions/DirectUserset"
         },
         "computedUserset": {
-          "$ref": "#/definitions/ObjectRelation"
+          "$ref": "#/definitions/ComputedUserset"
         },
         "tupleToUserset": {
           "$ref": "#/definitions/v1.TupleToUserset"
@@ -2089,11 +2090,11 @@
       "type": "object",
       "properties": {
         "tupleset": {
-          "$ref": "#/definitions/ObjectRelation",
+          "$ref": "#/definitions/ComputedUserset",
           "title": "The target object/relation"
         },
         "computedUserset": {
-          "$ref": "#/definitions/ObjectRelation"
+          "$ref": "#/definitions/ComputedUserset"
         }
       },
       "required": [
