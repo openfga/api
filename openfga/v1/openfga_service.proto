@@ -1389,6 +1389,8 @@ message Assertion {
     json_name = "expectation",
     (google.api.field_behavior) = REQUIRED
   ];
+
+  google.protobuf.Struct context = 3;
 }
 
 message Assertions {

@@ -1031,6 +1031,9 @@
         },
         "expectation": {
           "type": "boolean"
+        },
+        "context": {
+          "type": "object"
         }
       },
       "required": [
