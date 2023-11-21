@@ -303,6 +303,153 @@ var _ interface {
 
 var _RelationshipCondition_Name_Pattern = regexp.MustCompile("^[^\\s]{2,256}$")
 
+// Validate checks the field values on TupleKeyWithoutCondition with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *TupleKeyWithoutCondition) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on TupleKeyWithoutCondition with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// TupleKeyWithoutConditionMultiError, or nil if none found.
+func (m *TupleKeyWithoutCondition) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *TupleKeyWithoutCondition) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if len(m.GetUser()) > 512 {
+		err := TupleKeyWithoutConditionValidationError{
+			field:  "User",
+			reason: "value length must be at most 512 bytes",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if m.GetRelation() != "" {
+
+		if !_TupleKeyWithoutCondition_Relation_Pattern.MatchString(m.GetRelation()) {
+			err := TupleKeyWithoutConditionValidationError{
+				field:  "Relation",
+				reason: "value does not match regex pattern \"^[^:#@\\\\s]{1,50}$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
+	if m.GetObject() != "" {
+
+		if !_TupleKeyWithoutCondition_Object_Pattern.MatchString(m.GetObject()) {
+			err := TupleKeyWithoutConditionValidationError{
+				field:  "Object",
+				reason: "value does not match regex pattern \"^[^\\\\s]{2,256}$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
+	if len(errors) > 0 {
+		return TupleKeyWithoutConditionMultiError(errors)
+	}
+
+	return nil
+}
+
+// TupleKeyWithoutConditionMultiError is an error wrapping multiple validation
+// errors returned by TupleKeyWithoutCondition.ValidateAll() if the designated
+// constraints aren't met.
+type TupleKeyWithoutConditionMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m TupleKeyWithoutConditionMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m TupleKeyWithoutConditionMultiError) AllErrors() []error { return m }
+
+// TupleKeyWithoutConditionValidationError is the validation error returned by
+// TupleKeyWithoutCondition.Validate if the designated constraints aren't met.
+type TupleKeyWithoutConditionValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e TupleKeyWithoutConditionValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e TupleKeyWithoutConditionValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e TupleKeyWithoutConditionValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e TupleKeyWithoutConditionValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e TupleKeyWithoutConditionValidationError) ErrorName() string {
+	return "TupleKeyWithoutConditionValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e TupleKeyWithoutConditionValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sTupleKeyWithoutCondition.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = TupleKeyWithoutConditionValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = TupleKeyWithoutConditionValidationError{}
+
+var _TupleKeyWithoutCondition_Relation_Pattern = regexp.MustCompile("^[^:#@\\s]{1,50}$")
+
+var _TupleKeyWithoutCondition_Object_Pattern = regexp.MustCompile("^[^\\s]{2,256}$")
+
 // Validate checks the field values on TupleKey with the rules defined in the
 // proto definition for this message. If any rules are violated, the first
 // error encountered is returned, or nil if there are no violations.
