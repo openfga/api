@@ -2064,41 +2064,13 @@
         "tuple_keys"
       ]
     },
-    "WriteRequestTupleKey": {
-      "type": "object",
-      "properties": {
-        "user": {
-          "type": "string",
-          "example": "user:anne",
-          "maxLength": 512
-        },
-        "relation": {
-          "type": "string",
-          "example": "reader",
-          "maxLength": 50
-        },
-        "object": {
-          "type": "string",
-          "example": "document:2021-budget",
-          "maxLength": 256
-        },
-        "condition": {
-          "$ref": "#/definitions/RelationshipCondition"
-        }
-      },
-      "required": [
-        "user",
-        "relation",
-        "object"
-      ]
-    },
     "WriteRequestWrites": {
       "type": "object",
       "properties": {
         "tuple_keys": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/WriteRequestTupleKey",
+            "$ref": "#/definitions/TupleKey",
             "minimum": 1
           }
         }
