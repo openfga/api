@@ -994,10 +994,10 @@
               "type": "object",
               "properties": {
                 "writes": {
-                  "$ref": "#/definitions/WriteRequestTupleKeys"
+                  "$ref": "#/definitions/WriteRequestWrites"
                 },
                 "deletes": {
-                  "$ref": "#/definitions/WriteRequestTupleKeys"
+                  "$ref": "#/definitions/WriteRequestDeletes"
                 },
                 "authorization_model_id": {
                   "type": "string",
@@ -1518,7 +1518,7 @@
         "NULL_VALUE"
       ],
       "default": "NULL_VALUE",
-      "description": "`NullValue` is a singleton enumeration to represent the null value for the\n`Value` type union.\n\n The JSON representation for `NullValue` is JSON `null`.\n\n - NULL_VALUE: Null value."
+      "description": "`NullValue` is a singleton enumeration to represent the null value for the\n`Value` type union.\n\nThe JSON representation for `NullValue` is JSON `null`.\n\n - NULL_VALUE: Null value."
     },
     "ObjectRelation": {
       "type": "object",
@@ -1829,6 +1829,31 @@
         "object"
       ]
     },
+    "TupleKeyWithoutCondition": {
+      "type": "object",
+      "properties": {
+        "user": {
+          "type": "string",
+          "example": "user:anne",
+          "maxLength": 512
+        },
+        "relation": {
+          "type": "string",
+          "example": "reader",
+          "maxLength": 50
+        },
+        "object": {
+          "type": "string",
+          "example": "document:2021-budget",
+          "maxLength": 256
+        }
+      },
+      "required": [
+        "user",
+        "relation",
+        "object"
+      ]
+    },
     "TupleOperation": {
       "type": "string",
       "enum": [
@@ -2024,6 +2049,21 @@
         "authorization_model_id"
       ]
     },
+    "WriteRequestDeletes": {
+      "type": "object",
+      "properties": {
+        "tuple_keys": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TupleKeyWithoutCondition",
+            "minimum": 1
+          }
+        }
+      },
+      "required": [
+        "tuple_keys"
+      ]
+    },
     "WriteRequestTupleKey": {
       "type": "object",
       "properties": {
@@ -2052,7 +2092,7 @@
         "object"
       ]
     },
-    "WriteRequestTupleKeys": {
+    "WriteRequestWrites": {
       "type": "object",
       "properties": {
         "tuple_keys": {

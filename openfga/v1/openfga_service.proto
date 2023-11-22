@@ -898,8 +898,17 @@ message WriteRequestTupleKey {
   RelationshipCondition condition = 4;
 }
 
-message WriteRequestTupleKeys {
+message WriteRequestWrites {
   repeated WriteRequestTupleKey tuple_keys = 1 [
+    json_name = "tuple_keys",
+    (google.api.field_behavior) = REQUIRED,
+    (validate.rules).repeated.min_items = 1,
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {minimum: 1}
+  ];
+}
+
+message WriteRequestDeletes {
+  repeated TupleKeyWithoutCondition tuple_keys = 1 [
     json_name = "tuple_keys",
     (google.api.field_behavior) = REQUIRED,
     (validate.rules).repeated.min_items = 1,
@@ -915,9 +924,9 @@ message WriteRequest {
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""}
   ];
 
-  WriteRequestTupleKeys writes = 2;
+  WriteRequestWrites writes = 2;
 
-  WriteRequestTupleKeys deletes = 3;
+  WriteRequestDeletes deletes = 3;
 
   string authorization_model_id = 4 [
     json_name = "authorization_model_id",

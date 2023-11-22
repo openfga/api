@@ -43,6 +43,41 @@ message RelationshipCondition {
   google.protobuf.Struct context = 2 [(google.api.field_behavior) = REQUIRED];
 }
 
+message TupleKeyWithoutCondition {
+  string user = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (validate.rules).string = {max_bytes: 512},
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      max_length: 512,
+      example: "\"user:anne\""
+    }
+  ];
+
+  string relation = 2 [
+    (google.api.field_behavior) = REQUIRED,
+    (validate.rules).string = {
+      pattern: "^[^:#@\\s]{1,50}$",
+      ignore_empty: true
+    },
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      max_length: 50,
+      example: "\"reader\""
+    }
+  ];
+
+  string object = 3 [
+    (google.api.field_behavior) = REQUIRED,
+    (validate.rules).string = {
+      pattern: "^[^\\s]{2,256}$",
+      ignore_empty: true
+    },
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      max_length: 256,
+      example: "\"document:2021-budget\""
+    }
+  ];
+}
+
 message TupleKey {
   string user = 1 [
     (google.api.field_behavior) = REQUIRED,
