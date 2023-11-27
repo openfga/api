@@ -41,6 +41,15 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
     }
   }
   responses: {
+    key: "409"
+    value: {
+      description: "Request failed due to aborted."
+      schema: {
+        json_schema: {ref: ".openfga.v1.AbortedMessageResponse"}
+      }
+    }
+  }
+  responses: {
     key: "500"
     value: {
       description: "Request failed due to internal server error."
