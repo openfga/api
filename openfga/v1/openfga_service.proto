@@ -533,8 +533,8 @@ service OpenFGAService {
         "the same token will be returned in order for it to be used when new changes are recorded. "
         "If the store never had any tuples added or removed, this token will be empty.\n"
         "You can use the `type` parameter to only get the list of tuple changes that affect objects of that type.\n"
-        "When writing a new tuple, if it was conditioned, the condition name will be returned.\n"
-        "When deleting a tuple, if it was conditioned when written, the condition name will NOT be returned.\n"
+        "When reading a write tuple change, if it was conditioned, the condition will be returned.\n"
+        "When reading a delete tuple change, the condition will NOT be returned regardless of whether it was originally conditioned or not.\n"
     };
   }
 
