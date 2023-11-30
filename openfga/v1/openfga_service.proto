@@ -149,9 +149,8 @@ service OpenFGAService {
         "The Write API will update the tuples for a certain store. Tuples and "
         "type definitions allow OpenFGA to determine whether a "
         "relationship exists between an object and an user.\n"
-        "In the body, `writes` "
-        "adds new tuples while `deletes` removes existing tuples. The API is not idempotent: "
-        "if, later on, you try to add the same tuple, or if you try to delete a non-existing tuple, it will throw an error.\n"
+        "In the body, `writes` adds new tuples and `deletes` removes existing tuples. When deleting a tuple, any `condition` specified with it is ignored.\n"
+        "The API is not idempotent: if, later on, you try to add the same tuple key (even if the `condition` is different), or if you try to delete a non-existing tuple, it will throw an error.\n"
         "An `authorization_model_id` may be specified in the body. If it is, it will be used to assert that each written tuple (not deleted) "
         "is valid for the model specified. If it is not specified, the latest authorization model ID will be used.\n"
         "## Example\n"
@@ -203,9 +202,10 @@ service OpenFGAService {
       operation_id: "Check"
       description:
         "The Check API queries to check if the user has a certain relationship with an object in a certain store.\n"
-        "A `contextual_tuples` object may also be included in the body of the request. This object contains one field `tuple_keys`, which is an array of tuple keys.\n"
+        "A `contextual_tuples` object may also be included in the body of the request. This object contains one field `tuple_keys`, which is an array of tuple keys. Each of these tuples may have an associated `condition`.\n"
         "You may also provide an `authorization_model_id` in the body. This will be used to assert that the input `tuple_key` is valid for the model specified. "
         "If not specified, the assertion will be made against the latest authorization model ID. It is strongly recommended to specify authorization model id for better performance.\n"
+        "You may also provide a `context` object that will be used to evaluate the conditioned tuples in the system. It is strongly recommended to provide a value for all the input parameters of all the conditions, to ensure that all tuples be evaluated correctly.\n"
         "The response will return whether the relationship exists in the field `allowed`.\n\n"
         "## Example\n"
         "In order to check if user `user:anne` of type `user` has a `reader` relationship with object `document:2021-budget` given the following contextual tuple\n"
@@ -533,6 +533,8 @@ service OpenFGAService {
         "the same token will be returned in order for it to be used when new changes are recorded. "
         "If the store never had any tuples added or removed, this token will be empty.\n"
         "You can use the `type` parameter to only get the list of tuple changes that affect objects of that type.\n"
+        "When writing a new tuple, if it was conditioned, the condition name will be returned.\n"
+        "When deleting a tuple, it it was conditioned when written, the condition name will NOT be returned.\n"
     };
   }
 
@@ -660,7 +662,8 @@ service OpenFGAService {
         "has a relation with. To achieve this, both the store tuples and the authorization model are used.\n"
         "An `authorization_model_id` may be specified in the body. If it is not specified, the latest authorization "
         "model ID will be used. It is strongly recommended to specify authorization model id for better performance.\n"
-        "You may also specify `contextual_tuples` that will be treated as regular tuples.\n"
+        "You may also specify `contextual_tuples` that will be treated as regular tuples. Each of these tuples may have an associated `condition`.\n"
+        "You may also provide a `context` object that will be used to evaluate the conditioned tuples in the system. It is strongly recommended to provide a value for all the input parameters of all the conditions, to ensure that all tuples be evaluated correctly.\n"
         "The response will contain the related objects in an array in the \"objects\" field of the response and they will "
         "be strings in the object format `<type>:<id>` (e.g. \"document:roadmap\").\n"
         "The number of objects in the response array will be limited by the execution timeout specified in the flag OPENFGA_LIST_OBJECTS_DEADLINE "
