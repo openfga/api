@@ -68,7 +68,16 @@ func (m *AuthorizationModel) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
-	// no validation rules for SchemaVersion
+	if !_AuthorizationModel_SchemaVersion_Pattern.MatchString(m.GetSchemaVersion()) {
+		err := AuthorizationModelValidationError{
+			field:  "SchemaVersion",
+			reason: "value does not match regex pattern \"^[1-9].[1-9]$\"",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
 
 	for idx, item := range m.GetTypeDefinitions() {
 		_, _ = idx, item
@@ -251,6 +260,8 @@ var _ interface {
 } = AuthorizationModelValidationError{}
 
 var _AuthorizationModel_Id_Pattern = regexp.MustCompile("^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$")
+
+var _AuthorizationModel_SchemaVersion_Pattern = regexp.MustCompile("^[1-9].[1-9]$")
 
 var _AuthorizationModel_Conditions_Pattern = regexp.MustCompile("^[^:#@\\s]{1,50}$")
 
@@ -2221,6 +2232,117 @@ var _ interface {
 	ErrorName() string
 } = ObjectRelationValidationError{}
 
+// Validate checks the field values on ComputedUserset with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// first error encountered is returned, or nil if there are no violations.
+func (m *ComputedUserset) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ComputedUserset with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// ComputedUsersetMultiError, or nil if none found.
+func (m *ComputedUserset) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ComputedUserset) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if len(m.GetRelation()) > 50 {
+		err := ComputedUsersetValidationError{
+			field:  "Relation",
+			reason: "value length must be at most 50 bytes",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if len(errors) > 0 {
+		return ComputedUsersetMultiError(errors)
+	}
+
+	return nil
+}
+
+// ComputedUsersetMultiError is an error wrapping multiple validation errors
+// returned by ComputedUserset.ValidateAll() if the designated constraints
+// aren't met.
+type ComputedUsersetMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ComputedUsersetMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ComputedUsersetMultiError) AllErrors() []error { return m }
+
+// ComputedUsersetValidationError is the validation error returned by
+// ComputedUserset.Validate if the designated constraints aren't met.
+type ComputedUsersetValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ComputedUsersetValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ComputedUsersetValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ComputedUsersetValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ComputedUsersetValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ComputedUsersetValidationError) ErrorName() string { return "ComputedUsersetValidationError" }
+
+// Error satisfies the builtin error interface
+func (e ComputedUsersetValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sComputedUserset.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ComputedUsersetValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ComputedUsersetValidationError{}
+
 // Validate checks the field values on TupleToUserset with the rules defined in
 // the proto definition for this message. If any rules are violated, the first
 // error encountered is returned, or nil if there are no violations.
@@ -2242,6 +2364,17 @@ func (m *TupleToUserset) validate(all bool) error {
 	}
 
 	var errors []error
+
+	if m.GetTupleset() == nil {
+		err := TupleToUsersetValidationError{
+			field:  "Tupleset",
+			reason: "value is required",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
 
 	if all {
 		switch v := interface{}(m.GetTupleset()).(type) {
@@ -2270,6 +2403,17 @@ func (m *TupleToUserset) validate(all bool) error {
 				cause:  err,
 			}
 		}
+	}
+
+	if m.GetComputedUserset() == nil {
+		err := TupleToUsersetValidationError{
+			field:  "ComputedUserset",
+			reason: "value is required",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
 	}
 
 	if all {
