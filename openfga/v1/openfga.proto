@@ -15,13 +15,13 @@ import "validate/validate.proto";
 // See https://openfga.dev/docs/concepts#what-is-an-object
 message Object {
   string type = 1 [
-    (validate.rules).string = {pattern: "^[^:#@\\s]{1,254}$"},
+    (validate.rules).string = {pattern: "^[^:#@\\s]{1,254}$", ignore_empty: false},
     (google.api.field_behavior) = REQUIRED,
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"document\""}
   ];
 
   string id = 2 [
-    (validate.rules).string = {pattern: "[^#:\\s]+$"},
+    (validate.rules).string = {pattern: "[^#:\\s]+$", ignore_empty: false},
     (google.api.field_behavior) = REQUIRED
   ];
 }
@@ -29,7 +29,7 @@ message Object {
 message RelationshipCondition {
   // A reference (by name) of the relationship condition defined in the authorization model.
   string name = 1 [
-    (validate.rules).string = {pattern: "^[^\\s]{2,256}$"},
+    (validate.rules).string = {pattern: "^[^\\s]{2,256}$", ignore_empty: false},
     (google.api.field_behavior) = REQUIRED,
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       max_length: 256,
@@ -40,7 +40,10 @@ message RelationshipCondition {
   // Additional context/data to persist along with the condition.
   // The keys must match the parameters defined by the condition, and the value types must
   // match the parameter type definitions.
-  google.protobuf.Struct context = 2 [(google.api.field_behavior) = REQUIRED];
+  google.protobuf.Struct context = 2 [
+    (google.api.field_behavior) = REQUIRED,
+    (validate.rules).message.required = true
+  ];
 }
 
 message TupleKeyWithoutCondition {
@@ -81,7 +84,7 @@ message TupleKeyWithoutCondition {
 message TupleKey {
   string user = 1 [
     (google.api.field_behavior) = REQUIRED,
-    (validate.rules).string = {max_bytes: 512},
+    (validate.rules).string = {max_bytes: 512, ignore_empty: false},
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       max_length: 512,
       example: "\"user:anne\""
@@ -116,7 +119,10 @@ message TupleKey {
 }
 
 message Tuple {
-  TupleKey key = 1 [(google.api.field_behavior) = REQUIRED];
+  TupleKey key = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (validate.rules).message.required = true
+  ];
   google.protobuf.Timestamp timestamp = 2 [(google.api.field_behavior) = REQUIRED];
 }
 
@@ -156,25 +162,43 @@ message UsersetTree {
   }
 
   message Nodes {
-    repeated Node nodes = 1 [(google.api.field_behavior) = REQUIRED];
+    repeated Node nodes = 1  [
+      (google.api.field_behavior) = REQUIRED
+    ];
   }
 
   message Users {
-    repeated string users = 1 [(google.api.field_behavior) = REQUIRED];
+    repeated string users = 1 [
+      (google.api.field_behavior) = REQUIRED
+    ];
   }
 
   message Computed {
-    string userset = 1 [(google.api.field_behavior) = REQUIRED];
+    string userset = 1 [
+      (google.api.field_behavior) = REQUIRED,
+      (validate.rules).string = {ignore_empty: false}
+    ];
   }
 
   message TupleToUserset {
-    string tupleset = 1 [(google.api.field_behavior) = REQUIRED];
-    repeated Computed computed = 2 [(google.api.field_behavior) = REQUIRED];
+    string tupleset = 1 [
+      (google.api.field_behavior) = REQUIRED,
+      (validate.rules).string = {ignore_empty: false}
+    ];
+    repeated Computed computed = 2 [
+      (google.api.field_behavior) = REQUIRED
+    ];
   }
 
   message Difference {
-    Node base = 1 [(google.api.field_behavior) = REQUIRED];
-    Node subtract = 2 [(google.api.field_behavior) = REQUIRED];
+    Node base = 1 [
+      (google.api.field_behavior) = REQUIRED,
+      (validate.rules).message.required = true
+    ];
+    Node subtract = 2 [
+      (google.api.field_behavior) = REQUIRED,
+      (validate.rules).message.required = true
+    ];
   }
 
   message Node {
@@ -199,7 +223,8 @@ enum TupleOperation {
 message TupleChange {
   TupleKey tuple_key = 1 [
     json_name = "tuple_key",
-    (google.api.field_behavior) = REQUIRED
+    (google.api.field_behavior) = REQUIRED,
+    (validate.rules).message.required = true
   ];
   TupleOperation operation = 2 [
     (validate.rules).enum.defined_only = true,
@@ -209,8 +234,14 @@ message TupleChange {
 }
 
 message Store {
-  string id = 1 [(google.api.field_behavior) = REQUIRED];
-  string name = 2 [(google.api.field_behavior) = REQUIRED];
+  string id = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (validate.rules).string = {ignore_empty: false}
+  ];
+  string name = 2 [
+    (google.api.field_behavior) = REQUIRED,
+    (validate.rules).string = {ignore_empty: false}
+  ];
   google.protobuf.Timestamp created_at = 3 [
     json_name = "created_at",
     (google.api.field_behavior) = REQUIRED
