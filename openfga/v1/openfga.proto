@@ -15,13 +15,19 @@ import "validate/validate.proto";
 // See https://openfga.dev/docs/concepts#what-is-an-object
 message Object {
   string type = 1 [
-    (validate.rules).string = {pattern: "^[^:#@\\s]{1,254}$", ignore_empty: false},
+    (validate.rules).string = {
+      pattern: "^[^:#@\\s]{1,254}$",
+      ignore_empty: false
+    },
     (google.api.field_behavior) = REQUIRED,
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"document\""}
   ];
 
   string id = 2 [
-    (validate.rules).string = {pattern: "[^#:\\s]+$", ignore_empty: false},
+    (validate.rules).string = {
+      pattern: "[^#:\\s]+$",
+      ignore_empty: false
+    },
     (google.api.field_behavior) = REQUIRED
   ];
 }
@@ -29,7 +35,10 @@ message Object {
 message RelationshipCondition {
   // A reference (by name) of the relationship condition defined in the authorization model.
   string name = 1 [
-    (validate.rules).string = {pattern: "^[^\\s]{2,256}$", ignore_empty: false},
+    (validate.rules).string = {
+      pattern: "^[^\\s]{2,256}$",
+      ignore_empty: false
+    },
     (google.api.field_behavior) = REQUIRED,
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       max_length: 256,
@@ -40,10 +49,7 @@ message RelationshipCondition {
   // Additional context/data to persist along with the condition.
   // The keys must match the parameters defined by the condition, and the value types must
   // match the parameter type definitions.
-  google.protobuf.Struct context = 2 [
-    (google.api.field_behavior) = REQUIRED,
-    (validate.rules).message.required = true
-  ];
+  google.protobuf.Struct context = 2;
 }
 
 message TupleKeyWithoutCondition {
@@ -84,7 +90,10 @@ message TupleKeyWithoutCondition {
 message TupleKey {
   string user = 1 [
     (google.api.field_behavior) = REQUIRED,
-    (validate.rules).string = {max_bytes: 512, ignore_empty: false},
+    (validate.rules).string = {
+      max_bytes: 512,
+      ignore_empty: false
+    },
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       max_length: 512,
       example: "\"user:anne\""
@@ -162,15 +171,11 @@ message UsersetTree {
   }
 
   message Nodes {
-    repeated Node nodes = 1  [
-      (google.api.field_behavior) = REQUIRED
-    ];
+    repeated Node nodes = 1 [(google.api.field_behavior) = REQUIRED];
   }
 
   message Users {
-    repeated string users = 1 [
-      (google.api.field_behavior) = REQUIRED
-    ];
+    repeated string users = 1 [(google.api.field_behavior) = REQUIRED];
   }
 
   message Computed {
@@ -185,9 +190,7 @@ message UsersetTree {
       (google.api.field_behavior) = REQUIRED,
       (validate.rules).string = {ignore_empty: false}
     ];
-    repeated Computed computed = 2 [
-      (google.api.field_behavior) = REQUIRED
-    ];
+    repeated Computed computed = 2 [(google.api.field_behavior) = REQUIRED];
   }
 
   message Difference {
