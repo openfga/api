@@ -40,10 +40,7 @@ message RelationshipCondition {
   // Additional context/data to persist along with the condition.
   // The keys must match the parameters defined by the condition, and the value types must
   // match the parameter type definitions.
-  google.protobuf.Struct context = 2 [
-    (google.api.field_behavior) = REQUIRED,
-    (validate.rules).message.required = true
-  ];
+  google.protobuf.Struct context = 2;
 }
 
 message TupleKeyWithoutCondition {

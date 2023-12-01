@@ -192,17 +192,6 @@ func (m *RelationshipCondition) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
-	if m.GetContext() == nil {
-		err := RelationshipConditionValidationError{
-			field:  "Context",
-			reason: "value is required",
-		}
-		if !all {
-			return err
-		}
-		errors = append(errors, err)
-	}
-
 	if all {
 		switch v := interface{}(m.GetContext()).(type) {
 		case interface{ ValidateAll() error }:
