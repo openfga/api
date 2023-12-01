@@ -200,7 +200,7 @@ message TupleChange {
 
 message Store {
   string id = 1 [
-    (google.api.field_behavior) = REQUIRED,
+    (google.api.field_behavior) = OUTPUT_ONLY,
     (validate.rules).string = {ignore_empty: false}
   ];
   string name = 2 [
@@ -209,14 +209,14 @@ message Store {
   ];
   google.protobuf.Timestamp created_at = 3 [
     json_name = "created_at",
-    (google.api.field_behavior) = REQUIRED
+    (google.api.field_behavior) = OUTPUT_ONLY
   ];
   google.protobuf.Timestamp updated_at = 4 [
     json_name = "updated_at",
-    (google.api.field_behavior) = REQUIRED
+    (google.api.field_behavior) = OUTPUT_ONLY
   ];
   google.protobuf.Timestamp deleted_at = 5 [
     json_name = "deleted_at",
-    (google.api.field_behavior) = REQUIRED
+    (google.api.field_behavior) = OUTPUT_ONLY
   ];
 }

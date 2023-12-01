@@ -1043,7 +1043,8 @@
       "properties": {
         "id": {
           "type": "string",
-          "example": "01G5JAVJ41T49E9TT3SKVS7X1J"
+          "example": "01G5JAVJ41T49E9TT3SKVS7X1J",
+          "readOnly": true
         },
         "schema_version": {
           "type": "string"
@@ -1108,7 +1109,6 @@
         }
       },
       "required": [
-        "id",
         "schema_version",
         "type_definitions"
       ]
@@ -1530,7 +1530,7 @@
         "NULL_VALUE"
       ],
       "default": "NULL_VALUE",
-      "description": "`NullValue` is a singleton enumeration to represent the null value for the\n`Value` type union.\n\n The JSON representation for `NullValue` is JSON `null`.\n\n - NULL_VALUE: Null value."
+      "description": "`NullValue` is a singleton enumeration to represent the null value for the\n`Value` type union.\n\nThe JSON representation for `NullValue` is JSON `null`.\n\n - NULL_VALUE: Null value."
     },
     "PathUnknownErrorMessageResponse": {
       "type": "object",
@@ -1727,30 +1727,30 @@
       "type": "object",
       "properties": {
         "id": {
-          "type": "string"
+          "type": "string",
+          "readOnly": true
         },
         "name": {
           "type": "string"
         },
         "created_at": {
           "type": "string",
-          "format": "date-time"
+          "format": "date-time",
+          "readOnly": true
         },
         "updated_at": {
           "type": "string",
-          "format": "date-time"
+          "format": "date-time",
+          "readOnly": true
         },
         "deleted_at": {
           "type": "string",
-          "format": "date-time"
+          "format": "date-time",
+          "readOnly": true
         }
       },
       "required": [
-        "id",
-        "name",
-        "created_at",
-        "updated_at",
-        "deleted_at"
+        "name"
       ]
     },
     "StreamedListObjectsResponse": {
