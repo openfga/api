@@ -9,13 +9,19 @@ import "validate/validate.proto";
 message AuthorizationModel {
   string id = 1 [
     (google.api.field_behavior) = REQUIRED,
-    (validate.rules).string = {pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$", ignore_empty: false},
+    (validate.rules).string = {
+      pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$",
+      ignore_empty: false
+    },
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01G5JAVJ41T49E9TT3SKVS7X1J\""}
   ];
 
   string schema_version = 2 [
     (google.api.field_behavior) = REQUIRED,
-    (validate.rules).string = {pattern: "^[1-9].[1-9]$", ignore_empty: false},
+    (validate.rules).string = {
+      pattern: "^[1-9].[1-9]$",
+      ignore_empty: false
+    },
     json_name = "schema_version"
   ];
 
@@ -28,13 +34,19 @@ message AuthorizationModel {
   map<string, Condition> conditions = 4 [
     json_name = "conditions",
     (validate.rules).map.max_pairs = 25,
-    (validate.rules).map.keys.string = {pattern: "^[^:#@\\s]{1,50}$", ignore_empty: false}
+    (validate.rules).map.keys.string = {
+      pattern: "^[^:#@\\s]{1,50}$",
+      ignore_empty: false
+    }
   ];
 }
 
 message TypeDefinition {
   string type = 1 [
-    (validate.rules).string = {pattern: "^[^:#@\\s]{1,254}$", ignore_empty: false},
+    (validate.rules).string = {
+      pattern: "^[^:#@\\s]{1,254}$",
+      ignore_empty: false
+    },
     (google.api.field_behavior) = REQUIRED,
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"document\""}
   ];
@@ -49,7 +61,10 @@ message TypeDefinition {
 }
 
 message Relation {
-  string name = 1 [(validate.rules).string = {pattern: "^[^:#@\\s]{1,50}$", ignore_empty: false}];
+  string name = 1 [(validate.rules).string = {
+    pattern: "^[^:#@\\s]{1,50}$",
+    ignore_empty: false
+  }];
 
   Userset rewrite = 2 [
     (validate.rules).message.required = true,
@@ -74,7 +89,10 @@ message RelationMetadata {
 // RelationReference represents a relation of a particular object type (e.g. 'document#viewer').
 message RelationReference {
   string type = 1 [
-    (validate.rules).string = {pattern: "^[^:#@\\s]{1,254}$", ignore_empty: false},
+    (validate.rules).string = {
+      pattern: "^[^:#@\\s]{1,254}$",
+      ignore_empty: false
+    },
     (google.api.field_behavior) = REQUIRED,
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"group\""}
   ];
@@ -98,9 +116,7 @@ message RelationReference {
 message Wildcard {}
 
 message Usersets {
-  repeated Userset child = 1 [
-    (google.api.field_behavior) = REQUIRED
-  ];
+  repeated Userset child = 1 [(google.api.field_behavior) = REQUIRED];
 }
 
 message Difference {
@@ -138,7 +154,10 @@ message ObjectRelation {
 message ComputedUserset {
   string relation = 1 [
     (google.api.field_behavior) = REQUIRED,
-    (validate.rules).string = {max_bytes: 50, ignore_empty: false}
+    (validate.rules).string = {
+      max_bytes: 50,
+      ignore_empty: false
+    }
   ];
 }
 
@@ -158,13 +177,19 @@ message Condition {
   // A unique name for the condition
   string name = 1 [
     (google.api.field_behavior) = REQUIRED,
-    (validate.rules).string = {pattern: "^[^:#@\\s]{1,50}$", ignore_empty: false}
+    (validate.rules).string = {
+      pattern: "^[^:#@\\s]{1,50}$",
+      ignore_empty: false
+    }
   ];
 
   // A Google CEL expression, expressed as a string.
   string expression = 2 [
     (google.api.field_behavior) = REQUIRED,
-    (validate.rules).string = {max_bytes: 512, ignore_empty: false}
+    (validate.rules).string = {
+      max_bytes: 512,
+      ignore_empty: false
+    }
   ];
 
   // A map of parameter names to the parameter's defined type reference.
