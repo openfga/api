@@ -8,24 +8,33 @@ import "validate/validate.proto";
 
 message AuthorizationModel {
   string id = 1 [
-    (validate.rules).string = {pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"},
+    (google.api.field_behavior) = REQUIRED,
+    (validate.rules).string = {pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$", ignore_empty: false},
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01G5JAVJ41T49E9TT3SKVS7X1J\""}
   ];
 
   string schema_version = 2 [
     (google.api.field_behavior) = REQUIRED,
+    (validate.rules).string = {pattern: "^[1-9].[1-9]$", ignore_empty: false},
     json_name = "schema_version"
   ];
 
   repeated TypeDefinition type_definitions = 3 [
     json_name = "type_definitions",
+    (google.api.field_behavior) = REQUIRED,
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "[{\"type\": \"user\"}, {\"type\":\"document\",\"relations\":{\"reader\":{\"union\":{\"child\":[{\"this\":{}},{\"computedUserset\":{\"object\":\"\",\"relation\":\"writer\"}}]}},\"writer\":{\"this\":{}}},\"metadata\":{\"relations\":{\"reader\":{\"directly_related_user_types\":[{\"type\":\"user\"}]},\"writer\":{\"directly_related_user_types\":[{\"type\":\"user\"}]}}}}]"}
+  ];
+
+  map<string, Condition> conditions = 4 [
+    json_name = "conditions",
+    (validate.rules).map.max_pairs = 25,
+    (validate.rules).map.keys.string = {pattern: "^[^:#@\\s]{1,50}$", ignore_empty: false}
   ];
 }
 
 message TypeDefinition {
   string type = 1 [
-    (validate.rules).string = {pattern: "^[^:#@\\s]{1,254}$"},
+    (validate.rules).string = {pattern: "^[^:#@\\s]{1,254}$", ignore_empty: false},
     (google.api.field_behavior) = REQUIRED,
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"document\""}
   ];
@@ -40,7 +49,7 @@ message TypeDefinition {
 }
 
 message Relation {
-  string name = 1 [(validate.rules).string = {pattern: "^[^:#@\\s]{1,50}$"}];
+  string name = 1 [(validate.rules).string = {pattern: "^[^:#@\\s]{1,50}$", ignore_empty: false}];
 
   Userset rewrite = 2 [
     (validate.rules).message.required = true,
@@ -65,7 +74,7 @@ message RelationMetadata {
 // RelationReference represents a relation of a particular object type (e.g. 'document#viewer').
 message RelationReference {
   string type = 1 [
-    (validate.rules).string = {pattern: "^[^:#@\\s]{1,254}$"},
+    (validate.rules).string = {pattern: "^[^:#@\\s]{1,254}$", ignore_empty: false},
     (google.api.field_behavior) = REQUIRED,
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"group\""}
   ];
@@ -81,12 +90,17 @@ message RelationReference {
 
     Wildcard wildcard = 3;
   }
+
+  // The name of a condition that is enforced over the allowed relation.
+  string condition = 4;
 }
 
 message Wildcard {}
 
 message Usersets {
-  repeated Userset child = 1;
+  repeated Userset child = 1 [
+    (google.api.field_behavior) = REQUIRED
+  ];
 }
 
 message Difference {
@@ -121,8 +135,69 @@ message ObjectRelation {
   string relation = 2 [(validate.rules).string = {max_bytes: 50}];
 }
 
+message ComputedUserset {
+  string relation = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (validate.rules).string = {max_bytes: 50, ignore_empty: false}
+  ];
+}
+
 message TupleToUserset {
   // The target object/relation
-  ObjectRelation tupleset = 1;
-  ObjectRelation computed_userset = 2;
+  ObjectRelation tupleset = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (validate.rules).message.required = true
+  ];
+  ObjectRelation computed_userset = 2 [
+    (google.api.field_behavior) = REQUIRED,
+    (validate.rules).message.required = true
+  ];
+}
+
+message Condition {
+  // A unique name for the condition
+  string name = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (validate.rules).string = {pattern: "^[^:#@\\s]{1,50}$", ignore_empty: false}
+  ];
+
+  // A Google CEL expression, expressed as a string.
+  string expression = 2 [
+    (google.api.field_behavior) = REQUIRED,
+    (validate.rules).string = {max_bytes: 512, ignore_empty: false}
+  ];
+
+  // A map of parameter names to the parameter's defined type reference.
+  map<string, ConditionParamTypeRef> parameters = 3 [
+    (validate.rules).map.max_pairs = 25,
+    (validate.rules).map.keys.string = {pattern: "^[^:#@\\s]{1,50}$"}
+  ];
+}
+
+message ConditionParamTypeRef {
+  enum TypeName {
+    TYPE_NAME_UNSPECIFIED = 0;
+    TYPE_NAME_ANY = 1;
+    TYPE_NAME_BOOL = 2;
+    TYPE_NAME_STRING = 3;
+    TYPE_NAME_INT = 4;
+    TYPE_NAME_UINT = 5;
+    TYPE_NAME_DOUBLE = 6;
+    TYPE_NAME_DURATION = 7;
+    TYPE_NAME_TIMESTAMP = 8;
+    TYPE_NAME_MAP = 9;
+    TYPE_NAME_LIST = 10;
+    TYPE_NAME_IPADDRESS = 11;
+  }
+
+  TypeName type_name = 1 [
+    json_name = "type_name",
+    (google.api.field_behavior) = REQUIRED,
+    (validate.rules).enum.defined_only = true
+  ];
+
+  repeated ConditionParamTypeRef generic_types = 2 [
+    json_name = "generic_types",
+    (validate.rules).repeated.max_items = 5
+  ];
 }

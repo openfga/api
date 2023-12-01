@@ -5,6 +5,7 @@ package openfga.v1;
 import "google/api/annotations.proto";
 import "google/api/field_behavior.proto";
 import "google/api/visibility.proto";
+import "google/protobuf/struct.proto";
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/wrappers.proto";
 import "openfga/v1/authzmodel.proto";
@@ -148,9 +149,8 @@ service OpenFGAService {
         "The Write API will update the tuples for a certain store. Tuples and "
         "type definitions allow OpenFGA to determine whether a "
         "relationship exists between an object and an user.\n"
-        "In the body, `writes` "
-        "adds new tuples while `deletes` removes existing tuples. The API is not idempotent: "
-        "if, later on, you try to add the same tuple, or if you try to delete a non-existing tuple, it will throw an error.\n"
+        "In the body, `writes` adds new tuples and `deletes` removes existing tuples. When deleting a tuple, any `condition` specified with it is ignored.\n"
+        "The API is not idempotent: if, later on, you try to add the same tuple key (even if the `condition` is different), or if you try to delete a non-existing tuple, it will throw an error.\n"
         "An `authorization_model_id` may be specified in the body. If it is, it will be used to assert that each written tuple (not deleted) "
         "is valid for the model specified. If it is not specified, the latest authorization model ID will be used.\n"
         "## Example\n"
@@ -202,9 +202,10 @@ service OpenFGAService {
       operation_id: "Check"
       description:
         "The Check API queries to check if the user has a certain relationship with an object in a certain store.\n"
-        "A `contextual_tuples` object may also be included in the body of the request. This object contains one field `tuple_keys`, which is an array of tuple keys.\n"
+        "A `contextual_tuples` object may also be included in the body of the request. This object contains one field `tuple_keys`, which is an array of tuple keys. Each of these tuples may have an associated `condition`.\n"
         "You may also provide an `authorization_model_id` in the body. This will be used to assert that the input `tuple_key` is valid for the model specified. "
         "If not specified, the assertion will be made against the latest authorization model ID. It is strongly recommended to specify authorization model id for better performance.\n"
+        "You may also provide a `context` object that will be used to evaluate the conditioned tuples in the system. It is strongly recommended to provide a value for all the input parameters of all the conditions, to ensure that all tuples be evaluated correctly.\n"
         "The response will return whether the relationship exists in the field `allowed`.\n\n"
         "## Example\n"
         "In order to check if user `user:anne` of type `user` has a `reader` relationship with object `document:2021-budget` given the following contextual tuple\n"
@@ -532,6 +533,8 @@ service OpenFGAService {
         "the same token will be returned in order for it to be used when new changes are recorded. "
         "If the store never had any tuples added or removed, this token will be empty.\n"
         "You can use the `type` parameter to only get the list of tuple changes that affect objects of that type.\n"
+        "When reading a write tuple change, if it was conditioned, the condition will be returned.\n"
+        "When reading a delete tuple change, the condition will NOT be returned regardless of whether it was originally conditioned or not.\n"
     };
   }
 
@@ -659,7 +662,8 @@ service OpenFGAService {
         "has a relation with. To achieve this, both the store tuples and the authorization model are used.\n"
         "An `authorization_model_id` may be specified in the body. If it is not specified, the latest authorization "
         "model ID will be used. It is strongly recommended to specify authorization model id for better performance.\n"
-        "You may also specify `contextual_tuples` that will be treated as regular tuples.\n"
+        "You may also specify `contextual_tuples` that will be treated as regular tuples. Each of these tuples may have an associated `condition`.\n"
+        "You may also provide a `context` object that will be used to evaluate the conditioned tuples in the system. It is strongly recommended to provide a value for all the input parameters of all the conditions, to ensure that all tuples be evaluated correctly.\n"
         "The response will contain the related objects in an array in the \"objects\" field of the response and they will "
         "be strings in the object format `<type>:<id>` (e.g. \"document:roadmap\").\n"
         "The number of objects in the response array will be limited by the execution timeout specified in the flag OPENFGA_LIST_OBJECTS_DEADLINE "
@@ -712,11 +716,16 @@ message ListObjectsRequest {
   ];
 
   openfga.v1.ContextualTupleKeys contextual_tuples = 6 [json_name = "contextual_tuples"];
+
+  // Additional request context that will be used to evaluate any ABAC conditions encountered
+  // in the query evaluation.
+  google.protobuf.Struct context = 7;
 }
 
 message ListObjectsResponse {
   repeated string objects = 1 [
     json_name = "objects",
+    (google.api.field_behavior) = REQUIRED,
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "[\"document:roadmap\",\"document:planning\"]"}
   ];
 }
@@ -764,12 +773,17 @@ message StreamedListObjectsRequest {
   ];
 
   openfga.v1.ContextualTupleKeys contextual_tuples = 6 [json_name = "contextual_tuples"];
+
+  // Additional request context that will be used to evaluate any ABAC conditions encountered
+  // in the query evaluation.
+  google.protobuf.Struct context = 7;
 }
 
 // The response for a StreamedListObjects RPC.
 message StreamedListObjectsResponse {
   string object = 1 [
     json_name = "object",
+    (google.api.field_behavior) = REQUIRED,
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"document:roadmap\""}
   ];
 }
@@ -786,7 +800,7 @@ message ReadRequest {
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""}
   ];
 
-  openfga.v1.TupleKey tuple_key = 2 [json_name = "tuple_key"];
+  ReadRequestTupleKey tuple_key = 2 [json_name = "tuple_key"];
 
   google.protobuf.Int32Value page_size = 3 [
     json_name = "page_size",
@@ -804,16 +818,67 @@ message ReadRequest {
   ];
 }
 
+message ReadRequestTupleKey {
+  string user = 1 [
+    (validate.rules).string = {max_bytes: 512},
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      max_length: 512,
+      example: "\"user:anne\""
+    }
+  ];
+
+  string relation = 2 [
+    (validate.rules).string = {
+      pattern: "^[^:#@\\s]{1,50}$",
+      ignore_empty: true
+    },
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      max_length: 50,
+      example: "\"reader\""
+    }
+  ];
+
+  string object = 3 [
+    (validate.rules).string = {
+      pattern: "^[^\\s]{2,256}$",
+      ignore_empty: true
+    },
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      max_length: 256,
+      example: "\"document:2021-budget\""
+    }
+  ];
+}
+
 message ReadResponse {
-  repeated openfga.v1.Tuple tuples = 1;
+  repeated openfga.v1.Tuple tuples = 1 [(google.api.field_behavior) = REQUIRED];
 
   string continuation_token = 2 [
     json_name = "continuation_token",
+    (google.api.field_behavior) = REQUIRED,
     (validate.rules).string.max_bytes = 5120,
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       description: "The continuation token will be empty if there are no more tuples.",
       example: "\"eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ==\""
     }
+  ];
+}
+
+message WriteRequestWrites {
+  repeated TupleKey tuple_keys = 1 [
+    json_name = "tuple_keys",
+    (google.api.field_behavior) = REQUIRED,
+    (validate.rules).repeated.min_items = 1,
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {minimum: 1}
+  ];
+}
+
+message WriteRequestDeletes {
+  repeated TupleKeyWithoutCondition tuple_keys = 1 [
+    json_name = "tuple_keys",
+    (google.api.field_behavior) = REQUIRED,
+    (validate.rules).repeated.min_items = 1,
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {minimum: 1}
   ];
 }
 
@@ -825,9 +890,9 @@ message WriteRequest {
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""}
   ];
 
-  openfga.v1.TupleKeys writes = 2;
+  WriteRequestWrites writes = 2;
 
-  openfga.v1.TupleKeys deletes = 3;
+  WriteRequestDeletes deletes = 3;
 
   string authorization_model_id = 4 [
     json_name = "authorization_model_id",
@@ -849,7 +914,7 @@ message CheckRequest {
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""}
   ];
 
-  openfga.v1.TupleKey tuple_key = 2 [
+  CheckRequestTupleKey tuple_key = 2 [
     json_name = "tuple_key",
     (validate.rules).message.required = true,
     (google.api.field_behavior) = REQUIRED
@@ -871,6 +936,45 @@ message CheckRequest {
     read_only: true,
     example: "false"
   }];
+
+  // Additional request context that will be used to evaluate any ABAC conditions encountered
+  // in the query evaluation.
+  google.protobuf.Struct context = 6;
+}
+
+message CheckRequestTupleKey {
+  string user = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (validate.rules).string = {max_bytes: 512},
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      max_length: 512,
+      example: "\"user:anne\""
+    }
+  ];
+
+  string relation = 2 [
+    (google.api.field_behavior) = REQUIRED,
+    (validate.rules).string = {
+      pattern: "^[^:#@\\s]{1,50}$",
+      ignore_empty: true
+    },
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      max_length: 50,
+      example: "\"reader\""
+    }
+  ];
+
+  string object = 3 [
+    (google.api.field_behavior) = REQUIRED,
+    (validate.rules).string = {
+      pattern: "^[^\\s]{2,256}$",
+      ignore_empty: true
+    },
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      max_length: 256,
+      example: "\"document:2021-budget\""
+    }
+  ];
 }
 
 message CheckResponse {
@@ -888,7 +992,7 @@ message ExpandRequest {
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""}
   ];
 
-  openfga.v1.TupleKey tuple_key = 2 [
+  ExpandRequestTupleKey tuple_key = 2 [
     json_name = "tuple_key",
     (validate.rules).message.required = true,
     (google.api.field_behavior) = REQUIRED
@@ -901,6 +1005,31 @@ message ExpandRequest {
       ignore_empty: true
     },
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01G5JAVJ41T49E9TT3SKVS7X1J\""}
+  ];
+}
+
+message ExpandRequestTupleKey {
+  string relation = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (validate.rules).string = {
+      pattern: "^[^:#@\\s]{1,50}$",
+      ignore_empty: true
+    },
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      max_length: 50,
+      example: "\"reader\""
+    }
+  ];
+  string object = 2 [
+    (google.api.field_behavior) = REQUIRED,
+    (validate.rules).string = {
+      pattern: "^[^\\s]{2,256}$",
+      ignore_empty: true
+    },
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      max_length: 256,
+      example: "\"document:2021-budget\""
+    }
   ];
 }
 
@@ -940,6 +1069,7 @@ message WriteAuthorizationModelRequest {
 
   string schema_version = 3 [
     json_name = "schema_version",
+    (google.api.field_behavior) = REQUIRED,
     (validate.rules).string = {
       in: [
         "1.0",
@@ -948,11 +1078,18 @@ message WriteAuthorizationModelRequest {
       ignore_empty: false
     }
   ];
+
+  map<string, openfga.v1.Condition> conditions = 4 [
+    json_name = "conditions",
+    (validate.rules).map.max_pairs = 25,
+    (validate.rules).map.keys.string = {pattern: "^[^:#@\\s]{1,50}$"}
+  ];
 }
 
 message WriteAuthorizationModelResponse {
   string authorization_model_id = 1 [
     json_name = "authorization_model_id",
+    (google.api.field_behavior) = REQUIRED,
     (validate.rules).string = {pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"},
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01G5JAVJ41T49E9TT3SKVS7X1J\""}
   ];
@@ -983,7 +1120,10 @@ message ReadAuthorizationModelsRequest {
 }
 
 message ReadAuthorizationModelsResponse {
-  repeated AuthorizationModel authorization_models = 1 [json_name = "authorization_models"];
+  repeated AuthorizationModel authorization_models = 1 [
+    json_name = "authorization_models",
+    (google.api.field_behavior) = REQUIRED
+  ];
 
   string continuation_token = 2 [
     json_name = "continuation_token",
@@ -1005,17 +1145,18 @@ message WriteAssertionsRequest {
 
   string authorization_model_id = 2 [
     json_name = "authorization_model_id",
+    (google.api.field_behavior) = REQUIRED,
     (validate.rules).string = {pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"},
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01G5JAVJ41T49E9TT3SKVS7X1J\""}
   ];
 
   repeated openfga.v1.Assertion assertions = 3 [
     json_name = "assertions",
+    (google.api.field_behavior) = REQUIRED,
     (validate.rules).repeated = {
       min_items: 0,
       max_items: 100
     },
-    (google.api.field_behavior) = REQUIRED,
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       minimum: 0,
       maximum: 100
@@ -1035,6 +1176,7 @@ message ReadAssertionsRequest {
 
   string authorization_model_id = 2 [
     json_name = "authorization_model_id",
+    (google.api.field_behavior) = REQUIRED,
     (validate.rules).string = {pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"},
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01G5JAVJ41T49E9TT3SKVS7X1J\""}
   ];
@@ -1043,6 +1185,7 @@ message ReadAssertionsRequest {
 message ReadAssertionsResponse {
   string authorization_model_id = 1 [
     json_name = "authorization_model_id",
+    (google.api.field_behavior) = REQUIRED,
     (validate.rules).string = {pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"},
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01G5JAVJ41T49E9TT3SKVS7X1J\""}
   ];
@@ -1080,7 +1223,7 @@ message ReadChangesRequest {
 }
 
 message ReadChangesResponse {
-  repeated openfga.v1.TupleChange changes = 1;
+  repeated openfga.v1.TupleChange changes = 1 [(google.api.field_behavior) = REQUIRED];
 
   string continuation_token = 2 [
     json_name = "continuation_token",
@@ -1101,10 +1244,19 @@ message CreateStoreRequest {
 }
 
 message CreateStoreResponse {
-  string id = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""}];
-  string name = 2;
-  google.protobuf.Timestamp created_at = 3 [json_name = "created_at"];
-  google.protobuf.Timestamp updated_at = 4 [json_name = "updated_at"];
+  string id = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""}
+  ];
+  string name = 2 [(google.api.field_behavior) = REQUIRED];
+  google.protobuf.Timestamp created_at = 3 [
+    json_name = "created_at",
+    (google.api.field_behavior) = REQUIRED
+  ];
+  google.protobuf.Timestamp updated_at = 4 [
+    json_name = "updated_at",
+    (google.api.field_behavior) = REQUIRED
+  ];
 }
 
 message UpdateStoreRequest {
@@ -1122,10 +1274,19 @@ message UpdateStoreRequest {
 }
 
 message UpdateStoreResponse {
-  string id = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""}];
-  string name = 2;
-  google.protobuf.Timestamp created_at = 3 [json_name = "created_at"];
-  google.protobuf.Timestamp updated_at = 4 [json_name = "updated_at"];
+  string id = 1 [
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""},
+    (google.api.field_behavior) = REQUIRED
+  ];
+  string name = 2 [(google.api.field_behavior) = REQUIRED];
+  google.protobuf.Timestamp created_at = 3 [
+    json_name = "created_at",
+    (google.api.field_behavior) = REQUIRED
+  ];
+  google.protobuf.Timestamp updated_at = 4 [
+    json_name = "updated_at",
+    (google.api.field_behavior) = REQUIRED
+  ];
 }
 
 message DeleteStoreRequest {
@@ -1149,10 +1310,19 @@ message GetStoreRequest {
 }
 
 message GetStoreResponse {
-  string id = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""}];
-  string name = 2;
-  google.protobuf.Timestamp created_at = 3 [json_name = "created_at"];
-  google.protobuf.Timestamp updated_at = 4 [json_name = "updated_at"];
+  string id = 1 [
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""},
+    (google.api.field_behavior) = REQUIRED
+  ];
+  string name = 2 [(google.api.field_behavior) = REQUIRED];
+  google.protobuf.Timestamp created_at = 3 [
+    json_name = "created_at",
+    (google.api.field_behavior) = REQUIRED
+  ];
+  google.protobuf.Timestamp updated_at = 4 [
+    json_name = "updated_at",
+    (google.api.field_behavior) = REQUIRED
+  ];
 }
 
 message ListStoresRequest {
@@ -1172,13 +1342,31 @@ message ListStoresRequest {
 }
 
 message ListStoresResponse {
-  repeated openfga.v1.Store stores = 1;
+  repeated openfga.v1.Store stores = 1 [(google.api.field_behavior) = REQUIRED];
   string continuation_token = 2 [
     json_name = "continuation_token",
+    (google.api.field_behavior) = REQUIRED,
     (validate.rules).string.max_bytes = 5120,
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       description: "The continuation token will be empty if there are no more stores.",
       example: "\"eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ==\""
     }
   ];
+}
+
+message Assertion {
+  CheckRequestTupleKey tuple_key = 1 [
+    (validate.rules).message.required = true,
+    json_name = "tuple_key",
+    (google.api.field_behavior) = REQUIRED
+  ];
+
+  bool expectation = 2 [
+    json_name = "expectation",
+    (google.api.field_behavior) = REQUIRED
+  ];
+}
+
+message Assertions {
+  repeated Assertion assertions = 1 [(google.api.field_behavior) = REQUIRED];
 }

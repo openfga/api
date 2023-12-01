@@ -145,6 +145,35 @@ func (m *ListObjectsRequest) validate(all bool) error {
 		}
 	}
 
+	if all {
+		switch v := interface{}(m.GetContext()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, ListObjectsRequestValidationError{
+					field:  "Context",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, ListObjectsRequestValidationError{
+					field:  "Context",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetContext()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return ListObjectsRequestValidationError{
+				field:  "Context",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
 	if len(errors) > 0 {
 		return ListObjectsRequestMultiError(errors)
 	}
@@ -439,6 +468,35 @@ func (m *StreamedListObjectsRequest) validate(all bool) error {
 		if err := v.Validate(); err != nil {
 			return StreamedListObjectsRequestValidationError{
 				field:  "ContextualTuples",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if all {
+		switch v := interface{}(m.GetContext()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, StreamedListObjectsRequestValidationError{
+					field:  "Context",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, StreamedListObjectsRequestValidationError{
+					field:  "Context",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetContext()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return StreamedListObjectsRequestValidationError{
+				field:  "Context",
 				reason: "embedded message failed validation",
 				cause:  err,
 			}
@@ -805,6 +863,153 @@ var _ interface {
 
 var _ReadRequest_StoreId_Pattern = regexp.MustCompile("^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$")
 
+// Validate checks the field values on ReadRequestTupleKey with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *ReadRequestTupleKey) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ReadRequestTupleKey with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// ReadRequestTupleKeyMultiError, or nil if none found.
+func (m *ReadRequestTupleKey) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ReadRequestTupleKey) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if len(m.GetUser()) > 512 {
+		err := ReadRequestTupleKeyValidationError{
+			field:  "User",
+			reason: "value length must be at most 512 bytes",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if m.GetRelation() != "" {
+
+		if !_ReadRequestTupleKey_Relation_Pattern.MatchString(m.GetRelation()) {
+			err := ReadRequestTupleKeyValidationError{
+				field:  "Relation",
+				reason: "value does not match regex pattern \"^[^:#@\\\\s]{1,50}$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
+	if m.GetObject() != "" {
+
+		if !_ReadRequestTupleKey_Object_Pattern.MatchString(m.GetObject()) {
+			err := ReadRequestTupleKeyValidationError{
+				field:  "Object",
+				reason: "value does not match regex pattern \"^[^\\\\s]{2,256}$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
+	if len(errors) > 0 {
+		return ReadRequestTupleKeyMultiError(errors)
+	}
+
+	return nil
+}
+
+// ReadRequestTupleKeyMultiError is an error wrapping multiple validation
+// errors returned by ReadRequestTupleKey.ValidateAll() if the designated
+// constraints aren't met.
+type ReadRequestTupleKeyMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ReadRequestTupleKeyMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ReadRequestTupleKeyMultiError) AllErrors() []error { return m }
+
+// ReadRequestTupleKeyValidationError is the validation error returned by
+// ReadRequestTupleKey.Validate if the designated constraints aren't met.
+type ReadRequestTupleKeyValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ReadRequestTupleKeyValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ReadRequestTupleKeyValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ReadRequestTupleKeyValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ReadRequestTupleKeyValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ReadRequestTupleKeyValidationError) ErrorName() string {
+	return "ReadRequestTupleKeyValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ReadRequestTupleKeyValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sReadRequestTupleKey.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ReadRequestTupleKeyValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ReadRequestTupleKeyValidationError{}
+
+var _ReadRequestTupleKey_Relation_Pattern = regexp.MustCompile("^[^:#@\\s]{1,50}$")
+
+var _ReadRequestTupleKey_Object_Pattern = regexp.MustCompile("^[^\\s]{2,256}$")
+
 // Validate checks the field values on ReadResponse with the rules defined in
 // the proto definition for this message. If any rules are violated, the first
 // error encountered is returned, or nil if there are no violations.
@@ -948,6 +1153,300 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = ReadResponseValidationError{}
+
+// Validate checks the field values on WriteRequestWrites with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *WriteRequestWrites) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on WriteRequestWrites with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// WriteRequestWritesMultiError, or nil if none found.
+func (m *WriteRequestWrites) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *WriteRequestWrites) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if len(m.GetTupleKeys()) < 1 {
+		err := WriteRequestWritesValidationError{
+			field:  "TupleKeys",
+			reason: "value must contain at least 1 item(s)",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	for idx, item := range m.GetTupleKeys() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, WriteRequestWritesValidationError{
+						field:  fmt.Sprintf("TupleKeys[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, WriteRequestWritesValidationError{
+						field:  fmt.Sprintf("TupleKeys[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return WriteRequestWritesValidationError{
+					field:  fmt.Sprintf("TupleKeys[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	if len(errors) > 0 {
+		return WriteRequestWritesMultiError(errors)
+	}
+
+	return nil
+}
+
+// WriteRequestWritesMultiError is an error wrapping multiple validation errors
+// returned by WriteRequestWrites.ValidateAll() if the designated constraints
+// aren't met.
+type WriteRequestWritesMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m WriteRequestWritesMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m WriteRequestWritesMultiError) AllErrors() []error { return m }
+
+// WriteRequestWritesValidationError is the validation error returned by
+// WriteRequestWrites.Validate if the designated constraints aren't met.
+type WriteRequestWritesValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e WriteRequestWritesValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e WriteRequestWritesValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e WriteRequestWritesValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e WriteRequestWritesValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e WriteRequestWritesValidationError) ErrorName() string {
+	return "WriteRequestWritesValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e WriteRequestWritesValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sWriteRequestWrites.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = WriteRequestWritesValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = WriteRequestWritesValidationError{}
+
+// Validate checks the field values on WriteRequestDeletes with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *WriteRequestDeletes) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on WriteRequestDeletes with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// WriteRequestDeletesMultiError, or nil if none found.
+func (m *WriteRequestDeletes) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *WriteRequestDeletes) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if len(m.GetTupleKeys()) < 1 {
+		err := WriteRequestDeletesValidationError{
+			field:  "TupleKeys",
+			reason: "value must contain at least 1 item(s)",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	for idx, item := range m.GetTupleKeys() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, WriteRequestDeletesValidationError{
+						field:  fmt.Sprintf("TupleKeys[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, WriteRequestDeletesValidationError{
+						field:  fmt.Sprintf("TupleKeys[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return WriteRequestDeletesValidationError{
+					field:  fmt.Sprintf("TupleKeys[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	if len(errors) > 0 {
+		return WriteRequestDeletesMultiError(errors)
+	}
+
+	return nil
+}
+
+// WriteRequestDeletesMultiError is an error wrapping multiple validation
+// errors returned by WriteRequestDeletes.ValidateAll() if the designated
+// constraints aren't met.
+type WriteRequestDeletesMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m WriteRequestDeletesMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m WriteRequestDeletesMultiError) AllErrors() []error { return m }
+
+// WriteRequestDeletesValidationError is the validation error returned by
+// WriteRequestDeletes.Validate if the designated constraints aren't met.
+type WriteRequestDeletesValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e WriteRequestDeletesValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e WriteRequestDeletesValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e WriteRequestDeletesValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e WriteRequestDeletesValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e WriteRequestDeletesValidationError) ErrorName() string {
+	return "WriteRequestDeletesValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e WriteRequestDeletesValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sWriteRequestDeletes.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = WriteRequestDeletesValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = WriteRequestDeletesValidationError{}
 
 // Validate checks the field values on WriteRequest with the rules defined in
 // the proto definition for this message. If any rules are violated, the first
@@ -1355,6 +1854,35 @@ func (m *CheckRequest) validate(all bool) error {
 
 	// no validation rules for Trace
 
+	if all {
+		switch v := interface{}(m.GetContext()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, CheckRequestValidationError{
+					field:  "Context",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, CheckRequestValidationError{
+					field:  "Context",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetContext()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return CheckRequestValidationError{
+				field:  "Context",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
 	if len(errors) > 0 {
 		return CheckRequestMultiError(errors)
 	}
@@ -1435,6 +1963,153 @@ var _ interface {
 var _CheckRequest_StoreId_Pattern = regexp.MustCompile("^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$")
 
 var _CheckRequest_AuthorizationModelId_Pattern = regexp.MustCompile("^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$")
+
+// Validate checks the field values on CheckRequestTupleKey with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *CheckRequestTupleKey) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on CheckRequestTupleKey with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// CheckRequestTupleKeyMultiError, or nil if none found.
+func (m *CheckRequestTupleKey) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *CheckRequestTupleKey) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if len(m.GetUser()) > 512 {
+		err := CheckRequestTupleKeyValidationError{
+			field:  "User",
+			reason: "value length must be at most 512 bytes",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if m.GetRelation() != "" {
+
+		if !_CheckRequestTupleKey_Relation_Pattern.MatchString(m.GetRelation()) {
+			err := CheckRequestTupleKeyValidationError{
+				field:  "Relation",
+				reason: "value does not match regex pattern \"^[^:#@\\\\s]{1,50}$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
+	if m.GetObject() != "" {
+
+		if !_CheckRequestTupleKey_Object_Pattern.MatchString(m.GetObject()) {
+			err := CheckRequestTupleKeyValidationError{
+				field:  "Object",
+				reason: "value does not match regex pattern \"^[^\\\\s]{2,256}$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
+	if len(errors) > 0 {
+		return CheckRequestTupleKeyMultiError(errors)
+	}
+
+	return nil
+}
+
+// CheckRequestTupleKeyMultiError is an error wrapping multiple validation
+// errors returned by CheckRequestTupleKey.ValidateAll() if the designated
+// constraints aren't met.
+type CheckRequestTupleKeyMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m CheckRequestTupleKeyMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m CheckRequestTupleKeyMultiError) AllErrors() []error { return m }
+
+// CheckRequestTupleKeyValidationError is the validation error returned by
+// CheckRequestTupleKey.Validate if the designated constraints aren't met.
+type CheckRequestTupleKeyValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e CheckRequestTupleKeyValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e CheckRequestTupleKeyValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e CheckRequestTupleKeyValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e CheckRequestTupleKeyValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e CheckRequestTupleKeyValidationError) ErrorName() string {
+	return "CheckRequestTupleKeyValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e CheckRequestTupleKeyValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sCheckRequestTupleKey.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = CheckRequestTupleKeyValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = CheckRequestTupleKeyValidationError{}
+
+var _CheckRequestTupleKey_Relation_Pattern = regexp.MustCompile("^[^:#@\\s]{1,50}$")
+
+var _CheckRequestTupleKey_Object_Pattern = regexp.MustCompile("^[^\\s]{2,256}$")
 
 // Validate checks the field values on CheckResponse with the rules defined in
 // the proto definition for this message. If any rules are violated, the first
@@ -1709,6 +2384,142 @@ var _ interface {
 var _ExpandRequest_StoreId_Pattern = regexp.MustCompile("^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$")
 
 var _ExpandRequest_AuthorizationModelId_Pattern = regexp.MustCompile("^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$")
+
+// Validate checks the field values on ExpandRequestTupleKey with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *ExpandRequestTupleKey) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ExpandRequestTupleKey with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// ExpandRequestTupleKeyMultiError, or nil if none found.
+func (m *ExpandRequestTupleKey) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ExpandRequestTupleKey) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if m.GetRelation() != "" {
+
+		if !_ExpandRequestTupleKey_Relation_Pattern.MatchString(m.GetRelation()) {
+			err := ExpandRequestTupleKeyValidationError{
+				field:  "Relation",
+				reason: "value does not match regex pattern \"^[^:#@\\\\s]{1,50}$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
+	if m.GetObject() != "" {
+
+		if !_ExpandRequestTupleKey_Object_Pattern.MatchString(m.GetObject()) {
+			err := ExpandRequestTupleKeyValidationError{
+				field:  "Object",
+				reason: "value does not match regex pattern \"^[^\\\\s]{2,256}$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
+	if len(errors) > 0 {
+		return ExpandRequestTupleKeyMultiError(errors)
+	}
+
+	return nil
+}
+
+// ExpandRequestTupleKeyMultiError is an error wrapping multiple validation
+// errors returned by ExpandRequestTupleKey.ValidateAll() if the designated
+// constraints aren't met.
+type ExpandRequestTupleKeyMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ExpandRequestTupleKeyMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ExpandRequestTupleKeyMultiError) AllErrors() []error { return m }
+
+// ExpandRequestTupleKeyValidationError is the validation error returned by
+// ExpandRequestTupleKey.Validate if the designated constraints aren't met.
+type ExpandRequestTupleKeyValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ExpandRequestTupleKeyValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ExpandRequestTupleKeyValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ExpandRequestTupleKeyValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ExpandRequestTupleKeyValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ExpandRequestTupleKeyValidationError) ErrorName() string {
+	return "ExpandRequestTupleKeyValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ExpandRequestTupleKeyValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sExpandRequestTupleKey.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ExpandRequestTupleKeyValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ExpandRequestTupleKeyValidationError{}
+
+var _ExpandRequestTupleKey_Relation_Pattern = regexp.MustCompile("^[^:#@\\s]{1,50}$")
+
+var _ExpandRequestTupleKey_Object_Pattern = regexp.MustCompile("^[^\\s]{2,256}$")
 
 // Validate checks the field values on ExpandResponse with the rules defined in
 // the proto definition for this message. If any rules are violated, the first
@@ -2187,6 +2998,72 @@ func (m *WriteAuthorizationModelRequest) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
+	if len(m.GetConditions()) > 25 {
+		err := WriteAuthorizationModelRequestValidationError{
+			field:  "Conditions",
+			reason: "value must contain no more than 25 pair(s)",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	{
+		sorted_keys := make([]string, len(m.GetConditions()))
+		i := 0
+		for key := range m.GetConditions() {
+			sorted_keys[i] = key
+			i++
+		}
+		sort.Slice(sorted_keys, func(i, j int) bool { return sorted_keys[i] < sorted_keys[j] })
+		for _, key := range sorted_keys {
+			val := m.GetConditions()[key]
+			_ = val
+
+			if !_WriteAuthorizationModelRequest_Conditions_Pattern.MatchString(key) {
+				err := WriteAuthorizationModelRequestValidationError{
+					field:  fmt.Sprintf("Conditions[%v]", key),
+					reason: "value does not match regex pattern \"^[^:#@\\\\s]{1,50}$\"",
+				}
+				if !all {
+					return err
+				}
+				errors = append(errors, err)
+			}
+
+			if all {
+				switch v := interface{}(val).(type) {
+				case interface{ ValidateAll() error }:
+					if err := v.ValidateAll(); err != nil {
+						errors = append(errors, WriteAuthorizationModelRequestValidationError{
+							field:  fmt.Sprintf("Conditions[%v]", key),
+							reason: "embedded message failed validation",
+							cause:  err,
+						})
+					}
+				case interface{ Validate() error }:
+					if err := v.Validate(); err != nil {
+						errors = append(errors, WriteAuthorizationModelRequestValidationError{
+							field:  fmt.Sprintf("Conditions[%v]", key),
+							reason: "embedded message failed validation",
+							cause:  err,
+						})
+					}
+				}
+			} else if v, ok := interface{}(val).(interface{ Validate() error }); ok {
+				if err := v.Validate(); err != nil {
+					return WriteAuthorizationModelRequestValidationError{
+						field:  fmt.Sprintf("Conditions[%v]", key),
+						reason: "embedded message failed validation",
+						cause:  err,
+					}
+				}
+			}
+
+		}
+	}
+
 	if len(errors) > 0 {
 		return WriteAuthorizationModelRequestMultiError(errors)
 	}
@@ -2274,6 +3151,8 @@ var _WriteAuthorizationModelRequest_SchemaVersion_InLookup = map[string]struct{}
 	"1.0": {},
 	"1.1": {},
 }
+
+var _WriteAuthorizationModelRequest_Conditions_Pattern = regexp.MustCompile("^[^:#@\\s]{1,50}$")
 
 // Validate checks the field values on WriteAuthorizationModelResponse with the
 // rules defined in the proto definition for this message. If any rules are
@@ -4875,3 +5754,277 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = ListStoresResponseValidationError{}
+
+// Validate checks the field values on Assertion with the rules defined in the
+// proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *Assertion) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on Assertion with the rules defined in
+// the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in AssertionMultiError, or nil
+// if none found.
+func (m *Assertion) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *Assertion) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if m.GetTupleKey() == nil {
+		err := AssertionValidationError{
+			field:  "TupleKey",
+			reason: "value is required",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if all {
+		switch v := interface{}(m.GetTupleKey()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, AssertionValidationError{
+					field:  "TupleKey",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, AssertionValidationError{
+					field:  "TupleKey",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetTupleKey()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return AssertionValidationError{
+				field:  "TupleKey",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	// no validation rules for Expectation
+
+	if len(errors) > 0 {
+		return AssertionMultiError(errors)
+	}
+
+	return nil
+}
+
+// AssertionMultiError is an error wrapping multiple validation errors returned
+// by Assertion.ValidateAll() if the designated constraints aren't met.
+type AssertionMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m AssertionMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m AssertionMultiError) AllErrors() []error { return m }
+
+// AssertionValidationError is the validation error returned by
+// Assertion.Validate if the designated constraints aren't met.
+type AssertionValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e AssertionValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e AssertionValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e AssertionValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e AssertionValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e AssertionValidationError) ErrorName() string { return "AssertionValidationError" }
+
+// Error satisfies the builtin error interface
+func (e AssertionValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sAssertion.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = AssertionValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = AssertionValidationError{}
+
+// Validate checks the field values on Assertions with the rules defined in the
+// proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *Assertions) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on Assertions with the rules defined in
+// the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in AssertionsMultiError, or
+// nil if none found.
+func (m *Assertions) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *Assertions) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	for idx, item := range m.GetAssertions() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, AssertionsValidationError{
+						field:  fmt.Sprintf("Assertions[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, AssertionsValidationError{
+						field:  fmt.Sprintf("Assertions[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return AssertionsValidationError{
+					field:  fmt.Sprintf("Assertions[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	if len(errors) > 0 {
+		return AssertionsMultiError(errors)
+	}
+
+	return nil
+}
+
+// AssertionsMultiError is an error wrapping multiple validation errors
+// returned by Assertions.ValidateAll() if the designated constraints aren't met.
+type AssertionsMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m AssertionsMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m AssertionsMultiError) AllErrors() []error { return m }
+
+// AssertionsValidationError is the validation error returned by
+// Assertions.Validate if the designated constraints aren't met.
+type AssertionsValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e AssertionsValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e AssertionsValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e AssertionsValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e AssertionsValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e AssertionsValidationError) ErrorName() string { return "AssertionsValidationError" }
+
+// Error satisfies the builtin error interface
+func (e AssertionsValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sAssertions.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = AssertionsValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = AssertionsValidationError{}

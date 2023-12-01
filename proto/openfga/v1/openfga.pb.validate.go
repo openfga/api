@@ -159,6 +159,308 @@ var _Object_Type_Pattern = regexp.MustCompile("^[^:#@\\s]{1,254}$")
 
 var _Object_Id_Pattern = regexp.MustCompile("[^#:\\s]+$")
 
+// Validate checks the field values on RelationshipCondition with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *RelationshipCondition) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on RelationshipCondition with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// RelationshipConditionMultiError, or nil if none found.
+func (m *RelationshipCondition) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *RelationshipCondition) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if !_RelationshipCondition_Name_Pattern.MatchString(m.GetName()) {
+		err := RelationshipConditionValidationError{
+			field:  "Name",
+			reason: "value does not match regex pattern \"^[^\\\\s]{2,256}$\"",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if m.GetContext() == nil {
+		err := RelationshipConditionValidationError{
+			field:  "Context",
+			reason: "value is required",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if all {
+		switch v := interface{}(m.GetContext()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, RelationshipConditionValidationError{
+					field:  "Context",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, RelationshipConditionValidationError{
+					field:  "Context",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetContext()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return RelationshipConditionValidationError{
+				field:  "Context",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if len(errors) > 0 {
+		return RelationshipConditionMultiError(errors)
+	}
+
+	return nil
+}
+
+// RelationshipConditionMultiError is an error wrapping multiple validation
+// errors returned by RelationshipCondition.ValidateAll() if the designated
+// constraints aren't met.
+type RelationshipConditionMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m RelationshipConditionMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m RelationshipConditionMultiError) AllErrors() []error { return m }
+
+// RelationshipConditionValidationError is the validation error returned by
+// RelationshipCondition.Validate if the designated constraints aren't met.
+type RelationshipConditionValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e RelationshipConditionValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e RelationshipConditionValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e RelationshipConditionValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e RelationshipConditionValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e RelationshipConditionValidationError) ErrorName() string {
+	return "RelationshipConditionValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e RelationshipConditionValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sRelationshipCondition.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = RelationshipConditionValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = RelationshipConditionValidationError{}
+
+var _RelationshipCondition_Name_Pattern = regexp.MustCompile("^[^\\s]{2,256}$")
+
+// Validate checks the field values on TupleKeyWithoutCondition with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *TupleKeyWithoutCondition) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on TupleKeyWithoutCondition with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// TupleKeyWithoutConditionMultiError, or nil if none found.
+func (m *TupleKeyWithoutCondition) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *TupleKeyWithoutCondition) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if len(m.GetUser()) > 512 {
+		err := TupleKeyWithoutConditionValidationError{
+			field:  "User",
+			reason: "value length must be at most 512 bytes",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if m.GetRelation() != "" {
+
+		if !_TupleKeyWithoutCondition_Relation_Pattern.MatchString(m.GetRelation()) {
+			err := TupleKeyWithoutConditionValidationError{
+				field:  "Relation",
+				reason: "value does not match regex pattern \"^[^:#@\\\\s]{1,50}$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
+	if m.GetObject() != "" {
+
+		if !_TupleKeyWithoutCondition_Object_Pattern.MatchString(m.GetObject()) {
+			err := TupleKeyWithoutConditionValidationError{
+				field:  "Object",
+				reason: "value does not match regex pattern \"^[^\\\\s]{2,256}$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
+	if len(errors) > 0 {
+		return TupleKeyWithoutConditionMultiError(errors)
+	}
+
+	return nil
+}
+
+// TupleKeyWithoutConditionMultiError is an error wrapping multiple validation
+// errors returned by TupleKeyWithoutCondition.ValidateAll() if the designated
+// constraints aren't met.
+type TupleKeyWithoutConditionMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m TupleKeyWithoutConditionMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m TupleKeyWithoutConditionMultiError) AllErrors() []error { return m }
+
+// TupleKeyWithoutConditionValidationError is the validation error returned by
+// TupleKeyWithoutCondition.Validate if the designated constraints aren't met.
+type TupleKeyWithoutConditionValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e TupleKeyWithoutConditionValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e TupleKeyWithoutConditionValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e TupleKeyWithoutConditionValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e TupleKeyWithoutConditionValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e TupleKeyWithoutConditionValidationError) ErrorName() string {
+	return "TupleKeyWithoutConditionValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e TupleKeyWithoutConditionValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sTupleKeyWithoutCondition.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = TupleKeyWithoutConditionValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = TupleKeyWithoutConditionValidationError{}
+
+var _TupleKeyWithoutCondition_Relation_Pattern = regexp.MustCompile("^[^:#@\\s]{1,50}$")
+
+var _TupleKeyWithoutCondition_Object_Pattern = regexp.MustCompile("^[^\\s]{2,256}$")
+
 // Validate checks the field values on TupleKey with the rules defined in the
 // proto definition for this message. If any rules are violated, the first
 // error encountered is returned, or nil if there are no violations.
@@ -181,19 +483,15 @@ func (m *TupleKey) validate(all bool) error {
 
 	var errors []error
 
-	if m.GetObject() != "" {
-
-		if !_TupleKey_Object_Pattern.MatchString(m.GetObject()) {
-			err := TupleKeyValidationError{
-				field:  "Object",
-				reason: "value does not match regex pattern \"^[^\\\\s]{2,256}$\"",
-			}
-			if !all {
-				return err
-			}
-			errors = append(errors, err)
+	if len(m.GetUser()) > 512 {
+		err := TupleKeyValidationError{
+			field:  "User",
+			reason: "value length must be at most 512 bytes",
 		}
-
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
 	}
 
 	if m.GetRelation() != "" {
@@ -211,15 +509,48 @@ func (m *TupleKey) validate(all bool) error {
 
 	}
 
-	if len(m.GetUser()) > 512 {
-		err := TupleKeyValidationError{
-			field:  "User",
-			reason: "value length must be at most 512 bytes",
+	if m.GetObject() != "" {
+
+		if !_TupleKey_Object_Pattern.MatchString(m.GetObject()) {
+			err := TupleKeyValidationError{
+				field:  "Object",
+				reason: "value does not match regex pattern \"^[^\\\\s]{2,256}$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
 		}
-		if !all {
-			return err
+
+	}
+
+	if all {
+		switch v := interface{}(m.GetCondition()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, TupleKeyValidationError{
+					field:  "Condition",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, TupleKeyValidationError{
+					field:  "Condition",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
 		}
-		errors = append(errors, err)
+	} else if v, ok := interface{}(m.GetCondition()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return TupleKeyValidationError{
+				field:  "Condition",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
 	}
 
 	if len(errors) > 0 {
@@ -299,9 +630,9 @@ var _ interface {
 	ErrorName() string
 } = TupleKeyValidationError{}
 
-var _TupleKey_Object_Pattern = regexp.MustCompile("^[^\\s]{2,256}$")
-
 var _TupleKey_Relation_Pattern = regexp.MustCompile("^[^:#@\\s]{1,50}$")
+
+var _TupleKey_Object_Pattern = regexp.MustCompile("^[^\\s]{2,256}$")
 
 // Validate checks the field values on Tuple with the rules defined in the
 // proto definition for this message. If any rules are violated, the first
@@ -323,6 +654,17 @@ func (m *Tuple) validate(all bool) error {
 	}
 
 	var errors []error
+
+	if m.GetKey() == nil {
+		err := TupleValidationError{
+			field:  "Key",
+			reason: "value is required",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
 
 	if all {
 		switch v := interface{}(m.GetKey()).(type) {
@@ -878,280 +1220,6 @@ var _ interface {
 	ErrorName() string
 } = UsersetTreeValidationError{}
 
-// Validate checks the field values on Assertion with the rules defined in the
-// proto definition for this message. If any rules are violated, the first
-// error encountered is returned, or nil if there are no violations.
-func (m *Assertion) Validate() error {
-	return m.validate(false)
-}
-
-// ValidateAll checks the field values on Assertion with the rules defined in
-// the proto definition for this message. If any rules are violated, the
-// result is a list of violation errors wrapped in AssertionMultiError, or nil
-// if none found.
-func (m *Assertion) ValidateAll() error {
-	return m.validate(true)
-}
-
-func (m *Assertion) validate(all bool) error {
-	if m == nil {
-		return nil
-	}
-
-	var errors []error
-
-	if m.GetTupleKey() == nil {
-		err := AssertionValidationError{
-			field:  "TupleKey",
-			reason: "value is required",
-		}
-		if !all {
-			return err
-		}
-		errors = append(errors, err)
-	}
-
-	if all {
-		switch v := interface{}(m.GetTupleKey()).(type) {
-		case interface{ ValidateAll() error }:
-			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, AssertionValidationError{
-					field:  "TupleKey",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		case interface{ Validate() error }:
-			if err := v.Validate(); err != nil {
-				errors = append(errors, AssertionValidationError{
-					field:  "TupleKey",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		}
-	} else if v, ok := interface{}(m.GetTupleKey()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return AssertionValidationError{
-				field:  "TupleKey",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
-		}
-	}
-
-	// no validation rules for Expectation
-
-	if len(errors) > 0 {
-		return AssertionMultiError(errors)
-	}
-
-	return nil
-}
-
-// AssertionMultiError is an error wrapping multiple validation errors returned
-// by Assertion.ValidateAll() if the designated constraints aren't met.
-type AssertionMultiError []error
-
-// Error returns a concatenation of all the error messages it wraps.
-func (m AssertionMultiError) Error() string {
-	var msgs []string
-	for _, err := range m {
-		msgs = append(msgs, err.Error())
-	}
-	return strings.Join(msgs, "; ")
-}
-
-// AllErrors returns a list of validation violation errors.
-func (m AssertionMultiError) AllErrors() []error { return m }
-
-// AssertionValidationError is the validation error returned by
-// Assertion.Validate if the designated constraints aren't met.
-type AssertionValidationError struct {
-	field  string
-	reason string
-	cause  error
-	key    bool
-}
-
-// Field function returns field value.
-func (e AssertionValidationError) Field() string { return e.field }
-
-// Reason function returns reason value.
-func (e AssertionValidationError) Reason() string { return e.reason }
-
-// Cause function returns cause value.
-func (e AssertionValidationError) Cause() error { return e.cause }
-
-// Key function returns key value.
-func (e AssertionValidationError) Key() bool { return e.key }
-
-// ErrorName returns error name.
-func (e AssertionValidationError) ErrorName() string { return "AssertionValidationError" }
-
-// Error satisfies the builtin error interface
-func (e AssertionValidationError) Error() string {
-	cause := ""
-	if e.cause != nil {
-		cause = fmt.Sprintf(" | caused by: %v", e.cause)
-	}
-
-	key := ""
-	if e.key {
-		key = "key for "
-	}
-
-	return fmt.Sprintf(
-		"invalid %sAssertion.%s: %s%s",
-		key,
-		e.field,
-		e.reason,
-		cause)
-}
-
-var _ error = AssertionValidationError{}
-
-var _ interface {
-	Field() string
-	Reason() string
-	Key() bool
-	Cause() error
-	ErrorName() string
-} = AssertionValidationError{}
-
-// Validate checks the field values on Assertions with the rules defined in the
-// proto definition for this message. If any rules are violated, the first
-// error encountered is returned, or nil if there are no violations.
-func (m *Assertions) Validate() error {
-	return m.validate(false)
-}
-
-// ValidateAll checks the field values on Assertions with the rules defined in
-// the proto definition for this message. If any rules are violated, the
-// result is a list of violation errors wrapped in AssertionsMultiError, or
-// nil if none found.
-func (m *Assertions) ValidateAll() error {
-	return m.validate(true)
-}
-
-func (m *Assertions) validate(all bool) error {
-	if m == nil {
-		return nil
-	}
-
-	var errors []error
-
-	for idx, item := range m.GetAssertions() {
-		_, _ = idx, item
-
-		if all {
-			switch v := interface{}(item).(type) {
-			case interface{ ValidateAll() error }:
-				if err := v.ValidateAll(); err != nil {
-					errors = append(errors, AssertionsValidationError{
-						field:  fmt.Sprintf("Assertions[%v]", idx),
-						reason: "embedded message failed validation",
-						cause:  err,
-					})
-				}
-			case interface{ Validate() error }:
-				if err := v.Validate(); err != nil {
-					errors = append(errors, AssertionsValidationError{
-						field:  fmt.Sprintf("Assertions[%v]", idx),
-						reason: "embedded message failed validation",
-						cause:  err,
-					})
-				}
-			}
-		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
-			if err := v.Validate(); err != nil {
-				return AssertionsValidationError{
-					field:  fmt.Sprintf("Assertions[%v]", idx),
-					reason: "embedded message failed validation",
-					cause:  err,
-				}
-			}
-		}
-
-	}
-
-	if len(errors) > 0 {
-		return AssertionsMultiError(errors)
-	}
-
-	return nil
-}
-
-// AssertionsMultiError is an error wrapping multiple validation errors
-// returned by Assertions.ValidateAll() if the designated constraints aren't met.
-type AssertionsMultiError []error
-
-// Error returns a concatenation of all the error messages it wraps.
-func (m AssertionsMultiError) Error() string {
-	var msgs []string
-	for _, err := range m {
-		msgs = append(msgs, err.Error())
-	}
-	return strings.Join(msgs, "; ")
-}
-
-// AllErrors returns a list of validation violation errors.
-func (m AssertionsMultiError) AllErrors() []error { return m }
-
-// AssertionsValidationError is the validation error returned by
-// Assertions.Validate if the designated constraints aren't met.
-type AssertionsValidationError struct {
-	field  string
-	reason string
-	cause  error
-	key    bool
-}
-
-// Field function returns field value.
-func (e AssertionsValidationError) Field() string { return e.field }
-
-// Reason function returns reason value.
-func (e AssertionsValidationError) Reason() string { return e.reason }
-
-// Cause function returns cause value.
-func (e AssertionsValidationError) Cause() error { return e.cause }
-
-// Key function returns key value.
-func (e AssertionsValidationError) Key() bool { return e.key }
-
-// ErrorName returns error name.
-func (e AssertionsValidationError) ErrorName() string { return "AssertionsValidationError" }
-
-// Error satisfies the builtin error interface
-func (e AssertionsValidationError) Error() string {
-	cause := ""
-	if e.cause != nil {
-		cause = fmt.Sprintf(" | caused by: %v", e.cause)
-	}
-
-	key := ""
-	if e.key {
-		key = "key for "
-	}
-
-	return fmt.Sprintf(
-		"invalid %sAssertions.%s: %s%s",
-		key,
-		e.field,
-		e.reason,
-		cause)
-}
-
-var _ error = AssertionsValidationError{}
-
-var _ interface {
-	Field() string
-	Reason() string
-	Key() bool
-	Cause() error
-	ErrorName() string
-} = AssertionsValidationError{}
-
 // Validate checks the field values on TupleChange with the rules defined in
 // the proto definition for this message. If any rules are violated, the first
 // error encountered is returned, or nil if there are no violations.
@@ -1173,6 +1241,17 @@ func (m *TupleChange) validate(all bool) error {
 	}
 
 	var errors []error
+
+	if m.GetTupleKey() == nil {
+		err := TupleChangeValidationError{
+			field:  "TupleKey",
+			reason: "value is required",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
 
 	if all {
 		switch v := interface{}(m.GetTupleKey()).(type) {
@@ -1340,10 +1419,6 @@ func (m *Store) validate(all bool) error {
 	}
 
 	var errors []error
-
-	// no validation rules for Id
-
-	// no validation rules for Name
 
 	if all {
 		switch v := interface{}(m.GetCreatedAt()).(type) {
@@ -1997,8 +2072,6 @@ func (m *UsersetTree_Computed) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for Userset
-
 	if len(errors) > 0 {
 		return UsersetTree_ComputedMultiError(errors)
 	}
@@ -2100,8 +2173,6 @@ func (m *UsersetTree_TupleToUserset) validate(all bool) error {
 	}
 
 	var errors []error
-
-	// no validation rules for Tupleset
 
 	for idx, item := range m.GetComputed() {
 		_, _ = idx, item
@@ -2239,6 +2310,17 @@ func (m *UsersetTree_Difference) validate(all bool) error {
 
 	var errors []error
 
+	if m.GetBase() == nil {
+		err := UsersetTree_DifferenceValidationError{
+			field:  "Base",
+			reason: "value is required",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
 	if all {
 		switch v := interface{}(m.GetBase()).(type) {
 		case interface{ ValidateAll() error }:
@@ -2266,6 +2348,17 @@ func (m *UsersetTree_Difference) validate(all bool) error {
 				cause:  err,
 			}
 		}
+	}
+
+	if m.GetSubtract() == nil {
+		err := UsersetTree_DifferenceValidationError{
+			field:  "Subtract",
+			reason: "value is required",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
 	}
 
 	if all {

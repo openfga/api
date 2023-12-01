@@ -431,10 +431,17 @@
                 },
                 "schema_version": {
                   "type": "string"
+                },
+                "conditions": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "$ref": "#/definitions/Condition"
+                  }
                 }
               },
               "required": [
-                "type_definitions"
+                "type_definitions",
+                "schema_version"
               ]
             }
           }
@@ -497,7 +504,7 @@
     "/stores/{store_id}/changes": {
       "get": {
         "summary": "Return a list of all the tuple changes",
-        "description": "The ReadChanges API will return a paginated list of tuple changes (additions and deletions) that occurred in a given store, sorted by ascending time. The response will include a continuation token that is used to get the next set of changes. If there are no changes after the provided continuation token, the same token will be returned in order for it to be used when new changes are recorded. If the store never had any tuples added or removed, this token will be empty.\nYou can use the `type` parameter to only get the list of tuple changes that affect objects of that type.\n",
+        "description": "The ReadChanges API will return a paginated list of tuple changes (additions and deletions) that occurred in a given store, sorted by ascending time. The response will include a continuation token that is used to get the next set of changes. If there are no changes after the provided continuation token, the same token will be returned in order for it to be used when new changes are recorded. If the store never had any tuples added or removed, this token will be empty.\nYou can use the `type` parameter to only get the list of tuple changes that affect objects of that type.\nWhen reading a write tuple change, if it was conditioned, the condition will be returned.\nWhen reading a delete tuple change, the condition will NOT be returned regardless of whether it was originally conditioned or not.\n",
         "operationId": "ReadChanges",
         "responses": {
           "200": {
@@ -560,7 +567,7 @@
     "/stores/{store_id}/check": {
       "post": {
         "summary": "Check whether a user is authorized to access an object",
-        "description": "The Check API queries to check if the user has a certain relationship with an object in a certain store.\nA `contextual_tuples` object may also be included in the body of the request. This object contains one field `tuple_keys`, which is an array of tuple keys.\nYou may also provide an `authorization_model_id` in the body. This will be used to assert that the input `tuple_key` is valid for the model specified. If not specified, the assertion will be made against the latest authorization model ID. It is strongly recommended to specify authorization model id for better performance.\nThe response will return whether the relationship exists in the field `allowed`.\n\n## Example\nIn order to check if user `user:anne` of type `user` has a `reader` relationship with object `document:2021-budget` given the following contextual tuple\n```json\n{\n  \"user\": \"user:anne\",\n  \"relation\": \"member\",\n  \"object\": \"time_slot:office_hours\"\n}\n```\nthe Check API can be used with the following request body:\n```json\n{\n  \"tuple_key\": {\n    \"user\": \"user:anne\",\n    \"relation\": \"reader\",\n    \"object\": \"document:2021-budget\"\n  },\n  \"contextual_tuples\": {\n    \"tuple_keys\": [\n      {\n        \"user\": \"user:anne\",\n        \"relation\": \"member\",\n        \"object\": \"time_slot:office_hours\"\n      }\n    ]\n  },\n  \"authorization_model_id\": \"01G50QVV17PECNVAHX1GG4Y5NC\"\n}\n```\nOpenFGA's response will include `{ \"allowed\": true }` if there is a relationship and `{ \"allowed\": false }` if there isn't.",
+        "description": "The Check API queries to check if the user has a certain relationship with an object in a certain store.\nA `contextual_tuples` object may also be included in the body of the request. This object contains one field `tuple_keys`, which is an array of tuple keys. Each of these tuples may have an associated `condition`.\nYou may also provide an `authorization_model_id` in the body. This will be used to assert that the input `tuple_key` is valid for the model specified. If not specified, the assertion will be made against the latest authorization model ID. It is strongly recommended to specify authorization model id for better performance.\nYou may also provide a `context` object that will be used to evaluate the conditioned tuples in the system. It is strongly recommended to provide a value for all the input parameters of all the conditions, to ensure that all tuples be evaluated correctly.\nThe response will return whether the relationship exists in the field `allowed`.\n\n## Example\nIn order to check if user `user:anne` of type `user` has a `reader` relationship with object `document:2021-budget` given the following contextual tuple\n```json\n{\n  \"user\": \"user:anne\",\n  \"relation\": \"member\",\n  \"object\": \"time_slot:office_hours\"\n}\n```\nthe Check API can be used with the following request body:\n```json\n{\n  \"tuple_key\": {\n    \"user\": \"user:anne\",\n    \"relation\": \"reader\",\n    \"object\": \"document:2021-budget\"\n  },\n  \"contextual_tuples\": {\n    \"tuple_keys\": [\n      {\n        \"user\": \"user:anne\",\n        \"relation\": \"member\",\n        \"object\": \"time_slot:office_hours\"\n      }\n    ]\n  },\n  \"authorization_model_id\": \"01G50QVV17PECNVAHX1GG4Y5NC\"\n}\n```\nOpenFGA's response will include `{ \"allowed\": true }` if there is a relationship and `{ \"allowed\": false }` if there isn't.",
         "operationId": "Check",
         "responses": {
           "200": {
@@ -603,7 +610,7 @@
               "type": "object",
               "properties": {
                 "tuple_key": {
-                  "$ref": "#/definitions/TupleKey"
+                  "$ref": "#/definitions/CheckRequestTupleKey"
                 },
                 "contextual_tuples": {
                   "$ref": "#/definitions/ContextualTupleKeys"
@@ -617,6 +624,10 @@
                   "example": false,
                   "description": "Defaults to false. Making it true has performance implications.",
                   "readOnly": true
+                },
+                "context": {
+                  "type": "object",
+                  "description": "Additional request context that will be used to evaluate any ABAC conditions encountered\nin the query evaluation."
                 }
               },
               "required": [
@@ -676,7 +687,7 @@
               "type": "object",
               "properties": {
                 "tuple_key": {
-                  "$ref": "#/definitions/TupleKey"
+                  "$ref": "#/definitions/ExpandRequestTupleKey"
                 },
                 "authorization_model_id": {
                   "type": "string",
@@ -697,7 +708,7 @@
     "/stores/{store_id}/list-objects": {
       "post": {
         "summary": "List all objects of the given type that the user has a relation with",
-        "description": "The ListObjects API returns a list of all the objects of the given type that the user has a relation with. To achieve this, both the store tuples and the authorization model are used.\nAn `authorization_model_id` may be specified in the body. If it is not specified, the latest authorization model ID will be used. It is strongly recommended to specify authorization model id for better performance.\nYou may also specify `contextual_tuples` that will be treated as regular tuples.\nThe response will contain the related objects in an array in the \"objects\" field of the response and they will be strings in the object format `<type>:<id>` (e.g. \"document:roadmap\").\nThe number of objects in the response array will be limited by the execution timeout specified in the flag OPENFGA_LIST_OBJECTS_DEADLINE and by the upper bound specified in the flag OPENFGA_LIST_OBJECTS_MAX_RESULTS, whichever is hit first.\nThe objects given will not be sorted, and therefore two identical calls can give a given different set of objects.",
+        "description": "The ListObjects API returns a list of all the objects of the given type that the user has a relation with. To achieve this, both the store tuples and the authorization model are used.\nAn `authorization_model_id` may be specified in the body. If it is not specified, the latest authorization model ID will be used. It is strongly recommended to specify authorization model id for better performance.\nYou may also specify `contextual_tuples` that will be treated as regular tuples. Each of these tuples may have an associated `condition`.\nYou may also provide a `context` object that will be used to evaluate the conditioned tuples in the system. It is strongly recommended to provide a value for all the input parameters of all the conditions, to ensure that all tuples be evaluated correctly.\nThe response will contain the related objects in an array in the \"objects\" field of the response and they will be strings in the object format `<type>:<id>` (e.g. \"document:roadmap\").\nThe number of objects in the response array will be limited by the execution timeout specified in the flag OPENFGA_LIST_OBJECTS_DEADLINE and by the upper bound specified in the flag OPENFGA_LIST_OBJECTS_MAX_RESULTS, whichever is hit first.\nThe objects given will not be sorted, and therefore two identical calls can give a given different set of objects.",
         "operationId": "ListObjects",
         "responses": {
           "200": {
@@ -759,6 +770,10 @@
                 },
                 "contextual_tuples": {
                   "$ref": "#/definitions/ContextualTupleKeys"
+                },
+                "context": {
+                  "type": "object",
+                  "description": "Additional request context that will be used to evaluate any ABAC conditions encountered\nin the query evaluation."
                 }
               },
               "required": [
@@ -820,7 +835,7 @@
               "type": "object",
               "properties": {
                 "tuple_key": {
-                  "$ref": "#/definitions/TupleKey"
+                  "$ref": "#/definitions/ReadRequestTupleKey"
                 },
                 "page_size": {
                   "type": "integer",
@@ -914,6 +929,10 @@
                 },
                 "contextual_tuples": {
                   "$ref": "#/definitions/ContextualTupleKeys"
+                },
+                "context": {
+                  "type": "object",
+                  "description": "Additional request context that will be used to evaluate any ABAC conditions encountered\nin the query evaluation."
                 }
               },
               "required": [
@@ -932,7 +951,7 @@
     "/stores/{store_id}/write": {
       "post": {
         "summary": "Add or delete tuples from the store",
-        "description": "The Write API will update the tuples for a certain store. Tuples and type definitions allow OpenFGA to determine whether a relationship exists between an object and an user.\nIn the body, `writes` adds new tuples while `deletes` removes existing tuples. The API is not idempotent: if, later on, you try to add the same tuple, or if you try to delete a non-existing tuple, it will throw an error.\nAn `authorization_model_id` may be specified in the body. If it is, it will be used to assert that each written tuple (not deleted) is valid for the model specified. If it is not specified, the latest authorization model ID will be used.\n## Example\n### Adding relationships\nTo add `user:anne` as a `writer` for `document:2021-budget`, call write API with the following \n```json\n{\n  \"writes\": {\n    \"tuple_keys\": [\n      {\n        \"user\": \"user:anne\",\n        \"relation\": \"writer\",\n        \"object\": \"document:2021-budget\"\n      }\n    ]\n  },\n  \"authorization_model_id\": \"01G50QVV17PECNVAHX1GG4Y5NC\"\n}\n```\n### Removing relationships\nTo remove `user:bob` as a `reader` for `document:2021-budget`, call write API with the following \n```json\n{\n  \"deletes\": {\n    \"tuple_keys\": [\n      {\n        \"user\": \"user:bob\",\n        \"relation\": \"reader\",\n        \"object\": \"document:2021-budget\"\n      }\n    ]\n  }\n}\n```\n",
+        "description": "The Write API will update the tuples for a certain store. Tuples and type definitions allow OpenFGA to determine whether a relationship exists between an object and an user.\nIn the body, `writes` adds new tuples and `deletes` removes existing tuples. When deleting a tuple, any `condition` specified with it is ignored.\nThe API is not idempotent: if, later on, you try to add the same tuple key (even if the `condition` is different), or if you try to delete a non-existing tuple, it will throw an error.\nAn `authorization_model_id` may be specified in the body. If it is, it will be used to assert that each written tuple (not deleted) is valid for the model specified. If it is not specified, the latest authorization model ID will be used.\n## Example\n### Adding relationships\nTo add `user:anne` as a `writer` for `document:2021-budget`, call write API with the following \n```json\n{\n  \"writes\": {\n    \"tuple_keys\": [\n      {\n        \"user\": \"user:anne\",\n        \"relation\": \"writer\",\n        \"object\": \"document:2021-budget\"\n      }\n    ]\n  },\n  \"authorization_model_id\": \"01G50QVV17PECNVAHX1GG4Y5NC\"\n}\n```\n### Removing relationships\nTo remove `user:bob` as a `reader` for `document:2021-budget`, call write API with the following \n```json\n{\n  \"deletes\": {\n    \"tuple_keys\": [\n      {\n        \"user\": \"user:bob\",\n        \"relation\": \"reader\",\n        \"object\": \"document:2021-budget\"\n      }\n    ]\n  }\n}\n```\n",
         "operationId": "Write",
         "responses": {
           "200": {
@@ -975,10 +994,10 @@
               "type": "object",
               "properties": {
                 "writes": {
-                  "$ref": "#/definitions/TupleKeys"
+                  "$ref": "#/definitions/WriteRequestWrites"
                 },
                 "deletes": {
-                  "$ref": "#/definitions/TupleKeys"
+                  "$ref": "#/definitions/WriteRequestDeletes"
                 },
                 "authorization_model_id": {
                   "type": "string",
@@ -1008,7 +1027,7 @@
       "type": "object",
       "properties": {
         "tuple_key": {
-          "$ref": "#/definitions/TupleKey"
+          "$ref": "#/definitions/CheckRequestTupleKey"
         },
         "expectation": {
           "type": "boolean"
@@ -1080,10 +1099,43 @@
           "items": {
             "$ref": "#/definitions/TypeDefinition"
           }
+        },
+        "conditions": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/Condition"
+          }
         }
       },
       "required": [
-        "schema_version"
+        "id",
+        "schema_version",
+        "type_definitions"
+      ]
+    },
+    "CheckRequestTupleKey": {
+      "type": "object",
+      "properties": {
+        "user": {
+          "type": "string",
+          "example": "user:anne",
+          "maxLength": 512
+        },
+        "relation": {
+          "type": "string",
+          "example": "reader",
+          "maxLength": 50
+        },
+        "object": {
+          "type": "string",
+          "example": "document:2021-budget",
+          "maxLength": 256
+        }
+      },
+      "required": [
+        "user",
+        "relation",
+        "object"
       ]
     },
     "CheckResponse": {
@@ -1105,7 +1157,51 @@
         "userset": {
           "type": "string"
         }
-      }
+      },
+      "required": [
+        "userset"
+      ]
+    },
+    "Condition": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "title": "A unique name for the condition"
+        },
+        "expression": {
+          "type": "string",
+          "description": "A Google CEL expression, expressed as a string."
+        },
+        "parameters": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/ConditionParamTypeRef"
+          },
+          "description": "A map of parameter names to the parameter's defined type reference."
+        }
+      },
+      "required": [
+        "name",
+        "expression"
+      ]
+    },
+    "ConditionParamTypeRef": {
+      "type": "object",
+      "properties": {
+        "type_name": {
+          "$ref": "#/definitions/TypeName"
+        },
+        "generic_types": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ConditionParamTypeRef"
+          }
+        }
+      },
+      "required": [
+        "type_name"
+      ]
     },
     "ContextualTupleKeys": {
       "type": "object",
@@ -1152,7 +1248,13 @@
           "type": "string",
           "format": "date-time"
         }
-      }
+      },
+      "required": [
+        "id",
+        "name",
+        "created_at",
+        "updated_at"
+      ]
     },
     "DeleteStoreResponse": {
       "type": "object"
@@ -1215,6 +1317,25 @@
       ],
       "default": "no_error"
     },
+    "ExpandRequestTupleKey": {
+      "type": "object",
+      "properties": {
+        "relation": {
+          "type": "string",
+          "example": "reader",
+          "maxLength": 50
+        },
+        "object": {
+          "type": "string",
+          "example": "document:2021-budget",
+          "maxLength": 256
+        }
+      },
+      "required": [
+        "relation",
+        "object"
+      ]
+    },
     "ExpandResponse": {
       "type": "object",
       "properties": {
@@ -1241,7 +1362,13 @@
           "type": "string",
           "format": "date-time"
         }
-      }
+      },
+      "required": [
+        "id",
+        "name",
+        "created_at",
+        "updated_at"
+      ]
     },
     "InternalErrorCode": {
       "type": "string",
@@ -1303,7 +1430,10 @@
             "type": "string"
           }
         }
-      }
+      },
+      "required": [
+        "objects"
+      ]
     },
     "ListStoresResponse": {
       "type": "object",
@@ -1319,7 +1449,11 @@
           "example": "eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ==",
           "description": "The continuation token will be empty if there are no more stores."
         }
-      }
+      },
+      "required": [
+        "stores",
+        "continuation_token"
+      ]
     },
     "Metadata": {
       "type": "object",
@@ -1350,7 +1484,10 @@
         "intersection": {
           "$ref": "#/definitions/Nodes"
         }
-      }
+      },
+      "required": [
+        "name"
+      ]
     },
     "Nodes": {
       "type": "object",
@@ -1361,7 +1498,10 @@
             "$ref": "#/definitions/Node"
           }
         }
-      }
+      },
+      "required": [
+        "nodes"
+      ]
     },
     "NotFoundErrorCode": {
       "type": "string",
@@ -1372,6 +1512,14 @@
         "unimplemented"
       ],
       "default": "no_not_found_error"
+    },
+    "NullValue": {
+      "type": "string",
+      "enum": [
+        "NULL_VALUE"
+      ],
+      "default": "NULL_VALUE",
+      "description": "`NullValue` is a singleton enumeration to represent the null value for the\n`Value` type union.\n\n The JSON representation for `NullValue` is JSON `null`.\n\n - NULL_VALUE: Null value."
     },
     "ObjectRelation": {
       "type": "object",
@@ -1412,7 +1560,10 @@
             "$ref": "#/definitions/Assertion"
           }
         }
-      }
+      },
+      "required": [
+        "authorization_model_id"
+      ]
     },
     "ReadAuthorizationModelResponse": {
       "type": "object",
@@ -1436,7 +1587,10 @@
           "example": "eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ==",
           "description": "The continuation token will be empty if there are no more models."
         }
-      }
+      },
+      "required": [
+        "authorization_models"
+      ]
     },
     "ReadChangesResponse": {
       "type": "object",
@@ -1451,6 +1605,29 @@
           "type": "string",
           "example": "eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ==",
           "description": "The continuation token will be identical if there are no new changes."
+        }
+      },
+      "required": [
+        "changes"
+      ]
+    },
+    "ReadRequestTupleKey": {
+      "type": "object",
+      "properties": {
+        "user": {
+          "type": "string",
+          "example": "user:anne",
+          "maxLength": 512
+        },
+        "relation": {
+          "type": "string",
+          "example": "reader",
+          "maxLength": 50
+        },
+        "object": {
+          "type": "string",
+          "example": "document:2021-budget",
+          "maxLength": 256
         }
       }
     },
@@ -1468,7 +1645,11 @@
           "example": "eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ==",
           "description": "The continuation token will be empty if there are no more tuples."
         }
-      }
+      },
+      "required": [
+        "tuples",
+        "continuation_token"
+      ]
     },
     "RelationMetadata": {
       "type": "object",
@@ -1494,11 +1675,34 @@
         },
         "wildcard": {
           "$ref": "#/definitions/Wildcard"
+        },
+        "condition": {
+          "type": "string",
+          "description": "The name of a condition that is enforced over the allowed relation."
         }
       },
       "description": "RelationReference represents a relation of a particular object type (e.g. 'document#viewer').",
       "required": [
         "type"
+      ]
+    },
+    "RelationshipCondition": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "condition1",
+          "description": "A reference (by name) of the relationship condition defined in the authorization model.",
+          "maxLength": 256
+        },
+        "context": {
+          "type": "object",
+          "description": "Additional context/data to persist along with the condition.\nThe keys must match the parameters defined by the condition, and the value types must\nmatch the parameter type definitions."
+        }
+      },
+      "required": [
+        "name",
+        "context"
       ]
     },
     "Status": {
@@ -1540,7 +1744,14 @@
           "type": "string",
           "format": "date-time"
         }
-      }
+      },
+      "required": [
+        "id",
+        "name",
+        "created_at",
+        "updated_at",
+        "deleted_at"
+      ]
     },
     "StreamedListObjectsResponse": {
       "type": "object",
@@ -1550,7 +1761,10 @@
           "example": "document:roadmap"
         }
       },
-      "description": "The response for a StreamedListObjects RPC."
+      "description": "The response for a StreamedListObjects RPC.",
+      "required": [
+        "object"
+      ]
     },
     "Tuple": {
       "type": "object",
@@ -1562,7 +1776,11 @@
           "type": "string",
           "format": "date-time"
         }
-      }
+      },
+      "required": [
+        "key",
+        "timestamp"
+      ]
     },
     "TupleChange": {
       "type": "object",
@@ -1577,41 +1795,64 @@
           "type": "string",
           "format": "date-time"
         }
-      }
+      },
+      "required": [
+        "tuple_key",
+        "operation",
+        "timestamp"
+      ]
     },
     "TupleKey": {
       "type": "object",
       "properties": {
-        "object": {
+        "user": {
           "type": "string",
-          "example": "document:2021-budget",
-          "maxLength": 256
+          "example": "user:anne",
+          "maxLength": 512
         },
         "relation": {
           "type": "string",
           "example": "reader",
           "maxLength": 50
         },
+        "object": {
+          "type": "string",
+          "example": "document:2021-budget",
+          "maxLength": 256
+        },
+        "condition": {
+          "$ref": "#/definitions/RelationshipCondition"
+        }
+      },
+      "required": [
+        "user",
+        "relation",
+        "object"
+      ]
+    },
+    "TupleKeyWithoutCondition": {
+      "type": "object",
+      "properties": {
         "user": {
           "type": "string",
           "example": "user:anne",
           "maxLength": 512
-        }
-      }
-    },
-    "TupleKeys": {
-      "type": "object",
-      "properties": {
-        "tuple_keys": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/TupleKey",
-            "minimum": 1
-          }
+        },
+        "relation": {
+          "type": "string",
+          "example": "reader",
+          "maxLength": 50
+        },
+        "object": {
+          "type": "string",
+          "example": "document:2021-budget",
+          "maxLength": 256
         }
       },
       "required": [
-        "tuple_keys"
+        "user",
+        "relation",
+        "object"
       ]
     },
     "TupleOperation": {
@@ -1665,6 +1906,24 @@
         "type"
       ]
     },
+    "TypeName": {
+      "type": "string",
+      "enum": [
+        "TYPE_NAME_UNSPECIFIED",
+        "TYPE_NAME_ANY",
+        "TYPE_NAME_BOOL",
+        "TYPE_NAME_STRING",
+        "TYPE_NAME_INT",
+        "TYPE_NAME_UINT",
+        "TYPE_NAME_DOUBLE",
+        "TYPE_NAME_DURATION",
+        "TYPE_NAME_TIMESTAMP",
+        "TYPE_NAME_MAP",
+        "TYPE_NAME_LIST",
+        "TYPE_NAME_IPADDRESS"
+      ],
+      "default": "TYPE_NAME_UNSPECIFIED"
+    },
     "Users": {
       "type": "object",
       "properties": {
@@ -1674,7 +1933,10 @@
             "type": "string"
           }
         }
-      }
+      },
+      "required": [
+        "users"
+      ]
     },
     "Userset": {
       "type": "object",
@@ -1717,7 +1979,11 @@
         "subtract": {
           "$ref": "#/definitions/Node"
         }
-      }
+      },
+      "required": [
+        "base",
+        "subtract"
+      ]
     },
     "UsersetTree.TupleToUserset": {
       "type": "object",
@@ -1731,7 +1997,11 @@
             "$ref": "#/definitions/Computed"
           }
         }
-      }
+      },
+      "required": [
+        "tupleset",
+        "computed"
+      ]
     },
     "Usersets": {
       "type": "object",
@@ -1742,7 +2012,10 @@
             "$ref": "#/definitions/Userset"
           }
         }
-      }
+      },
+      "required": [
+        "child"
+      ]
     },
     "ValidationErrorMessageResponse": {
       "type": "object",
@@ -1772,7 +2045,40 @@
           "type": "string",
           "example": "01G5JAVJ41T49E9TT3SKVS7X1J"
         }
-      }
+      },
+      "required": [
+        "authorization_model_id"
+      ]
+    },
+    "WriteRequestDeletes": {
+      "type": "object",
+      "properties": {
+        "tuple_keys": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TupleKeyWithoutCondition",
+            "minimum": 1
+          }
+        }
+      },
+      "required": [
+        "tuple_keys"
+      ]
+    },
+    "WriteRequestWrites": {
+      "type": "object",
+      "properties": {
+        "tuple_keys": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TupleKey",
+            "minimum": 1
+          }
+        }
+      },
+      "required": [
+        "tuple_keys"
+      ]
     },
     "WriteResponse": {
       "type": "object"
@@ -1802,7 +2108,11 @@
         "computedUserset": {
           "$ref": "#/definitions/ObjectRelation"
         }
-      }
+      },
+      "required": [
+        "tupleset",
+        "computedUserset"
+      ]
     }
   }
 }

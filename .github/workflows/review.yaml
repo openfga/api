@@ -3,6 +3,7 @@ on:
   pull_request:
     branches:
       - main
+      - feat/abac
 
 permissions:
   contents: read
@@ -21,7 +22,7 @@ jobs:
       - uses: bufbuild/buf-breaking-action@a074e988ee34efcd4927079e79c611f428354c01 # v1.1.3
         with:
           # The 'main' branch of the GitHub repository that defines the module.
-          against: "https://github.com/${GITHUB_REPOSITORY}.git#branch=main"
+          against: "https://github.com/${GITHUB_REPOSITORY}.git#branch=${GITHUB_BASE_REF}"
       - run: buf format -d --exit-code
 
   diff-openapi:
