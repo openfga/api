@@ -3305,10 +3305,10 @@ func (m *ReadAuthorizationModelsRequest) validate(all bool) error {
 
 	if wrapper := m.GetPageSize(); wrapper != nil {
 
-		if val := wrapper.GetValue(); val < 1 || val > 100 {
+		if val := wrapper.GetValue(); val < 1 || val > 50 {
 			err := ReadAuthorizationModelsRequestValidationError{
 				field:  "PageSize",
-				reason: "value must be inside range [1, 100]",
+				reason: "value must be inside range [1, 50]",
 			}
 			if !all {
 				return err

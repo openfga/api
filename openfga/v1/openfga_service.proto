@@ -1107,7 +1107,7 @@ message ReadAuthorizationModelsRequest {
     json_name = "page_size",
     (validate.rules).int32 = {
       gte: 1,
-      lte: 100
+      lte: 50
     },
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "50"}
   ];
