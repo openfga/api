@@ -1354,8 +1354,43 @@ message ListStoresResponse {
   ];
 }
 
+message AssertionTupleKey {
+  string object = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (validate.rules).string = {
+      pattern: "^[^\\s]{2,256}$",
+      ignore_empty: true
+    },
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      max_length: 256,
+      example: "\"document:2021-budget\""
+    }
+  ];
+
+  string relation = 2 [
+    (google.api.field_behavior) = REQUIRED,
+    (validate.rules).string = {
+      pattern: "^[^:#@\\s]{1,50}$",
+      ignore_empty: true
+    },
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      max_length: 50,
+      example: "\"reader\""
+    }
+  ];
+
+  string user = 3 [
+    (google.api.field_behavior) = REQUIRED,
+    (validate.rules).string = {max_bytes: 512},
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      max_length: 512,
+      example: "\"user:anne\""
+    }
+  ];
+}
+
 message Assertion {
-  CheckRequestTupleKey tuple_key = 1 [
+  AssertionTupleKey tuple_key = 1 [
     (validate.rules).message.required = true,
     json_name = "tuple_key",
     (google.api.field_behavior) = REQUIRED
