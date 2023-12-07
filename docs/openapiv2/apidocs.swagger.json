@@ -1027,7 +1027,7 @@
       "type": "object",
       "properties": {
         "tuple_key": {
-          "$ref": "#/definitions/CheckRequestTupleKey"
+          "$ref": "#/definitions/AssertionTupleKey"
         },
         "expectation": {
           "type": "boolean"
@@ -1036,6 +1036,31 @@
       "required": [
         "tuple_key",
         "expectation"
+      ]
+    },
+    "AssertionTupleKey": {
+      "type": "object",
+      "properties": {
+        "object": {
+          "type": "string",
+          "example": "document:2021-budget",
+          "maxLength": 256
+        },
+        "relation": {
+          "type": "string",
+          "example": "reader",
+          "maxLength": 50
+        },
+        "user": {
+          "type": "string",
+          "example": "user:anne",
+          "maxLength": 512
+        }
+      },
+      "required": [
+        "object",
+        "relation",
+        "user"
       ]
     },
     "AuthorizationModel": {
@@ -1519,7 +1544,7 @@
         "NULL_VALUE"
       ],
       "default": "NULL_VALUE",
-      "description": "`NullValue` is a singleton enumeration to represent the null value for the\n`Value` type union.\n\nThe JSON representation for `NullValue` is JSON `null`.\n\n - NULL_VALUE: Null value."
+      "description": "`NullValue` is a singleton enumeration to represent the null value for the\n`Value` type union.\n\n The JSON representation for `NullValue` is JSON `null`.\n\n - NULL_VALUE: Null value."
     },
     "ObjectRelation": {
       "type": "object",
