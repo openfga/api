@@ -1091,15 +1091,19 @@ func (m *RelationReference) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
-	if !_RelationReference_Condition_Pattern.MatchString(m.GetCondition()) {
-		err := RelationReferenceValidationError{
-			field:  "Condition",
-			reason: "value does not match regex pattern \"^[^:#@\\\\s]{1,50}$\"",
+	if m.GetCondition() != "" {
+
+		if !_RelationReference_Condition_Pattern.MatchString(m.GetCondition()) {
+			err := RelationReferenceValidationError{
+				field:  "Condition",
+				reason: "value does not match regex pattern \"^[^:#@\\\\s]{1,50}$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
 		}
-		if !all {
-			return err
-		}
-		errors = append(errors, err)
+
 	}
 
 	switch v := m.RelationOrWildcard.(type) {
