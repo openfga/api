@@ -1091,7 +1091,16 @@ func (m *RelationReference) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
-	// no validation rules for Condition
+	if !_RelationReference_Condition_Pattern.MatchString(m.GetCondition()) {
+		err := RelationReferenceValidationError{
+			field:  "Condition",
+			reason: "value does not match regex pattern \"^[^:#@\\\\s]{1,50}$\"",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
 
 	switch v := m.RelationOrWildcard.(type) {
 	case *RelationReference_Relation:
@@ -1249,6 +1258,8 @@ var _ interface {
 var _RelationReference_Type_Pattern = regexp.MustCompile("^[^:#@\\s]{1,254}$")
 
 var _RelationReference_Relation_Pattern = regexp.MustCompile("^[^:#@\\s]{1,50}$")
+
+var _RelationReference_Condition_Pattern = regexp.MustCompile("^[^:#@\\s]{1,50}$")
 
 // Validate checks the field values on Wildcard with the rules defined in the
 // proto definition for this message. If any rules are violated, the first

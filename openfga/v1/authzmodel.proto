@@ -110,7 +110,7 @@ message RelationReference {
   }
 
   // The name of a condition that is enforced over the allowed relation.
-  string condition = 4;
+  string condition = 4 [(validate.rules).string = {pattern: "^[^:#@\\s]{1,50}$"}];
 }
 
 message Wildcard {}
