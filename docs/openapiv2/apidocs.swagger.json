@@ -54,7 +54,7 @@
             }
           },
           "409": {
-            "description": "Request failed due to aborted.",
+            "description": "Request was aborted due a transaction conflict.",
             "schema": {
               "$ref": "#/definitions/AbortedMessageResponse"
             }
@@ -109,7 +109,7 @@
             }
           },
           "409": {
-            "description": "Request failed due to aborted.",
+            "description": "Request was aborted due a transaction conflict.",
             "schema": {
               "$ref": "#/definitions/AbortedMessageResponse"
             }
@@ -161,7 +161,7 @@
             }
           },
           "409": {
-            "description": "Request failed due to aborted.",
+            "description": "Request was aborted due a transaction conflict.",
             "schema": {
               "$ref": "#/definitions/AbortedMessageResponse"
             }
@@ -206,7 +206,7 @@
             }
           },
           "409": {
-            "description": "Request failed due to aborted.",
+            "description": "Request was aborted due a transaction conflict.",
             "schema": {
               "$ref": "#/definitions/AbortedMessageResponse"
             }
@@ -256,7 +256,7 @@
             }
           },
           "409": {
-            "description": "Request failed due to aborted.",
+            "description": "Request was aborted due a transaction conflict.",
             "schema": {
               "$ref": "#/definitions/AbortedMessageResponse"
             }
@@ -307,7 +307,7 @@
             }
           },
           "409": {
-            "description": "Request failed due to aborted.",
+            "description": "Request was aborted due a transaction conflict.",
             "schema": {
               "$ref": "#/definitions/AbortedMessageResponse"
             }
@@ -383,7 +383,7 @@
             }
           },
           "409": {
-            "description": "Request failed due to aborted.",
+            "description": "Request was aborted due a transaction conflict.",
             "schema": {
               "$ref": "#/definitions/AbortedMessageResponse"
             }
@@ -444,7 +444,7 @@
             }
           },
           "409": {
-            "description": "Request failed due to aborted.",
+            "description": "Request was aborted due a transaction conflict.",
             "schema": {
               "$ref": "#/definitions/AbortedMessageResponse"
             }
@@ -524,7 +524,7 @@
             }
           },
           "409": {
-            "description": "Request failed due to aborted.",
+            "description": "Request was aborted due a transaction conflict.",
             "schema": {
               "$ref": "#/definitions/AbortedMessageResponse"
             }
@@ -580,7 +580,7 @@
             }
           },
           "409": {
-            "description": "Request failed due to aborted.",
+            "description": "Request was aborted due a transaction conflict.",
             "schema": {
               "$ref": "#/definitions/AbortedMessageResponse"
             }
@@ -649,7 +649,7 @@
             }
           },
           "409": {
-            "description": "Request failed due to aborted.",
+            "description": "Request was aborted due a transaction conflict.",
             "schema": {
               "$ref": "#/definitions/AbortedMessageResponse"
             }
@@ -732,7 +732,7 @@
             }
           },
           "409": {
-            "description": "Request failed due to aborted.",
+            "description": "Request was aborted due a transaction conflict.",
             "schema": {
               "$ref": "#/definitions/AbortedMessageResponse"
             }
@@ -802,7 +802,7 @@
             }
           },
           "409": {
-            "description": "Request failed due to aborted.",
+            "description": "Request was aborted due a transaction conflict.",
             "schema": {
               "$ref": "#/definitions/AbortedMessageResponse"
             }
@@ -892,7 +892,7 @@
             }
           },
           "409": {
-            "description": "Request failed due to aborted.",
+            "description": "Request was aborted due a transaction conflict.",
             "schema": {
               "$ref": "#/definitions/AbortedMessageResponse"
             }
@@ -973,7 +973,7 @@
             }
           },
           "409": {
-            "description": "Request failed due to aborted.",
+            "description": "Request was aborted due a transaction conflict.",
             "schema": {
               "$ref": "#/definitions/AbortedMessageResponse"
             }
@@ -1063,7 +1063,7 @@
             }
           },
           "409": {
-            "description": "Request failed due to aborted.",
+            "description": "Request was aborted due a transaction conflict.",
             "schema": {
               "$ref": "#/definitions/AbortedMessageResponse"
             }
