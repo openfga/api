@@ -356,6 +356,112 @@ var _ interface {
 	ErrorName() string
 } = PathUnknownErrorMessageResponseValidationError{}
 
+// Validate checks the field values on AbortedMessageResponse with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *AbortedMessageResponse) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on AbortedMessageResponse with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// AbortedMessageResponseMultiError, or nil if none found.
+func (m *AbortedMessageResponse) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *AbortedMessageResponse) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Code
+
+	// no validation rules for Message
+
+	if len(errors) > 0 {
+		return AbortedMessageResponseMultiError(errors)
+	}
+
+	return nil
+}
+
+// AbortedMessageResponseMultiError is an error wrapping multiple validation
+// errors returned by AbortedMessageResponse.ValidateAll() if the designated
+// constraints aren't met.
+type AbortedMessageResponseMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m AbortedMessageResponseMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m AbortedMessageResponseMultiError) AllErrors() []error { return m }
+
+// AbortedMessageResponseValidationError is the validation error returned by
+// AbortedMessageResponse.Validate if the designated constraints aren't met.
+type AbortedMessageResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e AbortedMessageResponseValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e AbortedMessageResponseValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e AbortedMessageResponseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e AbortedMessageResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e AbortedMessageResponseValidationError) ErrorName() string {
+	return "AbortedMessageResponseValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e AbortedMessageResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sAbortedMessageResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = AbortedMessageResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = AbortedMessageResponseValidationError{}
+
 // Validate checks the field values on ErrorMessageRequest with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.

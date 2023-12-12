@@ -114,4 +114,10 @@ message PathUnknownErrorMessageResponse {
   string message = 2;
 }
 
+message AbortedMessageResponse {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {example: "{\"code\":\"10\", \"message\":\"transaction conflict\"}"};
+  string code = 1;
+  string message = 2;
+}
+
 message ErrorMessageRequest {}

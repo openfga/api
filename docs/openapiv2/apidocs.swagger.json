@@ -53,6 +53,12 @@
               "$ref": "#/definitions/PathUnknownErrorMessageResponse"
             }
           },
+          "409": {
+            "description": "Request was aborted due a transaction conflict.",
+            "schema": {
+              "$ref": "#/definitions/AbortedMessageResponse"
+            }
+          },
           "500": {
             "description": "Request failed due to internal server error.",
             "schema": {
@@ -102,6 +108,12 @@
               "$ref": "#/definitions/PathUnknownErrorMessageResponse"
             }
           },
+          "409": {
+            "description": "Request was aborted due a transaction conflict.",
+            "schema": {
+              "$ref": "#/definitions/AbortedMessageResponse"
+            }
+          },
           "500": {
             "description": "Request failed due to internal server error.",
             "schema": {
@@ -148,6 +160,12 @@
               "$ref": "#/definitions/PathUnknownErrorMessageResponse"
             }
           },
+          "409": {
+            "description": "Request was aborted due a transaction conflict.",
+            "schema": {
+              "$ref": "#/definitions/AbortedMessageResponse"
+            }
+          },
           "500": {
             "description": "Request failed due to internal server error.",
             "schema": {
@@ -185,6 +203,12 @@
             "description": "Request failed due to incorrect path.",
             "schema": {
               "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "409": {
+            "description": "Request was aborted due a transaction conflict.",
+            "schema": {
+              "$ref": "#/definitions/AbortedMessageResponse"
             }
           },
           "500": {
@@ -231,6 +255,12 @@
               "$ref": "#/definitions/PathUnknownErrorMessageResponse"
             }
           },
+          "409": {
+            "description": "Request was aborted due a transaction conflict.",
+            "schema": {
+              "$ref": "#/definitions/AbortedMessageResponse"
+            }
+          },
           "500": {
             "description": "Request failed due to internal server error.",
             "schema": {
@@ -274,6 +304,12 @@
             "description": "Request failed due to incorrect path.",
             "schema": {
               "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "409": {
+            "description": "Request was aborted due a transaction conflict.",
+            "schema": {
+              "$ref": "#/definitions/AbortedMessageResponse"
             }
           },
           "500": {
@@ -346,6 +382,12 @@
               "$ref": "#/definitions/PathUnknownErrorMessageResponse"
             }
           },
+          "409": {
+            "description": "Request was aborted due a transaction conflict.",
+            "schema": {
+              "$ref": "#/definitions/AbortedMessageResponse"
+            }
+          },
           "500": {
             "description": "Request failed due to internal server error.",
             "schema": {
@@ -399,6 +441,12 @@
             "description": "Request failed due to incorrect path.",
             "schema": {
               "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "409": {
+            "description": "Request was aborted due a transaction conflict.",
+            "schema": {
+              "$ref": "#/definitions/AbortedMessageResponse"
             }
           },
           "500": {
@@ -475,6 +523,12 @@
               "$ref": "#/definitions/PathUnknownErrorMessageResponse"
             }
           },
+          "409": {
+            "description": "Request was aborted due a transaction conflict.",
+            "schema": {
+              "$ref": "#/definitions/AbortedMessageResponse"
+            }
+          },
           "500": {
             "description": "Request failed due to internal server error.",
             "schema": {
@@ -523,6 +577,12 @@
             "description": "Request failed due to incorrect path.",
             "schema": {
               "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "409": {
+            "description": "Request was aborted due a transaction conflict.",
+            "schema": {
+              "$ref": "#/definitions/AbortedMessageResponse"
             }
           },
           "500": {
@@ -586,6 +646,12 @@
             "description": "Request failed due to incorrect path.",
             "schema": {
               "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "409": {
+            "description": "Request was aborted due a transaction conflict.",
+            "schema": {
+              "$ref": "#/definitions/AbortedMessageResponse"
             }
           },
           "500": {
@@ -665,6 +731,12 @@
               "$ref": "#/definitions/PathUnknownErrorMessageResponse"
             }
           },
+          "409": {
+            "description": "Request was aborted due a transaction conflict.",
+            "schema": {
+              "$ref": "#/definitions/AbortedMessageResponse"
+            }
+          },
           "500": {
             "description": "Request failed due to internal server error.",
             "schema": {
@@ -727,6 +799,12 @@
             "description": "Request failed due to incorrect path.",
             "schema": {
               "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "409": {
+            "description": "Request was aborted due a transaction conflict.",
+            "schema": {
+              "$ref": "#/definitions/AbortedMessageResponse"
             }
           },
           "500": {
@@ -813,6 +891,12 @@
               "$ref": "#/definitions/PathUnknownErrorMessageResponse"
             }
           },
+          "409": {
+            "description": "Request was aborted due a transaction conflict.",
+            "schema": {
+              "$ref": "#/definitions/AbortedMessageResponse"
+            }
+          },
           "500": {
             "description": "Request failed due to internal server error.",
             "schema": {
@@ -886,6 +970,12 @@
             "description": "Request failed due to incorrect path.",
             "schema": {
               "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "409": {
+            "description": "Request was aborted due a transaction conflict.",
+            "schema": {
+              "$ref": "#/definitions/AbortedMessageResponse"
             }
           },
           "500": {
@@ -972,6 +1062,12 @@
               "$ref": "#/definitions/PathUnknownErrorMessageResponse"
             }
           },
+          "409": {
+            "description": "Request was aborted due a transaction conflict.",
+            "schema": {
+              "$ref": "#/definitions/AbortedMessageResponse"
+            }
+          },
           "500": {
             "description": "Request failed due to internal server error.",
             "schema": {
@@ -1014,6 +1110,21 @@
     }
   },
   "definitions": {
+    "AbortedMessageResponse": {
+      "type": "object",
+      "example": {
+        "code": "10",
+        "message": "transaction conflict"
+      },
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    },
     "Any": {
       "type": "object",
       "properties": {
@@ -1544,7 +1655,7 @@
         "NULL_VALUE"
       ],
       "default": "NULL_VALUE",
-      "description": "`NullValue` is a singleton enumeration to represent the null value for the\n`Value` type union.\n\nThe JSON representation for `NullValue` is JSON `null`.\n\n - NULL_VALUE: Null value."
+      "description": "`NullValue` is a singleton enumeration to represent the null value for the\n`Value` type union.\n\n The JSON representation for `NullValue` is JSON `null`.\n\n - NULL_VALUE: Null value."
     },
     "ObjectRelation": {
       "type": "object",
