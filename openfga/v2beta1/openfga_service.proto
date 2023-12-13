@@ -3,12 +3,13 @@ syntax = "proto3";
 package openfga.v2beta1;
 
 import "google/protobuf/struct.proto";
+import "openfga/v2beta1/openfga.proto";
 
 service OpenFGAService {
     rpc Check(CheckRequest) returns (CheckResponse);
     rpc ListObjects(ListObjectsRequest) returns (ListObjectsResponse);
 
-    rpc DeleteRelationships(DeleteRelationshipsRequest) returns (DeleteRelationshipResponse);
+    rpc DeleteRelationships(DeleteRelationshipsRequest) returns (DeleteRelationshipsResponse);
     rpc WriteRelationships(WriteRelationshipsRequest) returns (WriteRelationshipsResponse);
 
     rpc WriteModel(WriteModelRequest) returns (WriteModelResponse);
@@ -31,10 +32,10 @@ message CheckResponse{}
 message ListObjectsRequest{
     string store_id = 1;
     string model_id = 2;
-    Subject subject = 3;
+    openfga.v2beta1.Subject subject = 3;
     string relation = 4;
     string object_type = 5;
-    repeated RelationshipTuple contextual_tuples = 6;
+    repeated openfga.v2beta1.RelationshipTuple contextual_tuples = 6;
     google.protobuf.Struct context = 7;
 }
 message ListObjectsResponse{}
@@ -42,7 +43,7 @@ message ListObjectsResponse{}
 message DeleteRelationshipsRequest{
     string store_id = 1;
 }
-message DeleteRelationshipResponse{}
+message DeleteRelationshipsResponse{}
 
 message WriteRelationshipsRequest{
     string store_id = 1;
