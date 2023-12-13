@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package openfga.v2beta1;
 
+import "google/protobuf/struct.proto";
+
 service OpenFGAService {
     rpc Check(CheckRequest) returns (CheckResponse);
     rpc ListObjects(ListObjectsRequest) returns (ListObjectsResponse);
@@ -14,23 +16,51 @@ service OpenFGAService {
     rpc ListModels(ListModelsRequest) returns (ListModelsResponse);
 }
 
-message CheckRequest{}
+message CheckRequest{
+    string store_id = 1;
+    string model_id = 2;
+    Subject subject = 3;
+    string relation = 4;
+    Object object = 5;
+    repeated RelationshipTuple contextual_tuples = 6;
+    google.protobuf.Struct context = 7;
+}
+
 message CheckResponse{}
 
-message ListObjectsRequest{}
+message ListObjectsRequest{
+    string store_id = 1;
+    string model_id = 2;
+    Subject subject = 3;
+    string relation = 4;
+    string object_type = 5;
+    repeated RelationshipTuple contextual_tuples = 6;
+    google.protobuf.Struct context = 7;
+}
 message ListObjectsResponse{}
 
-message DeleteRelationshipsRequest{}
+message DeleteRelationshipsRequest{
+    string store_id = 1;
+}
 message DeleteRelationshipResponse{}
 
-message WriteRelationshipsRequest{}
+message WriteRelationshipsRequest{
+    string store_id = 1;
+}
 message WriteRelationshipsResponse{}
 
-message WriteModelRequest{}
+message WriteModelRequest{
+    string store_id = 1;
+}
 message WriteModelResponse{}
 
-message ReadModelRequest{}
+message ReadModelRequest{
+    string store_id = 1;
+    string model_id = 2;
+}
 message ReadModelResponse{}
 
-message ListModelsRequest{}
+message ListModelsRequest{
+    string store_id = 1;
+}
 message ListModelsResponse{}
