@@ -1,0 +1,36 @@
+syntax = "proto3";
+
+package openfga.v2beta1;
+
+service OpenFGAService {
+    rpc Check(CheckRequest) returns (CheckResponse);
+    rpc ListObjects(ListObjectsRequest) returns (ListObjectsResponse);
+
+    rpc DeleteRelationships(DeleteRelationshipsRequest) returns (DeleteRelationshipResponse);
+    rpc WriteRelationships(WriteRelationshipsRequest) returns (WriteRelationshipsResponse);
+
+    rpc WriteModel(WriteModelRequest) returns (WriteModelResponse);
+    rpc ReadModel(ReadModelRequest) returns (ReadModelResponse);
+    rpc ListModels(ListModelsRequest) returns (ListModelsResponse);
+}
+
+message CheckRequest{}
+message CheckResponse{}
+
+message ListObjectsRequest{}
+message ListObjectsResponse{}
+
+message DeleteRelationshipsRequest{}
+message DeleteRelationshipResponse{}
+
+message WriteRelationshipsRequest{}
+message WriteRelationshipsResponse{}
+
+message WriteModelRequest{}
+message WriteModelResponse{}
+
+message ReadModelRequest{}
+message ReadModelResponse{}
+
+message ListModelsRequest{}
+message ListModelsResponse{}

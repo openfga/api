@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package watch.v2beta1;
+
+service WatchService {
+
+    // WatchChanges implements a streaming watch over an FGA store's changelog
+    rpc WatchChanges(WatchChangesRequest) returns (stream WatchChangesResponse);
+}
+
+message WatchChangesRequest {}
+message WatchChangesResponse {}
