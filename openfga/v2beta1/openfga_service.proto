@@ -3,14 +3,18 @@ syntax = "proto3";
 package openfga.v2beta1;
 
 import "google/protobuf/struct.proto";
+import "google/rpc/status.proto";
 import "openfga/v2beta1/openfga.proto";
 
 service OpenFGAService {
     rpc Check(CheckRequest) returns (CheckResponse);
+    rpc BatchCheck(BatchCheckRequest) returns (BatchCheckResponse);
+
     rpc ListObjects(ListObjectsRequest) returns (ListObjectsResponse);
 
-    rpc DeleteRelationships(DeleteRelationshipsRequest) returns (DeleteRelationshipsResponse);
-    rpc WriteRelationships(WriteRelationshipsRequest) returns (WriteRelationshipsResponse);
+    rpc DeleteRelationshipTuples(DeleteRelationshipTuplesRequest) returns (DeleteRelationshipTuplesResponse);
+    rpc WriteRelationshipTuples(WriteRelationshipTuplesRequest) returns (WriteRelationshipTuplesResponse);
+    rpc ReadRelationshipTuples(ReadRelationshipTuplesRequest) returns (ReadRelationshipTuplesResponse);
 
     rpc WriteModel(WriteModelRequest) returns (WriteModelResponse);
     rpc ReadModel(ReadModelRequest) returns (ReadModelResponse);
@@ -29,26 +33,73 @@ message CheckRequest{
 
 message CheckResponse{}
 
+message BatchCheckRequest {
+
+    // One or more individual Check requests to evaluate in the batch.
+    repeated BatchCheckRequestItem requests = 1;
+}
+
+message BatchCheckResponse {
+
+    // The response pairings for each request item and the result/response it produced.
+    repeated BatchCheckResponsePair response_pairs = 1;
+}
+
+// BatchCheckRequestItem represents a single Check request item used in a BatchCheckRequest.
+message BatchCheckRequestItem {
+    Subject subject = 1;
+    string relation = 2;
+    Object object = 3;
+    repeated RelationshipTuple  contextual_tuples = 4;
+    google.protobuf.Struct context = 5;
+}
+
+// BatchCheckResponseItem represents an individual response for a singular BatchCheckRequestItem produced
+// by a BatchCheck RPC.
+message BatchCheckResponseItem {
+    CheckResponse response = 1;
+}
+
+// BatchCheckResponsePair represents the pairing of an individual BatchCheckRequestItem in a
+// BatchCheckRequest and the result which the individual request produced. Each BatchCheckRequestItem
+// can produce either a response item or an error.
+message BatchCheckResponsePair {
+    BatchCheckRequestItem request = 1;
+
+    oneof result {
+        BatchCheckResponseItem response_item = 2;
+        google.rpc.Status error = 3;
+    }
+}
+
 message ListObjectsRequest{
     string store_id = 1;
     string model_id = 2;
-    openfga.v2beta1.Subject subject = 3;
+    Subject subject = 3;
     string relation = 4;
     string object_type = 5;
-    repeated openfga.v2beta1.RelationshipTuple contextual_tuples = 6;
+    RelationshipTuple contextual_tuples = 6;
     google.protobuf.Struct context = 7;
 }
 message ListObjectsResponse{}
 
-message DeleteRelationshipsRequest{
+message DeleteRelationshipTuplesRequest{
     string store_id = 1;
 }
-message DeleteRelationshipsResponse{}
+message DeleteRelationshipTuplesResponse{}
 
-message WriteRelationshipsRequest{
+message WriteRelationshipTuplesRequest{
     string store_id = 1;
 }
-message WriteRelationshipsResponse{}
+message WriteRelationshipTuplesResponse{}
+
+message ReadRelationshipTuplesRequest {
+    string store_id = 1;
+}
+
+message ReadRelationshipTuplesResponse {
+    repeated RelationshipTuple relationship_tuples = 1;
+}
 
 message WriteModelRequest{
     string store_id = 1;
