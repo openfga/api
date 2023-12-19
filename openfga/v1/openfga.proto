@@ -253,8 +253,5 @@ message Store {
     json_name = "updated_at",
     (google.api.field_behavior) = REQUIRED
   ];
-  google.protobuf.Timestamp deleted_at = 5 [
-    json_name = "deleted_at",
-    (google.api.field_behavior) = REQUIRED
-  ];
+  google.protobuf.Timestamp deleted_at = 5 [json_name = "deleted_at"];
 }

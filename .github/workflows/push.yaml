@@ -17,19 +17,19 @@ jobs:
   push:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.5.4
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
         with:
           fetch-depth: 0
 
-      - uses: bufbuild/buf-setup-action@a9cf7d0e410e4e9166fd3ffacd119a2cf0d50f2b # v1.27.1-1
+      - uses: bufbuild/buf-setup-action@382440cdb8ec7bc25a68d7b4711163d95f7cc3aa # v1.28.1
         with:
-          version: "1.15.1"
+          version: "1.28.1"
       - uses: bufbuild/buf-push-action@a654ff18effe4641ebea4a4ce242c49800728459 # v1.2.0
         with:
           buf_token: ${{ secrets.BUF_TOKEN }}
       - name: Send PagerDuty alert on failure
         if: ${{ failure() }}
-        uses: miparnisari/action-pagerduty-alert@0.3.2
+        uses: miparnisari/action-pagerduty-alert@a6a738b712efa0e1a45b1b796c62f60fc30b5d99 # v0.3.2
         with:
           pagerduty-integration-key: ${{ secrets.PAGERDUTY_INTEGRATION_KEY }}
           incident-summary: "Problem pushing OpenFGA Buf module to Buf Registry"
