@@ -34,4 +34,10 @@ To generate the OpenAPI documentation from the protobuf sources you can run the 
 ```bash
 ./buf.gen.yaml
 ./scripts/update_swagger.sh docs/openapiv2/apidocs.swagger.json
+buf format -w
+```
+
+Or you can just use
+```bash
+make
 ```
