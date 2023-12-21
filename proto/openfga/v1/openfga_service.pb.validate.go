@@ -1986,10 +1986,10 @@ func (m *CheckRequestTupleKey) validate(all bool) error {
 
 	var errors []error
 
-	if len(m.GetUser()) > 512 {
+	if !_CheckRequestTupleKey_User_Pattern.MatchString(m.GetUser()) {
 		err := CheckRequestTupleKeyValidationError{
 			field:  "User",
-			reason: "value length must be at most 512 bytes",
+			reason: "value does not match regex pattern \"^[^\\\\s]{2,512}$\"",
 		}
 		if !all {
 			return err
@@ -1997,34 +1997,26 @@ func (m *CheckRequestTupleKey) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
-	if m.GetRelation() != "" {
-
-		if !_CheckRequestTupleKey_Relation_Pattern.MatchString(m.GetRelation()) {
-			err := CheckRequestTupleKeyValidationError{
-				field:  "Relation",
-				reason: "value does not match regex pattern \"^[^:#@\\\\s]{1,50}$\"",
-			}
-			if !all {
-				return err
-			}
-			errors = append(errors, err)
+	if !_CheckRequestTupleKey_Relation_Pattern.MatchString(m.GetRelation()) {
+		err := CheckRequestTupleKeyValidationError{
+			field:  "Relation",
+			reason: "value does not match regex pattern \"^[^:#@\\\\s]{1,50}$\"",
 		}
-
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
 	}
 
-	if m.GetObject() != "" {
-
-		if !_CheckRequestTupleKey_Object_Pattern.MatchString(m.GetObject()) {
-			err := CheckRequestTupleKeyValidationError{
-				field:  "Object",
-				reason: "value does not match regex pattern \"^[^\\\\s]{2,256}$\"",
-			}
-			if !all {
-				return err
-			}
-			errors = append(errors, err)
+	if !_CheckRequestTupleKey_Object_Pattern.MatchString(m.GetObject()) {
+		err := CheckRequestTupleKeyValidationError{
+			field:  "Object",
+			reason: "value does not match regex pattern \"^[^\\\\s]{2,256}$\"",
 		}
-
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
 	}
 
 	if len(errors) > 0 {
@@ -2106,6 +2098,8 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = CheckRequestTupleKeyValidationError{}
+
+var _CheckRequestTupleKey_User_Pattern = regexp.MustCompile("^[^\\s]{2,512}$")
 
 var _CheckRequestTupleKey_Relation_Pattern = regexp.MustCompile("^[^:#@\\s]{1,50}$")
 
