@@ -5800,40 +5800,32 @@ func (m *AssertionTupleKey) validate(all bool) error {
 
 	var errors []error
 
-	if m.GetObject() != "" {
-
-		if !_AssertionTupleKey_Object_Pattern.MatchString(m.GetObject()) {
-			err := AssertionTupleKeyValidationError{
-				field:  "Object",
-				reason: "value does not match regex pattern \"^[^\\\\s]{2,256}$\"",
-			}
-			if !all {
-				return err
-			}
-			errors = append(errors, err)
+	if !_AssertionTupleKey_Object_Pattern.MatchString(m.GetObject()) {
+		err := AssertionTupleKeyValidationError{
+			field:  "Object",
+			reason: "value does not match regex pattern \"^[^\\\\s]{2,256}$\"",
 		}
-
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
 	}
 
-	if m.GetRelation() != "" {
-
-		if !_AssertionTupleKey_Relation_Pattern.MatchString(m.GetRelation()) {
-			err := AssertionTupleKeyValidationError{
-				field:  "Relation",
-				reason: "value does not match regex pattern \"^[^:#@\\\\s]{1,50}$\"",
-			}
-			if !all {
-				return err
-			}
-			errors = append(errors, err)
+	if !_AssertionTupleKey_Relation_Pattern.MatchString(m.GetRelation()) {
+		err := AssertionTupleKeyValidationError{
+			field:  "Relation",
+			reason: "value does not match regex pattern \"^[^:#@\\\\s]{1,50}$\"",
 		}
-
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
 	}
 
-	if len(m.GetUser()) > 512 {
+	if !_AssertionTupleKey_User_Pattern.MatchString(m.GetUser()) {
 		err := AssertionTupleKeyValidationError{
 			field:  "User",
-			reason: "value length must be at most 512 bytes",
+			reason: "value does not match regex pattern \"^[^\\\\s]{2,512}$\"",
 		}
 		if !all {
 			return err
@@ -5924,6 +5916,8 @@ var _ interface {
 var _AssertionTupleKey_Object_Pattern = regexp.MustCompile("^[^\\s]{2,256}$")
 
 var _AssertionTupleKey_Relation_Pattern = regexp.MustCompile("^[^:#@\\s]{1,50}$")
+
+var _AssertionTupleKey_User_Pattern = regexp.MustCompile("^[^\\s]{2,512}$")
 
 // Validate checks the field values on Assertion with the rules defined in the
 // proto definition for this message. If any rules are violated, the first
