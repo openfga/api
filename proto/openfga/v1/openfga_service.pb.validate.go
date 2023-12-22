@@ -2677,10 +2677,10 @@ func (m *ReadAuthorizationModelRequest) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
-	if utf8.RuneCountInString(m.GetId()) > 26 {
+	if !_ReadAuthorizationModelRequest_Id_Pattern.MatchString(m.GetId()) {
 		err := ReadAuthorizationModelRequestValidationError{
 			field:  "Id",
-			reason: "value length must be at most 26 runes",
+			reason: "value does not match regex pattern \"^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$\"",
 		}
 		if !all {
 			return err
@@ -2770,6 +2770,8 @@ var _ interface {
 } = ReadAuthorizationModelRequestValidationError{}
 
 var _ReadAuthorizationModelRequest_StoreId_Pattern = regexp.MustCompile("^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$")
+
+var _ReadAuthorizationModelRequest_Id_Pattern = regexp.MustCompile("^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$")
 
 // Validate checks the field values on ReadAuthorizationModelResponse with the
 // rules defined in the proto definition for this message. If any rules are

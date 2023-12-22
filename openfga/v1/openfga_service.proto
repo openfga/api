@@ -1039,7 +1039,12 @@ message ReadAuthorizationModelRequest {
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""}
   ];
 
-  string id = 2 [(validate.rules).string.max_len = 26];
+  string id = 2 [
+    json_name = "id",
+    (google.api.field_behavior) = REQUIRED,
+    (validate.rules).string = {pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"},
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01G5JAVJ41T49E9TT3SKVS7X1J\""}
+  ];
 }
 
 message ReadAuthorizationModelResponse {
