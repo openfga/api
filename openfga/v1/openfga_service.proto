@@ -945,7 +945,7 @@ message CheckRequest {
 message CheckRequestTupleKey {
   string user = 1 [
     (google.api.field_behavior) = REQUIRED,
-    (validate.rules).string = {max_bytes: 512},
+    (validate.rules).string = {pattern: "^[^\\s]{2,512}$"},
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       max_length: 512,
       example: "\"user:anne\""
@@ -954,10 +954,7 @@ message CheckRequestTupleKey {
 
   string relation = 2 [
     (google.api.field_behavior) = REQUIRED,
-    (validate.rules).string = {
-      pattern: "^[^:#@\\s]{1,50}$",
-      ignore_empty: true
-    },
+    (validate.rules).string = {pattern: "^[^:#@\\s]{1,50}$"},
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       max_length: 50,
       example: "\"reader\""
@@ -966,10 +963,7 @@ message CheckRequestTupleKey {
 
   string object = 3 [
     (google.api.field_behavior) = REQUIRED,
-    (validate.rules).string = {
-      pattern: "^[^\\s]{2,256}$",
-      ignore_empty: true
-    },
+    (validate.rules).string = {pattern: "^[^\\s]{2,256}$"},
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       max_length: 256,
       example: "\"document:2021-budget\""
@@ -1358,10 +1352,7 @@ message ListStoresResponse {
 message AssertionTupleKey {
   string object = 1 [
     (google.api.field_behavior) = REQUIRED,
-    (validate.rules).string = {
-      pattern: "^[^\\s]{2,256}$",
-      ignore_empty: true
-    },
+    (validate.rules).string = {pattern: "^[^\\s]{2,256}$"},
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       max_length: 256,
       example: "\"document:2021-budget\""
@@ -1370,10 +1361,7 @@ message AssertionTupleKey {
 
   string relation = 2 [
     (google.api.field_behavior) = REQUIRED,
-    (validate.rules).string = {
-      pattern: "^[^:#@\\s]{1,50}$",
-      ignore_empty: true
-    },
+    (validate.rules).string = {pattern: "^[^:#@\\s]{1,50}$"},
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       max_length: 50,
       example: "\"reader\""
@@ -1382,7 +1370,7 @@ message AssertionTupleKey {
 
   string user = 3 [
     (google.api.field_behavior) = REQUIRED,
-    (validate.rules).string = {max_bytes: 512},
+    (validate.rules).string = {pattern: "^[^\\s]{2,512}$"},
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       max_length: 512,
       example: "\"user:anne\""

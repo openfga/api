@@ -25,7 +25,7 @@ The command above will generate source code in the `proto/` directory.
     ```
 3. In OpenFGA, add the following line to your `go.mod`:
     ```
-    replace go.buf.build/openfga/go/openfga/api => /path/to/proto
+    replace github.com/openfga/api/proto => /path/to/proto
     ```
 
 ## Generating OpenAPI Documentation
