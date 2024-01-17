@@ -867,6 +867,90 @@
         ]
       }
     },
+    "/stores/{store_id}/list-users": {
+      "post": {
+        "summary": "List all users of the given type that the object has a relation with",
+        "operationId": "ListUsers",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ListUsersResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "409": {
+            "description": "Request was aborted due a transaction conflict.",
+            "schema": {
+              "$ref": "#/definitions/AbortedMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "store_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "authorization_model_id": {
+                  "type": "string",
+                  "example": "01G5JAVJ41T49E9TT3SKVS7X1J"
+                },
+                "object": {
+                  "type": "string",
+                  "example": "doc:1",
+                  "maxLength": 512,
+                  "minLength": 1
+                },
+                "relation": {
+                  "type": "string",
+                  "example": "reader"
+                },
+                "filters": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/RelationReference"
+                  }
+                }
+              },
+              "required": [
+                "object",
+                "relation",
+                "filters"
+              ]
+            }
+          }
+        ],
+        "tags": [
+          "Relationship Queries"
+        ]
+      }
+    },
     "/stores/{store_id}/read": {
       "post": {
         "summary": "Get tuples from the store that matches a query, without following userset rewrite rules",
@@ -1593,6 +1677,20 @@
       "required": [
         "stores",
         "continuation_token"
+      ]
+    },
+    "ListUsersResponse": {
+      "type": "object",
+      "properties": {
+        "users": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "users"
       ]
     },
     "Metadata": {
