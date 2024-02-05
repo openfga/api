@@ -26,7 +26,8 @@ service OpenFGAService {
       operation_id: "Read"
       description:
         "The Read API will return the tuples for a certain store that match a "
-        "query filter specified in the body of the request. "
+        "query filter specified in the body of the request. \n"
+        "The API doesn't guarantee order by any field. \n"
         "It is different from the `/stores/{store_id}/expand` API in that it only "
         "returns relationship tuples that are stored in the system and satisfy the query. \n"
         "In the body:\n"
