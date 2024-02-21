@@ -1311,7 +1311,7 @@ func RegisterOpenFGAServiceHandlerServer(ctx context.Context, mux *runtime.Serve
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/openfga.v1.OpenFGAService/ReadLatestAuthorizationModel", runtime.WithHTTPPathPattern("/stores/{store_id}/latest-authorization-models"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/openfga.v1.OpenFGAService/ReadLatestAuthorizationModel", runtime.WithHTTPPathPattern("/stores/{store_id}/latest-authorization-model"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1764,7 +1764,7 @@ func RegisterOpenFGAServiceHandlerClient(ctx context.Context, mux *runtime.Serve
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/openfga.v1.OpenFGAService/ReadLatestAuthorizationModel", runtime.WithHTTPPathPattern("/stores/{store_id}/latest-authorization-models"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/openfga.v1.OpenFGAService/ReadLatestAuthorizationModel", runtime.WithHTTPPathPattern("/stores/{store_id}/latest-authorization-model"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2038,7 +2038,7 @@ var (
 
 	pattern_OpenFGAService_ReadAuthorizationModel_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"stores", "store_id", "authorization-models", "id"}, ""))
 
-	pattern_OpenFGAService_ReadLatestAuthorizationModel_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2}, []string{"stores", "store_id", "latest-authorization-models"}, ""))
+	pattern_OpenFGAService_ReadLatestAuthorizationModel_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2}, []string{"stores", "store_id", "latest-authorization-model"}, ""))
 
 	pattern_OpenFGAService_WriteAuthorizationModel_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2}, []string{"stores", "store_id", "authorization-models"}, ""))
 

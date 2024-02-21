@@ -411,7 +411,7 @@ service OpenFGAService {
   }
 
   rpc ReadLatestAuthorizationModel(ReadLatestAuthorizationModelRequest) returns (ReadLatestAuthorizationModelResponse) {
-    option (google.api.http) = {get: "/stores/{store_id}/latest-authorization-models"};
+    option (google.api.http) = {get: "/stores/{store_id}/latest-authorization-model"};
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       summary: "Return latest authorization model"
@@ -457,8 +457,6 @@ service OpenFGAService {
         "  }\n"
         "}\n"
         "```\n"
-        "In the above example, there are 2 types (`user` and `document`). The `document` type "
-        "has 2 relations (`writer` and `reader`)."
     };
   }
 
