@@ -10,7 +10,7 @@ managed:
       - buf.build/envoyproxy/protoc-gen-validate
       - buf.build/grpc-ecosystem/grpc-gateway
 plugins:
-  - plugin: buf.build/protocolbuffers/go:v1.28.1
+  - plugin: buf.build/protocolbuffers/go:v1.32.0
     out: proto/
     opt:
       - paths=source_relative
