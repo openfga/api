@@ -445,6 +445,58 @@ func local_request_OpenFGAService_ReadAuthorizationModel_0(ctx context.Context, 
 
 }
 
+func request_OpenFGAService_ReadLatestAuthorizationModel_0(ctx context.Context, marshaler runtime.Marshaler, client OpenFGAServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ReadLatestAuthorizationModelRequest
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["store_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "store_id")
+	}
+
+	protoReq.StoreId, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "store_id", err)
+	}
+
+	msg, err := client.ReadLatestAuthorizationModel(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_OpenFGAService_ReadLatestAuthorizationModel_0(ctx context.Context, marshaler runtime.Marshaler, server OpenFGAServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ReadLatestAuthorizationModelRequest
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["store_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "store_id")
+	}
+
+	protoReq.StoreId, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "store_id", err)
+	}
+
+	msg, err := server.ReadLatestAuthorizationModel(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
 func request_OpenFGAService_WriteAuthorizationModel_0(ctx context.Context, marshaler runtime.Marshaler, client OpenFGAServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq WriteAuthorizationModelRequest
 	var metadata runtime.ServerMetadata
@@ -1251,6 +1303,31 @@ func RegisterOpenFGAServiceHandlerServer(ctx context.Context, mux *runtime.Serve
 
 	})
 
+	mux.Handle("GET", pattern_OpenFGAService_ReadLatestAuthorizationModel_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/openfga.v1.OpenFGAService/ReadLatestAuthorizationModel", runtime.WithHTTPPathPattern("/stores/{store_id}/latest-authorization-models"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_OpenFGAService_ReadLatestAuthorizationModel_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_OpenFGAService_ReadLatestAuthorizationModel_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
 	mux.Handle("POST", pattern_OpenFGAService_WriteAuthorizationModel_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
@@ -1681,6 +1758,28 @@ func RegisterOpenFGAServiceHandlerClient(ctx context.Context, mux *runtime.Serve
 
 	})
 
+	mux.Handle("GET", pattern_OpenFGAService_ReadLatestAuthorizationModel_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/openfga.v1.OpenFGAService/ReadLatestAuthorizationModel", runtime.WithHTTPPathPattern("/stores/{store_id}/latest-authorization-models"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_OpenFGAService_ReadLatestAuthorizationModel_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_OpenFGAService_ReadLatestAuthorizationModel_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
 	mux.Handle("POST", pattern_OpenFGAService_WriteAuthorizationModel_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
@@ -1939,6 +2038,8 @@ var (
 
 	pattern_OpenFGAService_ReadAuthorizationModel_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"stores", "store_id", "authorization-models", "id"}, ""))
 
+	pattern_OpenFGAService_ReadLatestAuthorizationModel_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2}, []string{"stores", "store_id", "latest-authorization-models"}, ""))
+
 	pattern_OpenFGAService_WriteAuthorizationModel_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2}, []string{"stores", "store_id", "authorization-models"}, ""))
 
 	pattern_OpenFGAService_WriteAssertions_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"stores", "store_id", "assertions", "authorization_model_id"}, ""))
@@ -1974,6 +2075,8 @@ var (
 	forward_OpenFGAService_ReadAuthorizationModels_0 = runtime.ForwardResponseMessage
 
 	forward_OpenFGAService_ReadAuthorizationModel_0 = runtime.ForwardResponseMessage
+
+	forward_OpenFGAService_ReadLatestAuthorizationModel_0 = runtime.ForwardResponseMessage
 
 	forward_OpenFGAService_WriteAuthorizationModel_0 = runtime.ForwardResponseMessage
 

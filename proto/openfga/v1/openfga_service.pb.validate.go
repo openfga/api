@@ -2644,6 +2644,124 @@ var _ interface {
 	ErrorName() string
 } = ExpandResponseValidationError{}
 
+// Validate checks the field values on ReadLatestAuthorizationModelRequest with
+// the rules defined in the proto definition for this message. If any rules
+// are violated, the first error encountered is returned, or nil if there are
+// no violations.
+func (m *ReadLatestAuthorizationModelRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ReadLatestAuthorizationModelRequest
+// with the rules defined in the proto definition for this message. If any
+// rules are violated, the result is a list of violation errors wrapped in
+// ReadLatestAuthorizationModelRequestMultiError, or nil if none found.
+func (m *ReadLatestAuthorizationModelRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ReadLatestAuthorizationModelRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if !_ReadLatestAuthorizationModelRequest_StoreId_Pattern.MatchString(m.GetStoreId()) {
+		err := ReadLatestAuthorizationModelRequestValidationError{
+			field:  "StoreId",
+			reason: "value does not match regex pattern \"^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$\"",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if len(errors) > 0 {
+		return ReadLatestAuthorizationModelRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// ReadLatestAuthorizationModelRequestMultiError is an error wrapping multiple
+// validation errors returned by
+// ReadLatestAuthorizationModelRequest.ValidateAll() if the designated
+// constraints aren't met.
+type ReadLatestAuthorizationModelRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ReadLatestAuthorizationModelRequestMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ReadLatestAuthorizationModelRequestMultiError) AllErrors() []error { return m }
+
+// ReadLatestAuthorizationModelRequestValidationError is the validation error
+// returned by ReadLatestAuthorizationModelRequest.Validate if the designated
+// constraints aren't met.
+type ReadLatestAuthorizationModelRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ReadLatestAuthorizationModelRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ReadLatestAuthorizationModelRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ReadLatestAuthorizationModelRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ReadLatestAuthorizationModelRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ReadLatestAuthorizationModelRequestValidationError) ErrorName() string {
+	return "ReadLatestAuthorizationModelRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ReadLatestAuthorizationModelRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sReadLatestAuthorizationModelRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ReadLatestAuthorizationModelRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ReadLatestAuthorizationModelRequestValidationError{}
+
+var _ReadLatestAuthorizationModelRequest_StoreId_Pattern = regexp.MustCompile("^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$")
+
 // Validate checks the field values on ReadAuthorizationModelRequest with the
 // rules defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
@@ -2904,6 +3022,140 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = ReadAuthorizationModelResponseValidationError{}
+
+// Validate checks the field values on ReadLatestAuthorizationModelResponse
+// with the rules defined in the proto definition for this message. If any
+// rules are violated, the first error encountered is returned, or nil if
+// there are no violations.
+func (m *ReadLatestAuthorizationModelResponse) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ReadLatestAuthorizationModelResponse
+// with the rules defined in the proto definition for this message. If any
+// rules are violated, the result is a list of violation errors wrapped in
+// ReadLatestAuthorizationModelResponseMultiError, or nil if none found.
+func (m *ReadLatestAuthorizationModelResponse) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ReadLatestAuthorizationModelResponse) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if all {
+		switch v := interface{}(m.GetAuthorizationModel()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, ReadLatestAuthorizationModelResponseValidationError{
+					field:  "AuthorizationModel",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, ReadLatestAuthorizationModelResponseValidationError{
+					field:  "AuthorizationModel",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetAuthorizationModel()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return ReadLatestAuthorizationModelResponseValidationError{
+				field:  "AuthorizationModel",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if len(errors) > 0 {
+		return ReadLatestAuthorizationModelResponseMultiError(errors)
+	}
+
+	return nil
+}
+
+// ReadLatestAuthorizationModelResponseMultiError is an error wrapping multiple
+// validation errors returned by
+// ReadLatestAuthorizationModelResponse.ValidateAll() if the designated
+// constraints aren't met.
+type ReadLatestAuthorizationModelResponseMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ReadLatestAuthorizationModelResponseMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ReadLatestAuthorizationModelResponseMultiError) AllErrors() []error { return m }
+
+// ReadLatestAuthorizationModelResponseValidationError is the validation error
+// returned by ReadLatestAuthorizationModelResponse.Validate if the designated
+// constraints aren't met.
+type ReadLatestAuthorizationModelResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ReadLatestAuthorizationModelResponseValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ReadLatestAuthorizationModelResponseValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ReadLatestAuthorizationModelResponseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ReadLatestAuthorizationModelResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ReadLatestAuthorizationModelResponseValidationError) ErrorName() string {
+	return "ReadLatestAuthorizationModelResponseValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ReadLatestAuthorizationModelResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sReadLatestAuthorizationModelResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ReadLatestAuthorizationModelResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ReadLatestAuthorizationModelResponseValidationError{}
 
 // Validate checks the field values on WriteAuthorizationModelRequest with the
 // rules defined in the proto definition for this message. If any rules are

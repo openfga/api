@@ -19,23 +19,24 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	OpenFGAService_Read_FullMethodName                    = "/openfga.v1.OpenFGAService/Read"
-	OpenFGAService_Write_FullMethodName                   = "/openfga.v1.OpenFGAService/Write"
-	OpenFGAService_Check_FullMethodName                   = "/openfga.v1.OpenFGAService/Check"
-	OpenFGAService_Expand_FullMethodName                  = "/openfga.v1.OpenFGAService/Expand"
-	OpenFGAService_ReadAuthorizationModels_FullMethodName = "/openfga.v1.OpenFGAService/ReadAuthorizationModels"
-	OpenFGAService_ReadAuthorizationModel_FullMethodName  = "/openfga.v1.OpenFGAService/ReadAuthorizationModel"
-	OpenFGAService_WriteAuthorizationModel_FullMethodName = "/openfga.v1.OpenFGAService/WriteAuthorizationModel"
-	OpenFGAService_WriteAssertions_FullMethodName         = "/openfga.v1.OpenFGAService/WriteAssertions"
-	OpenFGAService_ReadAssertions_FullMethodName          = "/openfga.v1.OpenFGAService/ReadAssertions"
-	OpenFGAService_ReadChanges_FullMethodName             = "/openfga.v1.OpenFGAService/ReadChanges"
-	OpenFGAService_CreateStore_FullMethodName             = "/openfga.v1.OpenFGAService/CreateStore"
-	OpenFGAService_UpdateStore_FullMethodName             = "/openfga.v1.OpenFGAService/UpdateStore"
-	OpenFGAService_DeleteStore_FullMethodName             = "/openfga.v1.OpenFGAService/DeleteStore"
-	OpenFGAService_GetStore_FullMethodName                = "/openfga.v1.OpenFGAService/GetStore"
-	OpenFGAService_ListStores_FullMethodName              = "/openfga.v1.OpenFGAService/ListStores"
-	OpenFGAService_StreamedListObjects_FullMethodName     = "/openfga.v1.OpenFGAService/StreamedListObjects"
-	OpenFGAService_ListObjects_FullMethodName             = "/openfga.v1.OpenFGAService/ListObjects"
+	OpenFGAService_Read_FullMethodName                         = "/openfga.v1.OpenFGAService/Read"
+	OpenFGAService_Write_FullMethodName                        = "/openfga.v1.OpenFGAService/Write"
+	OpenFGAService_Check_FullMethodName                        = "/openfga.v1.OpenFGAService/Check"
+	OpenFGAService_Expand_FullMethodName                       = "/openfga.v1.OpenFGAService/Expand"
+	OpenFGAService_ReadAuthorizationModels_FullMethodName      = "/openfga.v1.OpenFGAService/ReadAuthorizationModels"
+	OpenFGAService_ReadAuthorizationModel_FullMethodName       = "/openfga.v1.OpenFGAService/ReadAuthorizationModel"
+	OpenFGAService_ReadLatestAuthorizationModel_FullMethodName = "/openfga.v1.OpenFGAService/ReadLatestAuthorizationModel"
+	OpenFGAService_WriteAuthorizationModel_FullMethodName      = "/openfga.v1.OpenFGAService/WriteAuthorizationModel"
+	OpenFGAService_WriteAssertions_FullMethodName              = "/openfga.v1.OpenFGAService/WriteAssertions"
+	OpenFGAService_ReadAssertions_FullMethodName               = "/openfga.v1.OpenFGAService/ReadAssertions"
+	OpenFGAService_ReadChanges_FullMethodName                  = "/openfga.v1.OpenFGAService/ReadChanges"
+	OpenFGAService_CreateStore_FullMethodName                  = "/openfga.v1.OpenFGAService/CreateStore"
+	OpenFGAService_UpdateStore_FullMethodName                  = "/openfga.v1.OpenFGAService/UpdateStore"
+	OpenFGAService_DeleteStore_FullMethodName                  = "/openfga.v1.OpenFGAService/DeleteStore"
+	OpenFGAService_GetStore_FullMethodName                     = "/openfga.v1.OpenFGAService/GetStore"
+	OpenFGAService_ListStores_FullMethodName                   = "/openfga.v1.OpenFGAService/ListStores"
+	OpenFGAService_StreamedListObjects_FullMethodName          = "/openfga.v1.OpenFGAService/StreamedListObjects"
+	OpenFGAService_ListObjects_FullMethodName                  = "/openfga.v1.OpenFGAService/ListObjects"
 )
 
 // OpenFGAServiceClient is the client API for OpenFGAService service.
@@ -48,6 +49,7 @@ type OpenFGAServiceClient interface {
 	Expand(ctx context.Context, in *ExpandRequest, opts ...grpc.CallOption) (*ExpandResponse, error)
 	ReadAuthorizationModels(ctx context.Context, in *ReadAuthorizationModelsRequest, opts ...grpc.CallOption) (*ReadAuthorizationModelsResponse, error)
 	ReadAuthorizationModel(ctx context.Context, in *ReadAuthorizationModelRequest, opts ...grpc.CallOption) (*ReadAuthorizationModelResponse, error)
+	ReadLatestAuthorizationModel(ctx context.Context, in *ReadLatestAuthorizationModelRequest, opts ...grpc.CallOption) (*ReadLatestAuthorizationModelResponse, error)
 	WriteAuthorizationModel(ctx context.Context, in *WriteAuthorizationModelRequest, opts ...grpc.CallOption) (*WriteAuthorizationModelResponse, error)
 	WriteAssertions(ctx context.Context, in *WriteAssertionsRequest, opts ...grpc.CallOption) (*WriteAssertionsResponse, error)
 	ReadAssertions(ctx context.Context, in *ReadAssertionsRequest, opts ...grpc.CallOption) (*ReadAssertionsResponse, error)
@@ -117,6 +119,15 @@ func (c *openFGAServiceClient) ReadAuthorizationModels(ctx context.Context, in *
 func (c *openFGAServiceClient) ReadAuthorizationModel(ctx context.Context, in *ReadAuthorizationModelRequest, opts ...grpc.CallOption) (*ReadAuthorizationModelResponse, error) {
 	out := new(ReadAuthorizationModelResponse)
 	err := c.cc.Invoke(ctx, OpenFGAService_ReadAuthorizationModel_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *openFGAServiceClient) ReadLatestAuthorizationModel(ctx context.Context, in *ReadLatestAuthorizationModelRequest, opts ...grpc.CallOption) (*ReadLatestAuthorizationModelResponse, error) {
+	out := new(ReadLatestAuthorizationModelResponse)
+	err := c.cc.Invoke(ctx, OpenFGAService_ReadLatestAuthorizationModel_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -255,6 +266,7 @@ type OpenFGAServiceServer interface {
 	Expand(context.Context, *ExpandRequest) (*ExpandResponse, error)
 	ReadAuthorizationModels(context.Context, *ReadAuthorizationModelsRequest) (*ReadAuthorizationModelsResponse, error)
 	ReadAuthorizationModel(context.Context, *ReadAuthorizationModelRequest) (*ReadAuthorizationModelResponse, error)
+	ReadLatestAuthorizationModel(context.Context, *ReadLatestAuthorizationModelRequest) (*ReadLatestAuthorizationModelResponse, error)
 	WriteAuthorizationModel(context.Context, *WriteAuthorizationModelRequest) (*WriteAuthorizationModelResponse, error)
 	WriteAssertions(context.Context, *WriteAssertionsRequest) (*WriteAssertionsResponse, error)
 	ReadAssertions(context.Context, *ReadAssertionsRequest) (*ReadAssertionsResponse, error)
@@ -290,6 +302,9 @@ func (UnimplementedOpenFGAServiceServer) ReadAuthorizationModels(context.Context
 }
 func (UnimplementedOpenFGAServiceServer) ReadAuthorizationModel(context.Context, *ReadAuthorizationModelRequest) (*ReadAuthorizationModelResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ReadAuthorizationModel not implemented")
+}
+func (UnimplementedOpenFGAServiceServer) ReadLatestAuthorizationModel(context.Context, *ReadLatestAuthorizationModelRequest) (*ReadLatestAuthorizationModelResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ReadLatestAuthorizationModel not implemented")
 }
 func (UnimplementedOpenFGAServiceServer) WriteAuthorizationModel(context.Context, *WriteAuthorizationModelRequest) (*WriteAuthorizationModelResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method WriteAuthorizationModel not implemented")
@@ -441,6 +456,24 @@ func _OpenFGAService_ReadAuthorizationModel_Handler(srv interface{}, ctx context
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(OpenFGAServiceServer).ReadAuthorizationModel(ctx, req.(*ReadAuthorizationModelRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _OpenFGAService_ReadLatestAuthorizationModel_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ReadLatestAuthorizationModelRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OpenFGAServiceServer).ReadLatestAuthorizationModel(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: OpenFGAService_ReadLatestAuthorizationModel_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OpenFGAServiceServer).ReadLatestAuthorizationModel(ctx, req.(*ReadLatestAuthorizationModelRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -676,6 +709,10 @@ var OpenFGAService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ReadAuthorizationModel",
 			Handler:    _OpenFGAService_ReadAuthorizationModel_Handler,
+		},
+		{
+			MethodName: "ReadLatestAuthorizationModel",
+			Handler:    _OpenFGAService_ReadLatestAuthorizationModel_Handler,
 		},
 		{
 			MethodName: "WriteAuthorizationModel",

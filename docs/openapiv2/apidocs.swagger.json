@@ -777,6 +777,56 @@
         ]
       }
     },
+    "/stores/{store_id}/latest-authorization-models": {
+      "get": {
+        "summary": "Return latest authorization model",
+        "description": "The ReadLatestAuthorizationModel API returns the latest authorization model.\nThe response will return the authorization model.\n\n## Example\nThe API will return:\n```json\n{\n  \"authorization_model\":{\n    \"id\":\"01G5JAVJ41T49E9TT3SKVS7X1J\",\n    \"type_definitions\":[\n      {\n        \"type\":\"user\"\n      },\n      {\n        \"type\":\"document\",\n        \"relations\":{\n          \"reader\":{\n            \"union\":{\n              \"child\":[\n                {\n                  \"this\":{}\n                },\n                {\n                  \"computedUserset\":{\n                    \"object\":\"\",\n                    \"relation\":\"writer\"\n                  }\n                }\n              ]\n            }\n          },\n          \"writer\":{\n            \"this\":{}\n          }\n        }\n      }\n    ]\n  }\n}\n```\nIn the above example, there are 2 types (`user` and `document`). The `document` type has 2 relations (`writer` and `reader`).",
+        "operationId": "ReadLatestAuthorizationModel",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ReadLatestAuthorizationModelResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "409": {
+            "description": "Request was aborted due a transaction conflict.",
+            "schema": {
+              "$ref": "#/definitions/AbortedMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "store_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Authorization Models"
+        ]
+      }
+    },
     "/stores/{store_id}/list-objects": {
       "post": {
         "summary": "List all objects of the given type that the user has a relation with",
@@ -1750,6 +1800,14 @@
       "required": [
         "changes"
       ]
+    },
+    "ReadLatestAuthorizationModelResponse": {
+      "type": "object",
+      "properties": {
+        "authorization_model": {
+          "$ref": "#/definitions/AuthorizationModel"
+        }
+      }
     },
     "ReadRequestTupleKey": {
       "type": "object",
