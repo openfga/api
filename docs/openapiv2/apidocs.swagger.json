@@ -1315,12 +1315,26 @@
             "$ref": "#/definitions/ConditionParamTypeRef"
           },
           "description": "A map of parameter names to the parameter's defined type reference."
+        },
+        "metadata": {
+          "$ref": "#/definitions/ConditionMetadata"
         }
       },
       "required": [
         "name",
         "expression"
       ]
+    },
+    "ConditionMetadata": {
+      "type": "object",
+      "properties": {
+        "file": {
+          "type": "string"
+        },
+        "module": {
+          "type": "string"
+        }
+      }
     },
     "ConditionParamTypeRef": {
       "type": "object",
@@ -1603,6 +1617,12 @@
           "additionalProperties": {
             "$ref": "#/definitions/RelationMetadata"
           }
+        },
+        "file": {
+          "type": "string"
+        },
+        "module": {
+          "type": "string"
         }
       }
     },
@@ -1799,6 +1819,12 @@
           "items": {
             "$ref": "#/definitions/RelationReference"
           }
+        },
+        "file": {
+          "type": "string"
+        },
+        "module": {
+          "type": "string"
         }
       }
     },
@@ -2037,7 +2063,7 @@
         },
         "metadata": {
           "$ref": "#/definitions/Metadata",
-          "description": "A map whose keys are the name of the relation and whose value is the Metadata for that relation."
+          "description": "A map whose keys are the name of the relation and whose value is the Metadata for that relation.\nIt also holds information around the module name and source file if this model was constructed\nfrom a modular model."
         }
       },
       "required": [
