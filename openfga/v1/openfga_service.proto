@@ -763,7 +763,7 @@ message ListUsersRequest {
 
   Object object = 3;
 
-  repeated string TargetUserObjectTypes = 4 [
+  repeated string target_user_oject_types = 4 [
     json_name = "targetUserObjectTypes",
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "[\"user\",\"employee\"]"},
     (google.api.field_behavior) = REQUIRED
