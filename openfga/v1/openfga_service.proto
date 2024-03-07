@@ -760,34 +760,31 @@ message ListUsersRequest {
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01G5JAVJ41T49E9TT3SKVS7X1J\""}
   ];
 
-  string object = 3 [
-    (validate.rules).string = {
-      min_bytes: 1,
-      max_bytes: 512
-    },
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      min_length: 1,
-      max_length: 512,
-      example: "\"doc:1\""
-    },
+  Object object = 3;
+
+  repeated string TargetUserObjectTypes = 4 [
+    json_name = "targetUserObjectTypes",
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "[\"user\",\"employee\"]"},
     (google.api.field_behavior) = REQUIRED
   ];
 
-  string relation = 4 [
+  string relation = 5 [
     (validate.rules).string = {pattern: "^[^:#@\\s]{1,50}$"},
     (google.api.field_behavior) = REQUIRED,
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"reader\""}
   ];
 
-  repeated RelationReference filters = 5 [
+  repeated RelationReference filters = 6 [
     json_name = "filters",
     (google.api.field_behavior) = REQUIRED,
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}
   ];
+
+  openfga.v1.ContextualTupleKeys contextual_tuples = 7 [json_name = "contextual_tuples"];
 }
 
 message ListUsersResponse {
-  repeated string users = 1 [
+  repeated Object users = 1 [
     json_name = "users",
     (google.api.field_behavior) = REQUIRED,
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}

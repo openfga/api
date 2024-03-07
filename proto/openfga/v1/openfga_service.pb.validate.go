@@ -412,15 +412,33 @@ func (m *ListUsersRequest) validate(all bool) error {
 
 	}
 
-	if l := len(m.GetObject()); l < 1 || l > 512 {
-		err := ListUsersRequestValidationError{
-			field:  "Object",
-			reason: "value length must be between 1 and 512 bytes, inclusive",
+	if all {
+		switch v := interface{}(m.GetObject()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, ListUsersRequestValidationError{
+					field:  "Object",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, ListUsersRequestValidationError{
+					field:  "Object",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
 		}
-		if !all {
-			return err
+	} else if v, ok := interface{}(m.GetObject()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return ListUsersRequestValidationError{
+				field:  "Object",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
 		}
-		errors = append(errors, err)
 	}
 
 	if !_ListUsersRequest_Relation_Pattern.MatchString(m.GetRelation()) {
@@ -466,6 +484,35 @@ func (m *ListUsersRequest) validate(all bool) error {
 			}
 		}
 
+	}
+
+	if all {
+		switch v := interface{}(m.GetContextualTuples()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, ListUsersRequestValidationError{
+					field:  "ContextualTuples",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, ListUsersRequestValidationError{
+					field:  "ContextualTuples",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetContextualTuples()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return ListUsersRequestValidationError{
+				field:  "ContextualTuples",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
 	}
 
 	if len(errors) > 0 {
@@ -573,6 +620,40 @@ func (m *ListUsersResponse) validate(all bool) error {
 	}
 
 	var errors []error
+
+	for idx, item := range m.GetUsers() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ListUsersResponseValidationError{
+						field:  fmt.Sprintf("Users[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ListUsersResponseValidationError{
+						field:  fmt.Sprintf("Users[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return ListUsersResponseValidationError{
+					field:  fmt.Sprintf("Users[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
 
 	if len(errors) > 0 {
 		return ListUsersResponseMultiError(errors)
