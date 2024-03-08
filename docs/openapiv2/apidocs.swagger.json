@@ -1827,7 +1827,7 @@
         "users": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/Object"
+            "$ref": "#/definitions/UserOrUserGroupOrWildcard"
           }
         }
       },
@@ -2318,6 +2318,29 @@
         "TYPE_NAME_IPADDRESS"
       ],
       "default": "TYPE_NAME_UNSPECIFIED"
+    },
+    "UserOrUserGroupOrWildcard": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "example": "user"
+        },
+        "id": {
+          "type": "string",
+          "example": "user-1"
+        },
+        "relation": {
+          "type": "string",
+          "example": "member"
+        },
+        "wildcard": {
+          "$ref": "#/definitions/Wildcard"
+        }
+      },
+      "required": [
+        "type"
+      ]
     },
     "Users": {
       "type": "object",
