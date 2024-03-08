@@ -795,7 +795,7 @@ message UserOrUserGroupOrWildcard {
     (validate.rules).string = {
       pattern: "[^#:\\s]+$",
       ignore_empty: false
-    },
+    }
   ];
   string relation = 3 [
       (validate.rules).string = {
