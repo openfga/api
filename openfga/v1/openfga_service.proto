@@ -776,7 +776,7 @@ message ListUsersRequest {
   repeated ListUsersFilter user_filters = 5 [
     json_name = "user_filters",
     (google.api.field_behavior) = REQUIRED,
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "[{\"type\": \"user\"}, {\"type\": \"SetUser\", \"relation\": \"member\"}]"}
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "[{\"type\": \"user\"}, {\"type\": \"group\", \"relation\": \"member\"}]"}
   ];
 
   openfga.v1.ContextualTupleKeys contextual_tuples = 6 [json_name = "contextual_tuples"];
