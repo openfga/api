@@ -1036,24 +1036,24 @@
                   "example": "01G5JAVJ41T49E9TT3SKVS7X1J"
                 },
                 "object": {
-                  "$ref": "#/definitions/Object"
-                },
-                "targetUserObjectTypes": {
-                  "type": "array",
-                  "example": [
-                    "user",
-                    "employee"
-                  ],
-                  "items": {
-                    "type": "string"
-                  }
+                  "$ref": "#/definitions/Object",
+                  "example": "document:example"
                 },
                 "relation": {
                   "type": "string",
                   "example": "reader"
                 },
-                "filters": {
+                "user_filters": {
                   "type": "array",
+                  "example": [
+                    {
+                      "type": "user"
+                    },
+                    {
+                      "type": "group",
+                      "relation": "member"
+                    }
+                  ],
                   "items": {
                     "$ref": "#/definitions/RelationReference"
                   }
@@ -1063,9 +1063,9 @@
                 }
               },
               "required": [
-                "targetUserObjectTypes",
+                "object",
                 "relation",
-                "filters"
+                "user_filters"
               ]
             }
           }
