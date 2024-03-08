@@ -452,6 +452,17 @@ func (m *ListUsersRequest) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
+	if len(m.GetUserFilters()) != 1 {
+		err := ListUsersRequestValidationError{
+			field:  "UserFilters",
+			reason: "value must contain exactly 1 item(s)",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
 	for idx, item := range m.GetUserFilters() {
 		_, _ = idx, item
 
