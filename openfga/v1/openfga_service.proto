@@ -776,7 +776,7 @@ message ListUsersRequest {
   repeated RelationReference user_filters = 5 [
     json_name = "user_filters",
     (google.api.field_behavior) = REQUIRED,
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example:  "[{\"type\": \"user\"}, {\"type\": \"group\", \"relation\": \"member\"}]"}
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "[{\"type\": \"user\"}, {\"type\": \"group\", \"relation\": \"member\"}]"}
   ];
 
   openfga.v1.ContextualTupleKeys contextual_tuples = 6 [json_name = "contextual_tuples"];
@@ -791,19 +791,17 @@ message UserOrUserGroupOrWildcard {
     (google.api.field_behavior) = REQUIRED,
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"user\""}
   ];
-  string id = 2 [
-    (validate.rules).string = {
-      pattern: "[^#:\\s]+$",
-      ignore_empty: false
-    }
-  ];
+  string id = 2 [(validate.rules).string = {
+    pattern: "[^#:\\s]+$",
+    ignore_empty: false
+  }];
   string relation = 3 [
-      (validate.rules).string = {
-        pattern: "^[^:#@\\s]{1,50}$",
-        ignore_empty: true
-      },
-      (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"member\""}
-    ];
+    (validate.rules).string = {
+      pattern: "^[^:#@\\s]{1,50}$",
+      ignore_empty: true
+    },
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"member\""}
+  ];
   Wildcard wildcard = 4;
 }
 
