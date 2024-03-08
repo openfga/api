@@ -936,7 +936,7 @@
                       "type": "user"
                     },
                     {
-                      "type": "SetUser",
+                      "type": "group",
                       "relation": "member"
                     }
                   ],
