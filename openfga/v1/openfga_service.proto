@@ -796,7 +796,6 @@ message UserOrUserGroupOrWildcard {
       pattern: "[^#:\\s]+$",
       ignore_empty: false
     },
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"user-1\""}
   ];
   string relation = 3 [
       (validate.rules).string = {
