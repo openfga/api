@@ -936,12 +936,12 @@
                       "type": "user"
                     },
                     {
-                      "type": "group",
+                      "type": "SetUser",
                       "relation": "member"
                     }
                   ],
                   "items": {
-                    "$ref": "#/definitions/RelationReference"
+                    "$ref": "#/definitions/ListUsersFilter"
                   }
                 },
                 "contextual_tuples": {
@@ -1689,13 +1689,29 @@
         "continuation_token"
       ]
     },
+    "ListUsersFilter": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "example": "group"
+        },
+        "relation": {
+          "type": "string",
+          "example": "member"
+        }
+      },
+      "required": [
+        "type"
+      ]
+    },
     "ListUsersResponse": {
       "type": "object",
       "properties": {
         "users": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/UserOrUserGroupOrWildcard"
+            "$ref": "#/definitions/User"
           }
         }
       },
@@ -2187,27 +2203,19 @@
       ],
       "default": "TYPE_NAME_UNSPECIFIED"
     },
-    "UserOrUserGroupOrWildcard": {
+    "User": {
       "type": "object",
       "properties": {
-        "type": {
-          "type": "string",
-          "example": "user"
+        "object": {
+          "$ref": "#/definitions/Object"
         },
-        "id": {
-          "type": "string"
-        },
-        "relation": {
-          "type": "string",
-          "example": "member"
+        "userset": {
+          "$ref": "#/definitions/UsersetUser"
         },
         "wildcard": {
           "$ref": "#/definitions/Wildcard"
         }
-      },
-      "required": [
-        "type"
-      ]
+      }
     },
     "Users": {
       "type": "object",
@@ -2286,6 +2294,27 @@
       "required": [
         "tupleset",
         "computed"
+      ]
+    },
+    "UsersetUser": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "example": "group"
+        },
+        "id": {
+          "type": "string"
+        },
+        "relation": {
+          "type": "string",
+          "example": "member"
+        }
+      },
+      "required": [
+        "type",
+        "id",
+        "relation"
       ]
     },
     "Usersets": {

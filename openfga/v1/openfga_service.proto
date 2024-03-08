@@ -773,40 +773,69 @@ message ListUsersRequest {
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"reader\""}
   ];
 
-  repeated RelationReference user_filters = 5 [
+  repeated ListUsersFilter user_filters = 5 [
     json_name = "user_filters",
     (google.api.field_behavior) = REQUIRED,
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "[{\"type\": \"user\"}, {\"type\": \"group\", \"relation\": \"member\"}]"}
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "[{\"type\": \"user\"}, {\"type\": \"SetUser\", \"relation\": \"member\"}]"}
   ];
 
   openfga.v1.ContextualTupleKeys contextual_tuples = 6 [json_name = "contextual_tuples"];
 }
 
-message UserOrUserGroupOrWildcard {
+message ListUsersFilter {
   string type = 1 [
     (validate.rules).string = {
       pattern: "^[^:#@\\s]{1,254}$",
       ignore_empty: false
     },
     (google.api.field_behavior) = REQUIRED,
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"user\""}
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"group\""}
   ];
-  string id = 2 [(validate.rules).string = {
-    pattern: "[^#:\\s]+$",
-    ignore_empty: false
-  }];
-  string relation = 3 [
+  string relation = 2 [
     (validate.rules).string = {
       pattern: "^[^:#@\\s]{1,50}$",
       ignore_empty: true
     },
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"member\""}
   ];
-  Wildcard wildcard = 4;
+}
+
+message User {
+  oneof user {
+    Object object = 1;
+    UsersetUser userset = 2;
+    Wildcard wildcard = 3;
+  }
+}
+
+message UsersetUser {
+  string type = 1 [
+    (validate.rules).string = {
+      pattern: "^[^:#@\\s]{1,254}$",
+      ignore_empty: false
+    },
+    (google.api.field_behavior) = REQUIRED,
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"group\""}
+  ];
+  string id = 2 [
+    (validate.rules).string = {
+      pattern: "[^#:\\s]+$",
+      ignore_empty: false
+    },
+    (google.api.field_behavior) = REQUIRED
+  ];
+  string relation = 3 [
+    (validate.rules).string = {
+      pattern: "^[^:#@\\s]{1,50}$",
+      ignore_empty: true
+    },
+    (google.api.field_behavior) = REQUIRED,
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"member\""}
+  ];
 }
 
 message ListUsersResponse {
-  repeated UserOrUserGroupOrWildcard users = 1 [
+  repeated User users = 1 [
     json_name = "users",
     (google.api.field_behavior) = REQUIRED,
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}
