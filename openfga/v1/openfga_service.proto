@@ -672,6 +672,20 @@ service OpenFGAService {
         "The objects given will not be sorted, and therefore two identical calls can give a given different set of objects."
     };
   }
+
+  rpc ListUsers(ListUsersRequest) returns (ListUsersResponse) {
+    option (google.api.http) = {
+      post: "/stores/{store_id}/list-users",
+      body: "*"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "List all users of the given type that the object has a relation with"
+      tags: ["Relationship Queries"]
+      operation_id: "ListUsers"
+      description: ""
+    };
+  }
 }
 
 message ListObjectsRequest {
@@ -728,6 +742,107 @@ message ListObjectsResponse {
     json_name = "objects",
     (google.api.field_behavior) = REQUIRED,
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "[\"document:roadmap\",\"document:planning\"]"}
+  ];
+}
+
+message ListUsersRequest {
+  string store_id = 1 [
+    json_name = "store_id",
+    (validate.rules).string = {pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"},
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""}
+  ];
+
+  string authorization_model_id = 2 [
+    json_name = "authorization_model_id",
+    (validate.rules).string = {
+      pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$",
+      ignore_empty: true
+    },
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01G5JAVJ41T49E9TT3SKVS7X1J\""}
+  ];
+
+  Object object = 3 [
+    json_name = "object",
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"document:example\""},
+    (google.api.field_behavior) = REQUIRED
+  ];
+
+  string relation = 4 [
+    (validate.rules).string = {pattern: "^[^:#@\\s]{1,50}$"},
+    (google.api.field_behavior) = REQUIRED,
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"reader\""}
+  ];
+
+  repeated ListUsersFilter user_filters = 5 [
+    json_name = "user_filters",
+    (google.api.field_behavior) = REQUIRED,
+    (validate.rules).repeated = {
+      min_items: 1,
+      max_items: 1
+    },
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "[{\"type\": \"user\"}, {\"type\": \"group\", \"relation\": \"member\"}]"}
+  ];
+
+  openfga.v1.ContextualTupleKeys contextual_tuples = 6 [json_name = "contextual_tuples"];
+}
+
+message ListUsersFilter {
+  string type = 1 [
+    (validate.rules).string = {
+      pattern: "^[^:#@\\s]{1,254}$",
+      ignore_empty: false
+    },
+    (google.api.field_behavior) = REQUIRED,
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"group\""}
+  ];
+  string relation = 2 [
+    (validate.rules).string = {
+      pattern: "^[^:#@\\s]{1,50}$",
+      ignore_empty: true
+    },
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"member\""}
+  ];
+}
+
+message User {
+  oneof user {
+    Object object = 1;
+    UsersetUser userset = 2;
+    Wildcard wildcard = 3;
+  }
+}
+
+message UsersetUser {
+  string type = 1 [
+    (validate.rules).string = {
+      pattern: "^[^:#@\\s]{1,254}$",
+      ignore_empty: false
+    },
+    (google.api.field_behavior) = REQUIRED,
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"group\""}
+  ];
+  string id = 2 [
+    (validate.rules).string = {
+      pattern: "[^#:\\s]+$",
+      ignore_empty: false
+    },
+    (google.api.field_behavior) = REQUIRED
+  ];
+  string relation = 3 [
+    (validate.rules).string = {
+      pattern: "^[^:#@\\s]{1,50}$",
+      ignore_empty: true
+    },
+    (google.api.field_behavior) = REQUIRED,
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"member\""}
+  ];
+}
+
+message ListUsersResponse {
+  repeated User users = 1 [
+    json_name = "users",
+    (google.api.field_behavior) = REQUIRED,
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}
   ];
 }
 
