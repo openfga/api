@@ -21,7 +21,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: bufbuild/buf-setup-action@88db93f5d74ffa329bb43e42aa95cd822697d214 # v1.29.0
+      - uses: bufbuild/buf-setup-action@517ee23296d5caf38df31c21945e6a54bbc8a89f # v1.30.0
         with:
           version: "1.28.1"
       - uses: bufbuild/buf-push-action@a654ff18effe4641ebea4a4ce242c49800728459 # v1.2.0
