@@ -93,7 +93,7 @@ message Metadata {
 
 message SourceInfo {
   string file = 1 [(validate.rules).string = {
-    pattern: "\\.fga$",
+    pattern: "^[a-zA-Z0-9_\\-\\/]{1,100}\\.fga$",
     ignore_empty: true
   }];
 }

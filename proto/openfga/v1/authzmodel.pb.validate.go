@@ -997,7 +997,7 @@ func (m *SourceInfo) validate(all bool) error {
 		if !_SourceInfo_File_Pattern.MatchString(m.GetFile()) {
 			err := SourceInfoValidationError{
 				field:  "File",
-				reason: "value does not match regex pattern \"\\\\.fga$\"",
+				reason: "value does not match regex pattern \"^[a-zA-Z0-9_\\\\-\\\\/]{1,100}\\\\.fga$\"",
 			}
 			if !all {
 				return err
@@ -1084,7 +1084,7 @@ var _ interface {
 	ErrorName() string
 } = SourceInfoValidationError{}
 
-var _SourceInfo_File_Pattern = regexp.MustCompile("\\.fga$")
+var _SourceInfo_File_Pattern = regexp.MustCompile("^[a-zA-Z0-9_\\-\\/]{1,100}\\.fga$")
 
 // Validate checks the field values on RelationMetadata with the rules defined
 // in the proto definition for this message. If any rules are violated, the
