@@ -82,12 +82,18 @@ message RelationTypeInfo {
 
 message Metadata {
   map<string, RelationMetadata> relations = 1;
-  string file = 2 [(validate.rules).string = {
-    pattern: "\\.fga$",
+
+  string module = 2 [(validate.rules).string = {
+    pattern: "^[^:#@\\s]{1,50}$",
     ignore_empty: true
   }];
-  string module = 3 [(validate.rules).string = {
-    pattern: "^[^:#@\\s]{1,50}$",
+
+  SourceInfo source_info = 3 [json_name = "source_info"];
+}
+
+message SourceInfo {
+  string file = 1 [(validate.rules).string = {
+    pattern: "\\.fga$",
     ignore_empty: true
   }];
 }
@@ -95,14 +101,12 @@ message Metadata {
 message RelationMetadata {
   repeated RelationReference directly_related_user_types = 1 [json_name = "directly_related_user_types"];
 
-  string file = 2 [(validate.rules).string = {
-    pattern: "\\.fga$",
-    ignore_empty: true
-  }];
-  string module = 3 [(validate.rules).string = {
+  string module = 2 [(validate.rules).string = {
     pattern: "^[^:#@\\s]{1,50}$",
     ignore_empty: true
   }];
+
+  SourceInfo source_info = 3 [json_name = "source_info"];
 }
 
 // RelationReference represents a relation of a particular object type (e.g. 'document#viewer').
@@ -224,14 +228,12 @@ message Condition {
 }
 
 message ConditionMetadata {
-  string file = 1 [(validate.rules).string = {
-    pattern: "\\.fga$",
-    ignore_empty: true
-  }];
-  string module = 2 [(validate.rules).string = {
+  string module = 1 [(validate.rules).string = {
     pattern: "^[^:#@\\s]{1,50}$",
     ignore_empty: true
   }];
+
+  SourceInfo source_info = 2 [json_name = "source_info"];
 }
 
 message ConditionParamTypeRef {

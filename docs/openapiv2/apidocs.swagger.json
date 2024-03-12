@@ -1328,11 +1328,11 @@
     "ConditionMetadata": {
       "type": "object",
       "properties": {
-        "file": {
-          "type": "string"
-        },
         "module": {
           "type": "string"
+        },
+        "source_info": {
+          "$ref": "#/definitions/SourceInfo"
         }
       }
     },
@@ -1618,11 +1618,11 @@
             "$ref": "#/definitions/RelationMetadata"
           }
         },
-        "file": {
-          "type": "string"
-        },
         "module": {
           "type": "string"
+        },
+        "source_info": {
+          "$ref": "#/definitions/SourceInfo"
         }
       }
     },
@@ -1820,11 +1820,11 @@
             "$ref": "#/definitions/RelationReference"
           }
         },
-        "file": {
-          "type": "string"
-        },
         "module": {
           "type": "string"
+        },
+        "source_info": {
+          "$ref": "#/definitions/SourceInfo"
         }
       }
     },
@@ -1869,6 +1869,14 @@
       "required": [
         "name"
       ]
+    },
+    "SourceInfo": {
+      "type": "object",
+      "properties": {
+        "file": {
+          "type": "string"
+        }
+      }
     },
     "Status": {
       "type": "object",
