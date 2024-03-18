@@ -847,6 +847,50 @@ func (m *Metadata) validate(all bool) error {
 		}
 	}
 
+	if m.GetModule() != "" {
+
+		if !_Metadata_Module_Pattern.MatchString(m.GetModule()) {
+			err := MetadataValidationError{
+				field:  "Module",
+				reason: "value does not match regex pattern \"^[^:#@\\\\s]{1,50}$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
+	if all {
+		switch v := interface{}(m.GetSourceInfo()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, MetadataValidationError{
+					field:  "SourceInfo",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, MetadataValidationError{
+					field:  "SourceInfo",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetSourceInfo()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return MetadataValidationError{
+				field:  "SourceInfo",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
 	if len(errors) > 0 {
 		return MetadataMultiError(errors)
 	}
@@ -924,6 +968,124 @@ var _ interface {
 	ErrorName() string
 } = MetadataValidationError{}
 
+var _Metadata_Module_Pattern = regexp.MustCompile("^[^:#@\\s]{1,50}$")
+
+// Validate checks the field values on SourceInfo with the rules defined in the
+// proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *SourceInfo) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on SourceInfo with the rules defined in
+// the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in SourceInfoMultiError, or
+// nil if none found.
+func (m *SourceInfo) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *SourceInfo) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if m.GetFile() != "" {
+
+		if !_SourceInfo_File_Pattern.MatchString(m.GetFile()) {
+			err := SourceInfoValidationError{
+				field:  "File",
+				reason: "value does not match regex pattern \"^[a-zA-Z0-9_\\\\-\\\\/]{1,100}\\\\.fga$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
+	if len(errors) > 0 {
+		return SourceInfoMultiError(errors)
+	}
+
+	return nil
+}
+
+// SourceInfoMultiError is an error wrapping multiple validation errors
+// returned by SourceInfo.ValidateAll() if the designated constraints aren't met.
+type SourceInfoMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m SourceInfoMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m SourceInfoMultiError) AllErrors() []error { return m }
+
+// SourceInfoValidationError is the validation error returned by
+// SourceInfo.Validate if the designated constraints aren't met.
+type SourceInfoValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e SourceInfoValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e SourceInfoValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e SourceInfoValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e SourceInfoValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e SourceInfoValidationError) ErrorName() string { return "SourceInfoValidationError" }
+
+// Error satisfies the builtin error interface
+func (e SourceInfoValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sSourceInfo.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = SourceInfoValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = SourceInfoValidationError{}
+
+var _SourceInfo_File_Pattern = regexp.MustCompile("^[a-zA-Z0-9_\\-\\/]{1,100}\\.fga$")
+
 // Validate checks the field values on RelationMetadata with the rules defined
 // in the proto definition for this message. If any rules are violated, the
 // first error encountered is returned, or nil if there are no violations.
@@ -978,6 +1140,50 @@ func (m *RelationMetadata) validate(all bool) error {
 			}
 		}
 
+	}
+
+	if m.GetModule() != "" {
+
+		if !_RelationMetadata_Module_Pattern.MatchString(m.GetModule()) {
+			err := RelationMetadataValidationError{
+				field:  "Module",
+				reason: "value does not match regex pattern \"^[^:#@\\\\s]{1,50}$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
+	if all {
+		switch v := interface{}(m.GetSourceInfo()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, RelationMetadataValidationError{
+					field:  "SourceInfo",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, RelationMetadataValidationError{
+					field:  "SourceInfo",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetSourceInfo()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return RelationMetadataValidationError{
+				field:  "SourceInfo",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
 	}
 
 	if len(errors) > 0 {
@@ -1057,6 +1263,8 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = RelationMetadataValidationError{}
+
+var _RelationMetadata_Module_Pattern = regexp.MustCompile("^[^:#@\\s]{1,50}$")
 
 // Validate checks the field values on RelationReference with the rules defined
 // in the proto definition for this message. If any rules are violated, the
@@ -2648,6 +2856,35 @@ func (m *Condition) validate(all bool) error {
 		}
 	}
 
+	if all {
+		switch v := interface{}(m.GetMetadata()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, ConditionValidationError{
+					field:  "Metadata",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, ConditionValidationError{
+					field:  "Metadata",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetMetadata()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return ConditionValidationError{
+				field:  "Metadata",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
 	if len(errors) > 0 {
 		return ConditionMultiError(errors)
 	}
@@ -2728,6 +2965,154 @@ var _ interface {
 var _Condition_Name_Pattern = regexp.MustCompile("^[^:#@\\s]{1,50}$")
 
 var _Condition_Parameters_Pattern = regexp.MustCompile("^[^:#@\\s]{1,50}$")
+
+// Validate checks the field values on ConditionMetadata with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// first error encountered is returned, or nil if there are no violations.
+func (m *ConditionMetadata) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ConditionMetadata with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// ConditionMetadataMultiError, or nil if none found.
+func (m *ConditionMetadata) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ConditionMetadata) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if m.GetModule() != "" {
+
+		if !_ConditionMetadata_Module_Pattern.MatchString(m.GetModule()) {
+			err := ConditionMetadataValidationError{
+				field:  "Module",
+				reason: "value does not match regex pattern \"^[^:#@\\\\s]{1,50}$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
+	if all {
+		switch v := interface{}(m.GetSourceInfo()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, ConditionMetadataValidationError{
+					field:  "SourceInfo",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, ConditionMetadataValidationError{
+					field:  "SourceInfo",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetSourceInfo()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return ConditionMetadataValidationError{
+				field:  "SourceInfo",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if len(errors) > 0 {
+		return ConditionMetadataMultiError(errors)
+	}
+
+	return nil
+}
+
+// ConditionMetadataMultiError is an error wrapping multiple validation errors
+// returned by ConditionMetadata.ValidateAll() if the designated constraints
+// aren't met.
+type ConditionMetadataMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ConditionMetadataMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ConditionMetadataMultiError) AllErrors() []error { return m }
+
+// ConditionMetadataValidationError is the validation error returned by
+// ConditionMetadata.Validate if the designated constraints aren't met.
+type ConditionMetadataValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ConditionMetadataValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ConditionMetadataValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ConditionMetadataValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ConditionMetadataValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ConditionMetadataValidationError) ErrorName() string {
+	return "ConditionMetadataValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ConditionMetadataValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sConditionMetadata.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ConditionMetadataValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ConditionMetadataValidationError{}
+
+var _ConditionMetadata_Module_Pattern = regexp.MustCompile("^[^:#@\\s]{1,50}$")
 
 // Validate checks the field values on ConditionParamTypeRef with the rules
 // defined in the proto definition for this message. If any rules are
