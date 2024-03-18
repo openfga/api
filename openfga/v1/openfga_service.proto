@@ -808,8 +808,20 @@ message User {
   oneof user {
     Object object = 1;
     UsersetUser userset = 2;
-    Wildcard wildcard = 3;
+    TypedWildcard wildcard = 3;
   }
+}
+
+message TypedWildcard {
+  string type = 1 [
+    (validate.rules).string = {
+      pattern: "^[^:#@\\s]{1,254}$",
+      ignore_empty: false
+    },
+    (google.api.field_behavior) = REQUIRED,
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"user\""}
+  ];
+  Wildcard wildcard = 2;
 }
 
 message UsersetUser {

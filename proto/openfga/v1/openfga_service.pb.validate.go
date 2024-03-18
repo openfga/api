@@ -966,6 +966,148 @@ var _ interface {
 	ErrorName() string
 } = UserValidationError{}
 
+// Validate checks the field values on TypedWildcard with the rules defined in
+// the proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *TypedWildcard) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on TypedWildcard with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in TypedWildcardMultiError, or
+// nil if none found.
+func (m *TypedWildcard) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *TypedWildcard) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if !_TypedWildcard_Type_Pattern.MatchString(m.GetType()) {
+		err := TypedWildcardValidationError{
+			field:  "Type",
+			reason: "value does not match regex pattern \"^[^:#@\\\\s]{1,254}$\"",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if all {
+		switch v := interface{}(m.GetWildcard()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, TypedWildcardValidationError{
+					field:  "Wildcard",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, TypedWildcardValidationError{
+					field:  "Wildcard",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetWildcard()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return TypedWildcardValidationError{
+				field:  "Wildcard",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if len(errors) > 0 {
+		return TypedWildcardMultiError(errors)
+	}
+
+	return nil
+}
+
+// TypedWildcardMultiError is an error wrapping multiple validation errors
+// returned by TypedWildcard.ValidateAll() if the designated constraints
+// aren't met.
+type TypedWildcardMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m TypedWildcardMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m TypedWildcardMultiError) AllErrors() []error { return m }
+
+// TypedWildcardValidationError is the validation error returned by
+// TypedWildcard.Validate if the designated constraints aren't met.
+type TypedWildcardValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e TypedWildcardValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e TypedWildcardValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e TypedWildcardValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e TypedWildcardValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e TypedWildcardValidationError) ErrorName() string { return "TypedWildcardValidationError" }
+
+// Error satisfies the builtin error interface
+func (e TypedWildcardValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sTypedWildcard.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = TypedWildcardValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = TypedWildcardValidationError{}
+
+var _TypedWildcard_Type_Pattern = regexp.MustCompile("^[^:#@\\s]{1,254}$")
+
 // Validate checks the field values on UsersetUser with the rules defined in
 // the proto definition for this message. If any rules are violated, the first
 // error encountered is returned, or nil if there are no violations.
