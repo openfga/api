@@ -1250,6 +1250,219 @@ var _UsersetUser_Id_Pattern = regexp.MustCompile("[^#:\\s]+$")
 
 var _UsersetUser_Relation_Pattern = regexp.MustCompile("^[^:#@\\s]{1,50}$")
 
+// Validate checks the field values on ListUsersUser with the rules defined in
+// the proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *ListUsersUser) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ListUsersUser with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in ListUsersUserMultiError, or
+// nil if none found.
+func (m *ListUsersUser) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ListUsersUser) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if !_ListUsersUser_Type_Pattern.MatchString(m.GetType()) {
+		err := ListUsersUserValidationError{
+			field:  "Type",
+			reason: "value does not match regex pattern \"^[^:#@\\\\s]{1,254}$\"",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	switch v := m.User.(type) {
+	case *ListUsersUser_Id:
+		if v == nil {
+			err := ListUsersUserValidationError{
+				field:  "User",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if !_ListUsersUser_Id_Pattern.MatchString(m.GetId()) {
+			err := ListUsersUserValidationError{
+				field:  "Id",
+				reason: "value does not match regex pattern \"[^#:\\\\s]+$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	case *ListUsersUser_Relation:
+		if v == nil {
+			err := ListUsersUserValidationError{
+				field:  "User",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if m.GetRelation() != "" {
+
+			if !_ListUsersUser_Relation_Pattern.MatchString(m.GetRelation()) {
+				err := ListUsersUserValidationError{
+					field:  "Relation",
+					reason: "value does not match regex pattern \"^[^:#@\\\\s]{1,50}$\"",
+				}
+				if !all {
+					return err
+				}
+				errors = append(errors, err)
+			}
+
+		}
+
+	case *ListUsersUser_Wildcard:
+		if v == nil {
+			err := ListUsersUserValidationError{
+				field:  "User",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if all {
+			switch v := interface{}(m.GetWildcard()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ListUsersUserValidationError{
+						field:  "Wildcard",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ListUsersUserValidationError{
+						field:  "Wildcard",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetWildcard()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return ListUsersUserValidationError{
+					field:  "Wildcard",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	default:
+		_ = v // ensures v is used
+	}
+
+	if len(errors) > 0 {
+		return ListUsersUserMultiError(errors)
+	}
+
+	return nil
+}
+
+// ListUsersUserMultiError is an error wrapping multiple validation errors
+// returned by ListUsersUser.ValidateAll() if the designated constraints
+// aren't met.
+type ListUsersUserMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ListUsersUserMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ListUsersUserMultiError) AllErrors() []error { return m }
+
+// ListUsersUserValidationError is the validation error returned by
+// ListUsersUser.Validate if the designated constraints aren't met.
+type ListUsersUserValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ListUsersUserValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ListUsersUserValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ListUsersUserValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ListUsersUserValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ListUsersUserValidationError) ErrorName() string { return "ListUsersUserValidationError" }
+
+// Error satisfies the builtin error interface
+func (e ListUsersUserValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sListUsersUser.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ListUsersUserValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ListUsersUserValidationError{}
+
+var _ListUsersUser_Type_Pattern = regexp.MustCompile("^[^:#@\\s]{1,254}$")
+
+var _ListUsersUser_Id_Pattern = regexp.MustCompile("[^#:\\s]+$")
+
+var _ListUsersUser_Relation_Pattern = regexp.MustCompile("^[^:#@\\s]{1,50}$")
+
 // Validate checks the field values on ListUsersResponse with the rules defined
 // in the proto definition for this message. If any rules are violated, the
 // first error encountered is returned, or nil if there are no violations.
