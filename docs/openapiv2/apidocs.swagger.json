@@ -1711,12 +1711,35 @@
         "users": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/User"
+            "$ref": "#/definitions/ListUsersUser"
           }
         }
       },
       "required": [
         "users"
+      ]
+    },
+    "ListUsersUser": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "example": "group"
+        },
+        "id": {
+          "type": "string",
+          "example": "b157e743-ae1e-4401-a37b-1526b82b0fa0"
+        },
+        "relation": {
+          "type": "string",
+          "example": "member"
+        },
+        "wildcard": {
+          "$ref": "#/definitions/Wildcard"
+        }
+      },
+      "required": [
+        "type"
       ]
     },
     "Metadata": {
@@ -2203,35 +2226,6 @@
       ],
       "default": "TYPE_NAME_UNSPECIFIED"
     },
-    "TypedWildcard": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "type": "string",
-          "example": "group"
-        },
-        "wildcard": {
-          "$ref": "#/definitions/Wildcard"
-        }
-      },
-      "required": [
-        "type"
-      ]
-    },
-    "User": {
-      "type": "object",
-      "properties": {
-        "object": {
-          "$ref": "#/definitions/Object"
-        },
-        "userset": {
-          "$ref": "#/definitions/UsersetUser"
-        },
-        "wildcard": {
-          "$ref": "#/definitions/TypedWildcard"
-        }
-      }
-    },
     "Users": {
       "type": "object",
       "properties": {
@@ -2309,27 +2303,6 @@
       "required": [
         "tupleset",
         "computed"
-      ]
-    },
-    "UsersetUser": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "type": "string",
-          "example": "group"
-        },
-        "id": {
-          "type": "string"
-        },
-        "relation": {
-          "type": "string",
-          "example": "member"
-        }
-      },
-      "required": [
-        "type",
-        "id",
-        "relation"
       ]
     },
     "Usersets": {
