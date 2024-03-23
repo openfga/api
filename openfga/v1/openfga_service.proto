@@ -5,6 +5,7 @@ package openfga.v1;
 import "google/api/annotations.proto";
 import "google/api/field_behavior.proto";
 import "google/api/visibility.proto";
+import "google/protobuf/any.proto";
 import "google/protobuf/struct.proto";
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/wrappers.proto";
@@ -720,6 +721,8 @@ message ListObjectsRequest {
   // Additional request context that will be used to evaluate any ABAC conditions encountered
   // in the query evaluation.
   google.protobuf.Struct context = 7;
+
+  google.protobuf.Any message = 8;
 }
 
 message ListObjectsResponse {
@@ -1398,4 +1401,34 @@ message Assertion {
 
 message Assertions {
   repeated Assertion assertions = 1 [(google.api.field_behavior) = REQUIRED];
+}
+
+message BaseRequest {
+  oneof base_request {
+    DispatchedCheckRequest dispatched_check_request = 1;
+    ListObjectsRequest list_objects_request = 2;
+    ExpandRequest expand_request = 3;
+  }
+}
+
+message BaseResponse {
+  oneof base_response {
+    CheckResponse check_response = 1;
+    ListObjectsResponse list_objects_response = 2;
+    ExpandResponse expand_response = 3;
+  }
+}
+
+message DispatchedCheckRequest {
+ string store_id = 1;
+ string authorization_model_id = 2;
+ TupleKey tuple_key = 3;
+ repeated TupleKey contextual_tuples = 4;
+ map<string, google.protobuf.Any> visited_paths = 5;
+}
+
+message DispatchMetadata {
+uint32 dispatch_count = 1;
+uint32 datastore_query_count = 2;
+uint32 depth = 3;
 }
