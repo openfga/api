@@ -64,12 +64,6 @@
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
             }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Status"
-            }
           }
         },
         "parameters": [
@@ -96,12 +90,6 @@
         "description": "Create a unique OpenFGA store which will be used to store authorization models and relationship tuples.",
         "operationId": "CreateStore",
         "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/CreateStoreResponse"
-            }
-          },
           "201": {
             "description": "A successful response.",
             "schema": {
@@ -131,12 +119,6 @@
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
             }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Status"
-            }
           }
         },
         "parameters": [
@@ -151,6 +133,56 @@
         ],
         "tags": [
           "Stores"
+        ]
+      }
+    },
+    "/stores/dispatch-check": {
+      "post": {
+        "operationId": "OpenFGAService_Dispatch",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/BaseResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "409": {
+            "description": "Request was aborted due a transaction conflict.",
+            "schema": {
+              "$ref": "#/definitions/AbortedMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/BaseRequest"
+            }
+          }
+        ],
+        "tags": [
+          "OpenFGAService"
         ]
       }
     },
@@ -189,12 +221,6 @@
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
             }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Status"
-            }
           }
         },
         "parameters": [
@@ -214,17 +240,8 @@
         "description": "Delete an OpenFGA store. This does not delete the data associated with the store, like tuples or authorization models.",
         "operationId": "DeleteStore",
         "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/DeleteStoreResponse"
-            }
-          },
           "204": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/DeleteStoreResponse"
-            }
+            "description": "A successful response."
           },
           "400": {
             "description": "Request failed due to invalid input.",
@@ -248,12 +265,6 @@
             "description": "Request failed due to internal server error.",
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Status"
             }
           }
         },
@@ -305,12 +316,6 @@
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
             }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Status"
-            }
           }
         },
         "parameters": [
@@ -336,17 +341,8 @@
         "description": "The WriteAssertions API will upsert new assertions for an authorization model id, or overwrite the existing ones. An assertion is an object that contains a tuple key, and the expectation of whether a call to the Check API of that tuple key will return true or false. ",
         "operationId": "WriteAssertions",
         "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/WriteAssertionsResponse"
-            }
-          },
           "204": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/WriteAssertionsResponse"
-            }
+            "description": "A successful response."
           },
           "400": {
             "description": "Request failed due to invalid input.",
@@ -370,12 +366,6 @@
             "description": "Request failed due to internal server error.",
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Status"
             }
           }
         },
@@ -453,12 +443,6 @@
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
             }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Status"
-            }
           }
         },
         "parameters": [
@@ -491,12 +475,6 @@
         "description": "The WriteAuthorizationModel API will add a new authorization model to a store.\nEach item in the `type_definitions` array is a type definition as specified in the field `type_definition`.\nThe response will return the authorization model's ID in the `id` field.\n\n## Example\nTo add an authorization model with `user` and `document` type definitions, call POST authorization-models API with the body: \n```json\n{\n  \"type_definitions\":[\n    {\n      \"type\":\"user\"\n    },\n    {\n      \"type\":\"document\",\n      \"relations\":{\n        \"reader\":{\n          \"union\":{\n            \"child\":[\n              {\n                \"this\":{}\n              },\n              {\n                \"computedUserset\":{\n                  \"object\":\"\",\n                  \"relation\":\"writer\"\n                }\n              }\n            ]\n          }\n        },\n        \"writer\":{\n          \"this\":{}\n        }\n      }\n    }\n  ]\n}\n```\nOpenFGA's response will include the version id for this authorization model, which will look like \n```\n{\"authorization_model_id\": \"01G50QVV17PECNVAHX1GG4Y5NC\"}\n```\n",
         "operationId": "WriteAuthorizationModel",
         "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/WriteAuthorizationModelResponse"
-            }
-          },
           "201": {
             "description": "A successful response.",
             "schema": {
@@ -525,12 +503,6 @@
             "description": "Request failed due to internal server error.",
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Status"
             }
           }
         },
@@ -612,12 +584,6 @@
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
             }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Status"
-            }
           }
         },
         "parameters": [
@@ -673,12 +639,6 @@
             "description": "Request failed due to internal server error.",
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Status"
             }
           }
         },
@@ -748,12 +708,6 @@
             "description": "Request failed due to internal server error.",
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Status"
             }
           }
         },
@@ -838,12 +792,6 @@
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
             }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Status"
-            }
           }
         },
         "parameters": [
@@ -882,7 +830,7 @@
     "/stores/{store_id}/list-objects": {
       "post": {
         "summary": "List all objects of the given type that the user has a relation with",
-        "description": "The ListObjects API returns a list of all the objects of the given type that the user has a relation with. To achieve this, both the store tuples and the authorization model are used.\nAn `authorization_model_id` may be specified in the body. If it is not specified, the latest authorization model ID will be used. It is strongly recommended to specify authorization model id for better performance.\nYou may also specify `contextual_tuples` that will be treated as regular tuples. Each of these tuples may have an associated `condition`.\nYou may also provide a `context` object that will be used to evaluate the conditioned tuples in the system. It is strongly recommended to provide a value for all the input parameters of all the conditions, to ensure that all tuples be evaluated correctly.\nThe response will contain the related objects in an array in the \"objects\" field of the response and they will be strings in the object format `\u003ctype\u003e:\u003cid\u003e` (e.g. \"document:roadmap\").\nThe number of objects in the response array will be limited by the execution timeout specified in the flag OPENFGA_LIST_OBJECTS_DEADLINE and by the upper bound specified in the flag OPENFGA_LIST_OBJECTS_MAX_RESULTS, whichever is hit first.\nThe objects given will not be sorted, and therefore two identical calls can give a given different set of objects.",
+        "description": "The ListObjects API returns a list of all the objects of the given type that the user has a relation with. To achieve this, both the store tuples and the authorization model are used.\nAn `authorization_model_id` may be specified in the body. If it is not specified, the latest authorization model ID will be used. It is strongly recommended to specify authorization model id for better performance.\nYou may also specify `contextual_tuples` that will be treated as regular tuples. Each of these tuples may have an associated `condition`.\nYou may also provide a `context` object that will be used to evaluate the conditioned tuples in the system. It is strongly recommended to provide a value for all the input parameters of all the conditions, to ensure that all tuples be evaluated correctly.\nThe response will contain the related objects in an array in the \"objects\" field of the response and they will be strings in the object format `<type>:<id>` (e.g. \"document:roadmap\").\nThe number of objects in the response array will be limited by the execution timeout specified in the flag OPENFGA_LIST_OBJECTS_DEADLINE and by the upper bound specified in the flag OPENFGA_LIST_OBJECTS_MAX_RESULTS, whichever is hit first.\nThe objects given will not be sorted, and therefore two identical calls can give a given different set of objects.",
         "operationId": "ListObjects",
         "responses": {
           "200": {
@@ -913,12 +861,6 @@
             "description": "Request failed due to internal server error.",
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Status"
             }
           }
         },
@@ -1013,12 +955,6 @@
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
             }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Status"
-            }
           }
         },
         "parameters": [
@@ -1099,12 +1035,6 @@
             "description": "Request failed due to internal server error.",
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Status"
             }
           }
         },
@@ -1196,12 +1126,6 @@
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
             }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Status"
-            }
           }
         },
         "parameters": [
@@ -1263,7 +1187,7 @@
         }
       },
       "additionalProperties": {},
-      "description": "`Any` contains an arbitrary serialized protocol buffer message along with a\nURL that describes the type of the serialized message.\n\nProtobuf library provides support to pack/unpack Any values in the form\nof utility functions or additional generated methods of the Any type.\n\nExample 1: Pack and unpack a message in C++.\n\n    Foo foo = ...;\n    Any any;\n    any.PackFrom(foo);\n    ...\n    if (any.UnpackTo(\u0026foo)) {\n      ...\n    }\n\nExample 2: Pack and unpack a message in Java.\n\n    Foo foo = ...;\n    Any any = Any.pack(foo);\n    ...\n    if (any.is(Foo.class)) {\n      foo = any.unpack(Foo.class);\n    }\n    // or ...\n    if (any.isSameTypeAs(Foo.getDefaultInstance())) {\n      foo = any.unpack(Foo.getDefaultInstance());\n    }\n\n Example 3: Pack and unpack a message in Python.\n\n    foo = Foo(...)\n    any = Any()\n    any.Pack(foo)\n    ...\n    if any.Is(Foo.DESCRIPTOR):\n      any.Unpack(foo)\n      ...\n\n Example 4: Pack and unpack a message in Go\n\n     foo := \u0026pb.Foo{...}\n     any, err := anypb.New(foo)\n     if err != nil {\n       ...\n     }\n     ...\n     foo := \u0026pb.Foo{}\n     if err := any.UnmarshalTo(foo); err != nil {\n       ...\n     }\n\nThe pack methods provided by protobuf library will by default use\n'type.googleapis.com/full.type.name' as the type URL and the unpack\nmethods only use the fully qualified type name after the last '/'\nin the type URL, for example \"foo.bar.com/x/y.z\" will yield type\nname \"y.z\".\n\nJSON\n====\nThe JSON representation of an `Any` value uses the regular\nrepresentation of the deserialized, embedded message, with an\nadditional field `@type` which contains the type URL. Example:\n\n    package google.profile;\n    message Person {\n      string first_name = 1;\n      string last_name = 2;\n    }\n\n    {\n      \"@type\": \"type.googleapis.com/google.profile.Person\",\n      \"firstName\": \u003cstring\u003e,\n      \"lastName\": \u003cstring\u003e\n    }\n\nIf the embedded message type is well-known and has a custom JSON\nrepresentation, that representation will be embedded adding a field\n`value` which holds the custom JSON in addition to the `@type`\nfield. Example (for message [google.protobuf.Duration][]):\n\n    {\n      \"@type\": \"type.googleapis.com/google.protobuf.Duration\",\n      \"value\": \"1.212s\"\n    }"
+      "description": "`Any` contains an arbitrary serialized protocol buffer message along with a\nURL that describes the type of the serialized message.\n\nProtobuf library provides support to pack/unpack Any values in the form\nof utility functions or additional generated methods of the Any type.\n\nExample 1: Pack and unpack a message in C++.\n\n    Foo foo = ...;\n    Any any;\n    any.PackFrom(foo);\n    ...\n    if (any.UnpackTo(&foo)) {\n      ...\n    }\n\nExample 2: Pack and unpack a message in Java.\n\n    Foo foo = ...;\n    Any any = Any.pack(foo);\n    ...\n    if (any.is(Foo.class)) {\n      foo = any.unpack(Foo.class);\n    }\n    // or ...\n    if (any.isSameTypeAs(Foo.getDefaultInstance())) {\n      foo = any.unpack(Foo.getDefaultInstance());\n    }\n\n Example 3: Pack and unpack a message in Python.\n\n    foo = Foo(...)\n    any = Any()\n    any.Pack(foo)\n    ...\n    if any.Is(Foo.DESCRIPTOR):\n      any.Unpack(foo)\n      ...\n\n Example 4: Pack and unpack a message in Go\n\n     foo := &pb.Foo{...}\n     any, err := anypb.New(foo)\n     if err != nil {\n       ...\n     }\n     ...\n     foo := &pb.Foo{}\n     if err := any.UnmarshalTo(foo); err != nil {\n       ...\n     }\n\nThe pack methods provided by protobuf library will by default use\n'type.googleapis.com/full.type.name' as the type URL and the unpack\nmethods only use the fully qualified type name after the last '/'\nin the type URL, for example \"foo.bar.com/x/y.z\" will yield type\nname \"y.z\".\n\nJSON\n====\nThe JSON representation of an `Any` value uses the regular\nrepresentation of the deserialized, embedded message, with an\nadditional field `@type` which contains the type URL. Example:\n\n    package google.profile;\n    message Person {\n      string first_name = 1;\n      string last_name = 2;\n    }\n\n    {\n      \"@type\": \"type.googleapis.com/google.profile.Person\",\n      \"firstName\": <string>,\n      \"lastName\": <string>\n    }\n\nIf the embedded message type is well-known and has a custom JSON\nrepresentation, that representation will be embedded adding a field\n`value` which holds the custom JSON in addition to the `@type`\nfield. Example (for message [google.protobuf.Duration][]):\n\n    {\n      \"@type\": \"type.googleapis.com/google.protobuf.Duration\",\n      \"value\": \"1.212s\"\n    }"
     },
     "Assertion": {
       "type": "object",
@@ -1379,6 +1303,37 @@
         "schema_version",
         "type_definitions"
       ]
+    },
+    "BaseRequest": {
+      "type": "object",
+      "properties": {
+        "dispatchedCheckRequest": {
+          "$ref": "#/definitions/DispatchedCheckRequest"
+        },
+        "listObjectsRequest": {
+          "$ref": "#/definitions/ListObjectsRequest"
+        },
+        "expandRequest": {
+          "$ref": "#/definitions/ExpandRequest"
+        },
+        "reverseExpandRequest": {
+          "$ref": "#/definitions/ReverseExpandRequest"
+        }
+      }
+    },
+    "BaseResponse": {
+      "type": "object",
+      "properties": {
+        "checkResponse": {
+          "$ref": "#/definitions/CheckResponse"
+        },
+        "listObjectsResponse": {
+          "$ref": "#/definitions/ListObjectsResponse"
+        },
+        "expandResponse": {
+          "$ref": "#/definitions/ExpandResponse"
+        }
+      }
     },
     "CheckRequestTupleKey": {
       "type": "object",
@@ -1530,6 +1485,32 @@
       "type": "object",
       "description": "A DirectUserset is a sentinel message for referencing\nthe direct members specified by an object/relation mapping."
     },
+    "DispatchedCheckRequest": {
+      "type": "object",
+      "properties": {
+        "storeId": {
+          "type": "string"
+        },
+        "authorizationModelId": {
+          "type": "string"
+        },
+        "tupleKey": {
+          "$ref": "#/definitions/TupleKey"
+        },
+        "contextualTuples": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TupleKey"
+          }
+        },
+        "visitedPaths": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/Any"
+          }
+        }
+      }
+    },
     "ErrorCode": {
       "type": "string",
       "enum": [
@@ -1583,6 +1564,26 @@
         "unsupported_schema_version"
       ],
       "default": "no_error"
+    },
+    "ExpandRequest": {
+      "type": "object",
+      "properties": {
+        "store_id": {
+          "type": "string",
+          "example": "01YCP46JKYM8FJCQ37NMBYHE5X"
+        },
+        "tuple_key": {
+          "$ref": "#/definitions/ExpandRequestTupleKey"
+        },
+        "authorization_model_id": {
+          "type": "string",
+          "example": "01G5JAVJ41T49E9TT3SKVS7X1J"
+        }
+      },
+      "required": [
+        "store_id",
+        "tuple_key"
+      ]
     },
     "ExpandRequestTupleKey": {
       "type": "object",
@@ -1687,6 +1688,48 @@
         }
       },
       "description": "A leaf node contains either\n- a set of users (which may be individual users, or usersets\n  referencing other relations)\n- a computed node, which is the result of a computed userset\n  value in the authorization model\n- a tupleToUserset nodes, containing the result of expanding\n  a tupleToUserset value in a authorization model."
+    },
+    "ListObjectsRequest": {
+      "type": "object",
+      "properties": {
+        "store_id": {
+          "type": "string",
+          "example": "01YCP46JKYM8FJCQ37NMBYHE5X"
+        },
+        "authorization_model_id": {
+          "type": "string",
+          "example": "01G5JAVJ41T49E9TT3SKVS7X1J"
+        },
+        "type": {
+          "type": "string",
+          "example": "document"
+        },
+        "relation": {
+          "type": "string",
+          "example": "reader"
+        },
+        "user": {
+          "type": "string",
+          "example": "user:anne",
+          "maxLength": 512,
+          "minLength": 1
+        },
+        "contextual_tuples": {
+          "$ref": "#/definitions/ContextualTupleKeys"
+        },
+        "context": {
+          "type": "object",
+          "description": "Additional request context that will be used to evaluate any ABAC conditions encountered\nin the query evaluation."
+        },
+        "message": {
+          "$ref": "#/definitions/Any"
+        }
+      },
+      "required": [
+        "type",
+        "relation",
+        "user"
+      ]
     },
     "ListObjectsResponse": {
       "type": "object",
@@ -1974,6 +2017,35 @@
       "required": [
         "name"
       ]
+    },
+    "ReverseExpandRequest": {
+      "type": "object",
+      "properties": {
+        "storeId": {
+          "type": "string"
+        },
+        "objectType": {
+          "type": "string"
+        },
+        "relation": {
+          "type": "string"
+        },
+        "contextualTuples": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TupleKey"
+          }
+        },
+        "edge": {
+          "$ref": "#/definitions/relationship_edge"
+        },
+        "context": {
+          "type": "object"
+        },
+        "intersectionOrExclusionInPreviousEdges": {
+          "type": "boolean"
+        }
+      }
     },
     "Status": {
       "type": "object",
@@ -2351,6 +2423,24 @@
     },
     "WriteResponse": {
       "type": "object"
+    },
+    "relationship_edge": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "targetReference": {
+          "$ref": "#/definitions/RelationReference"
+        },
+        "tuplesetRelation": {
+          "type": "string"
+        },
+        "targetReferenceInvolvesIntersectionOrExclusion": {
+          "type": "boolean"
+        }
+      }
     },
     "v1.Difference": {
       "type": "object",

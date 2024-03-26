@@ -6370,6 +6370,47 @@ func (m *BaseRequest) validate(all bool) error {
 			}
 		}
 
+	case *BaseRequest_ReverseExpandRequest:
+		if v == nil {
+			err := BaseRequestValidationError{
+				field:  "BaseRequest",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if all {
+			switch v := interface{}(m.GetReverseExpandRequest()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, BaseRequestValidationError{
+						field:  "ReverseExpandRequest",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, BaseRequestValidationError{
+						field:  "ReverseExpandRequest",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetReverseExpandRequest()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return BaseRequestValidationError{
+					field:  "ReverseExpandRequest",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
 	default:
 		_ = v // ensures v is used
 	}
@@ -6998,3 +7039,340 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = DispatchMetadataValidationError{}
+
+// Validate checks the field values on RelationshipEdge with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// first error encountered is returned, or nil if there are no violations.
+func (m *RelationshipEdge) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on RelationshipEdge with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// RelationshipEdgeMultiError, or nil if none found.
+func (m *RelationshipEdge) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *RelationshipEdge) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Type
+
+	if all {
+		switch v := interface{}(m.GetTargetReference()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, RelationshipEdgeValidationError{
+					field:  "TargetReference",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, RelationshipEdgeValidationError{
+					field:  "TargetReference",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetTargetReference()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return RelationshipEdgeValidationError{
+				field:  "TargetReference",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	// no validation rules for TuplesetRelation
+
+	// no validation rules for TargetReferenceInvolvesIntersectionOrExclusion
+
+	if len(errors) > 0 {
+		return RelationshipEdgeMultiError(errors)
+	}
+
+	return nil
+}
+
+// RelationshipEdgeMultiError is an error wrapping multiple validation errors
+// returned by RelationshipEdge.ValidateAll() if the designated constraints
+// aren't met.
+type RelationshipEdgeMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m RelationshipEdgeMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m RelationshipEdgeMultiError) AllErrors() []error { return m }
+
+// RelationshipEdgeValidationError is the validation error returned by
+// RelationshipEdge.Validate if the designated constraints aren't met.
+type RelationshipEdgeValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e RelationshipEdgeValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e RelationshipEdgeValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e RelationshipEdgeValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e RelationshipEdgeValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e RelationshipEdgeValidationError) ErrorName() string { return "RelationshipEdgeValidationError" }
+
+// Error satisfies the builtin error interface
+func (e RelationshipEdgeValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sRelationshipEdge.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = RelationshipEdgeValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = RelationshipEdgeValidationError{}
+
+// Validate checks the field values on ReverseExpandRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *ReverseExpandRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ReverseExpandRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// ReverseExpandRequestMultiError, or nil if none found.
+func (m *ReverseExpandRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ReverseExpandRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for StoreId
+
+	// no validation rules for ObjectType
+
+	// no validation rules for Relation
+
+	for idx, item := range m.GetContextualTuples() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ReverseExpandRequestValidationError{
+						field:  fmt.Sprintf("ContextualTuples[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ReverseExpandRequestValidationError{
+						field:  fmt.Sprintf("ContextualTuples[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return ReverseExpandRequestValidationError{
+					field:  fmt.Sprintf("ContextualTuples[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	if all {
+		switch v := interface{}(m.GetEdge()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, ReverseExpandRequestValidationError{
+					field:  "Edge",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, ReverseExpandRequestValidationError{
+					field:  "Edge",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetEdge()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return ReverseExpandRequestValidationError{
+				field:  "Edge",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if all {
+		switch v := interface{}(m.GetContext()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, ReverseExpandRequestValidationError{
+					field:  "Context",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, ReverseExpandRequestValidationError{
+					field:  "Context",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetContext()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return ReverseExpandRequestValidationError{
+				field:  "Context",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	// no validation rules for IntersectionOrExclusionInPreviousEdges
+
+	if len(errors) > 0 {
+		return ReverseExpandRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// ReverseExpandRequestMultiError is an error wrapping multiple validation
+// errors returned by ReverseExpandRequest.ValidateAll() if the designated
+// constraints aren't met.
+type ReverseExpandRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ReverseExpandRequestMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ReverseExpandRequestMultiError) AllErrors() []error { return m }
+
+// ReverseExpandRequestValidationError is the validation error returned by
+// ReverseExpandRequest.Validate if the designated constraints aren't met.
+type ReverseExpandRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ReverseExpandRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ReverseExpandRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ReverseExpandRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ReverseExpandRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ReverseExpandRequestValidationError) ErrorName() string {
+	return "ReverseExpandRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ReverseExpandRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sReverseExpandRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ReverseExpandRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ReverseExpandRequestValidationError{}

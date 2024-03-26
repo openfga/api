@@ -19,6 +19,7 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
+	OpenFGAService_Dispatch_FullMethodName                = "/openfga.v1.OpenFGAService/Dispatch"
 	OpenFGAService_Read_FullMethodName                    = "/openfga.v1.OpenFGAService/Read"
 	OpenFGAService_Write_FullMethodName                   = "/openfga.v1.OpenFGAService/Write"
 	OpenFGAService_Check_FullMethodName                   = "/openfga.v1.OpenFGAService/Check"
@@ -42,6 +43,7 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type OpenFGAServiceClient interface {
+	Dispatch(ctx context.Context, in *BaseRequest, opts ...grpc.CallOption) (*BaseResponse, error)
 	Read(ctx context.Context, in *ReadRequest, opts ...grpc.CallOption) (*ReadResponse, error)
 	Write(ctx context.Context, in *WriteRequest, opts ...grpc.CallOption) (*WriteResponse, error)
 	Check(ctx context.Context, in *CheckRequest, opts ...grpc.CallOption) (*CheckResponse, error)
@@ -67,6 +69,15 @@ type openFGAServiceClient struct {
 
 func NewOpenFGAServiceClient(cc grpc.ClientConnInterface) OpenFGAServiceClient {
 	return &openFGAServiceClient{cc}
+}
+
+func (c *openFGAServiceClient) Dispatch(ctx context.Context, in *BaseRequest, opts ...grpc.CallOption) (*BaseResponse, error) {
+	out := new(BaseResponse)
+	err := c.cc.Invoke(ctx, OpenFGAService_Dispatch_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (c *openFGAServiceClient) Read(ctx context.Context, in *ReadRequest, opts ...grpc.CallOption) (*ReadResponse, error) {
@@ -249,6 +260,7 @@ func (c *openFGAServiceClient) ListObjects(ctx context.Context, in *ListObjectsR
 // All implementations must embed UnimplementedOpenFGAServiceServer
 // for forward compatibility
 type OpenFGAServiceServer interface {
+	Dispatch(context.Context, *BaseRequest) (*BaseResponse, error)
 	Read(context.Context, *ReadRequest) (*ReadResponse, error)
 	Write(context.Context, *WriteRequest) (*WriteResponse, error)
 	Check(context.Context, *CheckRequest) (*CheckResponse, error)
@@ -273,6 +285,9 @@ type OpenFGAServiceServer interface {
 type UnimplementedOpenFGAServiceServer struct {
 }
 
+func (UnimplementedOpenFGAServiceServer) Dispatch(context.Context, *BaseRequest) (*BaseResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Dispatch not implemented")
+}
 func (UnimplementedOpenFGAServiceServer) Read(context.Context, *ReadRequest) (*ReadResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Read not implemented")
 }
@@ -335,6 +350,24 @@ type UnsafeOpenFGAServiceServer interface {
 
 func RegisterOpenFGAServiceServer(s grpc.ServiceRegistrar, srv OpenFGAServiceServer) {
 	s.RegisterService(&OpenFGAService_ServiceDesc, srv)
+}
+
+func _OpenFGAService_Dispatch_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(BaseRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OpenFGAServiceServer).Dispatch(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: OpenFGAService_Dispatch_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OpenFGAServiceServer).Dispatch(ctx, req.(*BaseRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _OpenFGAService_Read_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -653,6 +686,10 @@ var OpenFGAService_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "openfga.v1.OpenFGAService",
 	HandlerType: (*OpenFGAServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "Dispatch",
+			Handler:    _OpenFGAService_Dispatch_Handler,
+		},
 		{
 			MethodName: "Read",
 			Handler:    _OpenFGAService_Read_Handler,

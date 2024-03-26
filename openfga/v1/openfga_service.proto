@@ -15,6 +15,13 @@ import "protoc-gen-openapiv2/options/annotations.proto";
 import "validate/validate.proto";
 
 service OpenFGAService {
+  rpc Dispatch(BaseRequest) returns (BaseResponse) {
+    option (google.api.http) = {
+      post: "/stores/dispatch-check"
+      body: "*"
+    };
+  }
+
   rpc Read(ReadRequest) returns (ReadResponse) {
     option (google.api.http) = {
       post: "/stores/{store_id}/read"
@@ -1408,6 +1415,7 @@ message BaseRequest {
     DispatchedCheckRequest dispatched_check_request = 1;
     ListObjectsRequest list_objects_request = 2;
     ExpandRequest expand_request = 3;
+    ReverseExpandRequest reverse_expand_request = 4;
   }
 }
 
@@ -1420,15 +1428,32 @@ message BaseResponse {
 }
 
 message DispatchedCheckRequest {
- string store_id = 1;
- string authorization_model_id = 2;
- TupleKey tuple_key = 3;
- repeated TupleKey contextual_tuples = 4;
- map<string, google.protobuf.Any> visited_paths = 5;
+  string store_id = 1;
+  string authorization_model_id = 2;
+  TupleKey tuple_key = 3;
+  repeated TupleKey contextual_tuples = 4;
+  map<string, google.protobuf.Any> visited_paths = 5;
 }
 
 message DispatchMetadata {
-uint32 dispatch_count = 1;
-uint32 datastore_query_count = 2;
-uint32 depth = 3;
+  uint32 dispatch_count = 1;
+  uint32 datastore_query_count = 2;
+  uint32 depth = 3;
+}
+
+message relationship_edge {
+  int32 type = 1;
+  RelationReference target_reference = 2;
+  string tupleset_relation = 3;
+  bool target_reference_involves_intersection_or_exclusion = 4;
+}
+
+message ReverseExpandRequest {
+  string store_id = 1;
+  string object_type = 2;
+  string relation = 3;
+  repeated TupleKey contextual_tuples = 4;
+  relationship_edge edge = 5;
+  google.protobuf.Struct context = 6;
+  bool intersection_or_exclusion_in_previous_edges = 7;
 }
