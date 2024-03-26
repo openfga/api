@@ -1200,7 +1200,8 @@ message WriteAuthorizationModelRequest {
     (validate.rules).string = {
       in: [
         "1.0",
-        "1.1"
+        "1.1",
+        "1.2"
       ],
       ignore_empty: false
     }

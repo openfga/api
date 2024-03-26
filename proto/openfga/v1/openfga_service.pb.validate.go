@@ -4008,7 +4008,7 @@ func (m *WriteAuthorizationModelRequest) validate(all bool) error {
 	if _, ok := _WriteAuthorizationModelRequest_SchemaVersion_InLookup[m.GetSchemaVersion()]; !ok {
 		err := WriteAuthorizationModelRequestValidationError{
 			field:  "SchemaVersion",
-			reason: "value must be in list [1.0 1.1]",
+			reason: "value must be in list [1.0 1.1 1.2]",
 		}
 		if !all {
 			return err
@@ -4168,6 +4168,7 @@ var _WriteAuthorizationModelRequest_StoreId_Pattern = regexp.MustCompile("^[ABCD
 var _WriteAuthorizationModelRequest_SchemaVersion_InLookup = map[string]struct{}{
 	"1.0": {},
 	"1.1": {},
+	"1.2": {},
 }
 
 var _WriteAuthorizationModelRequest_Conditions_Pattern = regexp.MustCompile("^[^:#@\\s]{1,50}$")

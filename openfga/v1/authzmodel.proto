@@ -57,6 +57,8 @@ message TypeDefinition {
   ];
 
   // A map whose keys are the name of the relation and whose value is the Metadata for that relation.
+  // It also holds information around the module name and source file if this model was constructed
+  // from a modular model.
   Metadata metadata = 3;
 }
 
@@ -80,10 +82,31 @@ message RelationTypeInfo {
 
 message Metadata {
   map<string, RelationMetadata> relations = 1;
+
+  string module = 2 [(validate.rules).string = {
+    pattern: "^[^:#@\\s]{1,50}$",
+    ignore_empty: true
+  }];
+
+  SourceInfo source_info = 3 [json_name = "source_info"];
+}
+
+message SourceInfo {
+  string file = 1 [(validate.rules).string = {
+    pattern: "^[a-zA-Z0-9_\\-\\/]{1,100}\\.fga$",
+    ignore_empty: true
+  }];
 }
 
 message RelationMetadata {
   repeated RelationReference directly_related_user_types = 1 [json_name = "directly_related_user_types"];
+
+  string module = 2 [(validate.rules).string = {
+    pattern: "^[^:#@\\s]{1,50}$",
+    ignore_empty: true
+  }];
+
+  SourceInfo source_info = 3 [json_name = "source_info"];
 }
 
 // RelationReference represents a relation of a particular object type (e.g. 'document#viewer').
@@ -200,6 +223,17 @@ message Condition {
     (validate.rules).map.max_pairs = 25,
     (validate.rules).map.keys.string = {pattern: "^[^:#@\\s]{1,50}$"}
   ];
+
+  ConditionMetadata metadata = 4;
+}
+
+message ConditionMetadata {
+  string module = 1 [(validate.rules).string = {
+    pattern: "^[^:#@\\s]{1,50}$",
+    ignore_empty: true
+  }];
+
+  SourceInfo source_info = 2 [json_name = "source_info"];
 }
 
 message ConditionParamTypeRef {
