@@ -946,6 +946,10 @@
                 },
                 "contextual_tuples": {
                   "$ref": "#/definitions/ContextualTupleKeys"
+                },
+                "context": {
+                  "type": "object",
+                  "description": "Additional request context that will be used to evaluate any ABAC conditions encountered\nin the query evaluation."
                 }
               },
               "required": [
