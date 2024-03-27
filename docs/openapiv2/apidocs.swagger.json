@@ -867,6 +867,104 @@
         ]
       }
     },
+    "/stores/{store_id}/list-users": {
+      "post": {
+        "summary": "List all users of the given type that the object has a relation with",
+        "operationId": "ListUsers",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ListUsersResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "409": {
+            "description": "Request was aborted due a transaction conflict.",
+            "schema": {
+              "$ref": "#/definitions/AbortedMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "store_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "authorization_model_id": {
+                  "type": "string",
+                  "example": "01G5JAVJ41T49E9TT3SKVS7X1J"
+                },
+                "object": {
+                  "$ref": "#/definitions/Object",
+                  "example": "document:example"
+                },
+                "relation": {
+                  "type": "string",
+                  "example": "reader"
+                },
+                "user_filters": {
+                  "type": "array",
+                  "example": [
+                    {
+                      "type": "user"
+                    },
+                    {
+                      "type": "group",
+                      "relation": "member"
+                    }
+                  ],
+                  "items": {
+                    "$ref": "#/definitions/ListUsersFilter"
+                  }
+                },
+                "contextual_tuples": {
+                  "$ref": "#/definitions/ContextualTupleKeys"
+                },
+                "context": {
+                  "type": "object",
+                  "description": "Additional request context that will be used to evaluate any ABAC conditions encountered\nin the query evaluation."
+                }
+              },
+              "required": [
+                "object",
+                "relation",
+                "user_filters"
+              ]
+            }
+          }
+        ],
+        "tags": [
+          "Relationship Queries"
+        ]
+      }
+    },
     "/stores/{store_id}/read": {
       "post": {
         "summary": "Get tuples from the store that matches a query, without following userset rewrite rules",
@@ -1609,6 +1707,36 @@
         "continuation_token"
       ]
     },
+    "ListUsersFilter": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "example": "group"
+        },
+        "relation": {
+          "type": "string",
+          "example": "member"
+        }
+      },
+      "required": [
+        "type"
+      ]
+    },
+    "ListUsersResponse": {
+      "type": "object",
+      "properties": {
+        "users": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/User"
+          }
+        }
+      },
+      "required": [
+        "users"
+      ]
+    },
     "Metadata": {
       "type": "object",
       "properties": {
@@ -1680,6 +1808,23 @@
       ],
       "default": "NULL_VALUE",
       "description": "`NullValue` is a singleton enumeration to represent the null value for the\n`Value` type union.\n\nThe JSON representation for `NullValue` is JSON `null`.\n\n - NULL_VALUE: Null value."
+    },
+    "Object": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "example": "document"
+        },
+        "id": {
+          "type": "string"
+        }
+      },
+      "description": "Object represents an OpenFGA Object.\n\nAn Object is composed of a type and identifier (e.g. 'document:1')\n\nSee https://openfga.dev/docs/concepts#what-is-an-object",
+      "required": [
+        "type",
+        "id"
+      ]
     },
     "ObjectRelation": {
       "type": "object",
@@ -2096,6 +2241,35 @@
       ],
       "default": "TYPE_NAME_UNSPECIFIED"
     },
+    "TypedWildcard": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "example": "user"
+        },
+        "wildcard": {
+          "$ref": "#/definitions/Wildcard"
+        }
+      },
+      "required": [
+        "type"
+      ]
+    },
+    "User": {
+      "type": "object",
+      "properties": {
+        "object": {
+          "$ref": "#/definitions/Object"
+        },
+        "userset": {
+          "$ref": "#/definitions/UsersetUser"
+        },
+        "wildcard": {
+          "$ref": "#/definitions/TypedWildcard"
+        }
+      }
+    },
     "Users": {
       "type": "object",
       "properties": {
@@ -2173,6 +2347,27 @@
       "required": [
         "tupleset",
         "computed"
+      ]
+    },
+    "UsersetUser": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "example": "group"
+        },
+        "id": {
+          "type": "string"
+        },
+        "relation": {
+          "type": "string",
+          "example": "member"
+        }
+      },
+      "required": [
+        "type",
+        "id",
+        "relation"
       ]
     },
     "Usersets": {

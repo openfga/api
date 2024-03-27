@@ -36,6 +36,7 @@ const (
 	OpenFGAService_ListStores_FullMethodName              = "/openfga.v1.OpenFGAService/ListStores"
 	OpenFGAService_StreamedListObjects_FullMethodName     = "/openfga.v1.OpenFGAService/StreamedListObjects"
 	OpenFGAService_ListObjects_FullMethodName             = "/openfga.v1.OpenFGAService/ListObjects"
+	OpenFGAService_ListUsers_FullMethodName               = "/openfga.v1.OpenFGAService/ListUsers"
 )
 
 // OpenFGAServiceClient is the client API for OpenFGAService service.
@@ -59,6 +60,7 @@ type OpenFGAServiceClient interface {
 	ListStores(ctx context.Context, in *ListStoresRequest, opts ...grpc.CallOption) (*ListStoresResponse, error)
 	StreamedListObjects(ctx context.Context, in *StreamedListObjectsRequest, opts ...grpc.CallOption) (OpenFGAService_StreamedListObjectsClient, error)
 	ListObjects(ctx context.Context, in *ListObjectsRequest, opts ...grpc.CallOption) (*ListObjectsResponse, error)
+	ListUsers(ctx context.Context, in *ListUsersRequest, opts ...grpc.CallOption) (*ListUsersResponse, error)
 }
 
 type openFGAServiceClient struct {
@@ -245,6 +247,15 @@ func (c *openFGAServiceClient) ListObjects(ctx context.Context, in *ListObjectsR
 	return out, nil
 }
 
+func (c *openFGAServiceClient) ListUsers(ctx context.Context, in *ListUsersRequest, opts ...grpc.CallOption) (*ListUsersResponse, error) {
+	out := new(ListUsersResponse)
+	err := c.cc.Invoke(ctx, OpenFGAService_ListUsers_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // OpenFGAServiceServer is the server API for OpenFGAService service.
 // All implementations must embed UnimplementedOpenFGAServiceServer
 // for forward compatibility
@@ -266,6 +277,7 @@ type OpenFGAServiceServer interface {
 	ListStores(context.Context, *ListStoresRequest) (*ListStoresResponse, error)
 	StreamedListObjects(*StreamedListObjectsRequest, OpenFGAService_StreamedListObjectsServer) error
 	ListObjects(context.Context, *ListObjectsRequest) (*ListObjectsResponse, error)
+	ListUsers(context.Context, *ListUsersRequest) (*ListUsersResponse, error)
 	mustEmbedUnimplementedOpenFGAServiceServer()
 }
 
@@ -323,6 +335,9 @@ func (UnimplementedOpenFGAServiceServer) StreamedListObjects(*StreamedListObject
 }
 func (UnimplementedOpenFGAServiceServer) ListObjects(context.Context, *ListObjectsRequest) (*ListObjectsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListObjects not implemented")
+}
+func (UnimplementedOpenFGAServiceServer) ListUsers(context.Context, *ListUsersRequest) (*ListUsersResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListUsers not implemented")
 }
 func (UnimplementedOpenFGAServiceServer) mustEmbedUnimplementedOpenFGAServiceServer() {}
 
@@ -646,6 +661,24 @@ func _OpenFGAService_ListObjects_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
+func _OpenFGAService_ListUsers_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListUsersRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OpenFGAServiceServer).ListUsers(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: OpenFGAService_ListUsers_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OpenFGAServiceServer).ListUsers(ctx, req.(*ListUsersRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // OpenFGAService_ServiceDesc is the grpc.ServiceDesc for OpenFGAService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -716,6 +749,10 @@ var OpenFGAService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListObjects",
 			Handler:    _OpenFGAService_ListObjects_Handler,
+		},
+		{
+			MethodName: "ListUsers",
+			Handler:    _OpenFGAService_ListUsers_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{
