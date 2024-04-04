@@ -412,6 +412,17 @@ func (m *ListUsersRequest) validate(all bool) error {
 
 	}
 
+	if m.GetObject() == nil {
+		err := ListUsersRequestValidationError{
+			field:  "Object",
+			reason: "value is required",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
 	if all {
 		switch v := interface{}(m.GetObject()).(type) {
 		case interface{ ValidateAll() error }:

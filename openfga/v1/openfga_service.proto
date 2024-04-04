@@ -764,6 +764,7 @@ message ListUsersRequest {
   Object object = 3 [
     json_name = "object",
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"document:example\""},
+    (validate.rules).message.required = true,
     (google.api.field_behavior) = REQUIRED
   ];
 
