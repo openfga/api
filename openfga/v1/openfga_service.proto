@@ -813,6 +813,22 @@ message User {
     Object object = 1;
     UsersetUser userset = 2;
     TypedWildcard wildcard = 3;
+    SetDifference difference = 4;
+  }
+}
+
+// SetDifference is meant to represent set differences such as
+// User:* but not user:maria, or
+// group:fga#member but not group:eng#member
+message SetDifference {
+  oneof base {
+    UsersetUser base_userset = 1;
+    TypedWildcard base_wildcard = 2;
+  }
+
+  oneof sub {
+    UsersetUser sub_userset = 3;
+    Object sub_object = 4;
   }
 }
 

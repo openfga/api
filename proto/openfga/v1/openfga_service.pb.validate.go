@@ -925,6 +925,47 @@ func (m *User) validate(all bool) error {
 			}
 		}
 
+	case *User_Difference:
+		if v == nil {
+			err := UserValidationError{
+				field:  "User",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if all {
+			switch v := interface{}(m.GetDifference()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, UserValidationError{
+						field:  "Difference",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, UserValidationError{
+						field:  "Difference",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetDifference()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return UserValidationError{
+					field:  "Difference",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
 	default:
 		_ = v // ensures v is used
 	}
@@ -1005,6 +1046,279 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = UserValidationError{}
+
+// Validate checks the field values on SetDifference with the rules defined in
+// the proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *SetDifference) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on SetDifference with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in SetDifferenceMultiError, or
+// nil if none found.
+func (m *SetDifference) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *SetDifference) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	switch v := m.Base.(type) {
+	case *SetDifference_BaseUserset:
+		if v == nil {
+			err := SetDifferenceValidationError{
+				field:  "Base",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if all {
+			switch v := interface{}(m.GetBaseUserset()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, SetDifferenceValidationError{
+						field:  "BaseUserset",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, SetDifferenceValidationError{
+						field:  "BaseUserset",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetBaseUserset()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return SetDifferenceValidationError{
+					field:  "BaseUserset",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	case *SetDifference_BaseWildcard:
+		if v == nil {
+			err := SetDifferenceValidationError{
+				field:  "Base",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if all {
+			switch v := interface{}(m.GetBaseWildcard()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, SetDifferenceValidationError{
+						field:  "BaseWildcard",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, SetDifferenceValidationError{
+						field:  "BaseWildcard",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetBaseWildcard()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return SetDifferenceValidationError{
+					field:  "BaseWildcard",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	default:
+		_ = v // ensures v is used
+	}
+	switch v := m.Sub.(type) {
+	case *SetDifference_SubUserset:
+		if v == nil {
+			err := SetDifferenceValidationError{
+				field:  "Sub",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if all {
+			switch v := interface{}(m.GetSubUserset()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, SetDifferenceValidationError{
+						field:  "SubUserset",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, SetDifferenceValidationError{
+						field:  "SubUserset",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetSubUserset()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return SetDifferenceValidationError{
+					field:  "SubUserset",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	case *SetDifference_SubObject:
+		if v == nil {
+			err := SetDifferenceValidationError{
+				field:  "Sub",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if all {
+			switch v := interface{}(m.GetSubObject()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, SetDifferenceValidationError{
+						field:  "SubObject",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, SetDifferenceValidationError{
+						field:  "SubObject",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetSubObject()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return SetDifferenceValidationError{
+					field:  "SubObject",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	default:
+		_ = v // ensures v is used
+	}
+
+	if len(errors) > 0 {
+		return SetDifferenceMultiError(errors)
+	}
+
+	return nil
+}
+
+// SetDifferenceMultiError is an error wrapping multiple validation errors
+// returned by SetDifference.ValidateAll() if the designated constraints
+// aren't met.
+type SetDifferenceMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m SetDifferenceMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m SetDifferenceMultiError) AllErrors() []error { return m }
+
+// SetDifferenceValidationError is the validation error returned by
+// SetDifference.Validate if the designated constraints aren't met.
+type SetDifferenceValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e SetDifferenceValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e SetDifferenceValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e SetDifferenceValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e SetDifferenceValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e SetDifferenceValidationError) ErrorName() string { return "SetDifferenceValidationError" }
+
+// Error satisfies the builtin error interface
+func (e SetDifferenceValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sSetDifference.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = SetDifferenceValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = SetDifferenceValidationError{}
 
 // Validate checks the field values on TypedWildcard with the rules defined in
 // the proto definition for this message. If any rules are violated, the first
