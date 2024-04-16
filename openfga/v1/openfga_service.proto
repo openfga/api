@@ -861,8 +861,8 @@ message ListUsersResponse {
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}
   ];
 
-  repeated User except_users = 2 [
-    json_name = "exceptUsers",
+  repeated User exceptions = 2 [
+    json_name = "exceptions",
     (google.api.field_behavior) = REQUIRED,
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}
   ];

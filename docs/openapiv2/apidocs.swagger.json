@@ -1732,7 +1732,7 @@
             "$ref": "#/definitions/User"
           }
         },
-        "exceptUsers": {
+        "exceptions": {
           "type": "array",
           "items": {
             "$ref": "#/definitions/User"
@@ -1741,7 +1741,7 @@
       },
       "required": [
         "users",
-        "exceptUsers"
+        "exceptions"
       ]
     },
     "Metadata": {
