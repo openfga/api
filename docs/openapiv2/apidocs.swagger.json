@@ -1731,10 +1731,17 @@
           "items": {
             "$ref": "#/definitions/User"
           }
+        },
+        "exceptUsers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/User"
+          }
         }
       },
       "required": [
-        "users"
+        "users",
+        "exceptUsers"
       ]
     },
     "Metadata": {
