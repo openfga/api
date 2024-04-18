@@ -59,6 +59,12 @@
               "$ref": "#/definitions/AbortedMessageResponse"
             }
           },
+          "422": {
+            "description": "Request timeout due to throttling on complex query.",
+            "schema": {
+              "$ref": "#/definitions/UnprocessableContentMessageResponse"
+            }
+          },
           "500": {
             "description": "Request failed due to internal server error.",
             "schema": {
@@ -114,6 +120,12 @@
               "$ref": "#/definitions/AbortedMessageResponse"
             }
           },
+          "422": {
+            "description": "Request timeout due to throttling on complex query.",
+            "schema": {
+              "$ref": "#/definitions/UnprocessableContentMessageResponse"
+            }
+          },
           "500": {
             "description": "Request failed due to internal server error.",
             "schema": {
@@ -166,6 +178,12 @@
               "$ref": "#/definitions/AbortedMessageResponse"
             }
           },
+          "422": {
+            "description": "Request timeout due to throttling on complex query.",
+            "schema": {
+              "$ref": "#/definitions/UnprocessableContentMessageResponse"
+            }
+          },
           "500": {
             "description": "Request failed due to internal server error.",
             "schema": {
@@ -209,6 +227,12 @@
             "description": "Request was aborted due a transaction conflict.",
             "schema": {
               "$ref": "#/definitions/AbortedMessageResponse"
+            }
+          },
+          "422": {
+            "description": "Request timeout due to throttling on complex query.",
+            "schema": {
+              "$ref": "#/definitions/UnprocessableContentMessageResponse"
             }
           },
           "500": {
@@ -261,6 +285,12 @@
               "$ref": "#/definitions/AbortedMessageResponse"
             }
           },
+          "422": {
+            "description": "Request timeout due to throttling on complex query.",
+            "schema": {
+              "$ref": "#/definitions/UnprocessableContentMessageResponse"
+            }
+          },
           "500": {
             "description": "Request failed due to internal server error.",
             "schema": {
@@ -310,6 +340,12 @@
             "description": "Request was aborted due a transaction conflict.",
             "schema": {
               "$ref": "#/definitions/AbortedMessageResponse"
+            }
+          },
+          "422": {
+            "description": "Request timeout due to throttling on complex query.",
+            "schema": {
+              "$ref": "#/definitions/UnprocessableContentMessageResponse"
             }
           },
           "500": {
@@ -388,6 +424,12 @@
               "$ref": "#/definitions/AbortedMessageResponse"
             }
           },
+          "422": {
+            "description": "Request timeout due to throttling on complex query.",
+            "schema": {
+              "$ref": "#/definitions/UnprocessableContentMessageResponse"
+            }
+          },
           "500": {
             "description": "Request failed due to internal server error.",
             "schema": {
@@ -447,6 +489,12 @@
             "description": "Request was aborted due a transaction conflict.",
             "schema": {
               "$ref": "#/definitions/AbortedMessageResponse"
+            }
+          },
+          "422": {
+            "description": "Request timeout due to throttling on complex query.",
+            "schema": {
+              "$ref": "#/definitions/UnprocessableContentMessageResponse"
             }
           },
           "500": {
@@ -529,6 +577,12 @@
               "$ref": "#/definitions/AbortedMessageResponse"
             }
           },
+          "422": {
+            "description": "Request timeout due to throttling on complex query.",
+            "schema": {
+              "$ref": "#/definitions/UnprocessableContentMessageResponse"
+            }
+          },
           "500": {
             "description": "Request failed due to internal server error.",
             "schema": {
@@ -583,6 +637,12 @@
             "description": "Request was aborted due a transaction conflict.",
             "schema": {
               "$ref": "#/definitions/AbortedMessageResponse"
+            }
+          },
+          "422": {
+            "description": "Request timeout due to throttling on complex query.",
+            "schema": {
+              "$ref": "#/definitions/UnprocessableContentMessageResponse"
             }
           },
           "500": {
@@ -652,6 +712,12 @@
             "description": "Request was aborted due a transaction conflict.",
             "schema": {
               "$ref": "#/definitions/AbortedMessageResponse"
+            }
+          },
+          "422": {
+            "description": "Request timeout due to throttling on complex query.",
+            "schema": {
+              "$ref": "#/definitions/UnprocessableContentMessageResponse"
             }
           },
           "500": {
@@ -737,6 +803,12 @@
               "$ref": "#/definitions/AbortedMessageResponse"
             }
           },
+          "422": {
+            "description": "Request timeout due to throttling on complex query.",
+            "schema": {
+              "$ref": "#/definitions/UnprocessableContentMessageResponse"
+            }
+          },
           "500": {
             "description": "Request failed due to internal server error.",
             "schema": {
@@ -805,6 +877,12 @@
             "description": "Request was aborted due a transaction conflict.",
             "schema": {
               "$ref": "#/definitions/AbortedMessageResponse"
+            }
+          },
+          "422": {
+            "description": "Request timeout due to throttling on complex query.",
+            "schema": {
+              "$ref": "#/definitions/UnprocessableContentMessageResponse"
             }
           },
           "500": {
@@ -897,6 +975,12 @@
               "$ref": "#/definitions/AbortedMessageResponse"
             }
           },
+          "422": {
+            "description": "Request timeout due to throttling on complex query.",
+            "schema": {
+              "$ref": "#/definitions/UnprocessableContentMessageResponse"
+            }
+          },
           "500": {
             "description": "Request failed due to internal server error.",
             "schema": {
@@ -976,6 +1060,12 @@
             "description": "Request was aborted due a transaction conflict.",
             "schema": {
               "$ref": "#/definitions/AbortedMessageResponse"
+            }
+          },
+          "422": {
+            "description": "Request timeout due to throttling on complex query.",
+            "schema": {
+              "$ref": "#/definitions/UnprocessableContentMessageResponse"
             }
           },
           "500": {
@@ -1066,6 +1156,12 @@
             "description": "Request was aborted due a transaction conflict.",
             "schema": {
               "$ref": "#/definitions/AbortedMessageResponse"
+            }
+          },
+          "422": {
+            "description": "Request timeout due to throttling on complex query.",
+            "schema": {
+              "$ref": "#/definitions/UnprocessableContentMessageResponse"
             }
           },
           "500": {
@@ -1938,6 +2034,15 @@
         "object"
       ]
     },
+    "ThrottledErrorCode": {
+      "type": "string",
+      "enum": [
+        "no_throttled_error_code",
+        "throttled_timeout_error"
+      ],
+      "default": "no_throttled_error_code",
+      "title": "- no_throttled_error_code: no error\n - throttled_timeout_error: 3500 level errors are timeout due to throttling"
+    },
     "Tuple": {
       "type": "object",
       "properties": {
@@ -2095,6 +2200,21 @@
         "TYPE_NAME_IPADDRESS"
       ],
       "default": "TYPE_NAME_UNSPECIFIED"
+    },
+    "UnprocessableContentMessageResponse": {
+      "type": "object",
+      "example": {
+        "code": "throttled_timeout_error",
+        "message": "timeout due to throttling on complex request"
+      },
+      "properties": {
+        "code": {
+          "$ref": "#/definitions/ThrottledErrorCode"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
     },
     "Users": {
       "type": "object",
