@@ -71,7 +71,7 @@ enum ErrorCode {
   unsupported_schema_version = 2057;
 }
 
-enum ThrottledErrorCode {
+enum ResourceExhaustedErrorCode {
   // no error
   no_throttled_error_code = 0;
 
@@ -112,7 +112,7 @@ message ValidationErrorMessageResponse {
 
 message UnprocessableContentMessageResponse {
   option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {example: "{\"code\":\"throttled_timeout_error\", \"message\":\"timeout due to throttling on complex request\"}"};
-  ThrottledErrorCode code = 1;
+  ResourceExhaustedErrorCode code = 1;
   string message = 2;
 }
 

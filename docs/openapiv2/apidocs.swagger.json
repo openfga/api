@@ -60,7 +60,7 @@
             }
           },
           "422": {
-            "description": "Request timeout due to throttling on complex query.",
+            "description": "Request timed out due to excessive request throttling.",
             "schema": {
               "$ref": "#/definitions/UnprocessableContentMessageResponse"
             }
@@ -121,7 +121,7 @@
             }
           },
           "422": {
-            "description": "Request timeout due to throttling on complex query.",
+            "description": "Request timed out due to excessive request throttling.",
             "schema": {
               "$ref": "#/definitions/UnprocessableContentMessageResponse"
             }
@@ -179,7 +179,7 @@
             }
           },
           "422": {
-            "description": "Request timeout due to throttling on complex query.",
+            "description": "Request timed out due to excessive request throttling.",
             "schema": {
               "$ref": "#/definitions/UnprocessableContentMessageResponse"
             }
@@ -230,7 +230,7 @@
             }
           },
           "422": {
-            "description": "Request timeout due to throttling on complex query.",
+            "description": "Request timed out due to excessive request throttling.",
             "schema": {
               "$ref": "#/definitions/UnprocessableContentMessageResponse"
             }
@@ -286,7 +286,7 @@
             }
           },
           "422": {
-            "description": "Request timeout due to throttling on complex query.",
+            "description": "Request timed out due to excessive request throttling.",
             "schema": {
               "$ref": "#/definitions/UnprocessableContentMessageResponse"
             }
@@ -343,7 +343,7 @@
             }
           },
           "422": {
-            "description": "Request timeout due to throttling on complex query.",
+            "description": "Request timed out due to excessive request throttling.",
             "schema": {
               "$ref": "#/definitions/UnprocessableContentMessageResponse"
             }
@@ -425,7 +425,7 @@
             }
           },
           "422": {
-            "description": "Request timeout due to throttling on complex query.",
+            "description": "Request timed out due to excessive request throttling.",
             "schema": {
               "$ref": "#/definitions/UnprocessableContentMessageResponse"
             }
@@ -492,7 +492,7 @@
             }
           },
           "422": {
-            "description": "Request timeout due to throttling on complex query.",
+            "description": "Request timed out due to excessive request throttling.",
             "schema": {
               "$ref": "#/definitions/UnprocessableContentMessageResponse"
             }
@@ -578,7 +578,7 @@
             }
           },
           "422": {
-            "description": "Request timeout due to throttling on complex query.",
+            "description": "Request timed out due to excessive request throttling.",
             "schema": {
               "$ref": "#/definitions/UnprocessableContentMessageResponse"
             }
@@ -640,7 +640,7 @@
             }
           },
           "422": {
-            "description": "Request timeout due to throttling on complex query.",
+            "description": "Request timed out due to excessive request throttling.",
             "schema": {
               "$ref": "#/definitions/UnprocessableContentMessageResponse"
             }
@@ -715,7 +715,7 @@
             }
           },
           "422": {
-            "description": "Request timeout due to throttling on complex query.",
+            "description": "Request timed out due to excessive request throttling.",
             "schema": {
               "$ref": "#/definitions/UnprocessableContentMessageResponse"
             }
@@ -804,7 +804,7 @@
             }
           },
           "422": {
-            "description": "Request timeout due to throttling on complex query.",
+            "description": "Request timed out due to excessive request throttling.",
             "schema": {
               "$ref": "#/definitions/UnprocessableContentMessageResponse"
             }
@@ -880,7 +880,7 @@
             }
           },
           "422": {
-            "description": "Request timeout due to throttling on complex query.",
+            "description": "Request timed out due to excessive request throttling.",
             "schema": {
               "$ref": "#/definitions/UnprocessableContentMessageResponse"
             }
@@ -976,7 +976,7 @@
             }
           },
           "422": {
-            "description": "Request timeout due to throttling on complex query.",
+            "description": "Request timed out due to excessive request throttling.",
             "schema": {
               "$ref": "#/definitions/UnprocessableContentMessageResponse"
             }
@@ -1063,7 +1063,7 @@
             }
           },
           "422": {
-            "description": "Request timeout due to throttling on complex query.",
+            "description": "Request timed out due to excessive request throttling.",
             "schema": {
               "$ref": "#/definitions/UnprocessableContentMessageResponse"
             }
@@ -1159,7 +1159,7 @@
             }
           },
           "422": {
-            "description": "Request timeout due to throttling on complex query.",
+            "description": "Request timed out due to excessive request throttling.",
             "schema": {
               "$ref": "#/definitions/UnprocessableContentMessageResponse"
             }
@@ -1966,6 +1966,15 @@
         "name"
       ]
     },
+    "ResourceExhaustedErrorCode": {
+      "type": "string",
+      "enum": [
+        "no_throttled_error_code",
+        "throttled_timeout_error"
+      ],
+      "default": "no_throttled_error_code",
+      "title": "- no_throttled_error_code: no error\n - throttled_timeout_error: 3500 level errors are timeout due to throttling"
+    },
     "SourceInfo": {
       "type": "object",
       "properties": {
@@ -2033,15 +2042,6 @@
       "required": [
         "object"
       ]
-    },
-    "ThrottledErrorCode": {
-      "type": "string",
-      "enum": [
-        "no_throttled_error_code",
-        "throttled_timeout_error"
-      ],
-      "default": "no_throttled_error_code",
-      "title": "- no_throttled_error_code: no error\n - throttled_timeout_error: 3500 level errors are timeout due to throttling"
     },
     "Tuple": {
       "type": "object",
@@ -2209,7 +2209,7 @@
       },
       "properties": {
         "code": {
-          "$ref": "#/definitions/ThrottledErrorCode"
+          "$ref": "#/definitions/ResourceExhaustedErrorCode"
         },
         "message": {
           "type": "string"

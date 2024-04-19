@@ -52,7 +52,7 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
   responses: {
     key: "422"
     value: {
-      description: "Request timeout due to throttling on complex query."
+      description: "Request timed out due to excessive request throttling."
       schema: {
         json_schema: {ref: ".openfga.v1.UnprocessableContentMessageResponse"}
       }
