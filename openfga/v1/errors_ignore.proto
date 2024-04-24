@@ -71,6 +71,14 @@ enum ErrorCode {
   unsupported_schema_version = 2057;
 }
 
+enum UnprocessableContentErrorCode {
+  // no error
+  no_throttled_error_code = 0;
+
+  // 3500 level errors are timeout due to throttling
+  throttled_timeout_error = 3500;
+}
+
 enum InternalErrorCode {
   no_internal_error = 0;
 
@@ -99,6 +107,12 @@ enum NotFoundErrorCode {
 message ValidationErrorMessageResponse {
   option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {example: "{\"code\":\"validation_error\", \"message\":\"Generic validation error\"}"};
   ErrorCode code = 1;
+  string message = 2;
+}
+
+message UnprocessableContentMessageResponse {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {example: "{\"code\":\"throttled_timeout_error\", \"message\":\"timeout due to throttling on complex request\"}"};
+  UnprocessableContentErrorCode code = 1;
   string message = 2;
 }
 
