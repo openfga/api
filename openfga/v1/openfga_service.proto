@@ -784,7 +784,8 @@ message ListUsersRequest {
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "[{\"type\": \"user\"}, {\"type\": \"group\", \"relation\": \"member\"}]"}
   ];
 
-  openfga.v1.ContextualTupleKeys contextual_tuples = 6 [json_name = "contextual_tuples"];
+  repeated TupleKey contextual_tuples = 6 [json_name = "contextual_tuples"];
+
   // Additional request context that will be used to evaluate any ABAC conditions encountered
   // in the query evaluation.
   google.protobuf.Struct context = 7;

@@ -945,7 +945,10 @@
                   }
                 },
                 "contextual_tuples": {
-                  "$ref": "#/definitions/ContextualTupleKeys"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/TupleKey"
+                  }
                 },
                 "context": {
                   "type": "object",
