@@ -941,7 +941,7 @@
                     }
                   ],
                   "items": {
-                    "$ref": "#/definitions/ListUsersFilter"
+                    "$ref": "#/definitions/UserTypeFilter"
                   }
                 },
                 "contextual_tuples": {
@@ -1707,22 +1707,6 @@
         "continuation_token"
       ]
     },
-    "ListUsersFilter": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "type": "string",
-          "example": "group"
-        },
-        "relation": {
-          "type": "string",
-          "example": "member"
-        }
-      },
-      "required": [
-        "type"
-      ]
-    },
     "ListUsersResponse": {
       "type": "object",
       "properties": {
@@ -2276,6 +2260,22 @@
           "$ref": "#/definitions/TypedWildcard"
         }
       }
+    },
+    "UserTypeFilter": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "example": "group"
+        },
+        "relation": {
+          "type": "string",
+          "example": "member"
+        }
+      },
+      "required": [
+        "type"
+      ]
     },
     "Users": {
       "type": "object",

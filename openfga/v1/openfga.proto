@@ -5,6 +5,7 @@ package openfga.v1;
 import "google/api/field_behavior.proto";
 import "google/protobuf/struct.proto";
 import "google/protobuf/timestamp.proto";
+import "openfga/v1/authzmodel.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 import "validate/validate.proto";
 
@@ -29,6 +30,42 @@ message Object {
       ignore_empty: false
     },
     (google.api.field_behavior) = REQUIRED
+  ];
+}
+
+message User {
+  oneof user {
+    Object object = 1;
+    UsersetUser userset = 2;
+    TypedWildcard wildcard = 3;
+  }
+}
+
+message UsersetUser {
+  string type = 1 [
+    (validate.rules).string = {
+      pattern: "^[^:#@\\s]{1,254}$",
+      ignore_empty: false
+    },
+    (google.api.field_behavior) = REQUIRED,
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"group\""}
+  ];
+
+  string id = 2 [
+    (validate.rules).string = {
+      pattern: "[^#:\\s]+$",
+      ignore_empty: false
+    },
+    (google.api.field_behavior) = REQUIRED
+  ];
+
+  string relation = 3 [
+    (validate.rules).string = {
+      pattern: "^[^:#@\\s]{1,50}$",
+      ignore_empty: true
+    },
+    (google.api.field_behavior) = REQUIRED,
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"member\""}
   ];
 }
 
@@ -85,6 +122,19 @@ message TupleKeyWithoutCondition {
       example: "\"document:2021-budget\""
     }
   ];
+}
+
+message TypedWildcard {
+  string type = 1 [
+    (validate.rules).string = {
+      pattern: "^[^:#@\\s]{1,254}$",
+      ignore_empty: false
+    },
+    (google.api.field_behavior) = REQUIRED,
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"user\""}
+  ];
+
+  Wildcard wildcard = 2;
 }
 
 message TupleKey {
@@ -254,4 +304,23 @@ message Store {
     (google.api.field_behavior) = REQUIRED
   ];
   google.protobuf.Timestamp deleted_at = 5 [json_name = "deleted_at"];
+}
+
+message UserTypeFilter {
+  string type = 1 [
+    (validate.rules).string = {
+      pattern: "^[^:#@\\s]{1,254}$",
+      ignore_empty: false
+    },
+    (google.api.field_behavior) = REQUIRED,
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"group\""}
+  ];
+
+  string relation = 2 [
+    (validate.rules).string = {
+      pattern: "^[^:#@\\s]{1,50}$",
+      ignore_empty: true
+    },
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"member\""}
+  ];
 }

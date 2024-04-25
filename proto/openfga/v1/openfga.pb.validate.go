@@ -159,6 +159,374 @@ var _Object_Type_Pattern = regexp.MustCompile("^[^:#@\\s]{1,254}$")
 
 var _Object_Id_Pattern = regexp.MustCompile("[^#:\\s]+$")
 
+// Validate checks the field values on User with the rules defined in the proto
+// definition for this message. If any rules are violated, the first error
+// encountered is returned, or nil if there are no violations.
+func (m *User) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on User with the rules defined in the
+// proto definition for this message. If any rules are violated, the result is
+// a list of violation errors wrapped in UserMultiError, or nil if none found.
+func (m *User) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *User) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	switch v := m.User.(type) {
+	case *User_Object:
+		if v == nil {
+			err := UserValidationError{
+				field:  "User",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if all {
+			switch v := interface{}(m.GetObject()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, UserValidationError{
+						field:  "Object",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, UserValidationError{
+						field:  "Object",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetObject()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return UserValidationError{
+					field:  "Object",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	case *User_Userset:
+		if v == nil {
+			err := UserValidationError{
+				field:  "User",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if all {
+			switch v := interface{}(m.GetUserset()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, UserValidationError{
+						field:  "Userset",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, UserValidationError{
+						field:  "Userset",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetUserset()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return UserValidationError{
+					field:  "Userset",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	case *User_Wildcard:
+		if v == nil {
+			err := UserValidationError{
+				field:  "User",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if all {
+			switch v := interface{}(m.GetWildcard()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, UserValidationError{
+						field:  "Wildcard",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, UserValidationError{
+						field:  "Wildcard",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetWildcard()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return UserValidationError{
+					field:  "Wildcard",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	default:
+		_ = v // ensures v is used
+	}
+
+	if len(errors) > 0 {
+		return UserMultiError(errors)
+	}
+
+	return nil
+}
+
+// UserMultiError is an error wrapping multiple validation errors returned by
+// User.ValidateAll() if the designated constraints aren't met.
+type UserMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m UserMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m UserMultiError) AllErrors() []error { return m }
+
+// UserValidationError is the validation error returned by User.Validate if the
+// designated constraints aren't met.
+type UserValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e UserValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e UserValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e UserValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e UserValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e UserValidationError) ErrorName() string { return "UserValidationError" }
+
+// Error satisfies the builtin error interface
+func (e UserValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sUser.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = UserValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = UserValidationError{}
+
+// Validate checks the field values on UsersetUser with the rules defined in
+// the proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *UsersetUser) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on UsersetUser with the rules defined in
+// the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in UsersetUserMultiError, or
+// nil if none found.
+func (m *UsersetUser) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *UsersetUser) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if !_UsersetUser_Type_Pattern.MatchString(m.GetType()) {
+		err := UsersetUserValidationError{
+			field:  "Type",
+			reason: "value does not match regex pattern \"^[^:#@\\\\s]{1,254}$\"",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if !_UsersetUser_Id_Pattern.MatchString(m.GetId()) {
+		err := UsersetUserValidationError{
+			field:  "Id",
+			reason: "value does not match regex pattern \"[^#:\\\\s]+$\"",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if m.GetRelation() != "" {
+
+		if !_UsersetUser_Relation_Pattern.MatchString(m.GetRelation()) {
+			err := UsersetUserValidationError{
+				field:  "Relation",
+				reason: "value does not match regex pattern \"^[^:#@\\\\s]{1,50}$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
+	if len(errors) > 0 {
+		return UsersetUserMultiError(errors)
+	}
+
+	return nil
+}
+
+// UsersetUserMultiError is an error wrapping multiple validation errors
+// returned by UsersetUser.ValidateAll() if the designated constraints aren't met.
+type UsersetUserMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m UsersetUserMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m UsersetUserMultiError) AllErrors() []error { return m }
+
+// UsersetUserValidationError is the validation error returned by
+// UsersetUser.Validate if the designated constraints aren't met.
+type UsersetUserValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e UsersetUserValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e UsersetUserValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e UsersetUserValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e UsersetUserValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e UsersetUserValidationError) ErrorName() string { return "UsersetUserValidationError" }
+
+// Error satisfies the builtin error interface
+func (e UsersetUserValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sUsersetUser.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = UsersetUserValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = UsersetUserValidationError{}
+
+var _UsersetUser_Type_Pattern = regexp.MustCompile("^[^:#@\\s]{1,254}$")
+
+var _UsersetUser_Id_Pattern = regexp.MustCompile("[^#:\\s]+$")
+
+var _UsersetUser_Relation_Pattern = regexp.MustCompile("^[^:#@\\s]{1,50}$")
+
 // Validate checks the field values on RelationshipCondition with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
@@ -449,6 +817,148 @@ var _ interface {
 var _TupleKeyWithoutCondition_Relation_Pattern = regexp.MustCompile("^[^:#@\\s]{1,50}$")
 
 var _TupleKeyWithoutCondition_Object_Pattern = regexp.MustCompile("^[^\\s]{2,256}$")
+
+// Validate checks the field values on TypedWildcard with the rules defined in
+// the proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *TypedWildcard) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on TypedWildcard with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in TypedWildcardMultiError, or
+// nil if none found.
+func (m *TypedWildcard) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *TypedWildcard) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if !_TypedWildcard_Type_Pattern.MatchString(m.GetType()) {
+		err := TypedWildcardValidationError{
+			field:  "Type",
+			reason: "value does not match regex pattern \"^[^:#@\\\\s]{1,254}$\"",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if all {
+		switch v := interface{}(m.GetWildcard()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, TypedWildcardValidationError{
+					field:  "Wildcard",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, TypedWildcardValidationError{
+					field:  "Wildcard",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetWildcard()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return TypedWildcardValidationError{
+				field:  "Wildcard",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if len(errors) > 0 {
+		return TypedWildcardMultiError(errors)
+	}
+
+	return nil
+}
+
+// TypedWildcardMultiError is an error wrapping multiple validation errors
+// returned by TypedWildcard.ValidateAll() if the designated constraints
+// aren't met.
+type TypedWildcardMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m TypedWildcardMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m TypedWildcardMultiError) AllErrors() []error { return m }
+
+// TypedWildcardValidationError is the validation error returned by
+// TypedWildcard.Validate if the designated constraints aren't met.
+type TypedWildcardValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e TypedWildcardValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e TypedWildcardValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e TypedWildcardValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e TypedWildcardValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e TypedWildcardValidationError) ErrorName() string { return "TypedWildcardValidationError" }
+
+// Error satisfies the builtin error interface
+func (e TypedWildcardValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sTypedWildcard.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = TypedWildcardValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = TypedWildcardValidationError{}
+
+var _TypedWildcard_Type_Pattern = regexp.MustCompile("^[^:#@\\s]{1,254}$")
 
 // Validate checks the field values on TupleKey with the rules defined in the
 // proto definition for this message. If any rules are violated, the first
@@ -1572,6 +2082,136 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = StoreValidationError{}
+
+// Validate checks the field values on UserTypeFilter with the rules defined in
+// the proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *UserTypeFilter) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on UserTypeFilter with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in UserTypeFilterMultiError,
+// or nil if none found.
+func (m *UserTypeFilter) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *UserTypeFilter) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if !_UserTypeFilter_Type_Pattern.MatchString(m.GetType()) {
+		err := UserTypeFilterValidationError{
+			field:  "Type",
+			reason: "value does not match regex pattern \"^[^:#@\\\\s]{1,254}$\"",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if m.GetRelation() != "" {
+
+		if !_UserTypeFilter_Relation_Pattern.MatchString(m.GetRelation()) {
+			err := UserTypeFilterValidationError{
+				field:  "Relation",
+				reason: "value does not match regex pattern \"^[^:#@\\\\s]{1,50}$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
+	if len(errors) > 0 {
+		return UserTypeFilterMultiError(errors)
+	}
+
+	return nil
+}
+
+// UserTypeFilterMultiError is an error wrapping multiple validation errors
+// returned by UserTypeFilter.ValidateAll() if the designated constraints
+// aren't met.
+type UserTypeFilterMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m UserTypeFilterMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m UserTypeFilterMultiError) AllErrors() []error { return m }
+
+// UserTypeFilterValidationError is the validation error returned by
+// UserTypeFilter.Validate if the designated constraints aren't met.
+type UserTypeFilterValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e UserTypeFilterValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e UserTypeFilterValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e UserTypeFilterValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e UserTypeFilterValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e UserTypeFilterValidationError) ErrorName() string { return "UserTypeFilterValidationError" }
+
+// Error satisfies the builtin error interface
+func (e UserTypeFilterValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sUserTypeFilter.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = UserTypeFilterValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = UserTypeFilterValidationError{}
+
+var _UserTypeFilter_Type_Pattern = regexp.MustCompile("^[^:#@\\s]{1,254}$")
+
+var _UserTypeFilter_Relation_Pattern = regexp.MustCompile("^[^:#@\\s]{1,50}$")
 
 // Validate checks the field values on UsersetTree_Leaf with the rules defined
 // in the proto definition for this message. If any rules are violated, the

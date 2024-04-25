@@ -774,7 +774,7 @@ message ListUsersRequest {
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"reader\""}
   ];
 
-  repeated ListUsersFilter user_filters = 5 [
+  repeated UserTypeFilter user_filters = 5 [
     json_name = "user_filters",
     (google.api.field_behavior) = REQUIRED,
     (validate.rules).repeated = {
@@ -788,70 +788,6 @@ message ListUsersRequest {
   // Additional request context that will be used to evaluate any ABAC conditions encountered
   // in the query evaluation.
   google.protobuf.Struct context = 7;
-}
-
-message ListUsersFilter {
-  string type = 1 [
-    (validate.rules).string = {
-      pattern: "^[^:#@\\s]{1,254}$",
-      ignore_empty: false
-    },
-    (google.api.field_behavior) = REQUIRED,
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"group\""}
-  ];
-  string relation = 2 [
-    (validate.rules).string = {
-      pattern: "^[^:#@\\s]{1,50}$",
-      ignore_empty: true
-    },
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"member\""}
-  ];
-}
-
-message User {
-  oneof user {
-    Object object = 1;
-    UsersetUser userset = 2;
-    TypedWildcard wildcard = 3;
-  }
-}
-
-message TypedWildcard {
-  string type = 1 [
-    (validate.rules).string = {
-      pattern: "^[^:#@\\s]{1,254}$",
-      ignore_empty: false
-    },
-    (google.api.field_behavior) = REQUIRED,
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"user\""}
-  ];
-  Wildcard wildcard = 2;
-}
-
-message UsersetUser {
-  string type = 1 [
-    (validate.rules).string = {
-      pattern: "^[^:#@\\s]{1,254}$",
-      ignore_empty: false
-    },
-    (google.api.field_behavior) = REQUIRED,
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"group\""}
-  ];
-  string id = 2 [
-    (validate.rules).string = {
-      pattern: "[^#:\\s]+$",
-      ignore_empty: false
-    },
-    (google.api.field_behavior) = REQUIRED
-  ];
-  string relation = 3 [
-    (validate.rules).string = {
-      pattern: "^[^:#@\\s]{1,50}$",
-      ignore_empty: true
-    },
-    (google.api.field_behavior) = REQUIRED,
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"member\""}
-  ];
 }
 
 message ListUsersResponse {
