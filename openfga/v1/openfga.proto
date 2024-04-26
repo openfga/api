@@ -41,6 +41,13 @@ message User {
   }
 }
 
+message ObjectOrUserset {
+  oneof user {
+    Object object = 1;
+    UsersetUser userset = 2;
+  }
+}
+
 message UsersetUser {
   string type = 1 [
     (validate.rules).string = {
@@ -133,8 +140,6 @@ message TypedWildcard {
     (google.api.field_behavior) = REQUIRED,
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"user\""}
   ];
-
-  Wildcard wildcard = 2;
 }
 
 message TupleKey {

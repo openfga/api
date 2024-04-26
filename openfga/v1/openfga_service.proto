@@ -798,7 +798,7 @@ message ListUsersResponse {
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}
   ];
 
-  repeated User excluded_users = 2 [
+  repeated ObjectOrUserset excluded_users = 2 [
     json_name = "excluded_users",
     (google.api.field_behavior) = REQUIRED,
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}

@@ -1722,7 +1722,7 @@
         "excluded_users": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/User"
+            "$ref": "#/definitions/ObjectOrUserset"
           }
         }
       },
@@ -1819,6 +1819,17 @@
         "type",
         "id"
       ]
+    },
+    "ObjectOrUserset": {
+      "type": "object",
+      "properties": {
+        "object": {
+          "$ref": "#/definitions/Object"
+        },
+        "userset": {
+          "$ref": "#/definitions/UsersetUser"
+        }
+      }
     },
     "ObjectRelation": {
       "type": "object",
@@ -2241,9 +2252,6 @@
         "type": {
           "type": "string",
           "example": "user"
-        },
-        "wildcard": {
-          "$ref": "#/definitions/Wildcard"
         }
       },
       "required": [
