@@ -5,7 +5,6 @@ package openfga.v1;
 import "google/api/field_behavior.proto";
 import "google/protobuf/struct.proto";
 import "google/protobuf/timestamp.proto";
-import "openfga/v1/authzmodel.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 import "validate/validate.proto";
 
