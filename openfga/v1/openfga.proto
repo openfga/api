@@ -28,7 +28,67 @@ message Object {
       pattern: "[^#:\\s]+$",
       ignore_empty: false
     },
-    (google.api.field_behavior) = REQUIRED
+    (google.api.field_behavior) = REQUIRED,
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"0bcdf6fa-a6aa-4730-a8eb-9cf172ff16d9\""}
+  ];
+}
+
+// User.
+//
+// Represents any possible value for a user (subject or principal). Can be a:
+// - Specific user object e.g.: 'user:will', 'folder:marketing', 'org:contoso', ...)
+// - Specific userset (e.g. 'group:engineering#member')
+// - Public-typed wildcard (e.g. 'user:*')
+//
+// See https://openfga.dev/docs/concepts#what-is-a-user
+message User {
+  oneof user {
+    Object object = 1;
+    UsersetUser userset = 2;
+    TypedWildcard wildcard = 3;
+  }
+}
+
+message ObjectOrUserset {
+  oneof user {
+    Object object = 1;
+    UsersetUser userset = 2;
+  }
+}
+
+// Userset.
+//
+// A set or group of users, represented in the `<type>:<id>#<relation>` format
+//
+// `group:fga#member` represents all members of group FGA, not to be confused by `group:fga` which represents the group itself as a specific object.
+//
+// See: https://openfga.dev/docs/modeling/building-blocks/usersets#what-is-a-userset
+message UsersetUser {
+  string type = 1 [
+    (validate.rules).string = {
+      pattern: "^[^:#@\\s]{1,254}$",
+      ignore_empty: false
+    },
+    (google.api.field_behavior) = REQUIRED,
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"group\""}
+  ];
+
+  string id = 2 [
+    (validate.rules).string = {
+      pattern: "[^#:\\s]+$",
+      ignore_empty: false
+    },
+    (google.api.field_behavior) = REQUIRED,
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"fga\""}
+  ];
+
+  string relation = 3 [
+    (validate.rules).string = {
+      pattern: "^[^:#@\\s]{1,50}$",
+      ignore_empty: true
+    },
+    (google.api.field_behavior) = REQUIRED,
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"member\""}
   ];
 }
 
@@ -84,6 +144,24 @@ message TupleKeyWithoutCondition {
       max_length: 256,
       example: "\"document:2021-budget\""
     }
+  ];
+}
+
+// Type bound public access.
+//
+// Normally represented using the `<type>:*` syntax
+//
+// `employee:*` represents every object of type `employee`, including those not currently present in the system
+//
+// See https://openfga.dev/docs/concepts#what-is-type-bound-public-access
+message TypedWildcard {
+  string type = 1 [
+    (validate.rules).string = {
+      pattern: "^[^:#@\\s]{1,254}$",
+      ignore_empty: false
+    },
+    (google.api.field_behavior) = REQUIRED,
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"employee\""}
   ];
 }
 
@@ -254,4 +332,23 @@ message Store {
     (google.api.field_behavior) = REQUIRED
   ];
   google.protobuf.Timestamp deleted_at = 5 [json_name = "deleted_at"];
+}
+
+message UserTypeFilter {
+  string type = 1 [
+    (validate.rules).string = {
+      pattern: "^[^:#@\\s]{1,254}$",
+      ignore_empty: false
+    },
+    (google.api.field_behavior) = REQUIRED,
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"group\""}
+  ];
+
+  string relation = 2 [
+    (validate.rules).string = {
+      pattern: "^[^:#@\\s]{1,50}$",
+      ignore_empty: true
+    },
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"member\""}
+  ];
 }
