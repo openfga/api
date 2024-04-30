@@ -272,9 +272,7 @@ func (ErrorCode) EnumDescriptor() ([]byte, []int) {
 type UnprocessableContentErrorCode int32
 
 const (
-	// no error
 	UnprocessableContentErrorCode_no_throttled_error_code UnprocessableContentErrorCode = 0
-	// 3500 level errors are timeout due to throttling
 	UnprocessableContentErrorCode_throttled_timeout_error UnprocessableContentErrorCode = 3500
 )
 
