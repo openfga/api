@@ -28,18 +28,19 @@ message Object {
       pattern: "[^#:\\s]+$",
       ignore_empty: false
     },
-    (google.api.field_behavior) = REQUIRED
+    (google.api.field_behavior) = REQUIRED,
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"0bcdf6fa-a6aa-4730-a8eb-9cf172ff16d9\""}
   ];
 }
 
-// User represents any possible value for a user (subject)
+// User.
 //
-// Can either be a:
-// - Specific user object (ex: 'user:will')
-// - Specific userset (ex: 'group:engineering#member')
-// - Public-typed wildcard (ex: 'user:*')
+// Represents any possible value for a user (subject or principal). Can be a:
+// - Specific user object e.g.: 'user:will', 'folder:marketing', 'org:contoso', ...)
+// - Specific userset (e.g. 'group:engineering#member')
+// - Public-typed wildcard (e.g. 'user:*')
 //
-// See https://docs.fga.dev/intro/okta-fga-concepts#what-is-a-user
+// See https://openfga.dev/docs/concepts#what-is-a-user
 message User {
   oneof user {
     Object object = 1;
@@ -55,6 +56,13 @@ message ObjectOrUserset {
   }
 }
 
+// Userset.
+//
+// A set or group of users, represented in the `<type>:<id>#<relation>` format
+//
+// `group:fga#member` represents all members of group FGA, not to be confused by `group#fga` which represents the group itself as an entity.
+//
+// See: https://openfga.dev/docs/modeling/building-blocks/usersets#what-is-a-userset
 message UsersetUser {
   string type = 1 [
     (validate.rules).string = {
@@ -70,7 +78,8 @@ message UsersetUser {
       pattern: "[^#:\\s]+$",
       ignore_empty: false
     },
-    (google.api.field_behavior) = REQUIRED
+    (google.api.field_behavior) = REQUIRED,
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"fga\""}
   ];
 
   string relation = 3 [
@@ -138,6 +147,13 @@ message TupleKeyWithoutCondition {
   ];
 }
 
+// Type bound public access.
+//
+// Normally represented using the `<type>:*` syntax
+//
+// `employee:*` represents every object of type `employee`, including those not currently present in the system
+//
+// See https://openfga.dev/docs/concepts#what-is-type-bound-public-access
 message TypedWildcard {
   string type = 1 [
     (validate.rules).string = {
@@ -145,7 +161,7 @@ message TypedWildcard {
       ignore_empty: false
     },
     (google.api.field_behavior) = REQUIRED,
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"user\""}
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"employee\""}
   ];
 }
 

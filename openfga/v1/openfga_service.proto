@@ -751,7 +751,7 @@ service OpenFGAService {
     };
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      summary: "List all users of a given type that the object has a relation with"
+      summary: "List the users matching the provided filter who have a certain relation to a particular type."
       tags: ["Relationship Queries"]
       operation_id: "ListUsers"
       description:
@@ -763,13 +763,13 @@ service OpenFGAService {
         "model ID will be used. It is strongly recommended to specify authorization model id for better performance.\n"
         "You may also specify `contextual_tuples` that will be treated as regular tuples. Each of these tuples may have an associated `condition`.\n"
         "You may also provide a `context` object that will be used to evaluate the conditioned tuples in the system. It is strongly recommended to provide a value for all the input parameters of all the conditions, to ensure that all tuples be evaluated correctly.\n"
-        "The response will contain the related users in an array in the \"users\" field of the response. These results may include specific users, usersets \n"
-        "or public-typed wildcards. Each of these types of results is encoded in its own type and not represented as a string."
+        "The response will contain the related users in an array in the \"users\" field of the response. These results may include specific objects, usersets \n"
+        "or type-bound public access. Each of these types of results is encoded in its own type and not represented as a string."
         "In certain cases of negation via the `but not` operator, some results are marked as excluded from the main set of results. These exclusions \n"
         "are returned in the `excluded_users` property and should be handled appropriately at the point of implementation."
         "The number of users in the response array will be limited by the execution timeout specified in the flag OPENFGA_LIST_USERS_DEADLINE "
         "and by the upper bound specified in the flag OPENFGA_LIST_USERS_MAX_RESULTS, whichever is hit first.\n"
-        "The returned users will not be sorted, and therefore two identical calls may yield different sets of objects."
+        "The returned users will not be sorted, and therefore two identical calls may yield different sets of users."
     };
   }
 }
