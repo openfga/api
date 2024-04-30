@@ -72,10 +72,10 @@ enum ErrorCode {
 }
 
 enum UnprocessableContentErrorCode {
-  // no error
   no_throttled_error_code = 0;
 
   // 3500 level errors are timeout due to throttling
+
   throttled_timeout_error = 3500;
 }
 

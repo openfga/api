@@ -2198,8 +2198,7 @@
         "no_throttled_error_code",
         "throttled_timeout_error"
       ],
-      "default": "no_throttled_error_code",
-      "title": "- no_throttled_error_code: no error\n - throttled_timeout_error: 3500 level errors are timeout due to throttling"
+      "default": "no_throttled_error_code"
     },
     "UnprocessableContentMessageResponse": {
       "type": "object",
