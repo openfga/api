@@ -132,6 +132,14 @@ func (x *Object) GetId() string {
 	return ""
 }
 
+// User represents any possible value for a user (subject)
+//
+// Can either be a:
+// - Specific user object (ex: 'user:will')
+// - Specific userset (ex: 'group:engineering#member')
+// - Public-typed wildcard (ex: 'user:*')
+//
+// See https://docs.fga.dev/intro/okta-fga-concepts#what-is-a-user
 type User struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
