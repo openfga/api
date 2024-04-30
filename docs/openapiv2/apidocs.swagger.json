@@ -2514,7 +2514,7 @@
           "example": "member"
         }
       },
-      "description": "Userset.\n\nA set or group of users, represented in the `<type>:<id>#<relation>` format\n\n`group:fga#member` represents all members of group FGA, not to be confused by `group#fga` which represents the group itself as a specific object.\n\nSee: https://openfga.dev/docs/modeling/building-blocks/usersets#what-is-a-userset",
+      "description": "Userset.\n\nA set or group of users, represented in the `<type>:<id>#<relation>` format\n\n`group:fga#member` represents all members of group FGA, not to be confused by `group:fga` which represents the group itself as a specific object.\n\nSee: https://openfga.dev/docs/modeling/building-blocks/usersets#what-is-a-userset",
       "required": [
         "type",
         "id",
