@@ -8,7 +8,7 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
   info: {
     title: "OpenFGA";
     description: "A high performance and flexible authorization/permission engine built for developers and inspired by Google Zanzibar.";
-    version: "0.1";
+    version: "1.x";
     contact: {
       name: "OpenFGA";
       email: "community@openfga.dev";
@@ -28,6 +28,15 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
       description: "Request failed due to invalid input."
       schema: {
         json_schema: {ref: ".openfga.v1.ValidationErrorMessageResponse"}
+      }
+    }
+  }
+  responses: {
+    key: "401"
+    value: {
+      description: "Not authenticated."
+      schema: {
+        json_schema: {ref: ".openfga.v1.UnauthenticatedResponse"}
       }
     }
   }

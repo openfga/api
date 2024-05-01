@@ -265,8 +265,8 @@ service OpenFGAService {
         "}\n"
         "```\n"
         "will always return `{ \"allowed\": true }`. This is because usersets are self-defining: the userset `document:2021-budget#reader` will always have the `reader` relation with `document:2021-budget`.\n"
-        "### Querying usersets with exclusion in the model\n"
-        "A Check for a userset can yield results that must be treated carefully if the model involves exclusion. For example, for the following authorization model\n"
+        "### Querying usersets with difference in the model\n"
+        "A Check for a userset can yield results that must be treated carefully if the model involves difference. For example, for the following authorization model\n"
         "```python\n"
         "model\n"
         "  schema 1.1\n"
@@ -708,7 +708,7 @@ service OpenFGAService {
     };
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      summary: "[EXPERIMENTAL] Stream all objects of the given type that the user has a relation with"
+      summary: "Stream all objects of the given type that the user has a relation with"
       tags: ["Relationship Queries"]
       operation_id: "StreamedListObjects"
       description:
@@ -751,7 +751,7 @@ service OpenFGAService {
     };
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      summary: "List the users matching the provided filter who have a certain relation to a particular type."
+      summary: "[EXPERIMENTAL] List the users matching the provided filter who have a certain relation to a particular type."
       tags: ["Relationship Queries"]
       operation_id: "ListUsers"
       description:
