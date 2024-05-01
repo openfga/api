@@ -3,7 +3,7 @@
   "info": {
     "title": "OpenFGA",
     "description": "A high performance and flexible authorization/permission engine built for developers and inspired by Google Zanzibar.",
-    "version": "0.1",
+    "version": "1.x",
     "contact": {
       "name": "OpenFGA",
       "url": "https://openfga.dev",
@@ -45,6 +45,12 @@
             "description": "Request failed due to invalid input.",
             "schema": {
               "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "401": {
+            "description": "Not authenticated.",
+            "schema": {
+              "$ref": "#/definitions/UnauthenticatedResponse"
             }
           },
           "404": {
@@ -108,6 +114,12 @@
               "$ref": "#/definitions/ValidationErrorMessageResponse"
             }
           },
+          "401": {
+            "description": "Not authenticated.",
+            "schema": {
+              "$ref": "#/definitions/UnauthenticatedResponse"
+            }
+          },
           "404": {
             "description": "Request failed due to incorrect path.",
             "schema": {
@@ -166,6 +178,12 @@
               "$ref": "#/definitions/ValidationErrorMessageResponse"
             }
           },
+          "401": {
+            "description": "Not authenticated.",
+            "schema": {
+              "$ref": "#/definitions/UnauthenticatedResponse"
+            }
+          },
           "404": {
             "description": "Request failed due to incorrect path.",
             "schema": {
@@ -215,6 +233,12 @@
             "description": "Request failed due to invalid input.",
             "schema": {
               "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "401": {
+            "description": "Not authenticated.",
+            "schema": {
+              "$ref": "#/definitions/UnauthenticatedResponse"
             }
           },
           "404": {
@@ -271,6 +295,12 @@
             "description": "Request failed due to invalid input.",
             "schema": {
               "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "401": {
+            "description": "Not authenticated.",
+            "schema": {
+              "$ref": "#/definitions/UnauthenticatedResponse"
             }
           },
           "404": {
@@ -330,6 +360,12 @@
               "$ref": "#/definitions/ValidationErrorMessageResponse"
             }
           },
+          "401": {
+            "description": "Not authenticated.",
+            "schema": {
+              "$ref": "#/definitions/UnauthenticatedResponse"
+            }
+          },
           "404": {
             "description": "Request failed due to incorrect path.",
             "schema": {
@@ -378,6 +414,7 @@
                 "assertions": {
                   "type": "array",
                   "items": {
+                    "type": "object",
                     "$ref": "#/definitions/Assertion",
                     "maximum": 100
                   }
@@ -410,6 +447,12 @@
             "description": "Request failed due to invalid input.",
             "schema": {
               "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "401": {
+            "description": "Not authenticated.",
+            "schema": {
+              "$ref": "#/definitions/UnauthenticatedResponse"
             }
           },
           "404": {
@@ -479,6 +522,12 @@
               "$ref": "#/definitions/ValidationErrorMessageResponse"
             }
           },
+          "401": {
+            "description": "Not authenticated.",
+            "schema": {
+              "$ref": "#/definitions/UnauthenticatedResponse"
+            }
+          },
           "404": {
             "description": "Request failed due to incorrect path.",
             "schema": {
@@ -521,6 +570,7 @@
                 "type_definitions": {
                   "type": "array",
                   "items": {
+                    "type": "object",
                     "$ref": "#/definitions/TypeDefinition",
                     "minimum": 1
                   }
@@ -563,6 +613,12 @@
             "description": "Request failed due to invalid input.",
             "schema": {
               "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "401": {
+            "description": "Not authenticated.",
+            "schema": {
+              "$ref": "#/definitions/UnauthenticatedResponse"
             }
           },
           "404": {
@@ -627,6 +683,12 @@
               "$ref": "#/definitions/ValidationErrorMessageResponse"
             }
           },
+          "401": {
+            "description": "Not authenticated.",
+            "schema": {
+              "$ref": "#/definitions/UnauthenticatedResponse"
+            }
+          },
           "404": {
             "description": "Request failed due to incorrect path.",
             "schema": {
@@ -687,7 +749,7 @@
     "/stores/{store_id}/check": {
       "post": {
         "summary": "Check whether a user is authorized to access an object",
-        "description": "The Check API returns whether a given user has a relationship with a given object in a given store.\nThe `user` field of the request can be a specific target, such as `user:anne`, or a userset (set of users) such as `group:marketing#member` or a type-bound public access `user:*`.\nTo arrive at a result, the API uses: an authorization model, explicit tuples written through the Write API, contextual tuples present in the request, and implicit tuples that exist by virtue of applying set theory (such as `document:2021-budget#viewer@document:2021-budget#viewer`; the set of users who are viewers of `document:2021-budget` are the set of users who are the viewers of `document:2021-budget`).\nA `contextual_tuples` object may also be included in the body of the request. This object contains one field `tuple_keys`, which is an array of tuple keys. Each of these tuples may have an associated `condition`.\nYou may also provide an `authorization_model_id` in the body. This will be used to assert that the input `tuple_key` is valid for the model specified. If not specified, the assertion will be made against the latest authorization model ID. It is strongly recommended to specify authorization model id for better performance.\nYou may also provide a `context` object that will be used to evaluate the conditioned tuples in the system. It is strongly recommended to provide a value for all the input parameters of all the conditions, to ensure that all tuples be evaluated correctly.\nThe response will return whether the relationship exists in the field `allowed`.\n\nSome exceptions apply, but in general, if a Check API responds with `{allowed: true}`, then you can expect the equivalent ListObjects query to return the object, and viceversa. \nFor example, if `Check(user:anne, reader, document:2021-budget)` responds with `{allowed: true}`, then `ListObjects(user:anne, reader, document)` may include `document:2021-budget` in the response.\n## Examples\n### Querying with contextual tuples\nIn order to check if user `user:anne` of type `user` has a `reader` relationship with object `document:2021-budget` given the following contextual tuple\n```json\n{\n  \"user\": \"user:anne\",\n  \"relation\": \"member\",\n  \"object\": \"time_slot:office_hours\"\n}\n```\nthe Check API can be used with the following request body:\n```json\n{\n  \"tuple_key\": {\n    \"user\": \"user:anne\",\n    \"relation\": \"reader\",\n    \"object\": \"document:2021-budget\"\n  },\n  \"contextual_tuples\": {\n    \"tuple_keys\": [\n      {\n        \"user\": \"user:anne\",\n        \"relation\": \"member\",\n        \"object\": \"time_slot:office_hours\"\n      }\n    ]\n  },\n  \"authorization_model_id\": \"01G50QVV17PECNVAHX1GG4Y5NC\"\n}\n```\n### Querying usersets\nSome Checks will always return `true`, even without any tuples. For example, for the following authorization model\n```python\nmodel\n  schema 1.1\ntype user\ntype document\n  relations\n    define reader: [user]\n```\nthe following query\n```json\n{\n  \"tuple_key\": {\n     \"user\": \"document:2021-budget#reader\",\n     \"relation\": \"reader\",\n     \"object\": \"document:2021-budget\"\n  }\n}\n```\nwill always return `{ \"allowed\": true }`. This is because usersets are self-defining: the userset `document:2021-budget#reader` will always have the `reader` relation with `document:2021-budget`.\n### Querying usersets with exclusion in the model\nA Check for a userset can yield results that must be treated carefully if the model involves exclusion. For example, for the following authorization model\n```python\nmodel\n  schema 1.1\ntype user\ntype group\n  relations\n    define member: [user]\ntype document\n  relations\n    define blocked: [user]\n    define reader: [group#member] but not blocked\n```\nthe following query\n```json\n{\n  \"tuple_key\": {\n     \"user\": \"group:finance#member\",\n     \"relation\": \"reader\",\n     \"object\": \"document:2021-budget\"\n  },\n  \"contextual_tuples\": {\n    \"tuple_keys\": [\n      {\n        \"user\": \"user:anne\",\n        \"relation\": \"member\",\n        \"object\": \"group:finance\"\n      },\n      {\n        \"user\": \"group:finance#member\",\n        \"relation\": \"reader\",\n        \"object\": \"document:2021-budget\"\n      },\n      {\n        \"user\": \"user:anne\",\n        \"relation\": \"blocked\",\n        \"object\": \"document:2021-budget\"\n      }\n    ]\n  },\n}\n```\nwill return `{ \"allowed\": true }`, even though a specific user of the userset `group:finance#member` does not have the `reader` relationship with the given object.\n",
+        "description": "The Check API returns whether a given user has a relationship with a given object in a given store.\nThe `user` field of the request can be a specific target, such as `user:anne`, or a userset (set of users) such as `group:marketing#member` or a type-bound public access `user:*`.\nTo arrive at a result, the API uses: an authorization model, explicit tuples written through the Write API, contextual tuples present in the request, and implicit tuples that exist by virtue of applying set theory (such as `document:2021-budget#viewer@document:2021-budget#viewer`; the set of users who are viewers of `document:2021-budget` are the set of users who are the viewers of `document:2021-budget`).\nA `contextual_tuples` object may also be included in the body of the request. This object contains one field `tuple_keys`, which is an array of tuple keys. Each of these tuples may have an associated `condition`.\nYou may also provide an `authorization_model_id` in the body. This will be used to assert that the input `tuple_key` is valid for the model specified. If not specified, the assertion will be made against the latest authorization model ID. It is strongly recommended to specify authorization model id for better performance.\nYou may also provide a `context` object that will be used to evaluate the conditioned tuples in the system. It is strongly recommended to provide a value for all the input parameters of all the conditions, to ensure that all tuples be evaluated correctly.\nThe response will return whether the relationship exists in the field `allowed`.\n\nSome exceptions apply, but in general, if a Check API responds with `{allowed: true}`, then you can expect the equivalent ListObjects query to return the object, and viceversa. \nFor example, if `Check(user:anne, reader, document:2021-budget)` responds with `{allowed: true}`, then `ListObjects(user:anne, reader, document)` may include `document:2021-budget` in the response.\n## Examples\n### Querying with contextual tuples\nIn order to check if user `user:anne` of type `user` has a `reader` relationship with object `document:2021-budget` given the following contextual tuple\n```json\n{\n  \"user\": \"user:anne\",\n  \"relation\": \"member\",\n  \"object\": \"time_slot:office_hours\"\n}\n```\nthe Check API can be used with the following request body:\n```json\n{\n  \"tuple_key\": {\n    \"user\": \"user:anne\",\n    \"relation\": \"reader\",\n    \"object\": \"document:2021-budget\"\n  },\n  \"contextual_tuples\": {\n    \"tuple_keys\": [\n      {\n        \"user\": \"user:anne\",\n        \"relation\": \"member\",\n        \"object\": \"time_slot:office_hours\"\n      }\n    ]\n  },\n  \"authorization_model_id\": \"01G50QVV17PECNVAHX1GG4Y5NC\"\n}\n```\n### Querying usersets\nSome Checks will always return `true`, even without any tuples. For example, for the following authorization model\n```python\nmodel\n  schema 1.1\ntype user\ntype document\n  relations\n    define reader: [user]\n```\nthe following query\n```json\n{\n  \"tuple_key\": {\n     \"user\": \"document:2021-budget#reader\",\n     \"relation\": \"reader\",\n     \"object\": \"document:2021-budget\"\n  }\n}\n```\nwill always return `{ \"allowed\": true }`. This is because usersets are self-defining: the userset `document:2021-budget#reader` will always have the `reader` relation with `document:2021-budget`.\n### Querying usersets with difference in the model\nA Check for a userset can yield results that must be treated carefully if the model involves difference. For example, for the following authorization model\n```python\nmodel\n  schema 1.1\ntype user\ntype group\n  relations\n    define member: [user]\ntype document\n  relations\n    define blocked: [user]\n    define reader: [group#member] but not blocked\n```\nthe following query\n```json\n{\n  \"tuple_key\": {\n     \"user\": \"group:finance#member\",\n     \"relation\": \"reader\",\n     \"object\": \"document:2021-budget\"\n  },\n  \"contextual_tuples\": {\n    \"tuple_keys\": [\n      {\n        \"user\": \"user:anne\",\n        \"relation\": \"member\",\n        \"object\": \"group:finance\"\n      },\n      {\n        \"user\": \"group:finance#member\",\n        \"relation\": \"reader\",\n        \"object\": \"document:2021-budget\"\n      },\n      {\n        \"user\": \"user:anne\",\n        \"relation\": \"blocked\",\n        \"object\": \"document:2021-budget\"\n      }\n    ]\n  },\n}\n```\nwill return `{ \"allowed\": true }`, even though a specific user of the userset `group:finance#member` does not have the `reader` relationship with the given object.\n",
         "operationId": "Check",
         "responses": {
           "200": {
@@ -700,6 +762,12 @@
             "description": "Request failed due to invalid input.",
             "schema": {
               "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "401": {
+            "description": "Not authenticated.",
+            "schema": {
+              "$ref": "#/definitions/UnauthenticatedResponse"
             }
           },
           "404": {
@@ -791,6 +859,12 @@
               "$ref": "#/definitions/ValidationErrorMessageResponse"
             }
           },
+          "401": {
+            "description": "Not authenticated.",
+            "schema": {
+              "$ref": "#/definitions/UnauthenticatedResponse"
+            }
+          },
           "404": {
             "description": "Request failed due to incorrect path.",
             "schema": {
@@ -865,6 +939,12 @@
             "description": "Request failed due to invalid input.",
             "schema": {
               "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "401": {
+            "description": "Not authenticated.",
+            "schema": {
+              "$ref": "#/definitions/UnauthenticatedResponse"
             }
           },
           "404": {
@@ -947,7 +1027,7 @@
     },
     "/stores/{store_id}/list-users": {
       "post": {
-        "summary": "List the users matching the provided filter who have a certain relation to a particular type.",
+        "summary": "[EXPERIMENTAL] List the users matching the provided filter who have a certain relation to a particular type.",
         "description": "The ListUsers API returns a list of all the users of a specific type that have a relation to a given object.\n This API is available in an experimental capacity and can be enabled with the `--experimentals enable-list-users` flag. \nTo arrive at a result, the API uses: an authorization model, explicit tuples written through the Write API, contextual tuples present in the request, and implicit tuples that exist by virtue of applying set theory (such as `document:2021-budget#viewer@document:2021-budget#viewer`; the set of users who are viewers of `document:2021-budget` are the set of users who are the viewers of `document:2021-budget`).\nAn `authorization_model_id` may be specified in the body. If it is not specified, the latest authorization model ID will be used. It is strongly recommended to specify authorization model id for better performance.\nYou may also specify `contextual_tuples` that will be treated as regular tuples. Each of these tuples may have an associated `condition`.\nYou may also provide a `context` object that will be used to evaluate the conditioned tuples in the system. It is strongly recommended to provide a value for all the input parameters of all the conditions, to ensure that all tuples be evaluated correctly.\nThe response will contain the related users in an array in the \"users\" field of the response. These results may include specific objects, usersets \nor type-bound public access. Each of these types of results is encoded in its own type and not represented as a string.In certain cases of negation via the `but not` operator, some results are marked as excluded from the main set of results. These exclusions \nare returned in the `excluded_users` property and should be handled appropriately at the point of implementation.The number of users in the response array will be limited by the execution timeout specified in the flag OPENFGA_LIST_USERS_DEADLINE and by the upper bound specified in the flag OPENFGA_LIST_USERS_MAX_RESULTS, whichever is hit first.\nThe returned users will not be sorted, and therefore two identical calls may yield different sets of users.",
         "operationId": "ListUsers",
         "responses": {
@@ -961,6 +1041,12 @@
             "description": "Request failed due to invalid input.",
             "schema": {
               "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "401": {
+            "description": "Not authenticated.",
+            "schema": {
+              "$ref": "#/definitions/UnauthenticatedResponse"
             }
           },
           "404": {
@@ -1026,6 +1112,7 @@
                     }
                   ],
                   "items": {
+                    "type": "object",
                     "$ref": "#/definitions/UserTypeFilter"
                   },
                   "description": "The type of results returned. Only accepts exactly one value."
@@ -1033,6 +1120,7 @@
                 "contextual_tuples": {
                   "type": "array",
                   "items": {
+                    "type": "object",
                     "$ref": "#/definitions/TupleKey"
                   }
                 },
@@ -1070,6 +1158,12 @@
             "description": "Request failed due to invalid input.",
             "schema": {
               "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "401": {
+            "description": "Not authenticated.",
+            "schema": {
+              "$ref": "#/definitions/UnauthenticatedResponse"
             }
           },
           "404": {
@@ -1134,7 +1228,7 @@
     },
     "/stores/{store_id}/streamed-list-objects": {
       "post": {
-        "summary": "[EXPERIMENTAL] Stream all objects of the given type that the user has a relation with",
+        "summary": "Stream all objects of the given type that the user has a relation with",
         "description": "The Streamed ListObjects API is very similar to the the ListObjects API, with two differences: \n1. Instead of collecting all objects before returning a response, it streams them to the client as they are collected. \n2. The number of results returned is only limited by the execution timeout specified in the flag OPENFGA_LIST_OBJECTS_DEADLINE. \n",
         "operationId": "StreamedListObjects",
         "responses": {
@@ -1157,6 +1251,12 @@
             "description": "Request failed due to invalid input.",
             "schema": {
               "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "401": {
+            "description": "Not authenticated.",
+            "schema": {
+              "$ref": "#/definitions/UnauthenticatedResponse"
             }
           },
           "404": {
@@ -1253,6 +1353,12 @@
             "description": "Request failed due to invalid input.",
             "schema": {
               "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "401": {
+            "description": "Not authenticated.",
+            "schema": {
+              "$ref": "#/definitions/UnauthenticatedResponse"
             }
           },
           "404": {
@@ -1438,6 +1544,7 @@
             }
           ],
           "items": {
+            "type": "object",
             "$ref": "#/definitions/TypeDefinition"
           }
         },
@@ -1550,6 +1657,7 @@
         "generic_types": {
           "type": "array",
           "items": {
+            "type": "object",
             "$ref": "#/definitions/ConditionParamTypeRef"
           }
         }
@@ -1564,6 +1672,7 @@
         "tuple_keys": {
           "type": "array",
           "items": {
+            "type": "object",
             "$ref": "#/definitions/TupleKey",
             "maximum": 20
           }
@@ -1800,6 +1909,7 @@
         "stores": {
           "type": "array",
           "items": {
+            "type": "object",
             "$ref": "#/definitions/Store"
           }
         },
@@ -1820,12 +1930,14 @@
         "users": {
           "type": "array",
           "items": {
+            "type": "object",
             "$ref": "#/definitions/User"
           }
         },
         "excluded_users": {
           "type": "array",
           "items": {
+            "type": "object",
             "$ref": "#/definitions/ObjectOrUserset"
           }
         }
@@ -1881,6 +1993,7 @@
         "nodes": {
           "type": "array",
           "items": {
+            "type": "object",
             "$ref": "#/definitions/Node"
           }
         }
@@ -1972,6 +2085,7 @@
         "assertions": {
           "type": "array",
           "items": {
+            "type": "object",
             "$ref": "#/definitions/Assertion"
           }
         }
@@ -1994,6 +2108,7 @@
         "authorization_models": {
           "type": "array",
           "items": {
+            "type": "object",
             "$ref": "#/definitions/AuthorizationModel"
           }
         },
@@ -2013,6 +2128,7 @@
         "changes": {
           "type": "array",
           "items": {
+            "type": "object",
             "$ref": "#/definitions/TupleChange"
           }
         },
@@ -2052,6 +2168,7 @@
         "tuples": {
           "type": "array",
           "items": {
+            "type": "object",
             "$ref": "#/definitions/Tuple"
           }
         },
@@ -2072,6 +2189,7 @@
         "directly_related_user_types": {
           "type": "array",
           "items": {
+            "type": "object",
             "$ref": "#/definitions/RelationReference"
           }
         },
@@ -2146,6 +2264,7 @@
         "details": {
           "type": "array",
           "items": {
+            "type": "object",
             "$ref": "#/definitions/Any"
           }
         }
@@ -2364,6 +2483,21 @@
         "type"
       ]
     },
+    "UnauthenticatedResponse": {
+      "type": "object",
+      "example": {
+        "code": "unauthenticated",
+        "message": "unauthenticated"
+      },
+      "properties": {
+        "code": {
+          "$ref": "#/definitions/ErrorCode"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    },
     "UnprocessableContentErrorCode": {
       "type": "string",
       "enum": [
@@ -2488,6 +2622,7 @@
         "computed": {
           "type": "array",
           "items": {
+            "type": "object",
             "$ref": "#/definitions/Computed"
           }
         }
@@ -2526,6 +2661,7 @@
         "child": {
           "type": "array",
           "items": {
+            "type": "object",
             "$ref": "#/definitions/Userset"
           }
         }
@@ -2573,6 +2709,7 @@
         "tuple_keys": {
           "type": "array",
           "items": {
+            "type": "object",
             "$ref": "#/definitions/TupleKeyWithoutCondition",
             "minimum": 1
           }
@@ -2588,6 +2725,7 @@
         "tuple_keys": {
           "type": "array",
           "items": {
+            "type": "object",
             "$ref": "#/definitions/TupleKey",
             "minimum": 1
           }

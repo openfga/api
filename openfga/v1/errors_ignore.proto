@@ -110,6 +110,12 @@ message ValidationErrorMessageResponse {
   string message = 2;
 }
 
+message UnauthenticatedResponse {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {example: "{\"code\":\"unauthenticated\", \"message\":\"unauthenticated\"}"};
+  ErrorCode code = 1;
+  string message = 2;
+}
+
 message UnprocessableContentMessageResponse {
   option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {example: "{\"code\":\"throttled_timeout_error\", \"message\":\"timeout due to throttling on complex request\"}"};
   UnprocessableContentErrorCode code = 1;
