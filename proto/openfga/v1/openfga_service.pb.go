@@ -2542,8 +2542,9 @@ type Assertion struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	TupleKey    *AssertionTupleKey `protobuf:"bytes,1,opt,name=tuple_key,proto3" json:"tuple_key,omitempty"`
-	Expectation bool               `protobuf:"varint,2,opt,name=expectation,proto3" json:"expectation,omitempty"`
+	TupleKey         *AssertionTupleKey   `protobuf:"bytes,1,opt,name=tuple_key,proto3" json:"tuple_key,omitempty"`
+	Expectation      bool                 `protobuf:"varint,2,opt,name=expectation,proto3" json:"expectation,omitempty"`
+	ContextualTuples *ContextualTupleKeys `protobuf:"bytes,3,opt,name=contextual_tuples,proto3" json:"contextual_tuples,omitempty"`
 }
 
 func (x *Assertion) Reset() {
@@ -2590,6 +2591,13 @@ func (x *Assertion) GetExpectation() bool {
 		return x.Expectation
 	}
 	return false
+}
+
+func (x *Assertion) GetContextualTuples() *ContextualTupleKeys {
+	if x != nil {
+		return x.ContextualTuples
+	}
+	return nil
 }
 
 type Assertions struct {
@@ -3334,15 +3342,20 @@ var file_openfga_v1_openfga_service_proto_rawDesc = []byte{
 	0x28, 0x09, 0x42, 0x2b, 0x92, 0x41, 0x10, 0x4a, 0x0b, 0x22, 0x75, 0x73, 0x65, 0x72, 0x3a, 0x61,
 	0x6e, 0x6e, 0x65, 0x22, 0x78, 0x80, 0x04, 0xe0, 0x41, 0x02, 0xfa, 0x42, 0x12, 0x72, 0x10, 0x32,
 	0x0e, 0x5e, 0x5b, 0x5e, 0x5c, 0x73, 0x5d, 0x7b, 0x32, 0x2c, 0x35, 0x31, 0x32, 0x7d, 0x24, 0x52,
-	0x04, 0x75, 0x73, 0x65, 0x72, 0x22, 0x7c, 0x0a, 0x09, 0x41, 0x73, 0x73, 0x65, 0x72, 0x74, 0x69,
-	0x6f, 0x6e, 0x12, 0x48, 0x0a, 0x09, 0x74, 0x75, 0x70, 0x6c, 0x65, 0x5f, 0x6b, 0x65, 0x79, 0x18,
-	0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1d, 0x2e, 0x6f, 0x70, 0x65, 0x6e, 0x66, 0x67, 0x61, 0x2e,
-	0x76, 0x31, 0x2e, 0x41, 0x73, 0x73, 0x65, 0x72, 0x74, 0x69, 0x6f, 0x6e, 0x54, 0x75, 0x70, 0x6c,
-	0x65, 0x4b, 0x65, 0x79, 0x42, 0x0b, 0xe0, 0x41, 0x02, 0xfa, 0x42, 0x05, 0x8a, 0x01, 0x02, 0x10,
-	0x01, 0x52, 0x09, 0x74, 0x75, 0x70, 0x6c, 0x65, 0x5f, 0x6b, 0x65, 0x79, 0x12, 0x25, 0x0a, 0x0b,
-	0x65, 0x78, 0x70, 0x65, 0x63, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x02, 0x20, 0x01, 0x28,
-	0x08, 0x42, 0x03, 0xe0, 0x41, 0x02, 0x52, 0x0b, 0x65, 0x78, 0x70, 0x65, 0x63, 0x74, 0x61, 0x74,
-	0x69, 0x6f, 0x6e, 0x22, 0x48, 0x0a, 0x0a, 0x41, 0x73, 0x73, 0x65, 0x72, 0x74, 0x69, 0x6f, 0x6e,
+	0x04, 0x75, 0x73, 0x65, 0x72, 0x22, 0xcb, 0x01, 0x0a, 0x09, 0x41, 0x73, 0x73, 0x65, 0x72, 0x74,
+	0x69, 0x6f, 0x6e, 0x12, 0x48, 0x0a, 0x09, 0x74, 0x75, 0x70, 0x6c, 0x65, 0x5f, 0x6b, 0x65, 0x79,
+	0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1d, 0x2e, 0x6f, 0x70, 0x65, 0x6e, 0x66, 0x67, 0x61,
+	0x2e, 0x76, 0x31, 0x2e, 0x41, 0x73, 0x73, 0x65, 0x72, 0x74, 0x69, 0x6f, 0x6e, 0x54, 0x75, 0x70,
+	0x6c, 0x65, 0x4b, 0x65, 0x79, 0x42, 0x0b, 0xe0, 0x41, 0x02, 0xfa, 0x42, 0x05, 0x8a, 0x01, 0x02,
+	0x10, 0x01, 0x52, 0x09, 0x74, 0x75, 0x70, 0x6c, 0x65, 0x5f, 0x6b, 0x65, 0x79, 0x12, 0x25, 0x0a,
+	0x0b, 0x65, 0x78, 0x70, 0x65, 0x63, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x02, 0x20, 0x01,
+	0x28, 0x08, 0x42, 0x03, 0xe0, 0x41, 0x02, 0x52, 0x0b, 0x65, 0x78, 0x70, 0x65, 0x63, 0x74, 0x61,
+	0x74, 0x69, 0x6f, 0x6e, 0x12, 0x4d, 0x0a, 0x11, 0x63, 0x6f, 0x6e, 0x74, 0x65, 0x78, 0x74, 0x75,
+	0x61, 0x6c, 0x5f, 0x74, 0x75, 0x70, 0x6c, 0x65, 0x73, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0b, 0x32,
+	0x1f, 0x2e, 0x6f, 0x70, 0x65, 0x6e, 0x66, 0x67, 0x61, 0x2e, 0x76, 0x31, 0x2e, 0x43, 0x6f, 0x6e,
+	0x74, 0x65, 0x78, 0x74, 0x75, 0x61, 0x6c, 0x54, 0x75, 0x70, 0x6c, 0x65, 0x4b, 0x65, 0x79, 0x73,
+	0x52, 0x11, 0x63, 0x6f, 0x6e, 0x74, 0x65, 0x78, 0x74, 0x75, 0x61, 0x6c, 0x5f, 0x74, 0x75, 0x70,
+	0x6c, 0x65, 0x73, 0x22, 0x48, 0x0a, 0x0a, 0x41, 0x73, 0x73, 0x65, 0x72, 0x74, 0x69, 0x6f, 0x6e,
 	0x73, 0x12, 0x3a, 0x0a, 0x0a, 0x61, 0x73, 0x73, 0x65, 0x72, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x18,
 	0x01, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x15, 0x2e, 0x6f, 0x70, 0x65, 0x6e, 0x66, 0x67, 0x61, 0x2e,
 	0x76, 0x31, 0x2e, 0x41, 0x73, 0x73, 0x65, 0x72, 0x74, 0x69, 0x6f, 0x6e, 0x42, 0x03, 0xe0, 0x41,
@@ -5012,49 +5025,50 @@ var file_openfga_v1_openfga_service_proto_depIdxs = []int32{
 	52, // 38: openfga.v1.ListStoresRequest.page_size:type_name -> google.protobuf.Int32Value
 	60, // 39: openfga.v1.ListStoresResponse.stores:type_name -> openfga.v1.Store
 	41, // 40: openfga.v1.Assertion.tuple_key:type_name -> openfga.v1.AssertionTupleKey
-	42, // 41: openfga.v1.Assertions.assertions:type_name -> openfga.v1.Assertion
-	61, // 42: openfga.v1.WriteAuthorizationModelRequest.ConditionsEntry.value:type_name -> openfga.v1.Condition
-	6,  // 43: openfga.v1.OpenFGAService.Read:input_type -> openfga.v1.ReadRequest
-	11, // 44: openfga.v1.OpenFGAService.Write:input_type -> openfga.v1.WriteRequest
-	13, // 45: openfga.v1.OpenFGAService.Check:input_type -> openfga.v1.CheckRequest
-	16, // 46: openfga.v1.OpenFGAService.Expand:input_type -> openfga.v1.ExpandRequest
-	23, // 47: openfga.v1.OpenFGAService.ReadAuthorizationModels:input_type -> openfga.v1.ReadAuthorizationModelsRequest
-	19, // 48: openfga.v1.OpenFGAService.ReadAuthorizationModel:input_type -> openfga.v1.ReadAuthorizationModelRequest
-	21, // 49: openfga.v1.OpenFGAService.WriteAuthorizationModel:input_type -> openfga.v1.WriteAuthorizationModelRequest
-	25, // 50: openfga.v1.OpenFGAService.WriteAssertions:input_type -> openfga.v1.WriteAssertionsRequest
-	27, // 51: openfga.v1.OpenFGAService.ReadAssertions:input_type -> openfga.v1.ReadAssertionsRequest
-	29, // 52: openfga.v1.OpenFGAService.ReadChanges:input_type -> openfga.v1.ReadChangesRequest
-	31, // 53: openfga.v1.OpenFGAService.CreateStore:input_type -> openfga.v1.CreateStoreRequest
-	33, // 54: openfga.v1.OpenFGAService.UpdateStore:input_type -> openfga.v1.UpdateStoreRequest
-	35, // 55: openfga.v1.OpenFGAService.DeleteStore:input_type -> openfga.v1.DeleteStoreRequest
-	37, // 56: openfga.v1.OpenFGAService.GetStore:input_type -> openfga.v1.GetStoreRequest
-	39, // 57: openfga.v1.OpenFGAService.ListStores:input_type -> openfga.v1.ListStoresRequest
-	4,  // 58: openfga.v1.OpenFGAService.StreamedListObjects:input_type -> openfga.v1.StreamedListObjectsRequest
-	0,  // 59: openfga.v1.OpenFGAService.ListObjects:input_type -> openfga.v1.ListObjectsRequest
-	2,  // 60: openfga.v1.OpenFGAService.ListUsers:input_type -> openfga.v1.ListUsersRequest
-	8,  // 61: openfga.v1.OpenFGAService.Read:output_type -> openfga.v1.ReadResponse
-	12, // 62: openfga.v1.OpenFGAService.Write:output_type -> openfga.v1.WriteResponse
-	15, // 63: openfga.v1.OpenFGAService.Check:output_type -> openfga.v1.CheckResponse
-	18, // 64: openfga.v1.OpenFGAService.Expand:output_type -> openfga.v1.ExpandResponse
-	24, // 65: openfga.v1.OpenFGAService.ReadAuthorizationModels:output_type -> openfga.v1.ReadAuthorizationModelsResponse
-	20, // 66: openfga.v1.OpenFGAService.ReadAuthorizationModel:output_type -> openfga.v1.ReadAuthorizationModelResponse
-	22, // 67: openfga.v1.OpenFGAService.WriteAuthorizationModel:output_type -> openfga.v1.WriteAuthorizationModelResponse
-	26, // 68: openfga.v1.OpenFGAService.WriteAssertions:output_type -> openfga.v1.WriteAssertionsResponse
-	28, // 69: openfga.v1.OpenFGAService.ReadAssertions:output_type -> openfga.v1.ReadAssertionsResponse
-	30, // 70: openfga.v1.OpenFGAService.ReadChanges:output_type -> openfga.v1.ReadChangesResponse
-	32, // 71: openfga.v1.OpenFGAService.CreateStore:output_type -> openfga.v1.CreateStoreResponse
-	34, // 72: openfga.v1.OpenFGAService.UpdateStore:output_type -> openfga.v1.UpdateStoreResponse
-	36, // 73: openfga.v1.OpenFGAService.DeleteStore:output_type -> openfga.v1.DeleteStoreResponse
-	38, // 74: openfga.v1.OpenFGAService.GetStore:output_type -> openfga.v1.GetStoreResponse
-	40, // 75: openfga.v1.OpenFGAService.ListStores:output_type -> openfga.v1.ListStoresResponse
-	5,  // 76: openfga.v1.OpenFGAService.StreamedListObjects:output_type -> openfga.v1.StreamedListObjectsResponse
-	1,  // 77: openfga.v1.OpenFGAService.ListObjects:output_type -> openfga.v1.ListObjectsResponse
-	3,  // 78: openfga.v1.OpenFGAService.ListUsers:output_type -> openfga.v1.ListUsersResponse
-	61, // [61:79] is the sub-list for method output_type
-	43, // [43:61] is the sub-list for method input_type
-	43, // [43:43] is the sub-list for extension type_name
-	43, // [43:43] is the sub-list for extension extendee
-	0,  // [0:43] is the sub-list for field type_name
+	45, // 41: openfga.v1.Assertion.contextual_tuples:type_name -> openfga.v1.ContextualTupleKeys
+	42, // 42: openfga.v1.Assertions.assertions:type_name -> openfga.v1.Assertion
+	61, // 43: openfga.v1.WriteAuthorizationModelRequest.ConditionsEntry.value:type_name -> openfga.v1.Condition
+	6,  // 44: openfga.v1.OpenFGAService.Read:input_type -> openfga.v1.ReadRequest
+	11, // 45: openfga.v1.OpenFGAService.Write:input_type -> openfga.v1.WriteRequest
+	13, // 46: openfga.v1.OpenFGAService.Check:input_type -> openfga.v1.CheckRequest
+	16, // 47: openfga.v1.OpenFGAService.Expand:input_type -> openfga.v1.ExpandRequest
+	23, // 48: openfga.v1.OpenFGAService.ReadAuthorizationModels:input_type -> openfga.v1.ReadAuthorizationModelsRequest
+	19, // 49: openfga.v1.OpenFGAService.ReadAuthorizationModel:input_type -> openfga.v1.ReadAuthorizationModelRequest
+	21, // 50: openfga.v1.OpenFGAService.WriteAuthorizationModel:input_type -> openfga.v1.WriteAuthorizationModelRequest
+	25, // 51: openfga.v1.OpenFGAService.WriteAssertions:input_type -> openfga.v1.WriteAssertionsRequest
+	27, // 52: openfga.v1.OpenFGAService.ReadAssertions:input_type -> openfga.v1.ReadAssertionsRequest
+	29, // 53: openfga.v1.OpenFGAService.ReadChanges:input_type -> openfga.v1.ReadChangesRequest
+	31, // 54: openfga.v1.OpenFGAService.CreateStore:input_type -> openfga.v1.CreateStoreRequest
+	33, // 55: openfga.v1.OpenFGAService.UpdateStore:input_type -> openfga.v1.UpdateStoreRequest
+	35, // 56: openfga.v1.OpenFGAService.DeleteStore:input_type -> openfga.v1.DeleteStoreRequest
+	37, // 57: openfga.v1.OpenFGAService.GetStore:input_type -> openfga.v1.GetStoreRequest
+	39, // 58: openfga.v1.OpenFGAService.ListStores:input_type -> openfga.v1.ListStoresRequest
+	4,  // 59: openfga.v1.OpenFGAService.StreamedListObjects:input_type -> openfga.v1.StreamedListObjectsRequest
+	0,  // 60: openfga.v1.OpenFGAService.ListObjects:input_type -> openfga.v1.ListObjectsRequest
+	2,  // 61: openfga.v1.OpenFGAService.ListUsers:input_type -> openfga.v1.ListUsersRequest
+	8,  // 62: openfga.v1.OpenFGAService.Read:output_type -> openfga.v1.ReadResponse
+	12, // 63: openfga.v1.OpenFGAService.Write:output_type -> openfga.v1.WriteResponse
+	15, // 64: openfga.v1.OpenFGAService.Check:output_type -> openfga.v1.CheckResponse
+	18, // 65: openfga.v1.OpenFGAService.Expand:output_type -> openfga.v1.ExpandResponse
+	24, // 66: openfga.v1.OpenFGAService.ReadAuthorizationModels:output_type -> openfga.v1.ReadAuthorizationModelsResponse
+	20, // 67: openfga.v1.OpenFGAService.ReadAuthorizationModel:output_type -> openfga.v1.ReadAuthorizationModelResponse
+	22, // 68: openfga.v1.OpenFGAService.WriteAuthorizationModel:output_type -> openfga.v1.WriteAuthorizationModelResponse
+	26, // 69: openfga.v1.OpenFGAService.WriteAssertions:output_type -> openfga.v1.WriteAssertionsResponse
+	28, // 70: openfga.v1.OpenFGAService.ReadAssertions:output_type -> openfga.v1.ReadAssertionsResponse
+	30, // 71: openfga.v1.OpenFGAService.ReadChanges:output_type -> openfga.v1.ReadChangesResponse
+	32, // 72: openfga.v1.OpenFGAService.CreateStore:output_type -> openfga.v1.CreateStoreResponse
+	34, // 73: openfga.v1.OpenFGAService.UpdateStore:output_type -> openfga.v1.UpdateStoreResponse
+	36, // 74: openfga.v1.OpenFGAService.DeleteStore:output_type -> openfga.v1.DeleteStoreResponse
+	38, // 75: openfga.v1.OpenFGAService.GetStore:output_type -> openfga.v1.GetStoreResponse
+	40, // 76: openfga.v1.OpenFGAService.ListStores:output_type -> openfga.v1.ListStoresResponse
+	5,  // 77: openfga.v1.OpenFGAService.StreamedListObjects:output_type -> openfga.v1.StreamedListObjectsResponse
+	1,  // 78: openfga.v1.OpenFGAService.ListObjects:output_type -> openfga.v1.ListObjectsResponse
+	3,  // 79: openfga.v1.OpenFGAService.ListUsers:output_type -> openfga.v1.ListUsersResponse
+	62, // [62:80] is the sub-list for method output_type
+	44, // [44:62] is the sub-list for method input_type
+	44, // [44:44] is the sub-list for extension type_name
+	44, // [44:44] is the sub-list for extension extendee
+	0,  // [0:44] is the sub-list for field type_name
 }
 
 func init() { file_openfga_v1_openfga_service_proto_init() }
