@@ -112,7 +112,6 @@ message RelationshipCondition {
   google.protobuf.Struct context = 2;
 }
 
-
 message TupleKeyWithoutCondition {
   string user = 1 [
     (google.api.field_behavior) = REQUIRED,
