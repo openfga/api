@@ -1561,7 +1561,11 @@ message Assertion {
     (google.api.field_behavior) = REQUIRED
   ];
 
-  openfga.v1.ContextualTupleKeys contextual_tuples = 3 [json_name = "contextual_tuples"];
+  repeated TupleKey contextual_tuples = 3 [
+    json_name = "contextual_tuples",
+    (validate.rules).repeated.max_items = 20,
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {maximum: 20}
+  ];
 }
 
 message Assertions {
