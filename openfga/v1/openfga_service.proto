@@ -1561,7 +1561,7 @@ message Assertion {
     (google.api.field_behavior) = REQUIRED
   ];
 
-  repeated TupleKey contextual_tuples = 4 [json_name = "contextual_tuples"];
+  repeated TupleKey contextual_tuples = 3 [json_name = "contextual_tuples"];
 }
 
 message Assertions {
