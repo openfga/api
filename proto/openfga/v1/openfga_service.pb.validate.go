@@ -508,6 +508,17 @@ func (m *ListUsersRequest) validate(all bool) error {
 
 	}
 
+	if len(m.GetContextualTuples()) > 20 {
+		err := ListUsersRequestValidationError{
+			field:  "ContextualTuples",
+			reason: "value must contain no more than 20 item(s)",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
 	for idx, item := range m.GetContextualTuples() {
 		_, _ = idx, item
 

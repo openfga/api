@@ -1121,7 +1121,8 @@
                   "type": "array",
                   "items": {
                     "type": "object",
-                    "$ref": "#/definitions/TupleKey"
+                    "$ref": "#/definitions/TupleKey",
+                    "maximum": 20
                   }
                 },
                 "context": {
