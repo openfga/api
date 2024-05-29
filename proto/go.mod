@@ -1,6 +1,6 @@
 module github.com/openfga/api/proto
 
-go 1.21.3
+go 1.22.3
 
 require (
 	github.com/envoyproxy/protoc-gen-validate v1.0.2
