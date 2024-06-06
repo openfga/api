@@ -899,7 +899,7 @@ message ListUsersRequest {
   // in the query evaluation.
   google.protobuf.Struct context = 7;
 
-  // Controls the consistency preference for this request. Default is MINIMIZE_LATENCY.
+  // Controls the consistency preference for this request. Default value is UNSPECIFIED, which will have the same behavior as MINIMIZE_LATENCY.
   ConsistencyPreference consistency = 8 [(validate.rules).enum.defined_only = true];
 }
 
@@ -1004,7 +1004,7 @@ message ReadRequest {
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ==\""}
   ];
 
-  // Controls the consistency preference for this request. Default is MINIMIZE_LATENCY.
+  // Controls the consistency preference for this request. Default value is UNSPECIFIED, which will have the same behavior as MINIMIZE_LATENCY.
   ConsistencyPreference consistency = 5 [(validate.rules).enum.defined_only = true];
 }
 
@@ -1131,7 +1131,7 @@ message CheckRequest {
   // in the query evaluation.
   google.protobuf.Struct context = 6;
 
-  // Controls the consistency preference for this request. Default is MINIMIZE_LATENCY.
+  // Controls the consistency preference for this request. Default value is UNSPECIFIED, which will have the same behavior as MINIMIZE_LATENCY.
   ConsistencyPreference consistency = 7 [(validate.rules).enum.defined_only = true];
 }
 
@@ -1194,7 +1194,7 @@ message ExpandRequest {
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01G5JAVJ41T49E9TT3SKVS7X1J\""}
   ];
 
-  // Controls the consistency preference for this request. Default is MINIMIZE_LATENCY.
+  // Controls the consistency preference for this request. Default value is UNSPECIFIED, which will have the same behavior as MINIMIZE_LATENCY.
   ConsistencyPreference consistency = 4 [(validate.rules).enum.defined_only = true];
 }
 

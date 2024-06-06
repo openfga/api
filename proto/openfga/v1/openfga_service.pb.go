@@ -249,7 +249,7 @@ type ListUsersRequest struct {
 	// Additional request context that will be used to evaluate any ABAC conditions encountered
 	// in the query evaluation.
 	Context *structpb.Struct `protobuf:"bytes,7,opt,name=context,proto3" json:"context,omitempty"`
-	// Controls the consistency preference for this request. Default is MINIMIZE_LATENCY.
+	// Controls the consistency preference for this request. Default value is UNSPECIFIED, which will have the same behavior as MINIMIZE_LATENCY.
 	Consistency ConsistencyPreference `protobuf:"varint,8,opt,name=consistency,proto3,enum=openfga.v1.ConsistencyPreference" json:"consistency,omitempty"`
 }
 
@@ -550,7 +550,7 @@ type ReadRequest struct {
 	TupleKey          *ReadRequestTupleKey   `protobuf:"bytes,2,opt,name=tuple_key,proto3" json:"tuple_key,omitempty"`
 	PageSize          *wrapperspb.Int32Value `protobuf:"bytes,3,opt,name=page_size,proto3" json:"page_size,omitempty"`
 	ContinuationToken string                 `protobuf:"bytes,4,opt,name=continuation_token,proto3" json:"continuation_token,omitempty"`
-	// Controls the consistency preference for this request. Default is MINIMIZE_LATENCY.
+	// Controls the consistency preference for this request. Default value is UNSPECIFIED, which will have the same behavior as MINIMIZE_LATENCY.
 	Consistency ConsistencyPreference `protobuf:"varint,5,opt,name=consistency,proto3,enum=openfga.v1.ConsistencyPreference" json:"consistency,omitempty"`
 }
 
@@ -956,7 +956,7 @@ type CheckRequest struct {
 	// Additional request context that will be used to evaluate any ABAC conditions encountered
 	// in the query evaluation.
 	Context *structpb.Struct `protobuf:"bytes,6,opt,name=context,proto3" json:"context,omitempty"`
-	// Controls the consistency preference for this request. Default is MINIMIZE_LATENCY.
+	// Controls the consistency preference for this request. Default value is UNSPECIFIED, which will have the same behavior as MINIMIZE_LATENCY.
 	Consistency ConsistencyPreference `protobuf:"varint,7,opt,name=consistency,proto3,enum=openfga.v1.ConsistencyPreference" json:"consistency,omitempty"`
 }
 
@@ -1168,7 +1168,7 @@ type ExpandRequest struct {
 	StoreId              string                 `protobuf:"bytes,1,opt,name=store_id,proto3" json:"store_id,omitempty"`
 	TupleKey             *ExpandRequestTupleKey `protobuf:"bytes,2,opt,name=tuple_key,proto3" json:"tuple_key,omitempty"`
 	AuthorizationModelId string                 `protobuf:"bytes,3,opt,name=authorization_model_id,proto3" json:"authorization_model_id,omitempty"`
-	// Controls the consistency preference for this request. Default is MINIMIZE_LATENCY.
+	// Controls the consistency preference for this request. Default value is UNSPECIFIED, which will have the same behavior as MINIMIZE_LATENCY.
 	Consistency ConsistencyPreference `protobuf:"varint,4,opt,name=consistency,proto3,enum=openfga.v1.ConsistencyPreference" json:"consistency,omitempty"`
 }
 
