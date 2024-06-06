@@ -780,9 +780,9 @@ service OpenFGAService {
 enum ConsistencyPreference {
   // Default if not set. Behavior will be the same as MINIMIZE_LATENCY
   UNSPECIFIED = 0;
-  // Minimize latency at the potential expense of higher consistency
+  // Minimize latency at the potential expense of higher consistency.
   MINIMIZE_LATENCY = 1;
-  // Prefer higher consistency, at the potential expense of increased latency
+  // Prefer higher consistency, at the potential expense of increased latency.
   HIGHER_CONSISTENCY = 2;
 }
 
