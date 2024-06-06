@@ -174,6 +174,17 @@ func (m *ListObjectsRequest) validate(all bool) error {
 		}
 	}
 
+	if _, ok := ConsistencyPreference_name[int32(m.GetConsistency())]; !ok {
+		err := ListObjectsRequestValidationError{
+			field:  "Consistency",
+			reason: "value must be one of the defined enum values",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
 	if len(errors) > 0 {
 		return ListObjectsRequestMultiError(errors)
 	}
@@ -580,6 +591,17 @@ func (m *ListUsersRequest) validate(all bool) error {
 				cause:  err,
 			}
 		}
+	}
+
+	if _, ok := ConsistencyPreference_name[int32(m.GetConsistency())]; !ok {
+		err := ListUsersRequestValidationError{
+			field:  "Consistency",
+			reason: "value must be one of the defined enum values",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
 	}
 
 	if len(errors) > 0 {
@@ -1215,6 +1237,17 @@ func (m *ReadRequest) validate(all bool) error {
 		err := ReadRequestValidationError{
 			field:  "ContinuationToken",
 			reason: "value length must be at most 5120 bytes",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if _, ok := ConsistencyPreference_name[int32(m.GetConsistency())]; !ok {
+		err := ReadRequestValidationError{
+			field:  "Consistency",
+			reason: "value must be one of the defined enum values",
 		}
 		if !all {
 			return err
@@ -2321,6 +2354,17 @@ func (m *CheckRequest) validate(all bool) error {
 		}
 	}
 
+	if _, ok := ConsistencyPreference_name[int32(m.GetConsistency())]; !ok {
+		err := CheckRequestValidationError{
+			field:  "Consistency",
+			reason: "value must be one of the defined enum values",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
 	if len(errors) > 0 {
 		return CheckRequestMultiError(errors)
 	}
@@ -2733,6 +2777,17 @@ func (m *ExpandRequest) validate(all bool) error {
 			errors = append(errors, err)
 		}
 
+	}
+
+	if _, ok := ConsistencyPreference_name[int32(m.GetConsistency())]; !ok {
+		err := ExpandRequestValidationError{
+			field:  "Consistency",
+			reason: "value must be one of the defined enum values",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
 	}
 
 	if len(errors) > 0 {
