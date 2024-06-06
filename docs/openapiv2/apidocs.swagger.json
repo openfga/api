@@ -828,6 +828,10 @@
                 "context": {
                   "type": "object",
                   "description": "Additional request context that will be used to evaluate any ABAC conditions encountered\nin the query evaluation."
+                },
+                "consistency": {
+                  "$ref": "#/definitions/ConsistencyPreference",
+                  "description": "Controls the consistency preference for this request. Default is MINIMIZE_LATENCY."
                 }
               },
               "required": [
@@ -910,6 +914,10 @@
                 "authorization_model_id": {
                   "type": "string",
                   "example": "01G5JAVJ41T49E9TT3SKVS7X1J"
+                },
+                "consistency": {
+                  "$ref": "#/definitions/ConsistencyPreference",
+                  "description": "Controls the consistency preference for this request. Default is MINIMIZE_LATENCY."
                 }
               },
               "required": [
@@ -1010,6 +1018,10 @@
                 "context": {
                   "type": "object",
                   "description": "Additional request context that will be used to evaluate any ABAC conditions encountered\nin the query evaluation."
+                },
+                "consistency": {
+                  "$ref": "#/definitions/ConsistencyPreference",
+                  "description": "Controls the consistency preference for this request. Default is MINIMIZE_LATENCY."
                 }
               },
               "required": [
@@ -1128,6 +1140,10 @@
                 "context": {
                   "type": "object",
                   "description": "Additional request context that will be used to evaluate any ABAC conditions encountered\nin the query evaluation."
+                },
+                "consistency": {
+                  "$ref": "#/definitions/ConsistencyPreference",
+                  "description": "Controls the consistency preference for this request. Default is MINIMIZE_LATENCY."
                 }
               },
               "required": [
@@ -1217,6 +1233,10 @@
                 "continuation_token": {
                   "type": "string",
                   "example": "eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ=="
+                },
+                "consistency": {
+                  "$ref": "#/definitions/ConsistencyPreference",
+                  "description": "Controls the consistency preference for this request. Default is MINIMIZE_LATENCY."
                 }
               }
             }
@@ -1666,6 +1686,16 @@
       "required": [
         "type_name"
       ]
+    },
+    "ConsistencyPreference": {
+      "type": "string",
+      "enum": [
+        "UNSPECIFIED",
+        "MINIMIZE_LATENCY",
+        "HIGHER_CONSISTENCY"
+      ],
+      "default": "UNSPECIFIED",
+      "description": "Controls the consistency preferences when calling the query APIs.\n\n - UNSPECIFIED: Default if not set. Behavior will be the same as MINIMIZE_LATENCY\n - MINIMIZE_LATENCY: Minimize latency at the potential expense of higher consistency\n - HIGHER_CONSISTENCY: Prefer higher consistency, at the potential expense of increased latency"
     },
     "ContextualTupleKeys": {
       "type": "object",
