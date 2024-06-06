@@ -28,6 +28,8 @@ const (
 )
 
 // Controls the consistency preferences when calling the query APIs.
+// buf:lint:ignore ENUM_ZERO_VALUE_SUFFIX
+// buf:lint:ignore ENUM_VALUE_PREFIX
 type ConsistencyPreference int32
 
 const (
