@@ -1021,7 +1021,7 @@
                 },
                 "consistency": {
                   "$ref": "#/definitions/ConsistencyPreference",
-                  "description": "Controls the consistency preference for this request. Default is MINIMIZE_LATENCY."
+                  "description": "Controls the consistency preference for this request. Default value is UNSPECIFIED, which will have the same behavior as MINIMIZE_LATENCY."
                 }
               },
               "required": [

@@ -781,9 +781,9 @@ enum ConsistencyPreference {
   // Default if not set. Behavior will be the same as MINIMIZE_LATENCY
   UNSPECIFIED = 0;
   // Minimize latency at the potential expense of higher consistency.
-  MINIMIZE_LATENCY = 1;
+  MINIMIZE_LATENCY = 100;
   // Prefer higher consistency, at the potential expense of increased latency.
-  HIGHER_CONSISTENCY = 2;
+  HIGHER_CONSISTENCY = 200;
 }
 
 message ListObjectsRequest {
@@ -834,7 +834,7 @@ message ListObjectsRequest {
   // in the query evaluation.
   google.protobuf.Struct context = 7;
 
-  // Controls the consistency preference for this request. Default is MINIMIZE_LATENCY.
+  // Controls the consistency preference for this request. Default value is UNSPECIFIED, which will have the same behavior as MINIMIZE_LATENCY.
   ConsistencyPreference consistency = 8 [(validate.rules).enum.defined_only = true];
 }
 
