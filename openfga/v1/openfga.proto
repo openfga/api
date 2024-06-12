@@ -49,13 +49,6 @@ message User {
   }
 }
 
-message ObjectOrUserset {
-  oneof user {
-    Object object = 1;
-    UsersetUser userset = 2;
-  }
-}
-
 // Userset.
 //
 // A set or group of users, represented in the `<type>:<id>#<relation>` format
