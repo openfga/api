@@ -1343,6 +1343,10 @@
                 "context": {
                   "type": "object",
                   "description": "Additional request context that will be used to evaluate any ABAC conditions encountered\nin the query evaluation."
+                },
+                "consistency": {
+                  "$ref": "#/definitions/ConsistencyPreference",
+                  "description": "Controls the consistency preference for this request. Default value is UNSPECIFIED, which will have the same behavior as MINIMIZE_LATENCY."
                 }
               },
               "required": [

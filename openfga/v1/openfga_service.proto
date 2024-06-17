@@ -959,6 +959,9 @@ message StreamedListObjectsRequest {
   // Additional request context that will be used to evaluate any ABAC conditions encountered
   // in the query evaluation.
   google.protobuf.Struct context = 7;
+
+  // Controls the consistency preference for this request. Default value is UNSPECIFIED, which will have the same behavior as MINIMIZE_LATENCY.
+  ConsistencyPreference consistency = 8 [(validate.rules).enum.defined_only = true];
 }
 
 // The response for a StreamedListObjects RPC.

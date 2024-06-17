@@ -963,6 +963,17 @@ func (m *StreamedListObjectsRequest) validate(all bool) error {
 		}
 	}
 
+	if _, ok := ConsistencyPreference_name[int32(m.GetConsistency())]; !ok {
+		err := StreamedListObjectsRequestValidationError{
+			field:  "Consistency",
+			reason: "value must be one of the defined enum values",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
 	if len(errors) > 0 {
 		return StreamedListObjectsRequestMultiError(errors)
 	}
