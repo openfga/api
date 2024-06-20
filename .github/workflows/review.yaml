@@ -3,7 +3,7 @@ on:
   pull_request:
     branches:
       - main
-      - feat/abac
+      - feat/*
 
 permissions:
   contents: read
@@ -36,9 +36,8 @@ jobs:
           version: "1.28.1"
       - name: "Generate OpenAPI & Diff"
         run: |
-          ./buf.gen.yaml
-          ./scripts/update_swagger.sh docs/openapiv2/apidocs.swagger.json
-          git diff --text --exit-code docs/openapiv2/apidocs.swagger.json
+          make all
+          git diff --text --exit-code docs/openapiv2/apidocs.swagger.json proto/**/*.go
 
   validate-openapi:
     runs-on: ubuntu-latest
