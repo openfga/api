@@ -751,12 +751,11 @@ service OpenFGAService {
     };
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      summary: "[EXPERIMENTAL] List the users matching the provided filter who have a certain relation to a particular type."
+      summary: "List the users matching the provided filter who have a certain relation to a particular type."
       tags: ["Relationship Queries"]
       operation_id: "ListUsers"
       description:
         "The ListUsers API returns a list of all the users of a specific type that have a relation to a given object.\n "
-        "This API is available in an experimental capacity and can be enabled with the `--experimentals enable-list-users` flag. \n"
         "To arrive at a result, the API uses: an authorization model, explicit tuples written through the Write API, contextual tuples present in the request, and implicit tuples that exist by virtue of applying set theory "
         "(such as `document:2021-budget#viewer@document:2021-budget#viewer`; the set of users who are viewers of `document:2021-budget` are the set of users who are the viewers of `document:2021-budget`).\n"
         "An `authorization_model_id` may be specified in the body. If it is not specified, the latest authorization "
