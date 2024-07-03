@@ -1,0 +1,127 @@
+syntax = "proto3";
+
+package openfga.v1alpha1;
+
+service IndexerService {
+    rpc CreateIndex(CreateIndexRequest) returns (CreateIndexResponse);
+    rpc GetIndex(GetIndexRequest) returns (GetIndexResponse);
+    rpc DropIndex(DropIndexRequest) returns (DropIndexResponse);
+    rpc WatchIndex(WatchIndexRequest) returns (stream WatchIndexResponse);
+}
+
+// Index represents an FGA Index.
+message Index {
+    string id = 1;
+    IndexSchema schema = 2;
+    IndexStats stats = 3;
+}
+
+// IndexSchema represents the index definition (schema) which was used to produce the index.
+message IndexSchema {
+    string authorization_model_id = 1;
+    repeated RelationshipIndexFilter relationship_filters = 2;
+}
+
+message IndexStats {
+    // The size of the index.
+    uint64 size = 1;
+
+    // The number of rows in the index.
+    uint64 rows = 2;
+}
+
+message CreateIndexRequest {
+    string store_id = 1;
+    string authorization_model_id = 2;
+
+    // A list of relationship filters to apply to constrain the index
+    // to only the filters provided. The filters are unioned together.
+    repeated RelationshipIndexFilter relationship_filters = 3;
+}
+
+message CreateIndexResponse {
+    // The id of the index which was created.
+    string id = 1;
+}
+
+message GetIndexRequest {
+    string store_id = 1;
+    string index_id = 2;
+}
+
+message GetIndexResponse {
+    Index index = 1;
+}
+
+message DropIndexRequest {
+    string store_id = 1;
+    string index_id = 2;
+}
+
+message DropIndexResponse {}
+
+message WatchIndexRequest {
+    string store_id = 1;
+    string index_id = 2;
+}
+
+message WatchIndexResponse {
+    RelationshipTuple relationship_tuple = 1;
+    RelationshipUpdate update = 2;
+}
+
+enum RelationshipUpdate {
+    UNSPECIFIED = 0;
+    RELATIONSHIP_ADDED = 1;
+    RELATIONSHIP_REMOVED = 2;
+}
+
+message RelationshipTuple {
+    Object object = 1;
+    string relation = 2;
+    Subject subject = 3;
+}
+
+message Subject {
+    oneof subject_ref {
+        Object object = 1;
+        Userset userset = 2;
+        TypedWildcard typed_wildcard = 3;
+    }
+}
+message Object {
+    string type = 1;
+    string id = 2;
+}
+
+message Userset {
+    string type = 1;
+    string id = 2;
+    string relation = 3;
+}
+
+message TypedWildcard {
+    string type = 1;
+}
+// RelationshipIndexFilter provides a filter predicate for FGA Index
+// production.
+//
+// Given the filter:
+//  {
+//    object_type: "document",
+//    relations: ["viewer", "editor"],
+//    subject_type: "user",
+//    subject_relation: ""
+//  }
+//
+// we produce a SQL predicate filter of the form:
+//
+//   WHERE object_type='document' AND
+//         relation IN ('viewer', 'editor') AND
+//         (subject_type='user' AND subject_relation='')
+message RelationshipIndexFilter{
+    string object_type = 1;
+    repeated string relations = 2;
+    string subject_type = 3;
+    string subject_relation = 4;
+}
