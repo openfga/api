@@ -891,6 +891,10 @@ message ListUsersResponse {
     (google.api.field_behavior) = REQUIRED,
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}
   ];
+  repeated User excluded = 2 [
+    json_name = "excluded",
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}
+  ];
 }
 
 message StreamedListObjectsRequest {

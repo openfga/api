@@ -1934,6 +1934,13 @@
             "type": "object",
             "$ref": "#/definitions/User"
           }
+        },
+        "excluded": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/User"
+          }
         }
       },
       "required": [
