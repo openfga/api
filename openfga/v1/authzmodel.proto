@@ -10,7 +10,7 @@ message AuthorizationModel {
   string id = 1 [
     (google.api.field_behavior) = REQUIRED,
     (validate.rules).string = {
-      pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$",
+      pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"
       ignore_empty: false
     },
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01G5JAVJ41T49E9TT3SKVS7X1J\""}
@@ -19,7 +19,7 @@ message AuthorizationModel {
   string schema_version = 2 [
     (google.api.field_behavior) = REQUIRED,
     (validate.rules).string = {
-      pattern: "^[1-9].[1-9]$",
+      pattern: "^[1-9].[1-9]$"
       ignore_empty: false
     },
     json_name = "schema_version"
@@ -35,7 +35,7 @@ message AuthorizationModel {
     json_name = "conditions",
     (validate.rules).map.max_pairs = 25,
     (validate.rules).map.keys.string = {
-      pattern: "^[^:#@\\s]{1,50}$",
+      pattern: "^[^:#@\\s]{1,50}$"
       ignore_empty: false
     }
   ];
@@ -44,7 +44,7 @@ message AuthorizationModel {
 message TypeDefinition {
   string type = 1 [
     (validate.rules).string = {
-      pattern: "^[^:#@\\s]{1,254}$",
+      pattern: "^[^:#@\\s]{1,254}$"
       ignore_empty: false
     },
     (google.api.field_behavior) = REQUIRED,
@@ -64,7 +64,7 @@ message TypeDefinition {
 
 message Relation {
   string name = 1 [(validate.rules).string = {
-    pattern: "^[^:#@\\s]{1,50}$",
+    pattern: "^[^:#@\\s]{1,50}$"
     ignore_empty: false
   }];
 
@@ -84,7 +84,7 @@ message Metadata {
   map<string, RelationMetadata> relations = 1;
 
   string module = 2 [(validate.rules).string = {
-    pattern: "^[^:#@\\s]{1,50}$",
+    pattern: "^[^:#@\\s]{1,50}$"
     ignore_empty: true
   }];
 
@@ -93,7 +93,7 @@ message Metadata {
 
 message SourceInfo {
   string file = 1 [(validate.rules).string = {
-    pattern: "^[a-zA-Z0-9_\\-\\/]{1,100}\\.fga$",
+    pattern: "^[a-zA-Z0-9_\\-\\/]{1,100}\\.fga$"
     ignore_empty: true
   }];
 }
@@ -102,7 +102,7 @@ message RelationMetadata {
   repeated RelationReference directly_related_user_types = 1 [json_name = "directly_related_user_types"];
 
   string module = 2 [(validate.rules).string = {
-    pattern: "^[^:#@\\s]{1,50}$",
+    pattern: "^[^:#@\\s]{1,50}$"
     ignore_empty: true
   }];
 
@@ -113,7 +113,7 @@ message RelationMetadata {
 message RelationReference {
   string type = 1 [
     (validate.rules).string = {
-      pattern: "^[^:#@\\s]{1,254}$",
+      pattern: "^[^:#@\\s]{1,254}$"
       ignore_empty: false
     },
     (google.api.field_behavior) = REQUIRED,
@@ -123,7 +123,7 @@ message RelationReference {
   oneof relation_or_wildcard {
     string relation = 2 [
       (validate.rules).string = {
-        pattern: "^[^:#@\\s]{1,50}$",
+        pattern: "^[^:#@\\s]{1,50}$"
         ignore_empty: true
       },
       (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"member\""}
@@ -134,7 +134,7 @@ message RelationReference {
 
   // The name of a condition that is enforced over the allowed relation.
   string condition = 4 [(validate.rules).string = {
-    pattern: "^[^:#@\\s]{1,50}$",
+    pattern: "^[^:#@\\s]{1,50}$"
     ignore_empty: true
   }];
 }
@@ -181,7 +181,7 @@ message ComputedUserset {
   string relation = 1 [
     (google.api.field_behavior) = REQUIRED,
     (validate.rules).string = {
-      max_bytes: 50,
+      max_bytes: 50
       ignore_empty: false
     }
   ];
@@ -204,7 +204,7 @@ message Condition {
   string name = 1 [
     (google.api.field_behavior) = REQUIRED,
     (validate.rules).string = {
-      pattern: "^[^:#@\\s]{1,50}$",
+      pattern: "^[^:#@\\s]{1,50}$"
       ignore_empty: false
     }
   ];
@@ -213,7 +213,7 @@ message Condition {
   string expression = 2 [
     (google.api.field_behavior) = REQUIRED,
     (validate.rules).string = {
-      max_bytes: 512,
+      max_bytes: 512
       ignore_empty: false
     }
   ];
@@ -229,7 +229,7 @@ message Condition {
 
 message ConditionMetadata {
   string module = 1 [(validate.rules).string = {
-    pattern: "^[^:#@\\s]{1,50}$",
+    pattern: "^[^:#@\\s]{1,50}$"
     ignore_empty: true
   }];
 
