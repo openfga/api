@@ -16,8 +16,6 @@ jobs:
         with:
           fetch-depth: 0
       - uses: bufbuild/buf-setup-action@9990c72db080fa39cf561230b8d2d7b736681f85 # v1.30.1
-        with:
-          version: "1.28.1"
       - uses: bufbuild/buf-lint-action@06f9dd823d873146471cfaaf108a993fe00e5325 # v1.1.1
       - uses: bufbuild/buf-breaking-action@c57b3d842a5c3f3b454756ef65305a50a587c5ba # v1.1.4
         with:
@@ -32,8 +30,6 @@ jobs:
         with:
           fetch-depth: 0
       - uses: bufbuild/buf-setup-action@9990c72db080fa39cf561230b8d2d7b736681f85 # v1.30.1
-        with:
-          version: "1.28.1"
       - name: "Generate OpenAPI & Diff"
         run: |
           make all
