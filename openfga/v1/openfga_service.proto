@@ -611,7 +611,7 @@ service OpenFGAService {
 
   rpc CreateStore(CreateStoreRequest) returns (CreateStoreResponse) {
     option (google.api.http) = {
-      post: "/stores",
+      post: "/stores"
       body: "*"
     };
 
@@ -636,7 +636,7 @@ service OpenFGAService {
     option (google.api.method_visibility).restriction = "UNIMPLEMENTED";
 
     option (google.api.http) = {
-      patch: "/stores/{store_id}",
+      patch: "/stores/{store_id}"
       body: "*"
     };
 
@@ -703,7 +703,7 @@ service OpenFGAService {
 
   rpc StreamedListObjects(StreamedListObjectsRequest) returns (stream StreamedListObjectsResponse) {
     option (google.api.http) = {
-      post: "/stores/{store_id}/streamed-list-objects",
+      post: "/stores/{store_id}/streamed-list-objects"
       body: "*"
     };
 
@@ -720,7 +720,7 @@ service OpenFGAService {
 
   rpc ListObjects(ListObjectsRequest) returns (ListObjectsResponse) {
     option (google.api.http) = {
-      post: "/stores/{store_id}/list-objects",
+      post: "/stores/{store_id}/list-objects"
       body: "*"
     };
 
@@ -746,17 +746,16 @@ service OpenFGAService {
 
   rpc ListUsers(ListUsersRequest) returns (ListUsersResponse) {
     option (google.api.http) = {
-      post: "/stores/{store_id}/list-users",
+      post: "/stores/{store_id}/list-users"
       body: "*"
     };
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      summary: "[EXPERIMENTAL] List the users matching the provided filter who have a certain relation to a particular type."
+      summary: "List the users matching the provided filter who have a certain relation to a particular type."
       tags: ["Relationship Queries"]
       operation_id: "ListUsers"
       description:
         "The ListUsers API returns a list of all the users of a specific type that have a relation to a given object.\n "
-        "This API is available in an experimental capacity and can be enabled with the `--experimentals enable-list-users` flag. \n"
         "To arrive at a result, the API uses: an authorization model, explicit tuples written through the Write API, contextual tuples present in the request, and implicit tuples that exist by virtue of applying set theory "
         "(such as `document:2021-budget#viewer@document:2021-budget#viewer`; the set of users who are viewers of `document:2021-budget` are the set of users who are the viewers of `document:2021-budget`).\n"
         "An `authorization_model_id` may be specified in the body. If it is not specified, the latest authorization "
@@ -797,7 +796,7 @@ message ListObjectsRequest {
   string authorization_model_id = 2 [
     json_name = "authorization_model_id",
     (validate.rules).string = {
-      pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$",
+      pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"
       ignore_empty: true
     },
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01G5JAVJ41T49E9TT3SKVS7X1J\""}
@@ -818,12 +817,12 @@ message ListObjectsRequest {
 
   string user = 5 [
     (validate.rules).string = {
-      min_bytes: 1,
+      min_bytes: 1
       max_bytes: 512
     },
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      min_length: 1,
-      max_length: 512,
+      min_length: 1
+      max_length: 512
       example: "\"user:anne\""
     },
     (google.api.field_behavior) = REQUIRED
@@ -857,7 +856,7 @@ message ListUsersRequest {
   string authorization_model_id = 2 [
     json_name = "authorization_model_id",
     (validate.rules).string = {
-      pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$",
+      pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"
       ignore_empty: true
     },
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01G5JAVJ41T49E9TT3SKVS7X1J\""}
@@ -880,12 +879,12 @@ message ListUsersRequest {
     json_name = "user_filters",
     (google.api.field_behavior) = REQUIRED,
     (validate.rules).repeated = {
-      min_items: 1,
+      min_items: 1
       max_items: 1
     },
 
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      description: "The type of results returned. Only accepts exactly one value.",
+      description: "The type of results returned. Only accepts exactly one value."
       example: "[{\"type\": \"user\"}, {\"type\": \"group\", \"relation\": \"member\"}]"
     }
   ];
@@ -922,7 +921,7 @@ message StreamedListObjectsRequest {
   string authorization_model_id = 2 [
     json_name = "authorization_model_id",
     (validate.rules).string = {
-      pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$",
+      pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"
       ignore_empty: true
     },
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01G5JAVJ41T49E9TT3SKVS7X1J\""}
@@ -943,12 +942,12 @@ message StreamedListObjectsRequest {
 
   string user = 5 [
     (validate.rules).string = {
-      min_bytes: 1,
+      min_bytes: 1
       max_bytes: 512
     },
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      min_length: 1,
-      max_length: 512,
+      min_length: 1
+      max_length: 512
       example: "\"user:anne\""
     },
     (google.api.field_behavior) = REQUIRED
@@ -990,7 +989,7 @@ message ReadRequest {
   google.protobuf.Int32Value page_size = 3 [
     json_name = "page_size",
     (validate.rules).int32 = {
-      gte: 1,
+      gte: 1
       lte: 100
     },
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "50"}
@@ -1010,29 +1009,29 @@ message ReadRequestTupleKey {
   string user = 1 [
     (validate.rules).string = {max_bytes: 512},
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      max_length: 512,
+      max_length: 512
       example: "\"user:anne\""
     }
   ];
 
   string relation = 2 [
     (validate.rules).string = {
-      pattern: "^[^:#@\\s]{1,50}$",
+      pattern: "^[^:#@\\s]{1,50}$"
       ignore_empty: true
     },
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      max_length: 50,
+      max_length: 50
       example: "\"reader\""
     }
   ];
 
   string object = 3 [
     (validate.rules).string = {
-      pattern: "^[^\\s]{2,256}$",
+      pattern: "^[^\\s]{2,256}$"
       ignore_empty: true
     },
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      max_length: 256,
+      max_length: 256
       example: "\"document:2021-budget\""
     }
   ];
@@ -1046,7 +1045,7 @@ message ReadResponse {
     (google.api.field_behavior) = REQUIRED,
     (validate.rules).string.max_bytes = 5120,
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      description: "The continuation token will be empty if there are no more tuples.",
+      description: "The continuation token will be empty if there are no more tuples."
       example: "\"eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ==\""
     }
   ];
@@ -1085,7 +1084,7 @@ message WriteRequest {
   string authorization_model_id = 4 [
     json_name = "authorization_model_id",
     (validate.rules).string = {
-      pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$",
+      pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"
       ignore_empty: true
     },
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01G5JAVJ41T49E9TT3SKVS7X1J\""}
@@ -1113,7 +1112,7 @@ message CheckRequest {
   string authorization_model_id = 4 [
     json_name = "authorization_model_id",
     (validate.rules).string = {
-      pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$",
+      pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"
       ignore_empty: true
     },
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01G5JAVJ41T49E9TT3SKVS7X1J\""}
@@ -1121,7 +1120,7 @@ message CheckRequest {
 
   // Defaults to false. Making it true has performance implications.
   bool trace = 5 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-    read_only: true,
+    read_only: true
     example: "false"
   }];
 
@@ -1138,7 +1137,7 @@ message CheckRequestTupleKey {
     (google.api.field_behavior) = REQUIRED,
     (validate.rules).string = {pattern: "^[^\\s]{2,512}$"},
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      max_length: 512,
+      max_length: 512
       example: "\"user:anne\""
     }
   ];
@@ -1147,7 +1146,7 @@ message CheckRequestTupleKey {
     (google.api.field_behavior) = REQUIRED,
     (validate.rules).string = {pattern: "^[^:#@\\s]{1,50}$"},
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      max_length: 50,
+      max_length: 50
       example: "\"reader\""
     }
   ];
@@ -1156,7 +1155,7 @@ message CheckRequestTupleKey {
     (google.api.field_behavior) = REQUIRED,
     (validate.rules).string = {pattern: "^[^\\s]{2,256}$"},
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      max_length: 256,
+      max_length: 256
       example: "\"document:2021-budget\""
     }
   ];
@@ -1186,7 +1185,7 @@ message ExpandRequest {
   string authorization_model_id = 3 [
     json_name = "authorization_model_id",
     (validate.rules).string = {
-      pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$",
+      pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"
       ignore_empty: true
     },
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01G5JAVJ41T49E9TT3SKVS7X1J\""}
@@ -1200,22 +1199,22 @@ message ExpandRequestTupleKey {
   string relation = 1 [
     (google.api.field_behavior) = REQUIRED,
     (validate.rules).string = {
-      pattern: "^[^:#@\\s]{1,50}$",
+      pattern: "^[^:#@\\s]{1,50}$"
       ignore_empty: true
     },
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      max_length: 50,
+      max_length: 50
       example: "\"reader\""
     }
   ];
   string object = 2 [
     (google.api.field_behavior) = REQUIRED,
     (validate.rules).string = {
-      pattern: "^[^\\s]{2,256}$",
+      pattern: "^[^\\s]{2,256}$"
       ignore_empty: true
     },
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      max_length: 256,
+      max_length: 256
       example: "\"document:2021-budget\""
     }
   ];
@@ -1268,7 +1267,7 @@ message WriteAuthorizationModelRequest {
         "1.0",
         "1.1",
         "1.2"
-      ],
+      ]
       ignore_empty: false
     }
   ];
@@ -1300,7 +1299,7 @@ message ReadAuthorizationModelsRequest {
   google.protobuf.Int32Value page_size = 2 [
     json_name = "page_size",
     (validate.rules).int32 = {
-      gte: 1,
+      gte: 1
       lte: 100
     },
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "50"}
@@ -1323,7 +1322,7 @@ message ReadAuthorizationModelsResponse {
     json_name = "continuation_token",
     (validate.rules).string.max_bytes = 5120,
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      description: "The continuation token will be empty if there are no more models.",
+      description: "The continuation token will be empty if there are no more models."
       example: "\"eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ==\""
     }
   ];
@@ -1348,11 +1347,11 @@ message WriteAssertionsRequest {
     json_name = "assertions",
     (google.api.field_behavior) = REQUIRED,
     (validate.rules).repeated = {
-      min_items: 0,
+      min_items: 0
       max_items: 100
     },
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      minimum: 0,
+      minimum: 0
       maximum: 100
     }
   ];
@@ -1396,14 +1395,14 @@ message ReadChangesRequest {
   ];
 
   string type = 2 [(validate.rules).string = {
-    pattern: "^[^:#\\s]{1,254}$",
+    pattern: "^[^:#\\s]{1,254}$"
     ignore_empty: true
   }];
 
   google.protobuf.Int32Value page_size = 3 [
     json_name = "page_size",
     (validate.rules).int32 = {
-      gte: 1,
+      gte: 1
       lte: 100
     },
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "50"}
@@ -1524,7 +1523,7 @@ message ListStoresRequest {
   google.protobuf.Int32Value page_size = 1 [
     json_name = "page_size",
     (validate.rules).int32 = {
-      gte: 1,
+      gte: 1
       lte: 100
     }
   ];
@@ -1543,7 +1542,7 @@ message ListStoresResponse {
     (google.api.field_behavior) = REQUIRED,
     (validate.rules).string.max_bytes = 5120,
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      description: "The continuation token will be empty if there are no more stores.",
+      description: "The continuation token will be empty if there are no more stores."
       example: "\"eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ==\""
     }
   ];
@@ -1554,7 +1553,7 @@ message AssertionTupleKey {
     (google.api.field_behavior) = REQUIRED,
     (validate.rules).string = {pattern: "^[^\\s]{2,256}$"},
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      max_length: 256,
+      max_length: 256
       example: "\"document:2021-budget\""
     }
   ];
@@ -1563,7 +1562,7 @@ message AssertionTupleKey {
     (google.api.field_behavior) = REQUIRED,
     (validate.rules).string = {pattern: "^[^:#@\\s]{1,50}$"},
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      max_length: 50,
+      max_length: 50
       example: "\"reader\""
     }
   ];
@@ -1572,7 +1571,7 @@ message AssertionTupleKey {
     (google.api.field_behavior) = REQUIRED,
     (validate.rules).string = {pattern: "^[^\\s]{2,512}$"},
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      max_length: 512,
+      max_length: 512
       example: "\"user:anne\""
     }
   ];

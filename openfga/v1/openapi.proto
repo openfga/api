@@ -6,22 +6,22 @@ import "protoc-gen-openapiv2/options/annotations.proto";
 
 option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
   info: {
-    title: "OpenFGA";
-    description: "A high performance and flexible authorization/permission engine built for developers and inspired by Google Zanzibar.";
-    version: "1.x";
+    title: "OpenFGA"
+    description: "A high performance and flexible authorization/permission engine built for developers and inspired by Google Zanzibar."
+    version: "1.x"
     contact: {
-      name: "OpenFGA";
-      email: "community@openfga.dev";
-      url: "https://openfga.dev";
-    };
+      name: "OpenFGA"
+      email: "community@openfga.dev"
+      url: "https://openfga.dev"
+    }
     license: {
-      name: "Apache-2.0";
-      url: "https://github.com/openfga/openfga/blob/main/LICENSE";
-    };
-  };
-  consumes: "application/json";
-  produces: "application/json";
-  schemes: HTTPS;
+      name: "Apache-2.0"
+      url: "https://github.com/openfga/openfga/blob/main/LICENSE"
+    }
+  }
+  consumes: "application/json"
+  produces: "application/json"
+  schemes: HTTPS
   responses: {
     key: "400"
     value: {
