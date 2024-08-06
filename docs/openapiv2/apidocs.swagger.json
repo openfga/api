@@ -1478,6 +1478,9 @@
         },
         "expectation": {
           "type": "boolean"
+        },
+        "contextual_tuples": {
+          "$ref": "#/definitions/ContextualTupleKeys"
         }
       },
       "required": [

@@ -1588,6 +1588,8 @@ message Assertion {
     json_name = "expectation",
     (google.api.field_behavior) = REQUIRED
   ];
+
+  openfga.v1.ContextualTupleKeys contextual_tuples = 3 [json_name = "contextual_tuples"];
 }
 
 message Assertions {
