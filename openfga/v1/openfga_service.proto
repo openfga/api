@@ -561,8 +561,8 @@ service OpenFGAService {
       description:
         "The WriteAssertions API will upsert new assertions for an authorization model id, "
         "or overwrite the existing ones. An assertion is an object that contains a "
-        "tuple key, and the expectation of whether a call to the Check API of that tuple key "
-        "will return true or false. "
+        "tuple key, the expectation of whether a call to the Check API of that tuple key "
+        "will return true or false, and optionally a list of contextual tuples."
       responses: {
         key: "204"
         value: {
@@ -584,9 +584,7 @@ service OpenFGAService {
       operation_id: "ReadAssertions"
       description:
         "The ReadAssertions API will return, for a given authorization model id, "
-        "all the assertions stored for it. An assertion is an object that contains a "
-        "tuple key, and the expectation of whether a call to the Check API of that tuple key "
-        "will return true or false. "
+        "all the assertions stored for it. "
     };
   }
 
@@ -1587,6 +1585,12 @@ message Assertion {
   bool expectation = 2 [
     json_name = "expectation",
     (google.api.field_behavior) = REQUIRED
+  ];
+
+  repeated TupleKey contextual_tuples = 3 [
+    json_name = "contextual_tuples",
+    (validate.rules).repeated.max_items = 20,
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {maximum: 20}
   ];
 }
 
