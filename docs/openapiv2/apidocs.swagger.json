@@ -1480,7 +1480,12 @@
           "type": "boolean"
         },
         "contextual_tuples": {
-          "$ref": "#/definitions/ContextualTupleKeys"
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/TupleKey",
+            "maximum": 20
+          }
         }
       },
       "required": [
