@@ -777,7 +777,7 @@ service OpenFGAService {
 // buf:lint:ignore ENUM_VALUE_PREFIX
 enum ConsistencyPreference {
   // Default if not set. Behavior will be the same as MINIMIZE_LATENCY
-  UNSPECIFIED = 0;
+  UNSPECIFIED = 0 [(google.api.value_visibility).restriction = "INTERNAL"];
   // Minimize latency at the potential expense of lower consistency.
   MINIMIZE_LATENCY = 100;
   // Prefer higher consistency, at the potential expense of increased latency.

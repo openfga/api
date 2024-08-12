@@ -1702,12 +1702,11 @@
     "ConsistencyPreference": {
       "type": "string",
       "enum": [
-        "UNSPECIFIED",
         "MINIMIZE_LATENCY",
         "HIGHER_CONSISTENCY"
       ],
       "default": "UNSPECIFIED",
-      "description": "- UNSPECIFIED: Default if not set. Behavior will be the same as MINIMIZE_LATENCY\n - MINIMIZE_LATENCY: Minimize latency at the potential expense of lower consistency.\n - HIGHER_CONSISTENCY: Prefer higher consistency, at the potential expense of increased latency.",
+      "description": "- MINIMIZE_LATENCY: Minimize latency at the potential expense of lower consistency.\n - HIGHER_CONSISTENCY: Prefer higher consistency, at the potential expense of increased latency.",
       "title": "Controls the consistency preferences when calling the query APIs.\nbuf:lint:ignore ENUM_ZERO_VALUE_SUFFIX\nbuf:lint:ignore ENUM_VALUE_PREFIX"
     },
     "ContextualTupleKeys": {
