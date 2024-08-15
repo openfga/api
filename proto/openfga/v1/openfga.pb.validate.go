@@ -552,7 +552,7 @@ func (m *RelationshipCondition) validate(all bool) error {
 	if !_RelationshipCondition_Name_Pattern.MatchString(m.GetName()) {
 		err := RelationshipConditionValidationError{
 			field:  "Name",
-			reason: "value does not match regex pattern \"^[^\\\\s]{2,256}$\"",
+			reason: "value does not match regex pattern \"^[^\\\\s]{1,50}$\"",
 		}
 		if !all {
 			return err
@@ -669,7 +669,7 @@ var _ interface {
 	ErrorName() string
 } = RelationshipConditionValidationError{}
 
-var _RelationshipCondition_Name_Pattern = regexp.MustCompile("^[^\\s]{2,256}$")
+var _RelationshipCondition_Name_Pattern = regexp.MustCompile("^[^\\s]{1,50}$")
 
 // Validate checks the field values on TupleKeyWithoutCondition with the rules
 // defined in the proto definition for this message. If any rules are
