@@ -831,7 +831,7 @@
                 },
                 "consistency": {
                   "$ref": "#/definitions/ConsistencyPreference",
-                  "description": "Controls the consistency preference for this request. Default value is CONSISTENCY_UNSPECIFIED, which will have the same behavior as MINIMIZE_LATENCY."
+                  "description": "Controls the consistency preference for this request. Default value is CONSISTENCY_PREFERENCE_UNSPECIFIED, which will have the same behavior as MINIMIZE_LATENCY."
                 }
               },
               "required": [
@@ -917,7 +917,7 @@
                 },
                 "consistency": {
                   "$ref": "#/definitions/ConsistencyPreference",
-                  "description": "Controls the consistency preference for this request. Default value is CONSISTENCY_UNSPECIFIED, which will have the same behavior as MINIMIZE_LATENCY."
+                  "description": "Controls the consistency preference for this request. Default value is CONSISTENCY_PREFERENCE_UNSPECIFIED, which will have the same behavior as MINIMIZE_LATENCY."
                 }
               },
               "required": [
@@ -1021,7 +1021,7 @@
                 },
                 "consistency": {
                   "$ref": "#/definitions/ConsistencyPreference",
-                  "description": "Controls the consistency preference for this request. Default value is CONSISTENCY_UNSPECIFIED, which will have the same behavior as MINIMIZE_LATENCY."
+                  "description": "Controls the consistency preference for this request. Default value is CONSISTENCY_PREFERENCE_UNSPECIFIED, which will have the same behavior as MINIMIZE_LATENCY."
                 }
               },
               "required": [
@@ -1143,7 +1143,7 @@
                 },
                 "consistency": {
                   "$ref": "#/definitions/ConsistencyPreference",
-                  "description": "Controls the consistency preference for this request. Default value is CONSISTENCY_UNSPECIFIED, which will have the same behavior as MINIMIZE_LATENCY."
+                  "description": "Controls the consistency preference for this request. Default value is CONSISTENCY_PREFERENCE_UNSPECIFIED, which will have the same behavior as MINIMIZE_LATENCY."
                 }
               },
               "required": [
@@ -1236,7 +1236,7 @@
                 },
                 "consistency": {
                   "$ref": "#/definitions/ConsistencyPreference",
-                  "description": "Controls the consistency preference for this request. Default value is CONSISTENCY_UNSPECIFIED, which will have the same behavior as MINIMIZE_LATENCY."
+                  "description": "Controls the consistency preference for this request. Default value is CONSISTENCY_PREFERENCE_UNSPECIFIED, which will have the same behavior as MINIMIZE_LATENCY."
                 }
               }
             }
@@ -1346,7 +1346,7 @@
                 },
                 "consistency": {
                   "$ref": "#/definitions/ConsistencyPreference",
-                  "description": "Controls the consistency preference for this request. Default value is CONSISTENCY_UNSPECIFIED, which will have the same behavior as MINIMIZE_LATENCY."
+                  "description": "Controls the consistency preference for this request. Default value is CONSISTENCY_PREFERENCE_UNSPECIFIED, which will have the same behavior as MINIMIZE_LATENCY."
                 }
               },
               "required": [
@@ -1702,12 +1702,12 @@
     "ConsistencyPreference": {
       "type": "string",
       "enum": [
-        "CONSISTENCY_UNSPECIFIED",
-        "CONSISTENCY_MINIMIZE_LATENCY",
-        "CONSISTENCY_HIGHER_CONSISTENCY"
+        "CONSISTENCY_PREFERENCE_UNSPECIFIED",
+        "MINIMIZE_LATENCY",
+        "HIGHER_CONSISTENCY"
       ],
-      "default": "CONSISTENCY_UNSPECIFIED",
-      "description": "- CONSISTENCY_UNSPECIFIED: Default if not set. Behavior will be the same as MINIMIZE_LATENCY\n - CONSISTENCY_MINIMIZE_LATENCY: Minimize latency at the potential expense of lower consistency.\n - CONSISTENCY_HIGHER_CONSISTENCY: Prefer higher consistency, at the potential expense of increased latency.",
+      "default": "CONSISTENCY_PREFERENCE_UNSPECIFIED",
+      "description": "- CONSISTENCY_PREFERENCE_UNSPECIFIED: Default if not set. Behavior will be the same as MINIMIZE_LATENCY\n - MINIMIZE_LATENCY: Minimize latency at the potential expense of lower consistency.\n - HIGHER_CONSISTENCY: Prefer higher consistency, at the potential expense of increased latency.",
       "title": "Controls the consistency preferences when calling the query APIs.\nbuf:lint:ignore ENUM_ZERO_VALUE_SUFFIX\nbuf:lint:ignore ENUM_VALUE_PREFIX"
     },
     "ContextualTupleKeys": {
