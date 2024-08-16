@@ -777,7 +777,7 @@ service OpenFGAService {
 // buf:lint:ignore ENUM_VALUE_PREFIX
 enum ConsistencyPreference {
   // Default if not set. Behavior will be the same as MINIMIZE_LATENCY
-  CONSISTENCY_PREFERENCE_UNSPECIFIED = 0;
+  CONSISTENCY_UNSPECIFIED = 0;
   // Minimize latency at the potential expense of lower consistency.
   MINIMIZE_LATENCY = 100;
   // Prefer higher consistency, at the potential expense of increased latency.
