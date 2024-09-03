@@ -14,5 +14,7 @@ lint:
       - openfga/v1/errors_ignore.proto
     ENUM_VALUE_PREFIX:
       - openfga/v1/errors_ignore.proto
+      - openfga/v1/openfga_service.proto
     ENUM_ZERO_VALUE_SUFFIX:
       - openfga/v1/errors_ignore.proto
+      - openfga/v1/openfga_service.proto
