@@ -1821,7 +1821,8 @@
         "invalid_contextual_tuple",
         "duplicate_contextual_tuple",
         "invalid_authorization_model",
-        "unsupported_schema_version"
+        "unsupported_schema_version",
+        "cancelled"
       ],
       "default": "no_error"
     },
@@ -1887,7 +1888,6 @@
       "enum": [
         "no_internal_error",
         "internal_error",
-        "cancelled",
         "deadline_exceeded",
         "already_exists",
         "resource_exhausted",
