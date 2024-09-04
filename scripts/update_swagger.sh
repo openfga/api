@@ -16,6 +16,12 @@ cat ${filename} | \
     'del(.paths[][]."responses"|select(has("400"))."default" ) | del(.paths[][]."responses"|select(has("201"))."200") | del(.paths[][]."responses"|select(has("204"))."200")' > ${tmp_filename}
 mv ${tmp_filename} ${filename}
 
+# Add an example value to the ConsistencyPreference to override the default of UNSPECIFIED being shown in the docs
+cat ${filename} | \
+  jq \
+    '.definitions.ConsistencyPreference.example = "MINIMIZE_LATENCY"' > ${tmp_filename}
+mv ${tmp_filename} ${filename}
+
 # Finally, for 204, there should be no schema
 cat ${filename} | \
   jq \
