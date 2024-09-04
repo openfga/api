@@ -53,6 +53,12 @@
               "$ref": "#/definitions/UnauthenticatedResponse"
             }
           },
+          "403": {
+            "description": "Forbidden.",
+            "schema": {
+              "$ref": "#/definitions/ForbiddenResponse"
+            }
+          },
           "404": {
             "description": "Request failed due to incorrect path.",
             "schema": {
@@ -120,6 +126,12 @@
               "$ref": "#/definitions/UnauthenticatedResponse"
             }
           },
+          "403": {
+            "description": "Forbidden.",
+            "schema": {
+              "$ref": "#/definitions/ForbiddenResponse"
+            }
+          },
           "404": {
             "description": "Request failed due to incorrect path.",
             "schema": {
@@ -184,6 +196,12 @@
               "$ref": "#/definitions/UnauthenticatedResponse"
             }
           },
+          "403": {
+            "description": "Forbidden.",
+            "schema": {
+              "$ref": "#/definitions/ForbiddenResponse"
+            }
+          },
           "404": {
             "description": "Request failed due to incorrect path.",
             "schema": {
@@ -239,6 +257,12 @@
             "description": "Not authenticated.",
             "schema": {
               "$ref": "#/definitions/UnauthenticatedResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "schema": {
+              "$ref": "#/definitions/ForbiddenResponse"
             }
           },
           "404": {
@@ -303,6 +327,12 @@
               "$ref": "#/definitions/UnauthenticatedResponse"
             }
           },
+          "403": {
+            "description": "Forbidden.",
+            "schema": {
+              "$ref": "#/definitions/ForbiddenResponse"
+            }
+          },
           "404": {
             "description": "Request failed due to incorrect path.",
             "schema": {
@@ -364,6 +394,12 @@
             "description": "Not authenticated.",
             "schema": {
               "$ref": "#/definitions/UnauthenticatedResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "schema": {
+              "$ref": "#/definitions/ForbiddenResponse"
             }
           },
           "404": {
@@ -455,6 +491,12 @@
               "$ref": "#/definitions/UnauthenticatedResponse"
             }
           },
+          "403": {
+            "description": "Forbidden.",
+            "schema": {
+              "$ref": "#/definitions/ForbiddenResponse"
+            }
+          },
           "404": {
             "description": "Request failed due to incorrect path.",
             "schema": {
@@ -526,6 +568,12 @@
             "description": "Not authenticated.",
             "schema": {
               "$ref": "#/definitions/UnauthenticatedResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "schema": {
+              "$ref": "#/definitions/ForbiddenResponse"
             }
           },
           "404": {
@@ -621,6 +669,12 @@
               "$ref": "#/definitions/UnauthenticatedResponse"
             }
           },
+          "403": {
+            "description": "Forbidden.",
+            "schema": {
+              "$ref": "#/definitions/ForbiddenResponse"
+            }
+          },
           "404": {
             "description": "Request failed due to incorrect path.",
             "schema": {
@@ -687,6 +741,12 @@
             "description": "Not authenticated.",
             "schema": {
               "$ref": "#/definitions/UnauthenticatedResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "schema": {
+              "$ref": "#/definitions/ForbiddenResponse"
             }
           },
           "404": {
@@ -768,6 +828,12 @@
             "description": "Not authenticated.",
             "schema": {
               "$ref": "#/definitions/UnauthenticatedResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "schema": {
+              "$ref": "#/definitions/ForbiddenResponse"
             }
           },
           "404": {
@@ -869,6 +935,12 @@
               "$ref": "#/definitions/UnauthenticatedResponse"
             }
           },
+          "403": {
+            "description": "Forbidden.",
+            "schema": {
+              "$ref": "#/definitions/ForbiddenResponse"
+            }
+          },
           "404": {
             "description": "Request failed due to incorrect path.",
             "schema": {
@@ -953,6 +1025,12 @@
             "description": "Not authenticated.",
             "schema": {
               "$ref": "#/definitions/UnauthenticatedResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "schema": {
+              "$ref": "#/definitions/ForbiddenResponse"
             }
           },
           "404": {
@@ -1059,6 +1137,12 @@
             "description": "Not authenticated.",
             "schema": {
               "$ref": "#/definitions/UnauthenticatedResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "schema": {
+              "$ref": "#/definitions/ForbiddenResponse"
             }
           },
           "404": {
@@ -1183,6 +1267,12 @@
               "$ref": "#/definitions/UnauthenticatedResponse"
             }
           },
+          "403": {
+            "description": "Forbidden.",
+            "schema": {
+              "$ref": "#/definitions/ForbiddenResponse"
+            }
+          },
           "404": {
             "description": "Request failed due to incorrect path.",
             "schema": {
@@ -1278,6 +1368,12 @@
             "description": "Not authenticated.",
             "schema": {
               "$ref": "#/definitions/UnauthenticatedResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "schema": {
+              "$ref": "#/definitions/ForbiddenResponse"
             }
           },
           "404": {
@@ -1384,6 +1480,12 @@
             "description": "Not authenticated.",
             "schema": {
               "$ref": "#/definitions/UnauthenticatedResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "schema": {
+              "$ref": "#/definitions/ForbiddenResponse"
             }
           },
           "404": {
@@ -2521,6 +2623,21 @@
       "properties": {
         "code": {
           "$ref": "#/definitions/ErrorCode"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    },
+    "ForbiddenResponse": {
+      "type": "object",
+      "example": {
+        "code": "forbidden",
+        "message": "forbidden"
+      },
+      "properties": {
+        "code": {
+          "$ref": "#/definitions/AuthErrorCode"
         },
         "message": {
           "type": "string"
