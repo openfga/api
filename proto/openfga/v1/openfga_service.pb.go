@@ -31,7 +31,7 @@ const (
 type ConsistencyPreference int32
 
 const (
-	// Default if not set. Behavior will be the same as MINIMIZE_LATENCY
+	// Default if not set. Behavior will be the same as MINIMIZE_LATENCY.
 	ConsistencyPreference_UNSPECIFIED ConsistencyPreference = 0
 	// Minimize latency at the potential expense of lower consistency.
 	ConsistencyPreference_MINIMIZE_LATENCY ConsistencyPreference = 100
