@@ -1592,6 +1592,10 @@ message Assertion {
     (validate.rules).repeated.max_items = 20,
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {maximum: 20}
   ];
+
+  // Additional request context that will be used to evaluate any ABAC conditions encountered
+  // in the query evaluation.
+  google.protobuf.Struct context = 6;
 }
 
 message Assertions {

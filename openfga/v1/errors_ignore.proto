@@ -69,6 +69,7 @@ enum ErrorCode {
   duplicate_contextual_tuple = 2055;
   invalid_authorization_model = 2056;
   unsupported_schema_version = 2057;
+  cancelled = 2058;
 }
 
 enum UnprocessableContentErrorCode {
@@ -85,7 +86,6 @@ enum InternalErrorCode {
   // 4000 level errors are returned due to internal error
 
   internal_error = 4000;
-  cancelled = 4003;
   deadline_exceeded = 4004;
   already_exists = 4005;
   resource_exhausted = 4006;
