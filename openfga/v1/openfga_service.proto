@@ -10,6 +10,7 @@ import "google/protobuf/timestamp.proto";
 import "google/protobuf/wrappers.proto";
 import "openfga/v1/authzmodel.proto";
 import "openfga/v1/openfga.proto";
+import "openfga/v1/openfga_service_consistency.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 import "validate/validate.proto";
 
@@ -784,16 +785,6 @@ service OpenFGAService {
         "The returned users will not be sorted, and therefore two identical calls may yield different sets of users."
     };
   }
-}
-
-// Controls the consistency preferences when calling the query APIs.
-enum ConsistencyPreference {
-  // Default if not set. Behavior will be the same as MINIMIZE_LATENCY.
-  UNSPECIFIED = 0;
-  // Minimize latency at the potential expense of lower consistency.
-  MINIMIZE_LATENCY = 100;
-  // Prefer higher consistency, at the potential expense of increased latency.
-  HIGHER_CONSISTENCY = 200;
 }
 
 message ListObjectsRequest {

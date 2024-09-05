@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package openfga.v1;
+
+// Controls the consistency preferences when calling the query APIs.
+enum ConsistencyPreference {
+  // Default if not set. Behavior will be the same as MINIMIZE_LATENCY.
+  UNSPECIFIED = 0;
+  // Minimize latency at the potential expense of lower consistency.
+  MINIMIZE_LATENCY = 100;
+  // Prefer higher consistency, at the potential expense of increased latency.
+  HIGHER_CONSISTENCY = 200;
+}
