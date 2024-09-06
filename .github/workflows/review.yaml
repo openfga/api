@@ -19,8 +19,7 @@ jobs:
           lint: true
           breaking: true
           pr_comment: false
-          input: 'proto'
-          breaking_against: "https://github.com/openfga/api.git#branch=main,subdir=proto"
+          breaking_against: "https://github.com/openfga/api.git#branch=main"
 
   diff-openapi:
     runs-on: ubuntu-latest
