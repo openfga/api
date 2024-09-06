@@ -1591,6 +1591,9 @@
         },
         "context": {
           "type": "object",
+          "example": {
+            "view_count": 100
+          },
           "description": "Additional request context that will be used to evaluate any ABAC conditions encountered\nin the query evaluation."
         }
       },
