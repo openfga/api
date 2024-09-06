@@ -21,9 +21,9 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: bufbuild/buf-setup-action@35c243d7f2a909b1d4e40399b348a7fdab27d78d # v1.34.0
-      - uses: bufbuild/buf-push-action@a654ff18effe4641ebea4a4ce242c49800728459 # v1.2.0
+      - uses: bufbuild/buf-action@d4b43256b3a511e94e6c0d38d478e1bd39f8690e # v1.0.1
         with:
+          push: true
           buf_token: ${{ secrets.BUF_TOKEN }}
       - name: Send PagerDuty alert on failure
         if: ${{ failure() }}

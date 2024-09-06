@@ -409,20 +409,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "type": "object",
-              "properties": {
-                "assertions": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "$ref": "#/definitions/Assertion",
-                    "maximum": 100
-                  }
-                }
-              },
-              "required": [
-                "assertions"
-              ]
+              "$ref": "#/definitions/WriteAssertionsBody"
             }
           }
         ],
@@ -565,30 +552,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "type": "object",
-              "properties": {
-                "type_definitions": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "$ref": "#/definitions/TypeDefinition",
-                    "minimum": 1
-                  }
-                },
-                "schema_version": {
-                  "type": "string"
-                },
-                "conditions": {
-                  "type": "object",
-                  "additionalProperties": {
-                    "$ref": "#/definitions/Condition"
-                  }
-                }
-              },
-              "required": [
-                "type_definitions",
-                "schema_version"
-              ]
+              "$ref": "#/definitions/WriteAuthorizationModelBody"
             }
           }
         ],
@@ -807,36 +771,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "type": "object",
-              "properties": {
-                "tuple_key": {
-                  "$ref": "#/definitions/CheckRequestTupleKey"
-                },
-                "contextual_tuples": {
-                  "$ref": "#/definitions/ContextualTupleKeys"
-                },
-                "authorization_model_id": {
-                  "type": "string",
-                  "example": "01G5JAVJ41T49E9TT3SKVS7X1J"
-                },
-                "trace": {
-                  "type": "boolean",
-                  "example": false,
-                  "description": "Defaults to false. Making it true has performance implications.",
-                  "readOnly": true
-                },
-                "context": {
-                  "type": "object",
-                  "description": "Additional request context that will be used to evaluate any ABAC conditions encountered\nin the query evaluation."
-                },
-                "consistency": {
-                  "$ref": "#/definitions/ConsistencyPreference",
-                  "description": "Controls the consistency preference for this request. Default value is UNSPECIFIED, which will have the same behavior as MINIMIZE_LATENCY."
-                }
-              },
-              "required": [
-                "tuple_key"
-              ]
+              "$ref": "#/definitions/CheckBody"
             }
           }
         ],
@@ -906,23 +841,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "type": "object",
-              "properties": {
-                "tuple_key": {
-                  "$ref": "#/definitions/ExpandRequestTupleKey"
-                },
-                "authorization_model_id": {
-                  "type": "string",
-                  "example": "01G5JAVJ41T49E9TT3SKVS7X1J"
-                },
-                "consistency": {
-                  "$ref": "#/definitions/ConsistencyPreference",
-                  "description": "Controls the consistency preference for this request. Default value is UNSPECIFIED, which will have the same behavior as MINIMIZE_LATENCY."
-                }
-              },
-              "required": [
-                "tuple_key"
-              ]
+              "$ref": "#/definitions/ExpandBody"
             }
           }
         ],
@@ -992,43 +911,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "type": "object",
-              "properties": {
-                "authorization_model_id": {
-                  "type": "string",
-                  "example": "01G5JAVJ41T49E9TT3SKVS7X1J"
-                },
-                "type": {
-                  "type": "string",
-                  "example": "document"
-                },
-                "relation": {
-                  "type": "string",
-                  "example": "reader"
-                },
-                "user": {
-                  "type": "string",
-                  "example": "user:anne",
-                  "maxLength": 512,
-                  "minLength": 1
-                },
-                "contextual_tuples": {
-                  "$ref": "#/definitions/ContextualTupleKeys"
-                },
-                "context": {
-                  "type": "object",
-                  "description": "Additional request context that will be used to evaluate any ABAC conditions encountered\nin the query evaluation."
-                },
-                "consistency": {
-                  "$ref": "#/definitions/ConsistencyPreference",
-                  "description": "Controls the consistency preference for this request. Default value is UNSPECIFIED, which will have the same behavior as MINIMIZE_LATENCY."
-                }
-              },
-              "required": [
-                "type",
-                "relation",
-                "user"
-              ]
+              "$ref": "#/definitions/ListObjectsBody"
             }
           }
         ],
@@ -1098,59 +981,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "type": "object",
-              "properties": {
-                "authorization_model_id": {
-                  "type": "string",
-                  "example": "01G5JAVJ41T49E9TT3SKVS7X1J"
-                },
-                "object": {
-                  "$ref": "#/definitions/Object",
-                  "example": "document:example"
-                },
-                "relation": {
-                  "type": "string",
-                  "example": "reader"
-                },
-                "user_filters": {
-                  "type": "array",
-                  "example": [
-                    {
-                      "type": "user"
-                    },
-                    {
-                      "type": "group",
-                      "relation": "member"
-                    }
-                  ],
-                  "items": {
-                    "type": "object",
-                    "$ref": "#/definitions/UserTypeFilter"
-                  },
-                  "description": "The type of results returned. Only accepts exactly one value."
-                },
-                "contextual_tuples": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "$ref": "#/definitions/TupleKey",
-                    "maximum": 20
-                  }
-                },
-                "context": {
-                  "type": "object",
-                  "description": "Additional request context that will be used to evaluate any ABAC conditions encountered\nin the query evaluation."
-                },
-                "consistency": {
-                  "$ref": "#/definitions/ConsistencyPreference",
-                  "description": "Controls the consistency preference for this request. Default value is UNSPECIFIED, which will have the same behavior as MINIMIZE_LATENCY."
-                }
-              },
-              "required": [
-                "object",
-                "relation",
-                "user_filters"
-              ]
+              "$ref": "#/definitions/ListUsersBody"
             }
           }
         ],
@@ -1220,25 +1051,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "type": "object",
-              "properties": {
-                "tuple_key": {
-                  "$ref": "#/definitions/ReadRequestTupleKey"
-                },
-                "page_size": {
-                  "type": "integer",
-                  "format": "int32",
-                  "example": 50
-                },
-                "continuation_token": {
-                  "type": "string",
-                  "example": "eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ=="
-                },
-                "consistency": {
-                  "$ref": "#/definitions/ConsistencyPreference",
-                  "description": "Controls the consistency preference for this request. Default value is UNSPECIFIED, which will have the same behavior as MINIMIZE_LATENCY."
-                }
-              }
+              "$ref": "#/definitions/ReadBody"
             }
           }
         ],
@@ -1317,43 +1130,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "type": "object",
-              "properties": {
-                "authorization_model_id": {
-                  "type": "string",
-                  "example": "01G5JAVJ41T49E9TT3SKVS7X1J"
-                },
-                "type": {
-                  "type": "string",
-                  "example": "document"
-                },
-                "relation": {
-                  "type": "string",
-                  "example": "reader"
-                },
-                "user": {
-                  "type": "string",
-                  "example": "user:anne",
-                  "maxLength": 512,
-                  "minLength": 1
-                },
-                "contextual_tuples": {
-                  "$ref": "#/definitions/ContextualTupleKeys"
-                },
-                "context": {
-                  "type": "object",
-                  "description": "Additional request context that will be used to evaluate any ABAC conditions encountered\nin the query evaluation."
-                },
-                "consistency": {
-                  "$ref": "#/definitions/ConsistencyPreference",
-                  "description": "Controls the consistency preference for this request. Default value is UNSPECIFIED, which will have the same behavior as MINIMIZE_LATENCY."
-                }
-              },
-              "required": [
-                "type",
-                "relation",
-                "user"
-              ]
+              "$ref": "#/definitions/StreamedListObjectsBody"
             }
           }
         ],
@@ -1423,19 +1200,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "type": "object",
-              "properties": {
-                "writes": {
-                  "$ref": "#/definitions/WriteRequestWrites"
-                },
-                "deletes": {
-                  "$ref": "#/definitions/WriteRequestDeletes"
-                },
-                "authorization_model_id": {
-                  "type": "string",
-                  "example": "01G5JAVJ41T49E9TT3SKVS7X1J"
-                }
-              }
+              "$ref": "#/definitions/WriteBody"
             }
           }
         ],
@@ -1599,6 +1364,38 @@
         "id",
         "schema_version",
         "type_definitions"
+      ]
+    },
+    "CheckBody": {
+      "type": "object",
+      "properties": {
+        "tuple_key": {
+          "$ref": "#/definitions/CheckRequestTupleKey"
+        },
+        "contextual_tuples": {
+          "$ref": "#/definitions/ContextualTupleKeys"
+        },
+        "authorization_model_id": {
+          "type": "string",
+          "example": "01G5JAVJ41T49E9TT3SKVS7X1J"
+        },
+        "trace": {
+          "type": "boolean",
+          "example": false,
+          "description": "Defaults to false. Making it true has performance implications.",
+          "readOnly": true
+        },
+        "context": {
+          "type": "object",
+          "description": "Additional request context that will be used to evaluate any ABAC conditions encountered\nin the query evaluation."
+        },
+        "consistency": {
+          "$ref": "#/definitions/ConsistencyPreference",
+          "description": "Controls the consistency preference for this request. Default value is UNSPECIFIED, which will have the same behavior as MINIMIZE_LATENCY."
+        }
+      },
+      "required": [
+        "tuple_key"
       ]
     },
     "CheckRequestTupleKey": {
@@ -1833,6 +1630,25 @@
       ],
       "default": "no_error"
     },
+    "ExpandBody": {
+      "type": "object",
+      "properties": {
+        "tuple_key": {
+          "$ref": "#/definitions/ExpandRequestTupleKey"
+        },
+        "authorization_model_id": {
+          "type": "string",
+          "example": "01G5JAVJ41T49E9TT3SKVS7X1J"
+        },
+        "consistency": {
+          "$ref": "#/definitions/ConsistencyPreference",
+          "description": "Controls the consistency preference for this request. Default value is UNSPECIFIED, which will have the same behavior as MINIMIZE_LATENCY."
+        }
+      },
+      "required": [
+        "tuple_key"
+      ]
+    },
     "ExpandRequestTupleKey": {
       "type": "object",
       "properties": {
@@ -1936,6 +1752,45 @@
       },
       "description": "A leaf node contains either\n- a set of users (which may be individual users, or usersets\n  referencing other relations)\n- a computed node, which is the result of a computed userset\n  value in the authorization model\n- a tupleToUserset nodes, containing the result of expanding\n  a tupleToUserset value in a authorization model."
     },
+    "ListObjectsBody": {
+      "type": "object",
+      "properties": {
+        "authorization_model_id": {
+          "type": "string",
+          "example": "01G5JAVJ41T49E9TT3SKVS7X1J"
+        },
+        "type": {
+          "type": "string",
+          "example": "document"
+        },
+        "relation": {
+          "type": "string",
+          "example": "reader"
+        },
+        "user": {
+          "type": "string",
+          "example": "user:anne",
+          "maxLength": 512,
+          "minLength": 1
+        },
+        "contextual_tuples": {
+          "$ref": "#/definitions/ContextualTupleKeys"
+        },
+        "context": {
+          "type": "object",
+          "description": "Additional request context that will be used to evaluate any ABAC conditions encountered\nin the query evaluation."
+        },
+        "consistency": {
+          "$ref": "#/definitions/ConsistencyPreference",
+          "description": "Controls the consistency preference for this request. Default value is UNSPECIFIED, which will have the same behavior as MINIMIZE_LATENCY."
+        }
+      },
+      "required": [
+        "type",
+        "relation",
+        "user"
+      ]
+    },
     "ListObjectsResponse": {
       "type": "object",
       "properties": {
@@ -1973,6 +1828,61 @@
       "required": [
         "stores",
         "continuation_token"
+      ]
+    },
+    "ListUsersBody": {
+      "type": "object",
+      "properties": {
+        "authorization_model_id": {
+          "type": "string",
+          "example": "01G5JAVJ41T49E9TT3SKVS7X1J"
+        },
+        "object": {
+          "$ref": "#/definitions/Object",
+          "example": "document:example"
+        },
+        "relation": {
+          "type": "string",
+          "example": "reader"
+        },
+        "user_filters": {
+          "type": "array",
+          "example": [
+            {
+              "type": "user"
+            },
+            {
+              "type": "group",
+              "relation": "member"
+            }
+          ],
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/UserTypeFilter"
+          },
+          "description": "The type of results returned. Only accepts exactly one value."
+        },
+        "contextual_tuples": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/TupleKey",
+            "maximum": 20
+          }
+        },
+        "context": {
+          "type": "object",
+          "description": "Additional request context that will be used to evaluate any ABAC conditions encountered\nin the query evaluation."
+        },
+        "consistency": {
+          "$ref": "#/definitions/ConsistencyPreference",
+          "description": "Controls the consistency preference for this request. Default value is UNSPECIFIED, which will have the same behavior as MINIMIZE_LATENCY."
+        }
+      },
+      "required": [
+        "object",
+        "relation",
+        "user_filters"
       ]
     },
     "ListUsersResponse": {
@@ -2154,6 +2064,27 @@
         "authorization_models"
       ]
     },
+    "ReadBody": {
+      "type": "object",
+      "properties": {
+        "tuple_key": {
+          "$ref": "#/definitions/ReadRequestTupleKey"
+        },
+        "page_size": {
+          "type": "integer",
+          "format": "int32",
+          "example": 50
+        },
+        "continuation_token": {
+          "type": "string",
+          "example": "eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ=="
+        },
+        "consistency": {
+          "$ref": "#/definitions/ConsistencyPreference",
+          "description": "Controls the consistency preference for this request. Default value is UNSPECIFIED, which will have the same behavior as MINIMIZE_LATENCY."
+        }
+      }
+    },
     "ReadChangesResponse": {
       "type": "object",
       "properties": {
@@ -2329,6 +2260,45 @@
         "name",
         "created_at",
         "updated_at"
+      ]
+    },
+    "StreamedListObjectsBody": {
+      "type": "object",
+      "properties": {
+        "authorization_model_id": {
+          "type": "string",
+          "example": "01G5JAVJ41T49E9TT3SKVS7X1J"
+        },
+        "type": {
+          "type": "string",
+          "example": "document"
+        },
+        "relation": {
+          "type": "string",
+          "example": "reader"
+        },
+        "user": {
+          "type": "string",
+          "example": "user:anne",
+          "maxLength": 512,
+          "minLength": 1
+        },
+        "contextual_tuples": {
+          "$ref": "#/definitions/ContextualTupleKeys"
+        },
+        "context": {
+          "type": "object",
+          "description": "Additional request context that will be used to evaluate any ABAC conditions encountered\nin the query evaluation."
+        },
+        "consistency": {
+          "$ref": "#/definitions/ConsistencyPreference",
+          "description": "Controls the consistency preference for this request. Default value is UNSPECIFIED, which will have the same behavior as MINIMIZE_LATENCY."
+        }
+      },
+      "required": [
+        "type",
+        "relation",
+        "user"
       ]
     },
     "StreamedListObjectsResponse": {
@@ -2720,8 +2690,50 @@
     "Wildcard": {
       "type": "object"
     },
+    "WriteAssertionsBody": {
+      "type": "object",
+      "properties": {
+        "assertions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/Assertion",
+            "maximum": 100
+          }
+        }
+      },
+      "required": [
+        "assertions"
+      ]
+    },
     "WriteAssertionsResponse": {
       "type": "object"
+    },
+    "WriteAuthorizationModelBody": {
+      "type": "object",
+      "properties": {
+        "type_definitions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/TypeDefinition",
+            "minimum": 1
+          }
+        },
+        "schema_version": {
+          "type": "string"
+        },
+        "conditions": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/Condition"
+          }
+        }
+      },
+      "required": [
+        "type_definitions",
+        "schema_version"
+      ]
     },
     "WriteAuthorizationModelResponse": {
       "type": "object",
@@ -2734,6 +2746,21 @@
       "required": [
         "authorization_model_id"
       ]
+    },
+    "WriteBody": {
+      "type": "object",
+      "properties": {
+        "writes": {
+          "$ref": "#/definitions/WriteRequestWrites"
+        },
+        "deletes": {
+          "$ref": "#/definitions/WriteRequestDeletes"
+        },
+        "authorization_model_id": {
+          "type": "string",
+          "example": "01G5JAVJ41T49E9TT3SKVS7X1J"
+        }
+      }
     },
     "WriteRequestDeletes": {
       "type": "object",

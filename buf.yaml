@@ -1,18 +1,22 @@
-version: v1
+version: v2
 name: buf.build/openfga/api
 deps:
   - buf.build/envoyproxy/protoc-gen-validate
-  - buf.build/grpc-ecosystem/grpc-gateway
   - buf.build/googleapis/googleapis
-breaking:
-  ignore_unstable_packages: true
-
+  - buf.build/grpc-ecosystem/grpc-gateway
 lint:
-  allow_comment_ignores: true
+  use:
+    - STANDARD
   ignore_only:
-    ENUM_VALUE_UPPER_SNAKE_CASE:
-      - openfga/v1/errors_ignore.proto
     ENUM_VALUE_PREFIX:
+      - openfga/v1/errors_ignore.proto
+    ENUM_VALUE_UPPER_SNAKE_CASE:
       - openfga/v1/errors_ignore.proto
     ENUM_ZERO_VALUE_SUFFIX:
       - openfga/v1/errors_ignore.proto
+breaking:
+  use:
+    - FILE
+    - PACKAGE
+    - WIRE_JSON
+    - WIRE
