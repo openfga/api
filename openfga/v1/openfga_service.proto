@@ -777,7 +777,7 @@ service OpenFGAService {
         "You may also provide a `context` object that will be used to evaluate the conditioned tuples in the system. It is strongly recommended to provide a value for all the input parameters of all the conditions, to ensure that all tuples be evaluated correctly.\n"
         "The response will contain the related users in an array in the \"users\" field of the response. These results may include specific objects, usersets \n"
         "or type-bound public access. Each of these types of results is encoded in its own type and not represented as a string."
-        "In cases where a type-bound public acces result is returned (e.g. `user:*`), it cannot be inferred that all subjects\n"
+        "In cases where a type-bound public access result is returned (e.g. `user:*`), it cannot be inferred that all subjects\n"
         "of that type have a relation to the object; it is possible that negations exist and checks should still be queried\n"
         "on individual subjects to ensure access to that document."
         "The number of users in the response array will be limited by the execution timeout specified in the flag OPENFGA_LIST_USERS_DEADLINE "
