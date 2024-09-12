@@ -31,6 +31,8 @@ The command above will generate source code in the `proto/` directory.
 ## Generating OpenAPI Documentation
 To generate the OpenAPI documentation from the protobuf sources you can run the following commands:
 
+> **Note**: You must have [jq](https://jqlang.github.io/jq/download/) installed to run the `format` step below
+
 ```bash
 ./buf.gen.yaml
 ./scripts/update_swagger.sh docs/openapiv2/apidocs.swagger.json
