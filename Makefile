@@ -9,5 +9,5 @@ patch-swagger-doc: buf-gen
 format: buf-gen
 	buf format -w
 
-init-hooks:
+init-git-hooks:
 	git config --local core.hooksPath .githooks/
