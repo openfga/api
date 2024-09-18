@@ -1,10 +1,13 @@
 #!/bin/sh
+# This is a simple check to remind people to update the swagger docs
+# if they have made a change to a proto file. It's not iron-clad and non-blocking,
+# but it's better than finding out later in github.
 
 # AMD = added, modified, deleted
 files=$(git diff --cached --name-only --diff-filter=AMD)
 
 LIGHT_RED='\033[1;31m'
-NC='\033[0m' # No Color
+RESET='\033[0m' # No Color
 
 # naive regex check for .proto extension
 if [[ "$files" =~ \.proto ]]
@@ -12,15 +15,13 @@ then
     # Check if there's a staged diff in /docs
     result=$(git diff --cached --raw docs/)
     if [ -n "$result" ]; then
-      # There is a change to docs, exit
-      exit 1
+      # There is a doc update, assume we're ok and exit
+      exit 0
     else
       # Don't block, but warn that the docs need updating.
       echo "This commit contains .proto changes but the docs have not been updated."
-      echo "Your changes were committed, but ${LIGHT_RED}please run 'make all' or this will fail in CI${NC}"
-      exit 1
+      echo "Your changes were committed, but ${LIGHT_RED}please run 'make all' or this will fail in CI${RESET}\n"
     fi
-
 fi
 
-exit 1
+exit 0
