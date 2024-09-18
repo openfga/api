@@ -10,7 +10,7 @@ To generate source code from the protobuf definitions contained in this project 
 > **Note**: You must have [Buf CLI](https://docs.buf.build/installation) installed to run the following command.
 > 
 ```bash
-./buf.gen.yaml
+make buf-gen
 ```
 
 The command above will generate source code in the `proto/` directory.
