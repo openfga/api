@@ -20,7 +20,7 @@ then
       exit 0
     else
       # One of the two directories does not have changes, block this commit
-      echo "This commit contains .proto changes but either the docs or generated /proto files have not been updated."
+      echo "This commit contains .proto changes but either the docs or generated /proto files are not part of this commit."
       echo "${LIGHT_RED}Your changes were not committed, please run 'make all' and add the resulting changes${RESET}\n"
       exit 1
     fi
