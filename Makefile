@@ -1,6 +1,6 @@
 all: patch-swagger-doc format
 
-buf-gen: init-hooks
+buf-gen: init-git-hooks
 	./buf.gen.yaml
 
 patch-swagger-doc: buf-gen
