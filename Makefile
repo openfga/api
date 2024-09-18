@@ -1,6 +1,6 @@
-all: patch-swagger-doc format
+all: init-hooks patch-swagger-doc format
 
-buf-gen:
+buf-gen: init-hooks
 	./buf.gen.yaml
 
 patch-swagger-doc: buf-gen
@@ -8,3 +8,6 @@ patch-swagger-doc: buf-gen
 
 format: buf-gen
 	buf format -w
+
+init-hooks:
+	git config --local core.hooksPath .githooks/
