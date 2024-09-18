@@ -1,7 +1,7 @@
 #!/bin/sh
-# This is a simple check to remind people to update the swagger docs
-# if they have made a change to a proto file. It's not iron-clad and non-blocking,
-# but it's better than finding out later in github.
+# This is a simple check to ensure people remember to regenerate the docs
+# and the pb.go files if they change a .proto file.
+# It's not iron-clad but it's better than finding out later in github.
 
 # AMD = added, modified, deleted
 files=$(git diff --cached --name-only --diff-filter=AMD)
@@ -12,15 +12,17 @@ RESET='\033[0m' # No Color
 # naive regex check for .proto extension
 if [[ "$files" =~ \.proto ]]
 then
-    # Check if there's a staged diff in /docs
-    result=$(git diff --cached --raw docs/)
-    if [ -n "$result" ]; then
-      # There is a doc update, assume we're ok and exit
+    # Check if there's a staged diff in /docs and in the generated pb.go files
+    docs_change=$(git diff --cached --raw docs/)
+    go_change=$(git diff --cached --raw proto/openfga/)
+    if [ -n "$docs_change" ] && [ -n "$go_change" ]; then
+      # Both were changed, we're good
       exit 0
     else
-      # Don't block, but warn that the docs need updating.
-      echo "This commit contains .proto changes but the docs have not been updated."
-      echo "Your changes were committed, but ${LIGHT_RED}please run 'make all' or this will fail in CI${RESET}\n"
+      # One of the two directories does not have changes, block this commit
+      echo "This commit contains .proto changes but either the docs or generated /proto files have not been updated."
+      echo "${LIGHT_RED}Your changes were not committed, please run 'make all' and add the resulting changes${RESET}\n"
+      exit 1
     fi
 fi
 
