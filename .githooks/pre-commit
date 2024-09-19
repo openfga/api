@@ -1,0 +1,29 @@
+#!/bin/sh
+# This is a simple check to ensure people remember to regenerate the docs
+# and the pb.go files if they change a .proto file.
+# It's not iron-clad but it's better than finding out later in github.
+
+# AMD = added, modified, deleted
+files=$(git diff --cached --name-only --diff-filter=AMD)
+
+LIGHT_RED='\033[1;31m'
+RESET='\033[0m' # No Color
+
+# naive regex check for .proto extension
+if [[ "$files" =~ \.proto ]]
+then
+    # Check if there's a staged diff in /docs and in the generated pb.go files
+    docs_change=$(git diff --cached --raw docs/)
+    go_change=$(git diff --cached --raw proto/openfga/)
+    if [ -n "$docs_change" ] && [ -n "$go_change" ]; then
+      # Both were changed, we're good
+      exit 0
+    else
+      # One of the two directories does not have changes, block this commit
+      echo "This commit contains .proto changes but either the docs or generated /proto files are not part of this commit."
+      echo "${LIGHT_RED}Your changes were not committed, please run 'make all' and add the resulting changes${RESET}\n"
+      exit 1
+    fi
+fi
+
+exit 0
