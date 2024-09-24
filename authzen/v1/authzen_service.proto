@@ -1,0 +1,252 @@
+syntax = "proto3";
+
+package authzen.v1;
+
+import "google/api/annotations.proto";
+import "google/api/field_behavior.proto";
+import "google/protobuf/struct.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+import "validate/validate.proto";
+
+service AuthZenService {
+  rpc Evaluation(EvaluationRequest) returns (EvaluationResponse) {
+    option (google.api.http) = {
+      post: "/access/v1/evaluation"
+      body: "*"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Check whether a user is authorized to access an object"
+      tags: ["Relationship Queries"]
+      operation_id: "Evaluation"
+      description:
+        "The Check API returns whether a given user has a relationship with a given object in a given store.\n"
+        "The `user` field of the request can be a specific target, such as `user:anne`, or a userset (set of users) such as `group:marketing#member` or a type-bound public access `user:*`.\n"
+        "To arrive at a result, the API uses: an authorization model, explicit tuples written through the Write API, contextual tuples present in the request, and implicit tuples that exist by virtue of applying set theory "
+        "(such as `document:2021-budget#viewer@document:2021-budget#viewer`; the set of users who are viewers of `document:2021-budget` are the set of users who are the viewers of `document:2021-budget`).\n"
+        "A `contextual_tuples` object may also be included in the body of the request. This object contains one field `tuple_keys`, which is an array of tuple keys. Each of these tuples may have an associated `condition`.\n"
+        "You may also provide an `authorization_model_id` in the body. This will be used to assert that the input `tuple_key` is valid for the model specified. "
+        "If not specified, the assertion will be made against the latest authorization model ID. It is strongly recommended to specify authorization model id for better performance.\n"
+        "You may also provide a `context` object that will be used to evaluate the conditioned tuples in the system. It is strongly recommended to provide a value for all the input parameters of all the conditions, to ensure that all tuples be evaluated correctly.\n"
+        "By default, the Check API caches results for a short time to optimize performance. You may specify a value of `HIGHER_CONSISTENCY` for the optional `consistency` parameter in the body to inform the server that higher conisistency is preferred at the expense of increased latency. Consideration should be given to the increased latency if requesting higher consistency.\n"
+        "The response will return whether the relationship exists in the field `allowed`.\n\n"
+        "Some exceptions apply, but in general, if a Check API responds with `{allowed: true}`, then you can expect the equivalent ListObjects query to return the object, and viceversa. \n"
+        "For example, if `Check(user:anne, reader, document:2021-budget)` responds with `{allowed: true}`, then `ListObjects(user:anne, reader, document)` may include `document:2021-budget` in the response.\n"
+        "## Examples\n"
+        "### Querying with contextual tuples\n"
+        "In order to check if user `user:anne` of type `user` has a `reader` relationship with object `document:2021-budget` given the following contextual tuple\n"
+        "```json\n"
+        "{\n"
+        "  \"user\": \"user:anne\",\n"
+        "  \"relation\": \"member\",\n"
+        "  \"object\": \"time_slot:office_hours\"\n"
+        "}\n"
+        "```\n"
+        "the Check API can be used with the following request body:\n"
+        "```json\n"
+        "{\n"
+        "  \"tuple_key\": {\n"
+        "    \"user\": \"user:anne\",\n"
+        "    \"relation\": \"reader\",\n"
+        "    \"object\": \"document:2021-budget\"\n"
+        "  },\n"
+        "  \"contextual_tuples\": {\n"
+        "    \"tuple_keys\": [\n"
+        "      {\n"
+        "        \"user\": \"user:anne\",\n"
+        "        \"relation\": \"member\",\n"
+        "        \"object\": \"time_slot:office_hours\"\n"
+        "      }\n"
+        "    ]\n"
+        "  },\n"
+        "  \"authorization_model_id\": \"01G50QVV17PECNVAHX1GG4Y5NC\"\n"
+        "}\n"
+        "```\n"
+        "### Querying usersets\n"
+        "Some Checks will always return `true`, even without any tuples. For example, for the following authorization model\n"
+        "```python\n"
+        "model\n"
+        "  schema 1.1\n"
+        "type user\n"
+        "type document\n"
+        "  relations\n"
+        "    define reader: [user]\n"
+        "```\n"
+        "the following query\n"
+        "```json\n"
+        "{\n"
+        "  \"tuple_key\": {\n"
+        "     \"user\": \"document:2021-budget#reader\",\n"
+        "     \"relation\": \"reader\",\n"
+        "     \"object\": \"document:2021-budget\"\n"
+        "  }\n"
+        "}\n"
+        "```\n"
+        "will always return `{ \"allowed\": true }`. This is because usersets are self-defining: the userset `document:2021-budget#reader` will always have the `reader` relation with `document:2021-budget`.\n"
+        "### Querying usersets with difference in the model\n"
+        "A Check for a userset can yield results that must be treated carefully if the model involves difference. For example, for the following authorization model\n"
+        "```python\n"
+        "model\n"
+        "  schema 1.1\n"
+        "type user\n"
+        "type group\n"
+        "  relations\n"
+        "    define member: [user]\n"
+        "type document\n"
+        "  relations\n"
+        "    define blocked: [user]\n"
+        "    define reader: [group#member] but not blocked\n"
+        "```\n"
+        "the following query\n"
+        "```json\n"
+        "{\n"
+        "  \"tuple_key\": {\n"
+        "     \"user\": \"group:finance#member\",\n"
+        "     \"relation\": \"reader\",\n"
+        "     \"object\": \"document:2021-budget\"\n"
+        "  },\n"
+        "  \"contextual_tuples\": {\n"
+        "    \"tuple_keys\": [\n"
+        "      {\n"
+        "        \"user\": \"user:anne\",\n"
+        "        \"relation\": \"member\",\n"
+        "        \"object\": \"group:finance\"\n"
+        "      },\n"
+        "      {\n"
+        "        \"user\": \"group:finance#member\",\n"
+        "        \"relation\": \"reader\",\n"
+        "        \"object\": \"document:2021-budget\"\n"
+        "      },\n"
+        "      {\n"
+        "        \"user\": \"user:anne\",\n"
+        "        \"relation\": \"blocked\",\n"
+        "        \"object\": \"document:2021-budget\"\n"
+        "      }\n"
+        "    ]\n"
+        "  },\n"
+        "}\n"
+        "```\n"
+        "will return `{ \"allowed\": true }`, even though a specific user of the userset `group:finance#member` does not have the `reader` relationship with the given object.\n"
+        "### Requesting higher consistency\n"
+        "By default, the Check API caches results for a short time to optimize performance. You may request higher consistency to inform the server that higher consistency should be preferred at the expense of increased latency. Care should be taken when requesting higher consistency due to the increased latency.\n"
+        "```json\n"
+        "{\n"
+        "  \"tuple_key\": {\n"
+        "     \"user\": \"group:finance#member\",\n"
+        "     \"relation\": \"reader\",\n"
+        "     \"object\": \"document:2021-budget\"\n"
+        "  },\n"
+        "  \"consistency\": \"HIGHER_CONSISTENCY\"\n"
+        "}\n"
+        "```\n"
+    };
+  }
+}
+
+message EvaluationRequest {
+  Subject subject = 1 [
+    (validate.rules).message.required = true,
+    (google.api.field_behavior) = REQUIRED
+  ];
+
+  Resource resource = 2 [
+    (validate.rules).message.required = true,
+    (google.api.field_behavior) = REQUIRED
+  ];
+
+  Action action = 3 [
+    (validate.rules).message.required = true,
+    (google.api.field_behavior) = REQUIRED
+  ];
+
+  google.protobuf.Struct context = 4;
+
+  string store_id = 5 [
+    json_name = "store_id",
+    (validate.rules).string = {
+      pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"
+      ignore_empty: true
+    },
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01G5JAVJ41T49E9TT3SKVS7X1J\""}
+  ];
+
+  string authorization_model_id = 6 [
+    json_name = "authorization_model_id",
+    (validate.rules).string = {
+      pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"
+      ignore_empty: true
+    },
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01G5JAVJ41T49E9TT3SKVS7X1J\""}
+  ];
+}
+
+message Subject {
+  string type = 1 [
+    (validate.rules).string = {
+      pattern: "^[^:#@\\s]{1,50}$"
+      ignore_empty: false
+    },
+    (google.api.field_behavior) = REQUIRED,
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"user\""}
+  ];
+
+  string id = 2 [
+    (validate.rules).string = {
+      pattern: "^[^:#@\\s]{1,50}$"
+      ignore_empty: false
+    },
+    (google.api.field_behavior) = REQUIRED,
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"anne\""}
+  ];
+
+  google.protobuf.Struct properties = 3;
+}
+
+message Resource {
+  string type = 1 [
+    (validate.rules).string = {
+      pattern: "^[^:#@\\s]{1,50}$"
+      ignore_empty: false
+    },
+    (google.api.field_behavior) = REQUIRED,
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"document\""}
+  ];
+
+  string id = 2 [
+    (validate.rules).string = {
+      pattern: "^[^:#@\\s]{1,50}$"
+      ignore_empty: false
+    },
+    (google.api.field_behavior) = REQUIRED,
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"roadmap\""}
+  ];
+
+  google.protobuf.Struct properties = 3;
+}
+
+message Action {
+  string name = 1 [
+    (validate.rules).string = {
+      pattern: "^[^:#@\\s]{1,50}$"
+      ignore_empty: false
+    },
+    (google.api.field_behavior) = REQUIRED,
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"can_read\""}
+  ];
+
+  google.protobuf.Struct properties = 3;
+}
+
+message EvaluationResponse {
+  bool decision = 1;
+
+  EvaluationResponseContext context = 2;
+}
+
+message EvaluationResponseContext {
+  string id = 1;
+
+  google.protobuf.Struct reason_admin = 2;
+
+  google.protobuf.Struct reason_user = 3;
+}
