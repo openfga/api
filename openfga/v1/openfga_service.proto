@@ -326,7 +326,6 @@ service OpenFGAService {
     };
   }
 
-
   rpc BatchCheck(BatchCheckRequest) returns (BatchCheckResponse) {
     option (google.api.http) = {
       post: "/stores/{store_id}/batch_check"
