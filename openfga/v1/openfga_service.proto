@@ -993,7 +993,11 @@ message ReadRequest {
       gte: 1
       lte: 100
     },
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "50"}
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "50"
+      minimum: 1
+      maximum: 100
+    }
   ];
 
   string continuation_token = 4 [
