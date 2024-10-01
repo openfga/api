@@ -2266,7 +2266,7 @@
           "type": "string",
           "example": "condition1",
           "description": "A reference (by name) of the relationship condition defined in the authorization model.",
-          "maxLength": 256
+          "maxLength": 50
         },
         "context": {
           "type": "object",

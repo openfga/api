@@ -89,12 +89,12 @@ message RelationshipCondition {
   // A reference (by name) of the relationship condition defined in the authorization model.
   string name = 1 [
     (validate.rules).string = {
-      pattern: "^[^\\s]{2,256}$"
+      pattern: "^[^\\s]{1,50}$"
       ignore_empty: false
     },
     (google.api.field_behavior) = REQUIRED,
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      max_length: 256
+      max_length: 50
       example: "\"condition1\""
     }
   ];
