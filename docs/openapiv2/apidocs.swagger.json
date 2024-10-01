@@ -1829,7 +1829,8 @@
         "duplicate_contextual_tuple",
         "invalid_authorization_model",
         "unsupported_schema_version",
-        "cancelled"
+        "cancelled",
+        "invalid_locality"
       ],
       "default": "no_error"
     },

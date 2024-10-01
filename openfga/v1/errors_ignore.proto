@@ -70,6 +70,7 @@ enum ErrorCode {
   invalid_authorization_model = 2056;
   unsupported_schema_version = 2057;
   cancelled = 2058;
+  invalid_locality = 2059;
 }
 
 enum UnprocessableContentErrorCode {
