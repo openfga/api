@@ -778,3 +778,109 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = ErrorMessageRequestValidationError{}
+
+// Validate checks the field values on ForbiddenResponse with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// first error encountered is returned, or nil if there are no violations.
+func (m *ForbiddenResponse) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ForbiddenResponse with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// ForbiddenResponseMultiError, or nil if none found.
+func (m *ForbiddenResponse) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ForbiddenResponse) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Code
+
+	// no validation rules for Message
+
+	if len(errors) > 0 {
+		return ForbiddenResponseMultiError(errors)
+	}
+
+	return nil
+}
+
+// ForbiddenResponseMultiError is an error wrapping multiple validation errors
+// returned by ForbiddenResponse.ValidateAll() if the designated constraints
+// aren't met.
+type ForbiddenResponseMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ForbiddenResponseMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ForbiddenResponseMultiError) AllErrors() []error { return m }
+
+// ForbiddenResponseValidationError is the validation error returned by
+// ForbiddenResponse.Validate if the designated constraints aren't met.
+type ForbiddenResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ForbiddenResponseValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ForbiddenResponseValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ForbiddenResponseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ForbiddenResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ForbiddenResponseValidationError) ErrorName() string {
+	return "ForbiddenResponseValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ForbiddenResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sForbiddenResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ForbiddenResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ForbiddenResponseValidationError{}
