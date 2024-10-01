@@ -1228,7 +1228,9 @@
                 "page_size": {
                   "type": "integer",
                   "format": "int32",
-                  "example": 50
+                  "example": 50,
+                  "maximum": 100,
+                  "minimum": 1
                 },
                 "continuation_token": {
                   "type": "string",
