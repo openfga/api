@@ -1146,6 +1146,15 @@ message BatchCheckRequest {
   ];
 
   BatchCheckChecks checks = 2;
+
+  string authorization_model_id = 3 [
+    json_name = "authorization_model_id",
+    (validate.rules).string = {
+      pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"
+      ignore_empty: true
+    },
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01G5JAVJ41T49E9TT3SKVS7X1J\""}
+  ];
 }
 
 message BatchCheckResponse {

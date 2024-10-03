@@ -731,6 +731,10 @@
               "properties": {
                 "checks": {
                   "$ref": "#/definitions/BatchCheckChecks"
+                },
+                "authorization_model_id": {
+                  "type": "string",
+                  "example": "01G5JAVJ41T49E9TT3SKVS7X1J"
                 }
               }
             }

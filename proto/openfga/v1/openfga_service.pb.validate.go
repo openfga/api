@@ -2624,6 +2624,21 @@ func (m *BatchCheckRequest) validate(all bool) error {
 		}
 	}
 
+	if m.GetAuthorizationModelId() != "" {
+
+		if !_BatchCheckRequest_AuthorizationModelId_Pattern.MatchString(m.GetAuthorizationModelId()) {
+			err := BatchCheckRequestValidationError{
+				field:  "AuthorizationModelId",
+				reason: "value does not match regex pattern \"^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
 	if len(errors) > 0 {
 		return BatchCheckRequestMultiError(errors)
 	}
@@ -2705,6 +2720,8 @@ var _ interface {
 } = BatchCheckRequestValidationError{}
 
 var _BatchCheckRequest_StoreId_Pattern = regexp.MustCompile("^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$")
+
+var _BatchCheckRequest_AuthorizationModelId_Pattern = regexp.MustCompile("^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$")
 
 // Validate checks the field values on BatchCheckResponse with the rules
 // defined in the proto definition for this message. If any rules are
