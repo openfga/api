@@ -2702,6 +2702,883 @@ var _ interface {
 	ErrorName() string
 } = CheckResponseValidationError{}
 
+// Validate checks the field values on BatchCheckRequest with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// first error encountered is returned, or nil if there are no violations.
+func (m *BatchCheckRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on BatchCheckRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// BatchCheckRequestMultiError, or nil if none found.
+func (m *BatchCheckRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *BatchCheckRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if !_BatchCheckRequest_StoreId_Pattern.MatchString(m.GetStoreId()) {
+		err := BatchCheckRequestValidationError{
+			field:  "StoreId",
+			reason: "value does not match regex pattern \"^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$\"",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	for idx, item := range m.GetChecks() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, BatchCheckRequestValidationError{
+						field:  fmt.Sprintf("Checks[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, BatchCheckRequestValidationError{
+						field:  fmt.Sprintf("Checks[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return BatchCheckRequestValidationError{
+					field:  fmt.Sprintf("Checks[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	if all {
+		switch v := interface{}(m.GetContextualTuples()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, BatchCheckRequestValidationError{
+					field:  "ContextualTuples",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, BatchCheckRequestValidationError{
+					field:  "ContextualTuples",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetContextualTuples()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return BatchCheckRequestValidationError{
+				field:  "ContextualTuples",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if all {
+		switch v := interface{}(m.GetContext()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, BatchCheckRequestValidationError{
+					field:  "Context",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, BatchCheckRequestValidationError{
+					field:  "Context",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetContext()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return BatchCheckRequestValidationError{
+				field:  "Context",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if m.GetAuthorizationModelId() != "" {
+
+		if !_BatchCheckRequest_AuthorizationModelId_Pattern.MatchString(m.GetAuthorizationModelId()) {
+			err := BatchCheckRequestValidationError{
+				field:  "AuthorizationModelId",
+				reason: "value does not match regex pattern \"^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
+	if _, ok := ConsistencyPreference_name[int32(m.GetConsistency())]; !ok {
+		err := BatchCheckRequestValidationError{
+			field:  "Consistency",
+			reason: "value must be one of the defined enum values",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if len(errors) > 0 {
+		return BatchCheckRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// BatchCheckRequestMultiError is an error wrapping multiple validation errors
+// returned by BatchCheckRequest.ValidateAll() if the designated constraints
+// aren't met.
+type BatchCheckRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m BatchCheckRequestMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m BatchCheckRequestMultiError) AllErrors() []error { return m }
+
+// BatchCheckRequestValidationError is the validation error returned by
+// BatchCheckRequest.Validate if the designated constraints aren't met.
+type BatchCheckRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e BatchCheckRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e BatchCheckRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e BatchCheckRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e BatchCheckRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e BatchCheckRequestValidationError) ErrorName() string {
+	return "BatchCheckRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e BatchCheckRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sBatchCheckRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = BatchCheckRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = BatchCheckRequestValidationError{}
+
+var _BatchCheckRequest_StoreId_Pattern = regexp.MustCompile("^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$")
+
+var _BatchCheckRequest_AuthorizationModelId_Pattern = regexp.MustCompile("^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$")
+
+// Validate checks the field values on BatchCheckItem with the rules defined in
+// the proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *BatchCheckItem) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on BatchCheckItem with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in BatchCheckItemMultiError,
+// or nil if none found.
+func (m *BatchCheckItem) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *BatchCheckItem) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if all {
+		switch v := interface{}(m.GetTupleKey()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, BatchCheckItemValidationError{
+					field:  "TupleKey",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, BatchCheckItemValidationError{
+					field:  "TupleKey",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetTupleKey()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return BatchCheckItemValidationError{
+				field:  "TupleKey",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if all {
+		switch v := interface{}(m.GetContextualTuples()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, BatchCheckItemValidationError{
+					field:  "ContextualTuples",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, BatchCheckItemValidationError{
+					field:  "ContextualTuples",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetContextualTuples()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return BatchCheckItemValidationError{
+				field:  "ContextualTuples",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if all {
+		switch v := interface{}(m.GetContext()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, BatchCheckItemValidationError{
+					field:  "Context",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, BatchCheckItemValidationError{
+					field:  "Context",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetContext()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return BatchCheckItemValidationError{
+				field:  "Context",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if len(errors) > 0 {
+		return BatchCheckItemMultiError(errors)
+	}
+
+	return nil
+}
+
+// BatchCheckItemMultiError is an error wrapping multiple validation errors
+// returned by BatchCheckItem.ValidateAll() if the designated constraints
+// aren't met.
+type BatchCheckItemMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m BatchCheckItemMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m BatchCheckItemMultiError) AllErrors() []error { return m }
+
+// BatchCheckItemValidationError is the validation error returned by
+// BatchCheckItem.Validate if the designated constraints aren't met.
+type BatchCheckItemValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e BatchCheckItemValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e BatchCheckItemValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e BatchCheckItemValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e BatchCheckItemValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e BatchCheckItemValidationError) ErrorName() string { return "BatchCheckItemValidationError" }
+
+// Error satisfies the builtin error interface
+func (e BatchCheckItemValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sBatchCheckItem.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = BatchCheckItemValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = BatchCheckItemValidationError{}
+
+// Validate checks the field values on BatchCheckResponse with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *BatchCheckResponse) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on BatchCheckResponse with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// BatchCheckResponseMultiError, or nil if none found.
+func (m *BatchCheckResponse) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *BatchCheckResponse) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	for idx, item := range m.GetResult() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, BatchCheckResponseValidationError{
+						field:  fmt.Sprintf("Result[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, BatchCheckResponseValidationError{
+						field:  fmt.Sprintf("Result[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return BatchCheckResponseValidationError{
+					field:  fmt.Sprintf("Result[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	if len(errors) > 0 {
+		return BatchCheckResponseMultiError(errors)
+	}
+
+	return nil
+}
+
+// BatchCheckResponseMultiError is an error wrapping multiple validation errors
+// returned by BatchCheckResponse.ValidateAll() if the designated constraints
+// aren't met.
+type BatchCheckResponseMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m BatchCheckResponseMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m BatchCheckResponseMultiError) AllErrors() []error { return m }
+
+// BatchCheckResponseValidationError is the validation error returned by
+// BatchCheckResponse.Validate if the designated constraints aren't met.
+type BatchCheckResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e BatchCheckResponseValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e BatchCheckResponseValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e BatchCheckResponseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e BatchCheckResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e BatchCheckResponseValidationError) ErrorName() string {
+	return "BatchCheckResponseValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e BatchCheckResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sBatchCheckResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = BatchCheckResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = BatchCheckResponseValidationError{}
+
+// Validate checks the field values on BatchCheckSingleResult with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *BatchCheckSingleResult) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on BatchCheckSingleResult with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// BatchCheckSingleResultMultiError, or nil if none found.
+func (m *BatchCheckSingleResult) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *BatchCheckSingleResult) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if all {
+		switch v := interface{}(m.GetCheck()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, BatchCheckSingleResultValidationError{
+					field:  "Check",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, BatchCheckSingleResultValidationError{
+					field:  "Check",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetCheck()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return BatchCheckSingleResultValidationError{
+				field:  "Check",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	switch v := m.CheckResult.(type) {
+	case *BatchCheckSingleResult_Allowed:
+		if v == nil {
+			err := BatchCheckSingleResultValidationError{
+				field:  "CheckResult",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		// no validation rules for Allowed
+	case *BatchCheckSingleResult_Error:
+		if v == nil {
+			err := BatchCheckSingleResultValidationError{
+				field:  "CheckResult",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if all {
+			switch v := interface{}(m.GetError()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, BatchCheckSingleResultValidationError{
+						field:  "Error",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, BatchCheckSingleResultValidationError{
+						field:  "Error",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetError()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return BatchCheckSingleResultValidationError{
+					field:  "Error",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	default:
+		_ = v // ensures v is used
+	}
+
+	if len(errors) > 0 {
+		return BatchCheckSingleResultMultiError(errors)
+	}
+
+	return nil
+}
+
+// BatchCheckSingleResultMultiError is an error wrapping multiple validation
+// errors returned by BatchCheckSingleResult.ValidateAll() if the designated
+// constraints aren't met.
+type BatchCheckSingleResultMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m BatchCheckSingleResultMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m BatchCheckSingleResultMultiError) AllErrors() []error { return m }
+
+// BatchCheckSingleResultValidationError is the validation error returned by
+// BatchCheckSingleResult.Validate if the designated constraints aren't met.
+type BatchCheckSingleResultValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e BatchCheckSingleResultValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e BatchCheckSingleResultValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e BatchCheckSingleResultValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e BatchCheckSingleResultValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e BatchCheckSingleResultValidationError) ErrorName() string {
+	return "BatchCheckSingleResultValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e BatchCheckSingleResultValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sBatchCheckSingleResult.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = BatchCheckSingleResultValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = BatchCheckSingleResultValidationError{}
+
+// Validate checks the field values on CheckError with the rules defined in the
+// proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *CheckError) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on CheckError with the rules defined in
+// the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in CheckErrorMultiError, or
+// nil if none found.
+func (m *CheckError) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *CheckError) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Message
+
+	switch v := m.Code.(type) {
+	case *CheckError_InputError:
+		if v == nil {
+			err := CheckErrorValidationError{
+				field:  "Code",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		// no validation rules for InputError
+	case *CheckError_InternalError:
+		if v == nil {
+			err := CheckErrorValidationError{
+				field:  "Code",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		// no validation rules for InternalError
+	default:
+		_ = v // ensures v is used
+	}
+
+	if len(errors) > 0 {
+		return CheckErrorMultiError(errors)
+	}
+
+	return nil
+}
+
+// CheckErrorMultiError is an error wrapping multiple validation errors
+// returned by CheckError.ValidateAll() if the designated constraints aren't met.
+type CheckErrorMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m CheckErrorMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m CheckErrorMultiError) AllErrors() []error { return m }
+
+// CheckErrorValidationError is the validation error returned by
+// CheckError.Validate if the designated constraints aren't met.
+type CheckErrorValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e CheckErrorValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e CheckErrorValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e CheckErrorValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e CheckErrorValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e CheckErrorValidationError) ErrorName() string { return "CheckErrorValidationError" }
+
+// Error satisfies the builtin error interface
+func (e CheckErrorValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sCheckError.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = CheckErrorValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = CheckErrorValidationError{}
+
 // Validate checks the field values on ExpandRequest with the rules defined in
 // the proto definition for this message. If any rules are violated, the first
 // error encountered is returned, or nil if there are no violations.

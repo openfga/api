@@ -665,6 +665,101 @@
         ]
       }
     },
+    "/stores/{store_id}/batch-check": {
+      "post": {
+        "summary": "Batch Check Summary TBD",
+        "description": "Batch Check endpoint full description TBD",
+        "operationId": "BatchCheck",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/BatchCheckResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "401": {
+            "description": "Not authenticated.",
+            "schema": {
+              "$ref": "#/definitions/UnauthenticatedResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "409": {
+            "description": "Request was aborted due a transaction conflict.",
+            "schema": {
+              "$ref": "#/definitions/AbortedMessageResponse"
+            }
+          },
+          "422": {
+            "description": "Request timed out due to excessive request throttling.",
+            "schema": {
+              "$ref": "#/definitions/UnprocessableContentMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "store_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "checks": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "$ref": "#/definitions/BatchCheckItem"
+                  }
+                },
+                "contextual_tuples": {
+                  "$ref": "#/definitions/ContextualTupleKeys"
+                },
+                "context": {
+                  "type": "object"
+                },
+                "authorization_model_id": {
+                  "type": "string",
+                  "example": "01G5JAVJ41T49E9TT3SKVS7X1J"
+                },
+                "consistency": {
+                  "$ref": "#/definitions/ConsistencyPreference"
+                }
+              },
+              "required": [
+                "checks"
+              ]
+            }
+          }
+        ],
+        "tags": [
+          "Relationship Queries"
+        ]
+      }
+    },
     "/stores/{store_id}/changes": {
       "get": {
         "summary": "Return a list of all the tuple changes",
@@ -1602,6 +1697,63 @@
         "schema_version",
         "type_definitions"
       ]
+    },
+    "BatchCheckItem": {
+      "type": "object",
+      "properties": {
+        "tupleKey": {
+          "$ref": "#/definitions/CheckRequestTupleKey"
+        },
+        "contextual_tuples": {
+          "$ref": "#/definitions/ContextualTupleKeys"
+        },
+        "context": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "tupleKey"
+      ]
+    },
+    "BatchCheckResponse": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/BatchCheckSingleResult"
+          }
+        }
+      }
+    },
+    "BatchCheckSingleResult": {
+      "type": "object",
+      "properties": {
+        "check": {
+          "$ref": "#/definitions/BatchCheckItem"
+        },
+        "allowed": {
+          "type": "boolean"
+        },
+        "error": {
+          "$ref": "#/definitions/CheckError"
+        }
+      }
+    },
+    "CheckError": {
+      "type": "object",
+      "properties": {
+        "inputError": {
+          "$ref": "#/definitions/ErrorCode"
+        },
+        "internalError": {
+          "$ref": "#/definitions/InternalErrorCode"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
     },
     "CheckRequestTupleKey": {
       "type": "object",

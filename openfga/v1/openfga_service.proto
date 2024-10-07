@@ -9,6 +9,7 @@ import "google/protobuf/struct.proto";
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/wrappers.proto";
 import "openfga/v1/authzmodel.proto";
+import "openfga/v1/errors_ignore.proto";
 import "openfga/v1/openfga.proto";
 import "openfga/v1/openfga_service_consistency.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
@@ -323,6 +324,20 @@ service OpenFGAService {
         "  \"consistency\": \"HIGHER_CONSISTENCY\"\n"
         "}\n"
         "```\n"
+    };
+  }
+
+  rpc BatchCheck(BatchCheckRequest) returns (BatchCheckResponse) {
+    option (google.api.http) = {
+      post: "/stores/{store_id}/batch-check"
+      body: "*"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Batch Check Summary TBD"
+      tags: ["Relationship Queries"]
+      operation_id: "BatchCheck"
+      description: "Batch Check endpoint full description TBD"
     };
   }
 
@@ -1171,6 +1186,58 @@ message CheckResponse {
 
   // For internal use only.
   string resolution = 2;
+}
+
+message BatchCheckRequest {
+  string store_id = 1 [
+    json_name = "store_id",
+    (google.api.field_behavior) = REQUIRED,
+    (validate.rules).string = {pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"},
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""}
+  ];
+
+  repeated BatchCheckItem checks = 2 [(google.api.field_behavior) = REQUIRED];
+
+  openfga.v1.ContextualTupleKeys contextual_tuples = 3 [json_name = "contextual_tuples"];
+
+  google.protobuf.Struct context = 4;
+
+  string authorization_model_id = 5 [
+    json_name = "authorization_model_id",
+    (validate.rules).string = {
+      pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"
+      ignore_empty: true
+    },
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01G5JAVJ41T49E9TT3SKVS7X1J\""}
+  ];
+
+  ConsistencyPreference consistency = 6 [(validate.rules).enum.defined_only = true];
+}
+
+message BatchCheckItem {
+  CheckRequestTupleKey tuple_key = 1 [(google.api.field_behavior) = REQUIRED];
+  openfga.v1.ContextualTupleKeys contextual_tuples = 2 [json_name = "contextual_tuples"];
+  google.protobuf.Struct context = 3;
+}
+
+message BatchCheckResponse {
+  repeated BatchCheckSingleResult result = 1;
+}
+
+message BatchCheckSingleResult {
+  BatchCheckItem check = 1;
+  oneof check_result {
+    bool allowed = 2;
+    CheckError error = 3;
+  }
+}
+
+message CheckError {
+  oneof code {
+    ErrorCode input_error = 1;
+    InternalErrorCode internal_error = 2;
+  }
+  string message = 3;
 }
 
 message ExpandRequest {
