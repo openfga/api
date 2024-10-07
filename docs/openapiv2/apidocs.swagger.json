@@ -998,6 +998,9 @@
                 "consistency": {
                   "$ref": "#/definitions/ConsistencyPreference",
                   "description": "Controls the consistency preference for this request. Default value is UNSPECIFIED, which will have the same behavior as MINIMIZE_LATENCY."
+                },
+                "contextual_tuples": {
+                  "$ref": "#/definitions/ContextualTupleKeys"
                 }
               },
               "required": [
