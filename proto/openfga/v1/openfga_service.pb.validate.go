@@ -2775,6 +2775,35 @@ func (m *ExpandRequest) validate(all bool) error {
 		}
 	}
 
+	if all {
+		switch v := interface{}(m.GetContextualTuples()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, ExpandRequestValidationError{
+					field:  "ContextualTuples",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, ExpandRequestValidationError{
+					field:  "ContextualTuples",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetContextualTuples()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return ExpandRequestValidationError{
+				field:  "ContextualTuples",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
 	if m.GetAuthorizationModelId() != "" {
 
 		if !_ExpandRequest_AuthorizationModelId_Pattern.MatchString(m.GetAuthorizationModelId()) {

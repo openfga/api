@@ -1183,7 +1183,9 @@ message ExpandRequest {
     (google.api.field_behavior) = REQUIRED
   ];
 
-  string authorization_model_id = 3 [
+  openfga.v1.ContextualTupleKeys contextual_tuples = 3 [json_name = "contextual_tuples"];
+
+  string authorization_model_id = 4 [
     json_name = "authorization_model_id",
     (validate.rules).string = {
       pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"
@@ -1193,7 +1195,7 @@ message ExpandRequest {
   ];
 
   // Controls the consistency preference for this request. Default value is UNSPECIFIED, which will have the same behavior as MINIMIZE_LATENCY.
-  ConsistencyPreference consistency = 4 [(validate.rules).enum.defined_only = true];
+  ConsistencyPreference consistency = 5 [(validate.rules).enum.defined_only = true];
 }
 
 message ExpandRequestTupleKey {
