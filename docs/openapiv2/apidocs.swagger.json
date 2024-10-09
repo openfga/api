@@ -1738,6 +1738,10 @@
         },
         "error": {
           "$ref": "#/definitions/CheckError"
+        },
+        "queryDurationMs": {
+          "type": "integer",
+          "format": "int32"
         }
       }
     },

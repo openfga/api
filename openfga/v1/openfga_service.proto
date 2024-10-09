@@ -1230,6 +1230,7 @@ message BatchCheckSingleResult {
     bool allowed = 2;
     CheckError error = 3;
   }
+  google.protobuf.Int32Value query_duration_ms = 4;
 }
 
 message CheckError {
