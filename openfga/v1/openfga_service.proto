@@ -334,17 +334,18 @@ service OpenFGAService {
     };
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      summary: "Send multiple `check` operations in a single request"
+      summary: "Send a list of `check` operations in a single request"
       tags: ["Relationship Queries"]
       operation_id: "BatchCheck"
       description:
         "The `BatchCheck` API functions nearly identically to `Check`, but instead of checking a single "
-        "user-object relationship BatchCheck accepts a list of relationships to check, and returns a list with an "
-        "individual response for each check it received.\n\n"
+        "user-object relationship BatchCheck accepts a list of relationships to check and returns a list containing a response "
+        "for each check it received.\n\n"
         "Like `Check`, you can specify `contextual_tuples` and `context` with each individual tuple to be checked. Unlike check, however, "
         "`BatchCheck` also accepts `contextual_tuples` and `context` at the request level. If `contextual_tuples` or `context` are received "
-        "at the request level, those contexts will be used when evaluating each check in the batch. If an individual check within the batch "
-        "has its own `contextual_tuples` or `context`, they will be applied **in addition to** the request-level values."
+        "at the request level, those contexts will taken into account when evaluating each check in the batch. If an individual check within the batch "
+        "has its own `contextual_tuples` or `context`, **they will override** the request-level values and the request-level values will not be considered for that check.\n\n"
+        "For more details on how `Check` functions, see the docs for `/check`."
     };
   }
 
