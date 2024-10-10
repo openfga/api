@@ -667,8 +667,8 @@
     },
     "/stores/{store_id}/batch-check": {
       "post": {
-        "summary": "Batch Check Summary TBD",
-        "description": "Batch Check endpoint full description TBD",
+        "summary": "Send multiple `check` operations in a single request",
+        "description": "The `BatchCheck` API functions nearly identically to `Check`, but instead of checking a single user-object relationship BatchCheck accepts a list of relationships to check, and returns a list with an individual response for each check it received.\n\nLike `Check`, you can specify `contextual_tuples` and `context` with each individual tuple to be checked. Unlike check, however, `BatchCheck` also accepts `contextual_tuples` and `context` at the request level. If `contextual_tuples` or `context` are received at the request level, those contexts will be used when evaluating each check in the batch. If an individual check within the batch has its own `contextual_tuples` or `context`, they will be applied **in addition to** the request-level values.",
         "operationId": "BatchCheck",
         "responses": {
           "200": {
