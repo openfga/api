@@ -1420,6 +1420,15 @@ message ReadChangesRequest {
     (validate.rules).string.max_bytes = 5120,
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ==\""}
   ];
+
+  google.protobuf.Timestamp start_time = 5 [
+    json_name = "start_time",
+    (validate.rules).timestamp.lt_now = true,
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "The start time of the changes to read."
+      example: "2021-01-01T00:00:00.000Z"
+    }
+  ];
 }
 
 message ReadChangesResponse {
