@@ -802,7 +802,7 @@
           },
           {
             "name": "start_time",
-            "description": "The start time of the changes to read.",
+            "description": "Start date and time of changes to read.\nFormat: ISO 8601 timestamp (e.g., 2022-01-01T00:00:00Z)\nIf a continuation token is provided, its value will be used in case it's timestamp is greater than the specified start time.",
             "in": "query",
             "required": false,
             "type": "string",
