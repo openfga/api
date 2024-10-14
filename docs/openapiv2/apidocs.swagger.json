@@ -1709,6 +1709,11 @@
         },
         "context": {
           "type": "object"
+        },
+        "correlationId": {
+          "type": "string",
+          "example": "6c6b6603-d215-4d4f-b692-a3d6b20fe27f",
+          "description": "correlation_id must be a valid uuid"
         }
       },
       "required": [
@@ -1719,20 +1724,26 @@
       "type": "object",
       "properties": {
         "result": {
-          "type": "array",
-          "items": {
-            "type": "object",
+          "type": "object",
+          "example": {
+            "6c6b6603-d215-4d4f-b692-a3d6b20fe27f": {
+              "allowed": true,
+              "queryDurationMs": 3,
+              "error": {
+                "message": ""
+              }
+            }
+          },
+          "additionalProperties": {
             "$ref": "#/definitions/BatchCheckSingleResult"
-          }
+          },
+          "description": "map keys are the correlation_id values from the BatchCheckItems in the request"
         }
       }
     },
     "BatchCheckSingleResult": {
       "type": "object",
       "properties": {
-        "check": {
-          "$ref": "#/definitions/BatchCheckItem"
-        },
         "allowed": {
           "type": "boolean"
         },

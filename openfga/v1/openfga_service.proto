@@ -1226,14 +1226,24 @@ message BatchCheckItem {
   CheckRequestTupleKey tuple_key = 1 [(google.api.field_behavior) = REQUIRED];
   openfga.v1.ContextualTupleKeys contextual_tuples = 2 [json_name = "contextual_tuples"];
   google.protobuf.Struct context = 3;
+
+  string correlation_id = 4 [
+    (validate.rules).string = {pattern: "^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$"},
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"6c6b6603-d215-4d4f-b692-a3d6b20fe27f\""
+      description: "correlation_id must be a valid uuid"
+    }
+  ];
 }
 
 message BatchCheckResponse {
-  repeated BatchCheckSingleResult result = 1;
+  map<string, BatchCheckSingleResult> result = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    example: '{"6c6b6603-d215-4d4f-b692-a3d6b20fe27f": {"allowed": true, "queryDurationMs": 3, "error": {"message": ""}}}'
+    description: "map keys are the correlation_id values from the BatchCheckItems in the request"
+  }];
 }
 
 message BatchCheckSingleResult {
-  BatchCheckItem check = 1;
   oneof check_result {
     bool allowed = 2;
     CheckError error = 3;

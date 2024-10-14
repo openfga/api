@@ -3046,6 +3046,17 @@ func (m *BatchCheckItem) validate(all bool) error {
 		}
 	}
 
+	if !_BatchCheckItem_CorrelationId_Pattern.MatchString(m.GetCorrelationId()) {
+		err := BatchCheckItemValidationError{
+			field:  "CorrelationId",
+			reason: "value does not match regex pattern \"^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$\"",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
 	if len(errors) > 0 {
 		return BatchCheckItemMultiError(errors)
 	}
@@ -3124,6 +3135,8 @@ var _ interface {
 	ErrorName() string
 } = BatchCheckItemValidationError{}
 
+var _BatchCheckItem_CorrelationId_Pattern = regexp.MustCompile("^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$")
+
 // Validate checks the field values on BatchCheckResponse with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
@@ -3146,38 +3159,50 @@ func (m *BatchCheckResponse) validate(all bool) error {
 
 	var errors []error
 
-	for idx, item := range m.GetResult() {
-		_, _ = idx, item
-
-		if all {
-			switch v := interface{}(item).(type) {
-			case interface{ ValidateAll() error }:
-				if err := v.ValidateAll(); err != nil {
-					errors = append(errors, BatchCheckResponseValidationError{
-						field:  fmt.Sprintf("Result[%v]", idx),
-						reason: "embedded message failed validation",
-						cause:  err,
-					})
-				}
-			case interface{ Validate() error }:
-				if err := v.Validate(); err != nil {
-					errors = append(errors, BatchCheckResponseValidationError{
-						field:  fmt.Sprintf("Result[%v]", idx),
-						reason: "embedded message failed validation",
-						cause:  err,
-					})
-				}
-			}
-		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
-			if err := v.Validate(); err != nil {
-				return BatchCheckResponseValidationError{
-					field:  fmt.Sprintf("Result[%v]", idx),
-					reason: "embedded message failed validation",
-					cause:  err,
-				}
-			}
+	{
+		sorted_keys := make([]string, len(m.GetResult()))
+		i := 0
+		for key := range m.GetResult() {
+			sorted_keys[i] = key
+			i++
 		}
+		sort.Slice(sorted_keys, func(i, j int) bool { return sorted_keys[i] < sorted_keys[j] })
+		for _, key := range sorted_keys {
+			val := m.GetResult()[key]
+			_ = val
 
+			// no validation rules for Result[key]
+
+			if all {
+				switch v := interface{}(val).(type) {
+				case interface{ ValidateAll() error }:
+					if err := v.ValidateAll(); err != nil {
+						errors = append(errors, BatchCheckResponseValidationError{
+							field:  fmt.Sprintf("Result[%v]", key),
+							reason: "embedded message failed validation",
+							cause:  err,
+						})
+					}
+				case interface{ Validate() error }:
+					if err := v.Validate(); err != nil {
+						errors = append(errors, BatchCheckResponseValidationError{
+							field:  fmt.Sprintf("Result[%v]", key),
+							reason: "embedded message failed validation",
+							cause:  err,
+						})
+					}
+				}
+			} else if v, ok := interface{}(val).(interface{ Validate() error }); ok {
+				if err := v.Validate(); err != nil {
+					return BatchCheckResponseValidationError{
+						field:  fmt.Sprintf("Result[%v]", key),
+						reason: "embedded message failed validation",
+						cause:  err,
+					}
+				}
+			}
+
+		}
 	}
 
 	if len(errors) > 0 {
@@ -3281,35 +3306,6 @@ func (m *BatchCheckSingleResult) validate(all bool) error {
 	}
 
 	var errors []error
-
-	if all {
-		switch v := interface{}(m.GetCheck()).(type) {
-		case interface{ ValidateAll() error }:
-			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, BatchCheckSingleResultValidationError{
-					field:  "Check",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		case interface{ Validate() error }:
-			if err := v.Validate(); err != nil {
-				errors = append(errors, BatchCheckSingleResultValidationError{
-					field:  "Check",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		}
-	} else if v, ok := interface{}(m.GetCheck()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return BatchCheckSingleResultValidationError{
-				field:  "Check",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
-		}
-	}
 
 	if all {
 		switch v := interface{}(m.GetQueryDurationMs()).(type) {
