@@ -339,13 +339,10 @@ service OpenFGAService {
       operation_id: "BatchCheck"
       description:
         "The `BatchCheck` API functions nearly identically to `Check`, but instead of checking a single "
-        "user-object relationship BatchCheck accepts a list of relationships to check and returns a list containing a response "
-        "for each check it received. Within each `BatchCheckItem`, this endpoint requires a `correlation_id` in the format "
-        "of a uuid for use in mapping the check results to the original item which was checked.\n\n"
-        "Like `Check`, you can specify `contextual_tuples` and `context` with each individual tuple to be checked. Unlike check, however, "
-        "`BatchCheck` also accepts `contextual_tuples` and `context` at the request level. If `contextual_tuples` or `context` are received "
-        "at the request level, those contexts will taken into account when evaluating each check in the batch. If an individual check within the batch "
-        "has its own `contextual_tuples` or `context`, **they will override** the request-level values and the request-level values will not be considered for that check.\n\n"
+        "user-object relationship BatchCheck accepts a list of relationships to check and returns a map containing a response "
+        "for each check it received.\n\n"
+        "Within each `BatchCheckItem`, this endpoint requires a `correlation_id` in the format "
+        "of a [ULID](https://github.com/ulid/spec) for use in mapping the check results to the original item which was checked.\n\n"
         "For more details on how `Check` functions, see the docs for `/check`.\n\n"
         "### Examples\n"
         "#### A BatchCheckRequest\n"
@@ -360,7 +357,7 @@ service OpenFGAService {
         "       },\n"
         "       \"contextual_tuples\": {...}\n"
         "       \"context\": {}\n"
-        "       \"correlation_id\": \"6c6b6603-d215-4d4f-b692-a3d6b20fe27f\"\n"
+        "       \"correlation_id\": \"01JA8PM3QM7VBPGB8KMPK8SBD5\"\n"
         "     },\n"
         "     {\n"
         "       \"tuple_key\": {\n"
@@ -370,21 +367,21 @@ service OpenFGAService {
         "       },\n"
         "       \"contextual_tuples\": {...}\n"
         "       \"context\": {}\n"
-        "       \"correlation_id\": \"a289a9c0-a5ef-4d1e-ba06-fbe0cc1cbfdf\"\n"
+        "       \"correlation_id\": \"01JA8PMM6A90NV5ET0F28CYSZQ\"\n"
         "     },\n"
         "   ]\n"
         "}\n"
         "```\n\n"
-        "Below is a possible response to the above request. Note that the result map's keys are the UUIDs from the checked items in the request:\n"
+        "Below is a possible response to the above request. Note that the result map's keys are the ULIDs from the checked items in the request:\n"
         "```json\n"
         "{\n"
         "   \"result\": {\n"
-        "     \"a289a9c0-a5ef-4d1e-ba06-fbe0cc1cbfdf\": {\n"
+        "     \"01JA8PMM6A90NV5ET0F28CYSZQ\": {\n"
         "       \"allowed\": false, \n"
         "       \"error\": {\"message\": \"\"}, \n"
         "       \"query_duration_ms\": 5\n"
         "    },\n"
-        "     \"6c6b6603-d215-4d4f-b692-a3d6b20fe27f\": {\n"
+        "     \"01JA8PM3QM7VBPGB8KMPK8SBD5\": {\n"
         "       \"allowed\": true, \n"
         "       \"error\": {\"message\": \"\"}, \n"
         "       \"query_duration_ms\": 3\n"
@@ -1251,11 +1248,7 @@ message BatchCheckRequest {
 
   repeated BatchCheckItem checks = 2 [(google.api.field_behavior) = REQUIRED];
 
-  openfga.v1.ContextualTupleKeys contextual_tuples = 3 [json_name = "contextual_tuples"];
-
-  google.protobuf.Struct context = 4;
-
-  string authorization_model_id = 5 [
+  string authorization_model_id = 3 [
     json_name = "authorization_model_id",
     (validate.rules).string = {
       pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"
@@ -1264,7 +1257,7 @@ message BatchCheckRequest {
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01G5JAVJ41T49E9TT3SKVS7X1J\""}
   ];
 
-  ConsistencyPreference consistency = 6 [(validate.rules).enum.defined_only = true];
+  ConsistencyPreference consistency = 4 [(validate.rules).enum.defined_only = true];
 }
 
 message BatchCheckItem {
@@ -1273,17 +1266,17 @@ message BatchCheckItem {
   google.protobuf.Struct context = 3;
 
   string correlation_id = 4 [
-    (validate.rules).string = {pattern: "^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$"},
+    (validate.rules).string = {pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"},
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      example: "\"6c6b6603-d215-4d4f-b692-a3d6b20fe27f\""
-      description: "correlation_id must be a valid uuid"
+      example: "\"01JA8PSHN0XK4F6BY07F8V9DK0\""
+      description: "correlation_id must be a valid ULID"
     }
   ];
 }
 
 message BatchCheckResponse {
   map<string, BatchCheckSingleResult> result = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-    example: '{"6c6b6603-d215-4d4f-b692-a3d6b20fe27f": {"allowed": true, "queryDurationMs": 3, "error": {"message": ""}}}'
+    example: '{"01JA8PSHN0XK4F6BY07F8V9DK0": {"allowed": true, "queryDurationMs": 3, "error": {"message": ""}}}'
     description: "map keys are the correlation_id values from the BatchCheckItems in the request"
   }];
 }

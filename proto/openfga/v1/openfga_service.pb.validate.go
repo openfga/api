@@ -2769,64 +2769,6 @@ func (m *BatchCheckRequest) validate(all bool) error {
 
 	}
 
-	if all {
-		switch v := interface{}(m.GetContextualTuples()).(type) {
-		case interface{ ValidateAll() error }:
-			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, BatchCheckRequestValidationError{
-					field:  "ContextualTuples",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		case interface{ Validate() error }:
-			if err := v.Validate(); err != nil {
-				errors = append(errors, BatchCheckRequestValidationError{
-					field:  "ContextualTuples",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		}
-	} else if v, ok := interface{}(m.GetContextualTuples()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return BatchCheckRequestValidationError{
-				field:  "ContextualTuples",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
-		}
-	}
-
-	if all {
-		switch v := interface{}(m.GetContext()).(type) {
-		case interface{ ValidateAll() error }:
-			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, BatchCheckRequestValidationError{
-					field:  "Context",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		case interface{ Validate() error }:
-			if err := v.Validate(); err != nil {
-				errors = append(errors, BatchCheckRequestValidationError{
-					field:  "Context",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		}
-	} else if v, ok := interface{}(m.GetContext()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return BatchCheckRequestValidationError{
-				field:  "Context",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
-		}
-	}
-
 	if m.GetAuthorizationModelId() != "" {
 
 		if !_BatchCheckRequest_AuthorizationModelId_Pattern.MatchString(m.GetAuthorizationModelId()) {
@@ -3049,7 +2991,7 @@ func (m *BatchCheckItem) validate(all bool) error {
 	if !_BatchCheckItem_CorrelationId_Pattern.MatchString(m.GetCorrelationId()) {
 		err := BatchCheckItemValidationError{
 			field:  "CorrelationId",
-			reason: "value does not match regex pattern \"^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$\"",
+			reason: "value does not match regex pattern \"^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$\"",
 		}
 		if !all {
 			return err
@@ -3135,7 +3077,7 @@ var _ interface {
 	ErrorName() string
 } = BatchCheckItemValidationError{}
 
-var _BatchCheckItem_CorrelationId_Pattern = regexp.MustCompile("^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$")
+var _BatchCheckItem_CorrelationId_Pattern = regexp.MustCompile("^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$")
 
 // Validate checks the field values on BatchCheckResponse with the rules
 // defined in the proto definition for this message. If any rules are
