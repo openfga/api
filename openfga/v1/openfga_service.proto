@@ -1198,6 +1198,8 @@ message ExpandRequest {
 
   // Controls the consistency preference for this request. Default value is UNSPECIFIED, which will have the same behavior as MINIMIZE_LATENCY.
   ConsistencyPreference consistency = 4 [(validate.rules).enum.defined_only = true];
+
+  openfga.v1.ContextualTupleKeys contextual_tuples = 5 [json_name = "contextual_tuples"];
 }
 
 message ExpandRequestTupleKey {
