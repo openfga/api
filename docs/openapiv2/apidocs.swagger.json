@@ -619,9 +619,9 @@
                   "type": "array",
                   "items": {
                     "type": "object",
-                    "$ref": "#/definitions/TypeDefinition",
-                    "minimum": 1
-                  }
+                    "$ref": "#/definitions/TypeDefinition"
+                  },
+                  "minItems": 1
                 },
                 "schema_version": {
                   "type": "string"
@@ -1211,7 +1211,9 @@
                     "type": "object",
                     "$ref": "#/definitions/UserTypeFilter"
                   },
-                  "description": "The type of results returned. Only accepts exactly one value."
+                  "description": "The type of results returned. Only accepts exactly one value.",
+                  "maxItems": 1,
+                  "minItems": 1
                 },
                 "contextual_tuples": {
                   "type": "array",

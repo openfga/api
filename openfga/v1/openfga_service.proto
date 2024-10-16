@@ -887,6 +887,8 @@ message ListUsersRequest {
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       description: "The type of results returned. Only accepts exactly one value."
       example: "[{\"type\": \"user\"}, {\"type\": \"group\", \"relation\": \"member\"}]"
+      min_items: 1
+      max_items: 1
     }
   ];
 
@@ -1261,7 +1263,7 @@ message WriteAuthorizationModelRequest {
     (google.api.field_behavior) = REQUIRED,
     json_name = "type_definitions",
     (validate.rules).repeated = {min_items: 1},
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {minimum: 1}
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {min_items: 1}
   ];
 
   string schema_version = 3 [
