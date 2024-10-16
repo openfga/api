@@ -143,3 +143,9 @@ message AbortedMessageResponse {
 }
 
 message ErrorMessageRequest {}
+
+message ForbiddenResponse {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {example: "{\"code\":\"forbidden\", \"message\":\"the principal is not authorized to perform the action\"}"};
+  AuthErrorCode code = 1;
+  string message = 2;
+}
