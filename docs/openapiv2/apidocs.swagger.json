@@ -451,9 +451,9 @@
                   "type": "array",
                   "items": {
                     "type": "object",
-                    "$ref": "#/definitions/Assertion",
-                    "maximum": 100
-                  }
+                    "$ref": "#/definitions/Assertion"
+                  },
+                  "maxItems": 100
                 }
               },
               "required": [
@@ -1217,9 +1217,9 @@
                   "type": "array",
                   "items": {
                     "type": "object",
-                    "$ref": "#/definitions/TupleKey",
-                    "maximum": 20
-                  }
+                    "$ref": "#/definitions/TupleKey"
+                  },
+                  "maxItems": 20
                 },
                 "context": {
                   "type": "object",
@@ -1587,9 +1587,9 @@
           "type": "array",
           "items": {
             "type": "object",
-            "$ref": "#/definitions/TupleKey",
-            "maximum": 20
-          }
+            "$ref": "#/definitions/TupleKey"
+          },
+          "maxItems": 20
         },
         "context": {
           "type": "object",
@@ -1843,9 +1843,9 @@
           "type": "array",
           "items": {
             "type": "object",
-            "$ref": "#/definitions/TupleKey",
-            "maximum": 20
-          }
+            "$ref": "#/definitions/TupleKey"
+          },
+          "maxItems": 20
         }
       },
       "required": [
@@ -2876,9 +2876,9 @@
           "type": "array",
           "items": {
             "type": "object",
-            "$ref": "#/definitions/TupleKeyWithoutCondition",
-            "minimum": 1
-          }
+            "$ref": "#/definitions/TupleKeyWithoutCondition"
+          },
+          "minItems": 1
         }
       },
       "required": [
@@ -2892,9 +2892,9 @@
           "type": "array",
           "items": {
             "type": "object",
-            "$ref": "#/definitions/TupleKey",
-            "minimum": 1
-          }
+            "$ref": "#/definitions/TupleKey"
+          },
+          "minItems": 1
         }
       },
       "required": [
