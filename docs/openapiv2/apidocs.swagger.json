@@ -56,7 +56,7 @@
           "403": {
             "description": "Forbidden.",
             "schema": {
-              "$ref": "#/definitions/ForbiddenResponse"
+              "$ref": ".openfga.v1.ForbiddenResponse"
             }
           },
           "404": {
@@ -129,7 +129,7 @@
           "403": {
             "description": "Forbidden.",
             "schema": {
-              "$ref": "#/definitions/ForbiddenResponse"
+              "$ref": ".openfga.v1.ForbiddenResponse"
             }
           },
           "404": {
@@ -199,7 +199,7 @@
           "403": {
             "description": "Forbidden.",
             "schema": {
-              "$ref": "#/definitions/ForbiddenResponse"
+              "$ref": ".openfga.v1.ForbiddenResponse"
             }
           },
           "404": {
@@ -262,7 +262,7 @@
           "403": {
             "description": "Forbidden.",
             "schema": {
-              "$ref": "#/definitions/ForbiddenResponse"
+              "$ref": ".openfga.v1.ForbiddenResponse"
             }
           },
           "404": {
@@ -330,7 +330,7 @@
           "403": {
             "description": "Forbidden.",
             "schema": {
-              "$ref": "#/definitions/ForbiddenResponse"
+              "$ref": ".openfga.v1.ForbiddenResponse"
             }
           },
           "404": {
@@ -399,7 +399,7 @@
           "403": {
             "description": "Forbidden.",
             "schema": {
-              "$ref": "#/definitions/ForbiddenResponse"
+              "$ref": ".openfga.v1.ForbiddenResponse"
             }
           },
           "404": {
@@ -494,7 +494,7 @@
           "403": {
             "description": "Forbidden.",
             "schema": {
-              "$ref": "#/definitions/ForbiddenResponse"
+              "$ref": ".openfga.v1.ForbiddenResponse"
             }
           },
           "404": {
@@ -573,7 +573,7 @@
           "403": {
             "description": "Forbidden.",
             "schema": {
-              "$ref": "#/definitions/ForbiddenResponse"
+              "$ref": ".openfga.v1.ForbiddenResponse"
             }
           },
           "404": {
@@ -672,7 +672,7 @@
           "403": {
             "description": "Forbidden.",
             "schema": {
-              "$ref": "#/definitions/ForbiddenResponse"
+              "$ref": ".openfga.v1.ForbiddenResponse"
             }
           },
           "404": {
@@ -746,7 +746,7 @@
           "403": {
             "description": "Forbidden.",
             "schema": {
-              "$ref": "#/definitions/ForbiddenResponse"
+              "$ref": ".openfga.v1.ForbiddenResponse"
             }
           },
           "404": {
@@ -833,7 +833,7 @@
           "403": {
             "description": "Forbidden.",
             "schema": {
-              "$ref": "#/definitions/ForbiddenResponse"
+              "$ref": ".openfga.v1.ForbiddenResponse"
             }
           },
           "404": {
@@ -938,7 +938,7 @@
           "403": {
             "description": "Forbidden.",
             "schema": {
-              "$ref": "#/definitions/ForbiddenResponse"
+              "$ref": ".openfga.v1.ForbiddenResponse"
             }
           },
           "404": {
@@ -1030,7 +1030,7 @@
           "403": {
             "description": "Forbidden.",
             "schema": {
-              "$ref": "#/definitions/ForbiddenResponse"
+              "$ref": ".openfga.v1.ForbiddenResponse"
             }
           },
           "404": {
@@ -1142,7 +1142,7 @@
           "403": {
             "description": "Forbidden.",
             "schema": {
-              "$ref": "#/definitions/ForbiddenResponse"
+              "$ref": ".openfga.v1.ForbiddenResponse"
             }
           },
           "404": {
@@ -1270,7 +1270,7 @@
           "403": {
             "description": "Forbidden.",
             "schema": {
-              "$ref": "#/definitions/ForbiddenResponse"
+              "$ref": ".openfga.v1.ForbiddenResponse"
             }
           },
           "404": {
@@ -1375,7 +1375,7 @@
           "403": {
             "description": "Forbidden.",
             "schema": {
-              "$ref": "#/definitions/ForbiddenResponse"
+              "$ref": ".openfga.v1.ForbiddenResponse"
             }
           },
           "404": {
@@ -1487,7 +1487,7 @@
           "403": {
             "description": "Forbidden.",
             "schema": {
-              "$ref": "#/definitions/ForbiddenResponse"
+              "$ref": ".openfga.v1.ForbiddenResponse"
             }
           },
           "404": {
@@ -1628,21 +1628,6 @@
         "relation",
         "user"
       ]
-    },
-    "AuthErrorCode": {
-      "type": "string",
-      "enum": [
-        "no_auth_error",
-        "auth_failed_invalid_subject",
-        "auth_failed_invalid_audience",
-        "auth_failed_invalid_issuer",
-        "invalid_claims",
-        "auth_failed_invalid_bearer_token",
-        "bearer_token_missing",
-        "unauthenticated",
-        "forbidden"
-      ],
-      "default": "no_auth_error"
     },
     "AuthorizationModel": {
       "type": "object",
@@ -1976,21 +1961,6 @@
       "properties": {
         "tree": {
           "$ref": "#/definitions/UsersetTree"
-        }
-      }
-    },
-    "ForbiddenResponse": {
-      "type": "object",
-      "example": {
-        "code": "forbidden",
-        "message": "the principal is not authorized to perform the action"
-      },
-      "properties": {
-        "code": {
-          "$ref": "#/definitions/AuthErrorCode"
-        },
-        "message": {
-          "type": "string"
         }
       }
     },
