@@ -955,13 +955,15 @@ message ListUsersRequest {
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       description: "The type of results returned. Only accepts exactly one value."
       example: "[{\"type\": \"user\"}, {\"type\": \"group\", \"relation\": \"member\"}]"
+      min_items: 1
+      max_items: 1
     }
   ];
 
   repeated TupleKey contextual_tuples = 6 [
     json_name = "contextual_tuples",
     (validate.rules).repeated.max_items = 20,
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {maximum: 20}
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {max_items: 20}
   ];
 
   // Additional request context that will be used to evaluate any ABAC conditions encountered
@@ -1129,7 +1131,7 @@ message WriteRequestWrites {
     json_name = "tuple_keys",
     (google.api.field_behavior) = REQUIRED,
     (validate.rules).repeated.min_items = 1,
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {minimum: 1}
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {min_items: 1}
   ];
 }
 
@@ -1138,7 +1140,7 @@ message WriteRequestDeletes {
     json_name = "tuple_keys",
     (google.api.field_behavior) = REQUIRED,
     (validate.rules).repeated.min_items = 1,
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {minimum: 1}
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {min_items: 1}
   ];
 }
 
@@ -1389,7 +1391,7 @@ message WriteAuthorizationModelRequest {
     (google.api.field_behavior) = REQUIRED,
     json_name = "type_definitions",
     (validate.rules).repeated = {min_items: 1},
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {minimum: 1}
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {min_items: 1}
   ];
 
   string schema_version = 3 [
@@ -1484,8 +1486,8 @@ message WriteAssertionsRequest {
       max_items: 100
     },
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      minimum: 0
-      maximum: 100
+      min_items: 0
+      max_items: 100
     }
   ];
 }
@@ -1725,7 +1727,7 @@ message Assertion {
   repeated TupleKey contextual_tuples = 3 [
     json_name = "contextual_tuples",
     (validate.rules).repeated.max_items = 20,
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {maximum: 20}
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {max_items: 20}
   ];
 
   // Additional request context that will be used to evaluate any ABAC conditions encountered
