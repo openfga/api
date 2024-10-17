@@ -341,8 +341,11 @@ service OpenFGAService {
         "The `BatchCheck` API functions nearly identically to `Check`, but instead of checking a single "
         "user-object relationship BatchCheck accepts a list of relationships to check and returns a map containing a response "
         "for each check it received.\n\n"
-        "Within each `BatchCheckItem`, this endpoint requires a `correlation_id` in the format "
-        "of a [ULID](https://github.com/ulid/spec) for use in mapping the check results to the original item which was checked.\n\n"
+        "Within each `BatchCheckItem`, this endpoint requires a `correlation_id` in the form of a string containing only "
+        "alphanumeric characters or hyphens with a maximum length of 36 characters. This `correlation_id` is used to map the result "
+        "of each check to the item which was checked, so it must be unique for each item in the batch. "
+        "We recommend using a UUID or ULID as the `correlation_id`, but you can use whatever unique identifier you need as long "
+        " as it matches this regex pattern: `^[\\w\\d-]{1,36}$`\n\n"
         "For more details on how `Check` functions, see the docs for `/check`.\n\n"
         "### Examples\n"
         "#### A BatchCheckRequest\n"
@@ -372,7 +375,7 @@ service OpenFGAService {
         "   ]\n"
         "}\n"
         "```\n\n"
-        "Below is a possible response to the above request. Note that the result map's keys are the ULIDs from the checked items in the request:\n"
+        "Below is a possible response to the above request. Note that the result map's keys are the `correlation_id` values from the checked items in the request:\n"
         "```json\n"
         "{\n"
         "   \"result\": {\n"
@@ -1266,17 +1269,18 @@ message BatchCheckItem {
   google.protobuf.Struct context = 3;
 
   string correlation_id = 4 [
-    (validate.rules).string = {pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"},
+    (validate.rules).string = {pattern: "^[\\w\\d-]{1,36}$"},
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      example: "\"01JA8PSHN0XK4F6BY07F8V9DK0\""
-      description: "correlation_id must be a valid ULID"
-    }
+      example: "\"1cd93d8c-8e45-43c6-9a15-cbb3c7f394bc\""
+      description: "correlation_id must be a string containing only letters, numbers, or hyphens, with length ≤ 36 characters."
+    },
+    (google.api.field_behavior) = REQUIRED
   ];
 }
 
 message BatchCheckResponse {
   map<string, BatchCheckSingleResult> result = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-    example: '{"01JA8PSHN0XK4F6BY07F8V9DK0": {"allowed": true, "queryDurationMs": 3, "error": {"message": ""}}}'
+    example: '{"1cd93d8c-8e45-43c6-9a15-cbb3c7f394bc": {"allowed": true, "queryDurationMs": 3, "error": {"message": ""}}}'
     description: "map keys are the correlation_id values from the BatchCheckItems in the request"
   }];
 }

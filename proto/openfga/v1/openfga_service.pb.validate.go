@@ -2991,7 +2991,7 @@ func (m *BatchCheckItem) validate(all bool) error {
 	if !_BatchCheckItem_CorrelationId_Pattern.MatchString(m.GetCorrelationId()) {
 		err := BatchCheckItemValidationError{
 			field:  "CorrelationId",
-			reason: "value does not match regex pattern \"^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$\"",
+			reason: "value does not match regex pattern \"^[\\\\w\\\\d-]{1,36}$\"",
 		}
 		if !all {
 			return err
@@ -3077,7 +3077,7 @@ var _ interface {
 	ErrorName() string
 } = BatchCheckItemValidationError{}
 
-var _BatchCheckItem_CorrelationId_Pattern = regexp.MustCompile("^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$")
+var _BatchCheckItem_CorrelationId_Pattern = regexp.MustCompile("^[\\w\\d-]{1,36}$")
 
 // Validate checks the field values on BatchCheckResponse with the rules
 // defined in the proto definition for this message. If any rules are
