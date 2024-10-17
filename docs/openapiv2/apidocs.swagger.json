@@ -53,6 +53,12 @@
               "$ref": "#/definitions/UnauthenticatedResponse"
             }
           },
+          "403": {
+            "description": "Forbidden.",
+            "schema": {
+              "$ref": "#/definitions/ForbiddenResponse"
+            }
+          },
           "404": {
             "description": "Request failed due to incorrect path.",
             "schema": {
@@ -120,6 +126,12 @@
               "$ref": "#/definitions/UnauthenticatedResponse"
             }
           },
+          "403": {
+            "description": "Forbidden.",
+            "schema": {
+              "$ref": "#/definitions/ForbiddenResponse"
+            }
+          },
           "404": {
             "description": "Request failed due to incorrect path.",
             "schema": {
@@ -184,6 +196,12 @@
               "$ref": "#/definitions/UnauthenticatedResponse"
             }
           },
+          "403": {
+            "description": "Forbidden.",
+            "schema": {
+              "$ref": "#/definitions/ForbiddenResponse"
+            }
+          },
           "404": {
             "description": "Request failed due to incorrect path.",
             "schema": {
@@ -239,6 +257,12 @@
             "description": "Not authenticated.",
             "schema": {
               "$ref": "#/definitions/UnauthenticatedResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "schema": {
+              "$ref": "#/definitions/ForbiddenResponse"
             }
           },
           "404": {
@@ -301,6 +325,12 @@
             "description": "Not authenticated.",
             "schema": {
               "$ref": "#/definitions/UnauthenticatedResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "schema": {
+              "$ref": "#/definitions/ForbiddenResponse"
             }
           },
           "404": {
@@ -366,6 +396,12 @@
               "$ref": "#/definitions/UnauthenticatedResponse"
             }
           },
+          "403": {
+            "description": "Forbidden.",
+            "schema": {
+              "$ref": "#/definitions/ForbiddenResponse"
+            }
+          },
           "404": {
             "description": "Request failed due to incorrect path.",
             "schema": {
@@ -415,9 +451,9 @@
                   "type": "array",
                   "items": {
                     "type": "object",
-                    "$ref": "#/definitions/Assertion",
-                    "maximum": 100
-                  }
+                    "$ref": "#/definitions/Assertion"
+                  },
+                  "maxItems": 100
                 }
               },
               "required": [
@@ -453,6 +489,12 @@
             "description": "Not authenticated.",
             "schema": {
               "$ref": "#/definitions/UnauthenticatedResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "schema": {
+              "$ref": "#/definitions/ForbiddenResponse"
             }
           },
           "404": {
@@ -528,6 +570,12 @@
               "$ref": "#/definitions/UnauthenticatedResponse"
             }
           },
+          "403": {
+            "description": "Forbidden.",
+            "schema": {
+              "$ref": "#/definitions/ForbiddenResponse"
+            }
+          },
           "404": {
             "description": "Request failed due to incorrect path.",
             "schema": {
@@ -571,9 +619,9 @@
                   "type": "array",
                   "items": {
                     "type": "object",
-                    "$ref": "#/definitions/TypeDefinition",
-                    "minimum": 1
-                  }
+                    "$ref": "#/definitions/TypeDefinition"
+                  },
+                  "minItems": 1
                 },
                 "schema_version": {
                   "type": "string"
@@ -619,6 +667,12 @@
             "description": "Not authenticated.",
             "schema": {
               "$ref": "#/definitions/UnauthenticatedResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "schema": {
+              "$ref": "#/definitions/ForbiddenResponse"
             }
           },
           "404": {
@@ -687,6 +741,12 @@
             "description": "Not authenticated.",
             "schema": {
               "$ref": "#/definitions/UnauthenticatedResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "schema": {
+              "$ref": "#/definitions/ForbiddenResponse"
             }
           },
           "404": {
@@ -768,6 +828,12 @@
             "description": "Not authenticated.",
             "schema": {
               "$ref": "#/definitions/UnauthenticatedResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "schema": {
+              "$ref": "#/definitions/ForbiddenResponse"
             }
           },
           "404": {
@@ -869,6 +935,12 @@
               "$ref": "#/definitions/UnauthenticatedResponse"
             }
           },
+          "403": {
+            "description": "Forbidden.",
+            "schema": {
+              "$ref": "#/definitions/ForbiddenResponse"
+            }
+          },
           "404": {
             "description": "Request failed due to incorrect path.",
             "schema": {
@@ -953,6 +1025,12 @@
             "description": "Not authenticated.",
             "schema": {
               "$ref": "#/definitions/UnauthenticatedResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "schema": {
+              "$ref": "#/definitions/ForbiddenResponse"
             }
           },
           "404": {
@@ -1061,6 +1139,12 @@
               "$ref": "#/definitions/UnauthenticatedResponse"
             }
           },
+          "403": {
+            "description": "Forbidden.",
+            "schema": {
+              "$ref": "#/definitions/ForbiddenResponse"
+            }
+          },
           "404": {
             "description": "Request failed due to incorrect path.",
             "schema": {
@@ -1127,15 +1211,17 @@
                     "type": "object",
                     "$ref": "#/definitions/UserTypeFilter"
                   },
-                  "description": "The type of results returned. Only accepts exactly one value."
+                  "description": "The type of results returned. Only accepts exactly one value.",
+                  "maxItems": 1,
+                  "minItems": 1
                 },
                 "contextual_tuples": {
                   "type": "array",
                   "items": {
                     "type": "object",
-                    "$ref": "#/definitions/TupleKey",
-                    "maximum": 20
-                  }
+                    "$ref": "#/definitions/TupleKey"
+                  },
+                  "maxItems": 20
                 },
                 "context": {
                   "type": "object",
@@ -1181,6 +1267,12 @@
             "description": "Not authenticated.",
             "schema": {
               "$ref": "#/definitions/UnauthenticatedResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "schema": {
+              "$ref": "#/definitions/ForbiddenResponse"
             }
           },
           "404": {
@@ -1280,6 +1372,12 @@
             "description": "Not authenticated.",
             "schema": {
               "$ref": "#/definitions/UnauthenticatedResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "schema": {
+              "$ref": "#/definitions/ForbiddenResponse"
             }
           },
           "404": {
@@ -1388,6 +1486,12 @@
               "$ref": "#/definitions/UnauthenticatedResponse"
             }
           },
+          "403": {
+            "description": "Forbidden.",
+            "schema": {
+              "$ref": "#/definitions/ForbiddenResponse"
+            }
+          },
           "404": {
             "description": "Request failed due to incorrect path.",
             "schema": {
@@ -1485,9 +1589,9 @@
           "type": "array",
           "items": {
             "type": "object",
-            "$ref": "#/definitions/TupleKey",
-            "maximum": 20
-          }
+            "$ref": "#/definitions/TupleKey"
+          },
+          "maxItems": 20
         },
         "context": {
           "type": "object",
@@ -1526,6 +1630,21 @@
         "relation",
         "user"
       ]
+    },
+    "AuthErrorCode": {
+      "type": "string",
+      "enum": [
+        "no_auth_error",
+        "auth_failed_invalid_subject",
+        "auth_failed_invalid_audience",
+        "auth_failed_invalid_issuer",
+        "invalid_claims",
+        "auth_failed_invalid_bearer_token",
+        "bearer_token_missing",
+        "unauthenticated",
+        "forbidden"
+      ],
+      "default": "no_auth_error"
     },
     "AuthorizationModel": {
       "type": "object",
@@ -1726,9 +1845,9 @@
           "type": "array",
           "items": {
             "type": "object",
-            "$ref": "#/definitions/TupleKey",
-            "maximum": 20
-          }
+            "$ref": "#/definitions/TupleKey"
+          },
+          "maxItems": 20
         }
       },
       "required": [
@@ -1859,6 +1978,21 @@
       "properties": {
         "tree": {
           "$ref": "#/definitions/UsersetTree"
+        }
+      }
+    },
+    "ForbiddenResponse": {
+      "type": "object",
+      "example": {
+        "code": "forbidden",
+        "message": "the principal is not authorized to perform the action"
+      },
+      "properties": {
+        "code": {
+          "$ref": "#/definitions/AuthErrorCode"
+        },
+        "message": {
+          "type": "string"
         }
       }
     },
@@ -2744,9 +2878,9 @@
           "type": "array",
           "items": {
             "type": "object",
-            "$ref": "#/definitions/TupleKeyWithoutCondition",
-            "minimum": 1
-          }
+            "$ref": "#/definitions/TupleKeyWithoutCondition"
+          },
+          "minItems": 1
         }
       },
       "required": [
@@ -2760,9 +2894,9 @@
           "type": "array",
           "items": {
             "type": "object",
-            "$ref": "#/definitions/TupleKey",
-            "minimum": 1
-          }
+            "$ref": "#/definitions/TupleKey"
+          },
+          "minItems": 1
         }
       },
       "required": [

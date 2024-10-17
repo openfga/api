@@ -41,6 +41,15 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
     }
   }
   responses: {
+    key: "403"
+    value: {
+      description: "Forbidden."
+      schema: {
+        json_schema: {ref: ".openfga.v1.ForbiddenResponse"}
+      }
+    }
+  }
+  responses: {
     key: "404"
     value: {
       description: "Request failed due to incorrect path."
