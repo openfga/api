@@ -1282,17 +1282,17 @@ message BatchCheckItem {
 
 message BatchCheckResponse {
   map<string, BatchCheckSingleResult> result = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-    example: '{"1cd93d8c-8e45-43c6-9a15-cbb3c7f394bc": {"allowed": true, "queryDurationMs": 3, "error": {"message": ""}}}'
+    example: '{"1cd93d8c-8e45-43c6-9a15-cbb3c7f394bc": {"allowed": true, "query_duration_ms": 3, "error": {"message": ""}}}'
     description: "map keys are the correlation_id values from the BatchCheckItems in the request"
   }];
 }
 
 message BatchCheckSingleResult {
   oneof check_result {
-    bool allowed = 2;
-    CheckError error = 3;
+    bool allowed = 1;
+    CheckError error = 2;
   }
-  google.protobuf.Int32Value query_duration_ms = 4;
+  google.protobuf.Int32Value query_duration_ms = 3 [json_name = "query_duration_ms"];
 }
 
 message CheckError {

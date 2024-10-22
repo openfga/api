@@ -1848,7 +1848,7 @@
           "example": {
             "1cd93d8c-8e45-43c6-9a15-cbb3c7f394bc": {
               "allowed": true,
-              "queryDurationMs": 3,
+              "query_duration_ms": 3,
               "error": {
                 "message": ""
               }
@@ -1870,7 +1870,7 @@
         "error": {
           "$ref": "#/definitions/CheckError"
         },
-        "queryDurationMs": {
+        "query_duration_ms": {
           "type": "integer",
           "format": "int32"
         }
