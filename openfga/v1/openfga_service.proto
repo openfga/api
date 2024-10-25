@@ -1428,7 +1428,7 @@ message ReadChangesRequest {
       description:
         "Start date and time of changes to read.\n"
         "Format: ISO 8601 timestamp (e.g., 2022-01-01T00:00:00Z)\n"
-        "If a continuation token is provided, its value will be used in case it's timestamp is greater than the specified start time."
+        "If a continuation_token is provided along side start_time, the continuation_token will take precedence over start_time."
       example: "2021-01-01T00:00:00.000Z"
     }
   ];
