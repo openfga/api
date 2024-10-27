@@ -894,8 +894,8 @@ message ListUsersRequest {
 
   repeated TupleKey contextual_tuples = 6 [
     json_name = "contextual_tuples",
-    (validate.rules).repeated.max_items = 20,
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {max_items: 20}
+    (validate.rules).repeated.max_items = 100,
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {max_items: 100}
   ];
 
   // Additional request context that will be used to evaluate any ABAC conditions encountered
@@ -1598,7 +1598,7 @@ message Assertion {
 
   repeated TupleKey contextual_tuples = 3 [
     json_name = "contextual_tuples",
-    (validate.rules).repeated.max_items = 20,
+    (validate.rules).repeated.max_items = 20, // This is not a typo, we intentionally restrict contextual tuples in assertions to 20 for now
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {max_items: 20}
   ];
 

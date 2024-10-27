@@ -1221,7 +1221,7 @@
                     "type": "object",
                     "$ref": "#/definitions/TupleKey"
                   },
-                  "maxItems": 20
+                  "maxItems": 100
                 },
                 "context": {
                   "type": "object",
@@ -1847,7 +1847,7 @@
             "type": "object",
             "$ref": "#/definitions/TupleKey"
           },
-          "maxItems": 20
+          "maxItems": 100
         }
       },
       "required": [
