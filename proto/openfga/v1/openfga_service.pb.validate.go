@@ -4687,6 +4687,36 @@ func (m *ReadChangesRequest) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
+	if t := m.GetStartTime(); t != nil {
+		ts, err := t.AsTime(), t.CheckValid()
+		if err != nil {
+			err = ReadChangesRequestValidationError{
+				field:  "StartTime",
+				reason: "value is not a valid timestamp",
+				cause:  err,
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		} else {
+
+			now := time.Now()
+
+			if ts.Sub(now) >= 0 {
+				err := ReadChangesRequestValidationError{
+					field:  "StartTime",
+					reason: "value must be less than now",
+				}
+				if !all {
+					return err
+				}
+				errors = append(errors, err)
+			}
+
+		}
+	}
+
 	if len(errors) > 0 {
 		return ReadChangesRequestMultiError(errors)
 	}
