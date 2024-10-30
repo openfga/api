@@ -2205,6 +2205,7 @@ type ReadChangesRequest struct {
 	Type              string                 `protobuf:"bytes,2,opt,name=type,proto3" json:"type,omitempty"`
 	PageSize          *wrapperspb.Int32Value `protobuf:"bytes,3,opt,name=page_size,proto3" json:"page_size,omitempty"`
 	ContinuationToken string                 `protobuf:"bytes,4,opt,name=continuation_token,proto3" json:"continuation_token,omitempty"`
+	StartTime         *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=start_time,proto3" json:"start_time,omitempty"`
 }
 
 func (x *ReadChangesRequest) Reset() {
@@ -2265,6 +2266,13 @@ func (x *ReadChangesRequest) GetContinuationToken() string {
 		return x.ContinuationToken
 	}
 	return ""
+}
+
+func (x *ReadChangesRequest) GetStartTime() *timestamppb.Timestamp {
+	if x != nil {
+		return x.StartTime
+	}
+	return nil
 }
 
 type ReadChangesResponse struct {
@@ -3716,7 +3724,7 @@ var file_openfga_v1_openfga_service_proto_rawDesc = []byte{
 	0x69, 0x64, 0x12, 0x35, 0x0a, 0x0a, 0x61, 0x73, 0x73, 0x65, 0x72, 0x74, 0x69, 0x6f, 0x6e, 0x73,
 	0x18, 0x02, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x15, 0x2e, 0x6f, 0x70, 0x65, 0x6e, 0x66, 0x67, 0x61,
 	0x2e, 0x76, 0x31, 0x2e, 0x41, 0x73, 0x73, 0x65, 0x72, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x0a, 0x61,
-	0x73, 0x73, 0x65, 0x72, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x22, 0x9d, 0x03, 0x0a, 0x12, 0x52, 0x65,
+	0x73, 0x73, 0x65, 0x72, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x22, 0xdd, 0x05, 0x0a, 0x12, 0x52, 0x65,
 	0x61, 0x64, 0x43, 0x68, 0x61, 0x6e, 0x67, 0x65, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
 	0x12, 0x68, 0x0a, 0x08, 0x73, 0x74, 0x6f, 0x72, 0x65, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01,
 	0x28, 0x09, 0x42, 0x4c, 0x92, 0x41, 0x1e, 0x4a, 0x1c, 0x22, 0x30, 0x31, 0x59, 0x43, 0x50, 0x34,
@@ -3742,7 +3750,27 @@ var file_openfga_v1_openfga_service_proto_rawDesc = []byte{
 	0x5a, 0x45, 0x78, 0x54, 0x63, 0x55, 0x6f, 0x79, 0x4e, 0x30, 0x31, 0x4d, 0x64, 0x54, 0x64, 0x71,
 	0x54, 0x6a, 0x68, 0x30, 0x63, 0x57, 0x67, 0x69, 0x66, 0x51, 0x3d, 0x3d, 0x22, 0xfa, 0x42, 0x05,
 	0x72, 0x03, 0x28, 0x80, 0x28, 0x52, 0x12, 0x63, 0x6f, 0x6e, 0x74, 0x69, 0x6e, 0x75, 0x61, 0x74,
-	0x69, 0x6f, 0x6e, 0x5f, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x22, 0xb8, 0x02, 0x0a, 0x13, 0x52, 0x65,
+	0x69, 0x6f, 0x6e, 0x5f, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x12, 0xbd, 0x02, 0x0a, 0x0a, 0x73, 0x74,
+	0x61, 0x72, 0x74, 0x5f, 0x74, 0x69, 0x6d, 0x65, 0x18, 0x05, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1a,
+	0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66,
+	0x2e, 0x54, 0x69, 0x6d, 0x65, 0x73, 0x74, 0x61, 0x6d, 0x70, 0x42, 0x80, 0x02, 0x92, 0x41, 0xf4,
+	0x01, 0x32, 0xd7, 0x01, 0x53, 0x74, 0x61, 0x72, 0x74, 0x20, 0x64, 0x61, 0x74, 0x65, 0x20, 0x61,
+	0x6e, 0x64, 0x20, 0x74, 0x69, 0x6d, 0x65, 0x20, 0x6f, 0x66, 0x20, 0x63, 0x68, 0x61, 0x6e, 0x67,
+	0x65, 0x73, 0x20, 0x74, 0x6f, 0x20, 0x72, 0x65, 0x61, 0x64, 0x2e, 0x0a, 0x46, 0x6f, 0x72, 0x6d,
+	0x61, 0x74, 0x3a, 0x20, 0x49, 0x53, 0x4f, 0x20, 0x38, 0x36, 0x30, 0x31, 0x20, 0x74, 0x69, 0x6d,
+	0x65, 0x73, 0x74, 0x61, 0x6d, 0x70, 0x20, 0x28, 0x65, 0x2e, 0x67, 0x2e, 0x2c, 0x20, 0x32, 0x30,
+	0x32, 0x32, 0x2d, 0x30, 0x31, 0x2d, 0x30, 0x31, 0x54, 0x30, 0x30, 0x3a, 0x30, 0x30, 0x3a, 0x30,
+	0x30, 0x5a, 0x29, 0x0a, 0x49, 0x66, 0x20, 0x61, 0x20, 0x63, 0x6f, 0x6e, 0x74, 0x69, 0x6e, 0x75,
+	0x61, 0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x20, 0x69, 0x73, 0x20, 0x70,
+	0x72, 0x6f, 0x76, 0x69, 0x64, 0x65, 0x64, 0x20, 0x61, 0x6c, 0x6f, 0x6e, 0x67, 0x20, 0x73, 0x69,
+	0x64, 0x65, 0x20, 0x73, 0x74, 0x61, 0x72, 0x74, 0x5f, 0x74, 0x69, 0x6d, 0x65, 0x2c, 0x20, 0x74,
+	0x68, 0x65, 0x20, 0x63, 0x6f, 0x6e, 0x74, 0x69, 0x6e, 0x75, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x5f,
+	0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x20, 0x77, 0x69, 0x6c, 0x6c, 0x20, 0x74, 0x61, 0x6b, 0x65, 0x20,
+	0x70, 0x72, 0x65, 0x63, 0x65, 0x64, 0x65, 0x6e, 0x63, 0x65, 0x20, 0x6f, 0x76, 0x65, 0x72, 0x20,
+	0x73, 0x74, 0x61, 0x72, 0x74, 0x5f, 0x74, 0x69, 0x6d, 0x65, 0x2e, 0x4a, 0x18, 0x32, 0x30, 0x32,
+	0x31, 0x2d, 0x30, 0x31, 0x2d, 0x30, 0x31, 0x54, 0x30, 0x30, 0x3a, 0x30, 0x30, 0x3a, 0x30, 0x30,
+	0x2e, 0x30, 0x30, 0x30, 0x5a, 0xfa, 0x42, 0x05, 0xb2, 0x01, 0x02, 0x38, 0x01, 0x52, 0x0a, 0x73,
+	0x74, 0x61, 0x72, 0x74, 0x5f, 0x74, 0x69, 0x6d, 0x65, 0x22, 0xb8, 0x02, 0x0a, 0x13, 0x52, 0x65,
 	0x61, 0x64, 0x43, 0x68, 0x61, 0x6e, 0x67, 0x65, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73,
 	0x65, 0x12, 0x36, 0x0a, 0x07, 0x63, 0x68, 0x61, 0x6e, 0x67, 0x65, 0x73, 0x18, 0x01, 0x20, 0x03,
 	0x28, 0x0b, 0x32, 0x17, 0x2e, 0x6f, 0x70, 0x65, 0x6e, 0x66, 0x67, 0x61, 0x2e, 0x76, 0x31, 0x2e,
@@ -5741,8 +5769,8 @@ var file_openfga_v1_openfga_service_proto_goTypes = []interface{}{
 	(*UsersetTree)(nil),                     // 63: openfga.v1.UsersetTree
 	(*AuthorizationModel)(nil),              // 64: openfga.v1.AuthorizationModel
 	(*TypeDefinition)(nil),                  // 65: openfga.v1.TypeDefinition
-	(*TupleChange)(nil),                     // 66: openfga.v1.TupleChange
-	(*timestamppb.Timestamp)(nil),           // 67: google.protobuf.Timestamp
+	(*timestamppb.Timestamp)(nil),           // 66: google.protobuf.Timestamp
+	(*TupleChange)(nil),                     // 67: openfga.v1.TupleChange
 	(*Store)(nil),                           // 68: openfga.v1.Store
 	(*Condition)(nil),                       // 69: openfga.v1.Condition
 }
@@ -5792,65 +5820,66 @@ var file_openfga_v1_openfga_service_proto_depIdxs = []int32{
 	47, // 42: openfga.v1.WriteAssertionsRequest.assertions:type_name -> openfga.v1.Assertion
 	47, // 43: openfga.v1.ReadAssertionsResponse.assertions:type_name -> openfga.v1.Assertion
 	58, // 44: openfga.v1.ReadChangesRequest.page_size:type_name -> google.protobuf.Int32Value
-	66, // 45: openfga.v1.ReadChangesResponse.changes:type_name -> openfga.v1.TupleChange
-	67, // 46: openfga.v1.CreateStoreResponse.created_at:type_name -> google.protobuf.Timestamp
-	67, // 47: openfga.v1.CreateStoreResponse.updated_at:type_name -> google.protobuf.Timestamp
-	67, // 48: openfga.v1.UpdateStoreResponse.created_at:type_name -> google.protobuf.Timestamp
-	67, // 49: openfga.v1.UpdateStoreResponse.updated_at:type_name -> google.protobuf.Timestamp
-	67, // 50: openfga.v1.GetStoreResponse.created_at:type_name -> google.protobuf.Timestamp
-	67, // 51: openfga.v1.GetStoreResponse.updated_at:type_name -> google.protobuf.Timestamp
-	67, // 52: openfga.v1.GetStoreResponse.deleted_at:type_name -> google.protobuf.Timestamp
-	58, // 53: openfga.v1.ListStoresRequest.page_size:type_name -> google.protobuf.Int32Value
-	68, // 54: openfga.v1.ListStoresResponse.stores:type_name -> openfga.v1.Store
-	46, // 55: openfga.v1.Assertion.tuple_key:type_name -> openfga.v1.AssertionTupleKey
-	56, // 56: openfga.v1.Assertion.contextual_tuples:type_name -> openfga.v1.TupleKey
-	52, // 57: openfga.v1.Assertion.context:type_name -> google.protobuf.Struct
-	47, // 58: openfga.v1.Assertions.assertions:type_name -> openfga.v1.Assertion
-	19, // 59: openfga.v1.BatchCheckResponse.ResultEntry.value:type_name -> openfga.v1.BatchCheckSingleResult
-	69, // 60: openfga.v1.WriteAuthorizationModelRequest.ConditionsEntry.value:type_name -> openfga.v1.Condition
-	6,  // 61: openfga.v1.OpenFGAService.Read:input_type -> openfga.v1.ReadRequest
-	11, // 62: openfga.v1.OpenFGAService.Write:input_type -> openfga.v1.WriteRequest
-	13, // 63: openfga.v1.OpenFGAService.Check:input_type -> openfga.v1.CheckRequest
-	16, // 64: openfga.v1.OpenFGAService.BatchCheck:input_type -> openfga.v1.BatchCheckRequest
-	21, // 65: openfga.v1.OpenFGAService.Expand:input_type -> openfga.v1.ExpandRequest
-	28, // 66: openfga.v1.OpenFGAService.ReadAuthorizationModels:input_type -> openfga.v1.ReadAuthorizationModelsRequest
-	24, // 67: openfga.v1.OpenFGAService.ReadAuthorizationModel:input_type -> openfga.v1.ReadAuthorizationModelRequest
-	26, // 68: openfga.v1.OpenFGAService.WriteAuthorizationModel:input_type -> openfga.v1.WriteAuthorizationModelRequest
-	30, // 69: openfga.v1.OpenFGAService.WriteAssertions:input_type -> openfga.v1.WriteAssertionsRequest
-	32, // 70: openfga.v1.OpenFGAService.ReadAssertions:input_type -> openfga.v1.ReadAssertionsRequest
-	34, // 71: openfga.v1.OpenFGAService.ReadChanges:input_type -> openfga.v1.ReadChangesRequest
-	36, // 72: openfga.v1.OpenFGAService.CreateStore:input_type -> openfga.v1.CreateStoreRequest
-	38, // 73: openfga.v1.OpenFGAService.UpdateStore:input_type -> openfga.v1.UpdateStoreRequest
-	40, // 74: openfga.v1.OpenFGAService.DeleteStore:input_type -> openfga.v1.DeleteStoreRequest
-	42, // 75: openfga.v1.OpenFGAService.GetStore:input_type -> openfga.v1.GetStoreRequest
-	44, // 76: openfga.v1.OpenFGAService.ListStores:input_type -> openfga.v1.ListStoresRequest
-	4,  // 77: openfga.v1.OpenFGAService.StreamedListObjects:input_type -> openfga.v1.StreamedListObjectsRequest
-	0,  // 78: openfga.v1.OpenFGAService.ListObjects:input_type -> openfga.v1.ListObjectsRequest
-	2,  // 79: openfga.v1.OpenFGAService.ListUsers:input_type -> openfga.v1.ListUsersRequest
-	8,  // 80: openfga.v1.OpenFGAService.Read:output_type -> openfga.v1.ReadResponse
-	12, // 81: openfga.v1.OpenFGAService.Write:output_type -> openfga.v1.WriteResponse
-	15, // 82: openfga.v1.OpenFGAService.Check:output_type -> openfga.v1.CheckResponse
-	18, // 83: openfga.v1.OpenFGAService.BatchCheck:output_type -> openfga.v1.BatchCheckResponse
-	23, // 84: openfga.v1.OpenFGAService.Expand:output_type -> openfga.v1.ExpandResponse
-	29, // 85: openfga.v1.OpenFGAService.ReadAuthorizationModels:output_type -> openfga.v1.ReadAuthorizationModelsResponse
-	25, // 86: openfga.v1.OpenFGAService.ReadAuthorizationModel:output_type -> openfga.v1.ReadAuthorizationModelResponse
-	27, // 87: openfga.v1.OpenFGAService.WriteAuthorizationModel:output_type -> openfga.v1.WriteAuthorizationModelResponse
-	31, // 88: openfga.v1.OpenFGAService.WriteAssertions:output_type -> openfga.v1.WriteAssertionsResponse
-	33, // 89: openfga.v1.OpenFGAService.ReadAssertions:output_type -> openfga.v1.ReadAssertionsResponse
-	35, // 90: openfga.v1.OpenFGAService.ReadChanges:output_type -> openfga.v1.ReadChangesResponse
-	37, // 91: openfga.v1.OpenFGAService.CreateStore:output_type -> openfga.v1.CreateStoreResponse
-	39, // 92: openfga.v1.OpenFGAService.UpdateStore:output_type -> openfga.v1.UpdateStoreResponse
-	41, // 93: openfga.v1.OpenFGAService.DeleteStore:output_type -> openfga.v1.DeleteStoreResponse
-	43, // 94: openfga.v1.OpenFGAService.GetStore:output_type -> openfga.v1.GetStoreResponse
-	45, // 95: openfga.v1.OpenFGAService.ListStores:output_type -> openfga.v1.ListStoresResponse
-	5,  // 96: openfga.v1.OpenFGAService.StreamedListObjects:output_type -> openfga.v1.StreamedListObjectsResponse
-	1,  // 97: openfga.v1.OpenFGAService.ListObjects:output_type -> openfga.v1.ListObjectsResponse
-	3,  // 98: openfga.v1.OpenFGAService.ListUsers:output_type -> openfga.v1.ListUsersResponse
-	80, // [80:99] is the sub-list for method output_type
-	61, // [61:80] is the sub-list for method input_type
-	61, // [61:61] is the sub-list for extension type_name
-	61, // [61:61] is the sub-list for extension extendee
-	0,  // [0:61] is the sub-list for field type_name
+	66, // 45: openfga.v1.ReadChangesRequest.start_time:type_name -> google.protobuf.Timestamp
+	67, // 46: openfga.v1.ReadChangesResponse.changes:type_name -> openfga.v1.TupleChange
+	66, // 47: openfga.v1.CreateStoreResponse.created_at:type_name -> google.protobuf.Timestamp
+	66, // 48: openfga.v1.CreateStoreResponse.updated_at:type_name -> google.protobuf.Timestamp
+	66, // 49: openfga.v1.UpdateStoreResponse.created_at:type_name -> google.protobuf.Timestamp
+	66, // 50: openfga.v1.UpdateStoreResponse.updated_at:type_name -> google.protobuf.Timestamp
+	66, // 51: openfga.v1.GetStoreResponse.created_at:type_name -> google.protobuf.Timestamp
+	66, // 52: openfga.v1.GetStoreResponse.updated_at:type_name -> google.protobuf.Timestamp
+	66, // 53: openfga.v1.GetStoreResponse.deleted_at:type_name -> google.protobuf.Timestamp
+	58, // 54: openfga.v1.ListStoresRequest.page_size:type_name -> google.protobuf.Int32Value
+	68, // 55: openfga.v1.ListStoresResponse.stores:type_name -> openfga.v1.Store
+	46, // 56: openfga.v1.Assertion.tuple_key:type_name -> openfga.v1.AssertionTupleKey
+	56, // 57: openfga.v1.Assertion.contextual_tuples:type_name -> openfga.v1.TupleKey
+	52, // 58: openfga.v1.Assertion.context:type_name -> google.protobuf.Struct
+	47, // 59: openfga.v1.Assertions.assertions:type_name -> openfga.v1.Assertion
+	19, // 60: openfga.v1.BatchCheckResponse.ResultEntry.value:type_name -> openfga.v1.BatchCheckSingleResult
+	69, // 61: openfga.v1.WriteAuthorizationModelRequest.ConditionsEntry.value:type_name -> openfga.v1.Condition
+	6,  // 62: openfga.v1.OpenFGAService.Read:input_type -> openfga.v1.ReadRequest
+	11, // 63: openfga.v1.OpenFGAService.Write:input_type -> openfga.v1.WriteRequest
+	13, // 64: openfga.v1.OpenFGAService.Check:input_type -> openfga.v1.CheckRequest
+	16, // 65: openfga.v1.OpenFGAService.BatchCheck:input_type -> openfga.v1.BatchCheckRequest
+	21, // 66: openfga.v1.OpenFGAService.Expand:input_type -> openfga.v1.ExpandRequest
+	28, // 67: openfga.v1.OpenFGAService.ReadAuthorizationModels:input_type -> openfga.v1.ReadAuthorizationModelsRequest
+	24, // 68: openfga.v1.OpenFGAService.ReadAuthorizationModel:input_type -> openfga.v1.ReadAuthorizationModelRequest
+	26, // 69: openfga.v1.OpenFGAService.WriteAuthorizationModel:input_type -> openfga.v1.WriteAuthorizationModelRequest
+	30, // 70: openfga.v1.OpenFGAService.WriteAssertions:input_type -> openfga.v1.WriteAssertionsRequest
+	32, // 71: openfga.v1.OpenFGAService.ReadAssertions:input_type -> openfga.v1.ReadAssertionsRequest
+	34, // 72: openfga.v1.OpenFGAService.ReadChanges:input_type -> openfga.v1.ReadChangesRequest
+	36, // 73: openfga.v1.OpenFGAService.CreateStore:input_type -> openfga.v1.CreateStoreRequest
+	38, // 74: openfga.v1.OpenFGAService.UpdateStore:input_type -> openfga.v1.UpdateStoreRequest
+	40, // 75: openfga.v1.OpenFGAService.DeleteStore:input_type -> openfga.v1.DeleteStoreRequest
+	42, // 76: openfga.v1.OpenFGAService.GetStore:input_type -> openfga.v1.GetStoreRequest
+	44, // 77: openfga.v1.OpenFGAService.ListStores:input_type -> openfga.v1.ListStoresRequest
+	4,  // 78: openfga.v1.OpenFGAService.StreamedListObjects:input_type -> openfga.v1.StreamedListObjectsRequest
+	0,  // 79: openfga.v1.OpenFGAService.ListObjects:input_type -> openfga.v1.ListObjectsRequest
+	2,  // 80: openfga.v1.OpenFGAService.ListUsers:input_type -> openfga.v1.ListUsersRequest
+	8,  // 81: openfga.v1.OpenFGAService.Read:output_type -> openfga.v1.ReadResponse
+	12, // 82: openfga.v1.OpenFGAService.Write:output_type -> openfga.v1.WriteResponse
+	15, // 83: openfga.v1.OpenFGAService.Check:output_type -> openfga.v1.CheckResponse
+	18, // 84: openfga.v1.OpenFGAService.BatchCheck:output_type -> openfga.v1.BatchCheckResponse
+	23, // 85: openfga.v1.OpenFGAService.Expand:output_type -> openfga.v1.ExpandResponse
+	29, // 86: openfga.v1.OpenFGAService.ReadAuthorizationModels:output_type -> openfga.v1.ReadAuthorizationModelsResponse
+	25, // 87: openfga.v1.OpenFGAService.ReadAuthorizationModel:output_type -> openfga.v1.ReadAuthorizationModelResponse
+	27, // 88: openfga.v1.OpenFGAService.WriteAuthorizationModel:output_type -> openfga.v1.WriteAuthorizationModelResponse
+	31, // 89: openfga.v1.OpenFGAService.WriteAssertions:output_type -> openfga.v1.WriteAssertionsResponse
+	33, // 90: openfga.v1.OpenFGAService.ReadAssertions:output_type -> openfga.v1.ReadAssertionsResponse
+	35, // 91: openfga.v1.OpenFGAService.ReadChanges:output_type -> openfga.v1.ReadChangesResponse
+	37, // 92: openfga.v1.OpenFGAService.CreateStore:output_type -> openfga.v1.CreateStoreResponse
+	39, // 93: openfga.v1.OpenFGAService.UpdateStore:output_type -> openfga.v1.UpdateStoreResponse
+	41, // 94: openfga.v1.OpenFGAService.DeleteStore:output_type -> openfga.v1.DeleteStoreResponse
+	43, // 95: openfga.v1.OpenFGAService.GetStore:output_type -> openfga.v1.GetStoreResponse
+	45, // 96: openfga.v1.OpenFGAService.ListStores:output_type -> openfga.v1.ListStoresResponse
+	5,  // 97: openfga.v1.OpenFGAService.StreamedListObjects:output_type -> openfga.v1.StreamedListObjectsResponse
+	1,  // 98: openfga.v1.OpenFGAService.ListObjects:output_type -> openfga.v1.ListObjectsResponse
+	3,  // 99: openfga.v1.OpenFGAService.ListUsers:output_type -> openfga.v1.ListUsersResponse
+	81, // [81:100] is the sub-list for method output_type
+	62, // [62:81] is the sub-list for method input_type
+	62, // [62:62] is the sub-list for extension type_name
+	62, // [62:62] is the sub-list for extension extendee
+	0,  // [0:62] is the sub-list for field type_name
 }
 
 func init() { file_openfga_v1_openfga_service_proto_init() }

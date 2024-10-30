@@ -1552,6 +1552,18 @@ message ReadChangesRequest {
     (validate.rules).string.max_bytes = 5120,
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ==\""}
   ];
+
+  google.protobuf.Timestamp start_time = 5 [
+    json_name = "start_time",
+    (validate.rules).timestamp.lt_now = true,
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description:
+        "Start date and time of changes to read.\n"
+        "Format: ISO 8601 timestamp (e.g., 2022-01-01T00:00:00Z)\n"
+        "If a continuation_token is provided along side start_time, the continuation_token will take precedence over start_time."
+      example: "2021-01-01T00:00:00.000Z"
+    }
+  ];
 }
 
 message ReadChangesResponse {
