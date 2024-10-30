@@ -793,7 +793,8 @@
                   "items": {
                     "type": "object",
                     "$ref": "#/definitions/BatchCheckItem"
-                  }
+                  },
+                  "minItems": 1
                 },
                 "authorization_model_id": {
                   "type": "string",

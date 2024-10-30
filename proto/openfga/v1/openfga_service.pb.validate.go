@@ -2735,6 +2735,17 @@ func (m *BatchCheckRequest) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
+	if len(m.GetChecks()) < 1 {
+		err := BatchCheckRequestValidationError{
+			field:  "Checks",
+			reason: "value must contain at least 1 item(s)",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
 	for idx, item := range m.GetChecks() {
 		_, _ = idx, item
 
