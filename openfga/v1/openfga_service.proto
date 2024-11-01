@@ -382,12 +382,10 @@ service OpenFGAService {
         "     \"01JA8PMM6A90NV5ET0F28CYSZQ\": {\n"
         "       \"allowed\": false, \n"
         "       \"error\": {\"message\": \"\"}, \n"
-        "       \"query_duration_ms\": 5\n"
         "    },\n"
         "     \"01JA8PM3QM7VBPGB8KMPK8SBD5\": {\n"
         "       \"allowed\": true, \n"
         "       \"error\": {\"message\": \"\"}, \n"
-        "       \"query_duration_ms\": 3\n"
         "    }\n"
         "}\n"
         "```\n"
@@ -1286,7 +1284,7 @@ message BatchCheckItem {
 
 message BatchCheckResponse {
   map<string, BatchCheckSingleResult> result = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-    example: '{"1cd93d8c-8e45-43c6-9a15-cbb3c7f394bc": {"allowed": true, "query_duration_ms": 3, "error": {"message": ""}}}'
+    example: '{"1cd93d8c-8e45-43c6-9a15-cbb3c7f394bc": {"allowed": true, "error": {"message": ""}}}'
     description: "map keys are the correlation_id values from the BatchCheckItems in the request"
   }];
 }
@@ -1296,7 +1294,6 @@ message BatchCheckSingleResult {
     bool allowed = 1;
     CheckError error = 2;
   }
-  google.protobuf.Int32Value query_duration_ms = 3 [json_name = "query_duration_ms"];
 }
 
 message CheckError {
