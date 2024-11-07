@@ -1268,11 +1268,15 @@ message BatchCheckRequest {
 }
 
 message BatchCheckItem {
-  CheckRequestTupleKey tuple_key = 1 [(google.api.field_behavior) = REQUIRED];
+  CheckRequestTupleKey tuple_key = 1 [
+    json_name = "tuple_key",
+    (google.api.field_behavior) = REQUIRED
+  ];
   openfga.v1.ContextualTupleKeys contextual_tuples = 2 [json_name = "contextual_tuples"];
   google.protobuf.Struct context = 3;
 
   string correlation_id = 4 [
+    json_name = "correlation_id",
     (validate.rules).string = {pattern: "^[\\w\\d-]{1,36}$"},
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       example: "\"1cd93d8c-8e45-43c6-9a15-cbb3c7f394bc\""

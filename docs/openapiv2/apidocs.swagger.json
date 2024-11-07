@@ -1832,7 +1832,7 @@
     "BatchCheckItem": {
       "type": "object",
       "properties": {
-        "tupleKey": {
+        "tuple_key": {
           "$ref": "#/definitions/CheckRequestTupleKey"
         },
         "contextual_tuples": {
@@ -1841,15 +1841,15 @@
         "context": {
           "type": "object"
         },
-        "correlationId": {
+        "correlation_id": {
           "type": "string",
           "example": "1cd93d8c-8e45-43c6-9a15-cbb3c7f394bc",
           "description": "correlation_id must be a string containing only letters, numbers, or hyphens, with length ≤ 36 characters."
         }
       },
       "required": [
-        "tupleKey",
-        "correlationId"
+        "tuple_key",
+        "correlation_id"
       ]
     },
     "BatchCheckResponse": {
