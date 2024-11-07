@@ -719,6 +719,102 @@
         ]
       }
     },
+    "/stores/{store_id}/batch-check": {
+      "post": {
+        "summary": "Send a list of `check` operations in a single request",
+        "description": "The `BatchCheck` API functions nearly identically to `Check`, but instead of checking a single user-object relationship BatchCheck accepts a list of relationships to check and returns a map containing `BatchCheckItem` response for each check it received.\n\nAn associated `correlation_id` is required for each check in the batch. This ID is used to correlate a check to the appropriate response. It is a string consisting of only alphanumeric characters or hyphens with a maximum length of 36 characters. This `correlation_id` is used to map the result of each check to the item which was checked, so it must be unique for each item in the batch. We recommend using a UUID or ULID as the `correlation_id`, but you can use whatever unique identifier you need as long  as it matches this regex pattern: `^[\\w\\d-]{1,36}$`\n\nFor more details on how `Check` functions, see the docs for `/check`.\n\n### Examples\n#### A BatchCheckRequest\n```json\n{\n  \"checks\": [\n     {\n       \"tuple_key\": {\n         \"object\": \"document:2021-budget\"\n         \"relation\": \"reader\",\n         \"user\": \"user:anne\",\n       },\n       \"contextual_tuples\": {...}\n       \"context\": {}\n       \"correlation_id\": \"01JA8PM3QM7VBPGB8KMPK8SBD5\"\n     },\n     {\n       \"tuple_key\": {\n         \"object\": \"document:2021-budget\"\n         \"relation\": \"reader\",\n         \"user\": \"user:bob\",\n       },\n       \"contextual_tuples\": {...}\n       \"context\": {}\n       \"correlation_id\": \"01JA8PMM6A90NV5ET0F28CYSZQ\"\n     }\n   ]\n}\n```\n\nBelow is a possible response to the above request. Note that the result map's keys are the `correlation_id` values from the checked items in the request:\n```json\n{\n   \"result\": {\n     \"01JA8PMM6A90NV5ET0F28CYSZQ\": {\n       \"allowed\": false, \n       \"error\": {\"message\": \"\"} \n    },\n     \"01JA8PM3QM7VBPGB8KMPK8SBD5\": {\n       \"allowed\": true, \n       \"error\": {\"message\": \"\"} \n    }\n}\n```\n",
+        "operationId": "BatchCheck",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/BatchCheckResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "401": {
+            "description": "Not authenticated.",
+            "schema": {
+              "$ref": "#/definitions/UnauthenticatedResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "schema": {
+              "$ref": "#/definitions/ForbiddenResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "409": {
+            "description": "Request was aborted due a transaction conflict.",
+            "schema": {
+              "$ref": "#/definitions/AbortedMessageResponse"
+            }
+          },
+          "422": {
+            "description": "Request timed out due to excessive request throttling.",
+            "schema": {
+              "$ref": "#/definitions/UnprocessableContentMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "store_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "checks": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "$ref": "#/definitions/BatchCheckItem"
+                  },
+                  "minItems": 1
+                },
+                "authorization_model_id": {
+                  "type": "string",
+                  "example": "01G5JAVJ41T49E9TT3SKVS7X1J"
+                },
+                "consistency": {
+                  "$ref": "#/definitions/ConsistencyPreference"
+                }
+              },
+              "required": [
+                "checks"
+              ]
+            }
+          }
+        ],
+        "tags": [
+          "Relationship Queries"
+        ]
+      }
+    },
     "/stores/{store_id}/changes": {
       "get": {
         "summary": "Return a list of all the tuple changes",
@@ -1732,6 +1828,74 @@
         "schema_version",
         "type_definitions"
       ]
+    },
+    "BatchCheckItem": {
+      "type": "object",
+      "properties": {
+        "tuple_key": {
+          "$ref": "#/definitions/CheckRequestTupleKey"
+        },
+        "contextual_tuples": {
+          "$ref": "#/definitions/ContextualTupleKeys"
+        },
+        "context": {
+          "type": "object"
+        },
+        "correlation_id": {
+          "type": "string",
+          "example": "1cd93d8c-8e45-43c6-9a15-cbb3c7f394bc",
+          "description": "correlation_id must be a string containing only letters, numbers, or hyphens, with length ≤ 36 characters."
+        }
+      },
+      "required": [
+        "tuple_key",
+        "correlation_id"
+      ]
+    },
+    "BatchCheckResponse": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "type": "object",
+          "example": {
+            "1cd93d8c-8e45-43c6-9a15-cbb3c7f394bc": {
+              "allowed": true,
+              "error": {
+                "message": ""
+              }
+            }
+          },
+          "additionalProperties": {
+            "$ref": "#/definitions/BatchCheckSingleResult"
+          },
+          "description": "map keys are the correlation_id values from the BatchCheckItems in the request"
+        }
+      }
+    },
+    "BatchCheckSingleResult": {
+      "type": "object",
+      "properties": {
+        "allowed": {
+          "type": "boolean"
+        },
+        "error": {
+          "$ref": "#/definitions/CheckError"
+        }
+      }
+    },
+    "CheckError": {
+      "type": "object",
+      "properties": {
+        "inputError": {
+          "$ref": "#/definitions/ErrorCode"
+        },
+        "internalError": {
+          "$ref": "#/definitions/InternalErrorCode"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
     },
     "CheckRequestTupleKey": {
       "type": "object",
