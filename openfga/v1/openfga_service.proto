@@ -1687,6 +1687,8 @@ message ListStoresRequest {
     (validate.rules).string.max_bytes = 5120,
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ==\""}
   ];
+	
+  string name = 3 [(google.api.field_behavior) = OPTIONAL];
 }
 
 message ListStoresResponse {

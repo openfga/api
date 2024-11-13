@@ -6943,6 +6943,8 @@ func (m *ListStoresRequest) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
+	// no validation rules for Name
+
 	if len(errors) > 0 {
 		return ListStoresRequestMultiError(errors)
 	}
