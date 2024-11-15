@@ -211,7 +211,7 @@ message TupleKeys {
     json_name = "tuple_keys",
     (google.api.field_behavior) = REQUIRED,
     (validate.rules).repeated.min_items = 1,
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {minimum: 1}
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {min_items: 1}
   ];
 }
 
@@ -219,8 +219,8 @@ message ContextualTupleKeys {
   repeated TupleKey tuple_keys = 1 [
     json_name = "tuple_keys",
     (google.api.field_behavior) = REQUIRED,
-    (validate.rules).repeated.max_items = 20,
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {maximum: 20}
+    (validate.rules).repeated.max_items = 100,
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {max_items: 100}
   ];
 }
 

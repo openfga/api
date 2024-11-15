@@ -9,6 +9,7 @@ import "google/protobuf/struct.proto";
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/wrappers.proto";
 import "openfga/v1/authzmodel.proto";
+import "openfga/v1/errors_ignore.proto";
 import "openfga/v1/openfga.proto";
 import "openfga/v1/openfga_service_consistency.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
@@ -321,6 +322,71 @@ service OpenFGAService {
         "     \"object\": \"document:2021-budget\"\n"
         "  },\n"
         "  \"consistency\": \"HIGHER_CONSISTENCY\"\n"
+        "}\n"
+        "```\n"
+    };
+  }
+
+  rpc BatchCheck(BatchCheckRequest) returns (BatchCheckResponse) {
+    option (google.api.http) = {
+      post: "/stores/{store_id}/batch-check"
+      body: "*"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Send a list of `check` operations in a single request"
+      tags: ["Relationship Queries"]
+      operation_id: "BatchCheck"
+      description:
+        "The `BatchCheck` API functions nearly identically to `Check`, but instead of checking a single "
+        "user-object relationship BatchCheck accepts a list of relationships to check and returns a map containing `BatchCheckItem` response "
+        "for each check it received.\n\n"
+        "An associated `correlation_id` is required for each check in the batch. This ID is used to correlate a check to the appropriate response. It is a string consisting of only "
+        "alphanumeric characters or hyphens with a maximum length of 36 characters. This `correlation_id` is used to map the result "
+        "of each check to the item which was checked, so it must be unique for each item in the batch. "
+        "We recommend using a UUID or ULID as the `correlation_id`, but you can use whatever unique identifier you need as long "
+        " as it matches this regex pattern: `^[\\w\\d-]{1,36}$`\n\n"
+        "For more details on how `Check` functions, see the docs for `/check`.\n\n"
+        "### Examples\n"
+        "#### A BatchCheckRequest\n"
+        "```json\n"
+        "{\n"
+        "  \"checks\": [\n"
+        "     {\n"
+        "       \"tuple_key\": {\n"
+        "         \"object\": \"document:2021-budget\"\n"
+        "         \"relation\": \"reader\",\n"
+        "         \"user\": \"user:anne\",\n"
+        "       },\n"
+        "       \"contextual_tuples\": {...}\n"
+        "       \"context\": {}\n"
+        "       \"correlation_id\": \"01JA8PM3QM7VBPGB8KMPK8SBD5\"\n"
+        "     },\n"
+        "     {\n"
+        "       \"tuple_key\": {\n"
+        "         \"object\": \"document:2021-budget\"\n"
+        "         \"relation\": \"reader\",\n"
+        "         \"user\": \"user:bob\",\n"
+        "       },\n"
+        "       \"contextual_tuples\": {...}\n"
+        "       \"context\": {}\n"
+        "       \"correlation_id\": \"01JA8PMM6A90NV5ET0F28CYSZQ\"\n"
+        "     }\n"
+        "   ]\n"
+        "}\n"
+        "```\n\n"
+        "Below is a possible response to the above request. Note that the result map's keys are the `correlation_id` values from the checked items in the request:\n"
+        "```json\n"
+        "{\n"
+        "   \"result\": {\n"
+        "     \"01JA8PMM6A90NV5ET0F28CYSZQ\": {\n"
+        "       \"allowed\": false, \n"
+        "       \"error\": {\"message\": \"\"} \n"
+        "    },\n"
+        "     \"01JA8PM3QM7VBPGB8KMPK8SBD5\": {\n"
+        "       \"allowed\": true, \n"
+        "       \"error\": {\"message\": \"\"} \n"
+        "    }\n"
         "}\n"
         "```\n"
     };
@@ -887,13 +953,15 @@ message ListUsersRequest {
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       description: "The type of results returned. Only accepts exactly one value."
       example: "[{\"type\": \"user\"}, {\"type\": \"group\", \"relation\": \"member\"}]"
+      min_items: 1
+      max_items: 1
     }
   ];
 
   repeated TupleKey contextual_tuples = 6 [
     json_name = "contextual_tuples",
-    (validate.rules).repeated.max_items = 20,
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {maximum: 20}
+    (validate.rules).repeated.max_items = 100,
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {max_items: 100}
   ];
 
   // Additional request context that will be used to evaluate any ABAC conditions encountered
@@ -1061,7 +1129,7 @@ message WriteRequestWrites {
     json_name = "tuple_keys",
     (google.api.field_behavior) = REQUIRED,
     (validate.rules).repeated.min_items = 1,
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {minimum: 1}
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {min_items: 1}
   ];
 }
 
@@ -1070,7 +1138,7 @@ message WriteRequestDeletes {
     json_name = "tuple_keys",
     (google.api.field_behavior) = REQUIRED,
     (validate.rules).repeated.min_items = 1,
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {minimum: 1}
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {min_items: 1}
   ];
 }
 
@@ -1173,6 +1241,73 @@ message CheckResponse {
   string resolution = 2;
 }
 
+message BatchCheckRequest {
+  string store_id = 1 [
+    json_name = "store_id",
+    (google.api.field_behavior) = REQUIRED,
+    (validate.rules).string = {pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"},
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01YCP46JKYM8FJCQ37NMBYHE5X\""}
+  ];
+
+  repeated BatchCheckItem checks = 2 [
+    (google.api.field_behavior) = REQUIRED,
+    (validate.rules).repeated = {min_items: 1},
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {min_items: 1}
+  ];
+
+  string authorization_model_id = 3 [
+    json_name = "authorization_model_id",
+    (validate.rules).string = {
+      pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"
+      ignore_empty: true
+    },
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01G5JAVJ41T49E9TT3SKVS7X1J\""}
+  ];
+
+  ConsistencyPreference consistency = 4 [(validate.rules).enum.defined_only = true];
+}
+
+message BatchCheckItem {
+  CheckRequestTupleKey tuple_key = 1 [
+    json_name = "tuple_key",
+    (google.api.field_behavior) = REQUIRED
+  ];
+  openfga.v1.ContextualTupleKeys contextual_tuples = 2 [json_name = "contextual_tuples"];
+  google.protobuf.Struct context = 3;
+
+  string correlation_id = 4 [
+    json_name = "correlation_id",
+    (validate.rules).string = {pattern: "^[\\w\\d-]{1,36}$"},
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"1cd93d8c-8e45-43c6-9a15-cbb3c7f394bc\""
+      description: "correlation_id must be a string containing only letters, numbers, or hyphens, with length ≤ 36 characters."
+    },
+    (google.api.field_behavior) = REQUIRED
+  ];
+}
+
+message BatchCheckResponse {
+  map<string, BatchCheckSingleResult> result = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    example: '{"1cd93d8c-8e45-43c6-9a15-cbb3c7f394bc": {"allowed": true, "error": {"message": ""}}}'
+    description: "map keys are the correlation_id values from the BatchCheckItems in the request"
+  }];
+}
+
+message BatchCheckSingleResult {
+  oneof check_result {
+    bool allowed = 1;
+    CheckError error = 2;
+  }
+}
+
+message CheckError {
+  oneof code {
+    ErrorCode input_error = 1;
+    InternalErrorCode internal_error = 2;
+  }
+  string message = 3;
+}
+
 message ExpandRequest {
   string store_id = 1 [
     json_name = "store_id",
@@ -1198,6 +1333,8 @@ message ExpandRequest {
 
   // Controls the consistency preference for this request. Default value is UNSPECIFIED, which will have the same behavior as MINIMIZE_LATENCY.
   ConsistencyPreference consistency = 4 [(validate.rules).enum.defined_only = true];
+
+  openfga.v1.ContextualTupleKeys contextual_tuples = 5 [json_name = "contextual_tuples"];
 }
 
 message ExpandRequestTupleKey {
@@ -1261,7 +1398,7 @@ message WriteAuthorizationModelRequest {
     (google.api.field_behavior) = REQUIRED,
     json_name = "type_definitions",
     (validate.rules).repeated = {min_items: 1},
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {minimum: 1}
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {min_items: 1}
   ];
 
   string schema_version = 3 [
@@ -1356,8 +1493,8 @@ message WriteAssertionsRequest {
       max_items: 100
     },
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      minimum: 0
-      maximum: 100
+      min_items: 0
+      max_items: 100
     }
   ];
 }
@@ -1417,6 +1554,18 @@ message ReadChangesRequest {
     json_name = "continuation_token",
     (validate.rules).string.max_bytes = 5120,
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ==\""}
+  ];
+
+  google.protobuf.Timestamp start_time = 5 [
+    json_name = "start_time",
+    (validate.rules).timestamp.lt_now = true,
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description:
+        "Start date and time of changes to read.\n"
+        "Format: ISO 8601 timestamp (e.g., 2022-01-01T00:00:00Z)\n"
+        "If a continuation_token is provided along side start_time, the continuation_token will take precedence over start_time."
+      example: "2021-01-01T00:00:00.000Z"
+    }
   ];
 }
 
@@ -1596,8 +1745,8 @@ message Assertion {
 
   repeated TupleKey contextual_tuples = 3 [
     json_name = "contextual_tuples",
-    (validate.rules).repeated.max_items = 20,
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {maximum: 20}
+    (validate.rules).repeated.max_items = 20, // This is not a typo, we intentionally restrict contextual tuples in assertions to 20 for now
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {max_items: 20}
   ];
 
   // Additional request context that will be used to evaluate any ABAC conditions encountered

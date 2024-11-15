@@ -56,6 +56,12 @@
               "$ref": "#/definitions/UnauthenticatedResponse"
             }
           },
+          "403": {
+            "description": "Forbidden.",
+            "schema": {
+              "$ref": "#/definitions/ForbiddenResponse"
+            }
+          },
           "404": {
             "description": "Request failed due to incorrect path.",
             "schema": {
@@ -123,6 +129,12 @@
               "$ref": "#/definitions/UnauthenticatedResponse"
             }
           },
+          "403": {
+            "description": "Forbidden.",
+            "schema": {
+              "$ref": "#/definitions/ForbiddenResponse"
+            }
+          },
           "404": {
             "description": "Request failed due to incorrect path.",
             "schema": {
@@ -187,6 +199,12 @@
               "$ref": "#/definitions/UnauthenticatedResponse"
             }
           },
+          "403": {
+            "description": "Forbidden.",
+            "schema": {
+              "$ref": "#/definitions/ForbiddenResponse"
+            }
+          },
           "404": {
             "description": "Request failed due to incorrect path.",
             "schema": {
@@ -242,6 +260,12 @@
             "description": "Not authenticated.",
             "schema": {
               "$ref": "#/definitions/UnauthenticatedResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "schema": {
+              "$ref": "#/definitions/ForbiddenResponse"
             }
           },
           "404": {
@@ -399,6 +423,12 @@
               "$ref": "#/definitions/UnauthenticatedResponse"
             }
           },
+          "403": {
+            "description": "Forbidden.",
+            "schema": {
+              "$ref": "#/definitions/ForbiddenResponse"
+            }
+          },
           "404": {
             "description": "Request failed due to incorrect path.",
             "schema": {
@@ -462,6 +492,12 @@
               "$ref": "#/definitions/UnauthenticatedResponse"
             }
           },
+          "403": {
+            "description": "Forbidden.",
+            "schema": {
+              "$ref": "#/definitions/ForbiddenResponse"
+            }
+          },
           "404": {
             "description": "Request failed due to incorrect path.",
             "schema": {
@@ -511,9 +547,9 @@
                   "type": "array",
                   "items": {
                     "type": "object",
-                    "$ref": "#/definitions/Assertion",
-                    "maximum": 100
-                  }
+                    "$ref": "#/definitions/Assertion"
+                  },
+                  "maxItems": 100
                 }
               },
               "required": [
@@ -549,6 +585,12 @@
             "description": "Not authenticated.",
             "schema": {
               "$ref": "#/definitions/UnauthenticatedResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "schema": {
+              "$ref": "#/definitions/ForbiddenResponse"
             }
           },
           "404": {
@@ -624,6 +666,12 @@
               "$ref": "#/definitions/UnauthenticatedResponse"
             }
           },
+          "403": {
+            "description": "Forbidden.",
+            "schema": {
+              "$ref": "#/definitions/ForbiddenResponse"
+            }
+          },
           "404": {
             "description": "Request failed due to incorrect path.",
             "schema": {
@@ -667,9 +715,9 @@
                   "type": "array",
                   "items": {
                     "type": "object",
-                    "$ref": "#/definitions/TypeDefinition",
-                    "minimum": 1
-                  }
+                    "$ref": "#/definitions/TypeDefinition"
+                  },
+                  "minItems": 1
                 },
                 "schema_version": {
                   "type": "string"
@@ -717,6 +765,12 @@
               "$ref": "#/definitions/UnauthenticatedResponse"
             }
           },
+          "403": {
+            "description": "Forbidden.",
+            "schema": {
+              "$ref": "#/definitions/ForbiddenResponse"
+            }
+          },
           "404": {
             "description": "Request failed due to incorrect path.",
             "schema": {
@@ -761,6 +815,102 @@
         ]
       }
     },
+    "/stores/{store_id}/batch-check": {
+      "post": {
+        "summary": "Send a list of `check` operations in a single request",
+        "description": "The `BatchCheck` API functions nearly identically to `Check`, but instead of checking a single user-object relationship BatchCheck accepts a list of relationships to check and returns a map containing `BatchCheckItem` response for each check it received.\n\nAn associated `correlation_id` is required for each check in the batch. This ID is used to correlate a check to the appropriate response. It is a string consisting of only alphanumeric characters or hyphens with a maximum length of 36 characters. This `correlation_id` is used to map the result of each check to the item which was checked, so it must be unique for each item in the batch. We recommend using a UUID or ULID as the `correlation_id`, but you can use whatever unique identifier you need as long  as it matches this regex pattern: `^[\\w\\d-]{1,36}$`\n\nFor more details on how `Check` functions, see the docs for `/check`.\n\n### Examples\n#### A BatchCheckRequest\n```json\n{\n  \"checks\": [\n     {\n       \"tuple_key\": {\n         \"object\": \"document:2021-budget\"\n         \"relation\": \"reader\",\n         \"user\": \"user:anne\",\n       },\n       \"contextual_tuples\": {...}\n       \"context\": {}\n       \"correlation_id\": \"01JA8PM3QM7VBPGB8KMPK8SBD5\"\n     },\n     {\n       \"tuple_key\": {\n         \"object\": \"document:2021-budget\"\n         \"relation\": \"reader\",\n         \"user\": \"user:bob\",\n       },\n       \"contextual_tuples\": {...}\n       \"context\": {}\n       \"correlation_id\": \"01JA8PMM6A90NV5ET0F28CYSZQ\"\n     }\n   ]\n}\n```\n\nBelow is a possible response to the above request. Note that the result map's keys are the `correlation_id` values from the checked items in the request:\n```json\n{\n   \"result\": {\n     \"01JA8PMM6A90NV5ET0F28CYSZQ\": {\n       \"allowed\": false, \n       \"error\": {\"message\": \"\"} \n    },\n     \"01JA8PM3QM7VBPGB8KMPK8SBD5\": {\n       \"allowed\": true, \n       \"error\": {\"message\": \"\"} \n    }\n}\n```\n",
+        "operationId": "BatchCheck",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/BatchCheckResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "401": {
+            "description": "Not authenticated.",
+            "schema": {
+              "$ref": "#/definitions/UnauthenticatedResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "schema": {
+              "$ref": "#/definitions/ForbiddenResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "409": {
+            "description": "Request was aborted due a transaction conflict.",
+            "schema": {
+              "$ref": "#/definitions/AbortedMessageResponse"
+            }
+          },
+          "422": {
+            "description": "Request timed out due to excessive request throttling.",
+            "schema": {
+              "$ref": "#/definitions/UnprocessableContentMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "store_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "checks": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "$ref": "#/definitions/BatchCheckItem"
+                  },
+                  "minItems": 1
+                },
+                "authorization_model_id": {
+                  "type": "string",
+                  "example": "01G5JAVJ41T49E9TT3SKVS7X1J"
+                },
+                "consistency": {
+                  "$ref": "#/definitions/ConsistencyPreference"
+                }
+              },
+              "required": [
+                "checks"
+              ]
+            }
+          }
+        ],
+        "tags": [
+          "Relationship Queries"
+        ]
+      }
+    },
     "/stores/{store_id}/changes": {
       "get": {
         "summary": "Return a list of all the tuple changes",
@@ -783,6 +933,12 @@
             "description": "Not authenticated.",
             "schema": {
               "$ref": "#/definitions/UnauthenticatedResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "schema": {
+              "$ref": "#/definitions/ForbiddenResponse"
             }
           },
           "404": {
@@ -835,6 +991,14 @@
             "in": "query",
             "required": false,
             "type": "string"
+          },
+          {
+            "name": "start_time",
+            "description": "Start date and time of changes to read.\nFormat: ISO 8601 timestamp (e.g., 2022-01-01T00:00:00Z)\nIf a continuation_token is provided along side start_time, the continuation_token will take precedence over start_time.",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
           }
         ],
         "tags": [
@@ -864,6 +1028,12 @@
             "description": "Not authenticated.",
             "schema": {
               "$ref": "#/definitions/UnauthenticatedResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "schema": {
+              "$ref": "#/definitions/ForbiddenResponse"
             }
           },
           "404": {
@@ -965,6 +1135,12 @@
               "$ref": "#/definitions/UnauthenticatedResponse"
             }
           },
+          "403": {
+            "description": "Forbidden.",
+            "schema": {
+              "$ref": "#/definitions/ForbiddenResponse"
+            }
+          },
           "404": {
             "description": "Request failed due to incorrect path.",
             "schema": {
@@ -1014,6 +1190,9 @@
                 "consistency": {
                   "$ref": "#/definitions/ConsistencyPreference",
                   "description": "Controls the consistency preference for this request. Default value is UNSPECIFIED, which will have the same behavior as MINIMIZE_LATENCY."
+                },
+                "contextual_tuples": {
+                  "$ref": "#/definitions/ContextualTupleKeys"
                 }
               },
               "required": [
@@ -1049,6 +1228,12 @@
             "description": "Not authenticated.",
             "schema": {
               "$ref": "#/definitions/UnauthenticatedResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "schema": {
+              "$ref": "#/definitions/ForbiddenResponse"
             }
           },
           "404": {
@@ -1157,6 +1342,12 @@
               "$ref": "#/definitions/UnauthenticatedResponse"
             }
           },
+          "403": {
+            "description": "Forbidden.",
+            "schema": {
+              "$ref": "#/definitions/ForbiddenResponse"
+            }
+          },
           "404": {
             "description": "Request failed due to incorrect path.",
             "schema": {
@@ -1223,15 +1414,17 @@
                     "type": "object",
                     "$ref": "#/definitions/UserTypeFilter"
                   },
-                  "description": "The type of results returned. Only accepts exactly one value."
+                  "description": "The type of results returned. Only accepts exactly one value.",
+                  "maxItems": 1,
+                  "minItems": 1
                 },
                 "contextual_tuples": {
                   "type": "array",
                   "items": {
                     "type": "object",
-                    "$ref": "#/definitions/TupleKey",
-                    "maximum": 20
-                  }
+                    "$ref": "#/definitions/TupleKey"
+                  },
+                  "maxItems": 100
                 },
                 "context": {
                   "type": "object",
@@ -1277,6 +1470,12 @@
             "description": "Not authenticated.",
             "schema": {
               "$ref": "#/definitions/UnauthenticatedResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "schema": {
+              "$ref": "#/definitions/ForbiddenResponse"
             }
           },
           "404": {
@@ -1376,6 +1575,12 @@
             "description": "Not authenticated.",
             "schema": {
               "$ref": "#/definitions/UnauthenticatedResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "schema": {
+              "$ref": "#/definitions/ForbiddenResponse"
             }
           },
           "404": {
@@ -1482,6 +1687,12 @@
             "description": "Not authenticated.",
             "schema": {
               "$ref": "#/definitions/UnauthenticatedResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "schema": {
+              "$ref": "#/definitions/ForbiddenResponse"
             }
           },
           "404": {
@@ -1596,9 +1807,9 @@
           "type": "array",
           "items": {
             "type": "object",
-            "$ref": "#/definitions/TupleKey",
-            "maximum": 20
-          }
+            "$ref": "#/definitions/TupleKey"
+          },
+          "maxItems": 20
         },
         "context": {
           "type": "object",
@@ -1637,6 +1848,21 @@
         "relation",
         "user"
       ]
+    },
+    "AuthErrorCode": {
+      "type": "string",
+      "enum": [
+        "no_auth_error",
+        "auth_failed_invalid_subject",
+        "auth_failed_invalid_audience",
+        "auth_failed_invalid_issuer",
+        "invalid_claims",
+        "auth_failed_invalid_bearer_token",
+        "bearer_token_missing",
+        "unauthenticated",
+        "forbidden"
+      ],
+      "default": "no_auth_error"
     },
     "AuthorizationModel": {
       "type": "object",
@@ -1713,6 +1939,74 @@
         "schema_version",
         "type_definitions"
       ]
+    },
+    "BatchCheckItem": {
+      "type": "object",
+      "properties": {
+        "tuple_key": {
+          "$ref": "#/definitions/CheckRequestTupleKey"
+        },
+        "contextual_tuples": {
+          "$ref": "#/definitions/ContextualTupleKeys"
+        },
+        "context": {
+          "type": "object"
+        },
+        "correlation_id": {
+          "type": "string",
+          "example": "1cd93d8c-8e45-43c6-9a15-cbb3c7f394bc",
+          "description": "correlation_id must be a string containing only letters, numbers, or hyphens, with length ≤ 36 characters."
+        }
+      },
+      "required": [
+        "tuple_key",
+        "correlation_id"
+      ]
+    },
+    "BatchCheckResponse": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "type": "object",
+          "example": {
+            "1cd93d8c-8e45-43c6-9a15-cbb3c7f394bc": {
+              "allowed": true,
+              "error": {
+                "message": ""
+              }
+            }
+          },
+          "additionalProperties": {
+            "$ref": "#/definitions/BatchCheckSingleResult"
+          },
+          "description": "map keys are the correlation_id values from the BatchCheckItems in the request"
+        }
+      }
+    },
+    "BatchCheckSingleResult": {
+      "type": "object",
+      "properties": {
+        "allowed": {
+          "type": "boolean"
+        },
+        "error": {
+          "$ref": "#/definitions/CheckError"
+        }
+      }
+    },
+    "CheckError": {
+      "type": "object",
+      "properties": {
+        "inputError": {
+          "$ref": "#/definitions/ErrorCode"
+        },
+        "internalError": {
+          "$ref": "#/definitions/InternalErrorCode"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
     },
     "CheckRequestTupleKey": {
       "type": "object",
@@ -1837,9 +2131,9 @@
           "type": "array",
           "items": {
             "type": "object",
-            "$ref": "#/definitions/TupleKey",
-            "maximum": 20
-          }
+            "$ref": "#/definitions/TupleKey"
+          },
+          "maxItems": 100
         }
       },
       "required": [
@@ -1942,7 +2236,8 @@
         "duplicate_contextual_tuple",
         "invalid_authorization_model",
         "unsupported_schema_version",
-        "cancelled"
+        "cancelled",
+        "invalid_start_time"
       ],
       "default": "no_error"
     },
@@ -1995,6 +2290,21 @@
       "properties": {
         "tree": {
           "$ref": "#/definitions/UsersetTree"
+        }
+      }
+    },
+    "ForbiddenResponse": {
+      "type": "object",
+      "example": {
+        "code": "forbidden",
+        "message": "the principal is not authorized to perform the action"
+      },
+      "properties": {
+        "code": {
+          "$ref": "#/definitions/AuthErrorCode"
+        },
+        "message": {
+          "type": "string"
         }
       }
     },
@@ -2920,9 +3230,9 @@
           "type": "array",
           "items": {
             "type": "object",
-            "$ref": "#/definitions/TupleKeyWithoutCondition",
-            "minimum": 1
-          }
+            "$ref": "#/definitions/TupleKeyWithoutCondition"
+          },
+          "minItems": 1
         }
       },
       "required": [
@@ -2936,9 +3246,9 @@
           "type": "array",
           "items": {
             "type": "object",
-            "$ref": "#/definitions/TupleKey",
-            "minimum": 1
-          }
+            "$ref": "#/definitions/TupleKey"
+          },
+          "minItems": 1
         }
       },
       "required": [

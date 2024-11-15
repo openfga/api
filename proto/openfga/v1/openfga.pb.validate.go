@@ -1437,10 +1437,10 @@ func (m *ContextualTupleKeys) validate(all bool) error {
 
 	var errors []error
 
-	if len(m.GetTupleKeys()) > 20 {
+	if len(m.GetTupleKeys()) > 100 {
 		err := ContextualTupleKeysValidationError{
 			field:  "TupleKeys",
-			reason: "value must contain no more than 20 item(s)",
+			reason: "value must contain no more than 100 item(s)",
 		}
 		if !all {
 			return err
