@@ -355,7 +355,7 @@ func (m *Subject) validate(all bool) error {
 	if !_Subject_Id_Pattern.MatchString(m.GetId()) {
 		err := SubjectValidationError{
 			field:  "Id",
-			reason: "value does not match regex pattern \"^[^:#@\\\\s]{1,50}$\"",
+			reason: "value does not match regex pattern \"^[^:#@\\\\s]{1,500}$\"",
 		}
 		if !all {
 			return err
@@ -471,7 +471,7 @@ var _ interface {
 
 var _Subject_Type_Pattern = regexp.MustCompile("^[^:#@\\s]{1,50}$")
 
-var _Subject_Id_Pattern = regexp.MustCompile("^[^:#@\\s]{1,50}$")
+var _Subject_Id_Pattern = regexp.MustCompile("^[^:#@\\s]{1,500}$")
 
 // Validate checks the field values on Resource with the rules defined in the
 // proto definition for this message. If any rules are violated, the first
@@ -506,16 +506,7 @@ func (m *Resource) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
-	if !_Resource_Id_Pattern.MatchString(m.GetId()) {
-		err := ResourceValidationError{
-			field:  "Id",
-			reason: "value does not match regex pattern \"^[^:#@\\\\s]{1,50}$\"",
-		}
-		if !all {
-			return err
-		}
-		errors = append(errors, err)
-	}
+	// no validation rules for Id
 
 	if all {
 		switch v := interface{}(m.GetProperties()).(type) {
@@ -624,8 +615,6 @@ var _ interface {
 } = ResourceValidationError{}
 
 var _Resource_Type_Pattern = regexp.MustCompile("^[^:#@\\s]{1,50}$")
-
-var _Resource_Id_Pattern = regexp.MustCompile("^[^:#@\\s]{1,50}$")
 
 // Validate checks the field values on Action with the rules defined in the
 // proto definition for this message. If any rules are violated, the first

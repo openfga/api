@@ -11,7 +11,7 @@ import "validate/validate.proto";
 service AuthZenService {
   rpc Evaluation(EvaluationRequest) returns (EvaluationResponse) {
     option (google.api.http) = {
-      post: "/access/v1/evaluation"
+      post: "/stores/{store_id}/access/v1/evaluation"
       body: "*"
     };
 
@@ -192,7 +192,7 @@ message Subject {
 
   string id = 2 [
     (validate.rules).string = {
-      pattern: "^[^:#@\\s]{1,50}$"
+      pattern: "^[^:#@\\s]{1,500}$"
       ignore_empty: false
     },
     (google.api.field_behavior) = REQUIRED,
@@ -213,10 +213,6 @@ message Resource {
   ];
 
   string id = 2 [
-    (validate.rules).string = {
-      pattern: "^[^:#@\\s]{1,50}$"
-      ignore_empty: false
-    },
     (google.api.field_behavior) = REQUIRED,
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"roadmap\""}
   ];
