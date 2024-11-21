@@ -19,7 +19,8 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	AuthZenService_Evaluation_FullMethodName = "/authzen.v1.AuthZenService/Evaluation"
+	AuthZenService_Evaluation_FullMethodName  = "/authzen.v1.AuthZenService/Evaluation"
+	AuthZenService_Evaluations_FullMethodName = "/authzen.v1.AuthZenService/Evaluations"
 )
 
 // AuthZenServiceClient is the client API for AuthZenService service.
@@ -27,6 +28,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type AuthZenServiceClient interface {
 	Evaluation(ctx context.Context, in *EvaluationRequest, opts ...grpc.CallOption) (*EvaluationResponse, error)
+	Evaluations(ctx context.Context, in *EvaluationsRequest, opts ...grpc.CallOption) (*EvaluationsResponse, error)
 }
 
 type authZenServiceClient struct {
@@ -46,11 +48,21 @@ func (c *authZenServiceClient) Evaluation(ctx context.Context, in *EvaluationReq
 	return out, nil
 }
 
+func (c *authZenServiceClient) Evaluations(ctx context.Context, in *EvaluationsRequest, opts ...grpc.CallOption) (*EvaluationsResponse, error) {
+	out := new(EvaluationsResponse)
+	err := c.cc.Invoke(ctx, AuthZenService_Evaluations_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // AuthZenServiceServer is the server API for AuthZenService service.
 // All implementations must embed UnimplementedAuthZenServiceServer
 // for forward compatibility
 type AuthZenServiceServer interface {
 	Evaluation(context.Context, *EvaluationRequest) (*EvaluationResponse, error)
+	Evaluations(context.Context, *EvaluationsRequest) (*EvaluationsResponse, error)
 	mustEmbedUnimplementedAuthZenServiceServer()
 }
 
@@ -60,6 +72,9 @@ type UnimplementedAuthZenServiceServer struct {
 
 func (UnimplementedAuthZenServiceServer) Evaluation(context.Context, *EvaluationRequest) (*EvaluationResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Evaluation not implemented")
+}
+func (UnimplementedAuthZenServiceServer) Evaluations(context.Context, *EvaluationsRequest) (*EvaluationsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Evaluations not implemented")
 }
 func (UnimplementedAuthZenServiceServer) mustEmbedUnimplementedAuthZenServiceServer() {}
 
@@ -92,6 +107,24 @@ func _AuthZenService_Evaluation_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
+func _AuthZenService_Evaluations_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(EvaluationsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthZenServiceServer).Evaluations(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AuthZenService_Evaluations_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthZenServiceServer).Evaluations(ctx, req.(*EvaluationsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // AuthZenService_ServiceDesc is the grpc.ServiceDesc for AuthZenService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -102,6 +135,10 @@ var AuthZenService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Evaluation",
 			Handler:    _AuthZenService_Evaluation_Handler,
+		},
+		{
+			MethodName: "Evaluations",
+			Handler:    _AuthZenService_Evaluations_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

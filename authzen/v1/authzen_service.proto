@@ -141,6 +141,19 @@ service AuthZenService {
         "```\n"
     };
   }
+
+  rpc Evaluations(EvaluationsRequest) returns (EvaluationsResponse) {
+    option (google.api.http) = {
+      post: "/stores/{store_id}/access/v1/evaluations"
+      body: "*"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Check whether one or more users are authorized to access an object"
+      tags: ["AuthZen"]
+      operation_id: "Evaluations"
+    };
+  }
 }
 
 message EvaluationRequest {
@@ -178,6 +191,13 @@ message EvaluationRequest {
     },
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01G5JAVJ41T49E9TT3SKVS7X1J\""}
   ];
+}
+
+message EvaluationsItemRequest {
+  optional Subject subject = 1;
+  optional Resource resource = 2;
+  optional Action action = 3;
+  optional google.protobuf.Struct context = 4;
 }
 
 message Subject {
@@ -245,4 +265,25 @@ message EvaluationResponseContext {
   google.protobuf.Struct reason_admin = 2;
 
   google.protobuf.Struct reason_user = 3;
+}
+
+message EvaluationsRequest {
+  optional Subject subject = 1;
+  optional Action action = 2;
+  optional Resource resource = 3;
+  optional google.protobuf.Struct context = 4;
+  repeated EvaluationsItemRequest evaluations = 5;
+
+  string store_id = 6 [
+    json_name = "store_id",
+    (validate.rules).string = {
+      pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"
+      ignore_empty: true
+    },
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01G5JAVJ41T49E9TT3SKVS7X1J\""}
+  ];
+}
+
+message EvaluationsResponse {
+  repeated EvaluationResponse evaluation_responses = 1 [json_name = "evaluations"];
 }
