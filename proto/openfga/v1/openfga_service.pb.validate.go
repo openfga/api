@@ -6943,7 +6943,16 @@ func (m *ListStoresRequest) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
-	// no validation rules for Name
+	if !_ListStoresRequest_Name_Pattern.MatchString(m.GetName()) {
+		err := ListStoresRequestValidationError{
+			field:  "Name",
+			reason: "value does not match regex pattern \"^[a-zA-Z0-9\\\\s\\\\.\\\\-\\\\/^_&@]{3,64}$\"",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
 
 	if len(errors) > 0 {
 		return ListStoresRequestMultiError(errors)
@@ -7024,6 +7033,8 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = ListStoresRequestValidationError{}
+
+var _ListStoresRequest_Name_Pattern = regexp.MustCompile("^[a-zA-Z0-9\\s\\.\\-\\/^_&@]{3,64}$")
 
 // Validate checks the field values on ListStoresResponse with the rules
 // defined in the proto definition for this message. If any rules are
