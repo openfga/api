@@ -6943,15 +6943,19 @@ func (m *ListStoresRequest) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
-	if !_ListStoresRequest_Name_Pattern.MatchString(m.GetName()) {
-		err := ListStoresRequestValidationError{
-			field:  "Name",
-			reason: "value does not match regex pattern \"^[a-zA-Z0-9\\\\s\\\\.\\\\-\\\\/^_&@]{3,64}$\"",
+	if m.GetName() != "" {
+
+		if !_ListStoresRequest_Name_Pattern.MatchString(m.GetName()) {
+			err := ListStoresRequestValidationError{
+				field:  "Name",
+				reason: "value does not match regex pattern \"^[a-zA-Z0-9\\\\s\\\\.\\\\-\\\\/^_&@]{3,64}$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
 		}
-		if !all {
-			return err
-		}
-		errors = append(errors, err)
+
 	}
 
 	if len(errors) > 0 {

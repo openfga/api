@@ -1690,7 +1690,10 @@ message ListStoresRequest {
 
   string name = 3 [
     (google.api.field_behavior) = OPTIONAL,
-    (validate.rules).string = {pattern: "^[a-zA-Z0-9\\s\\.\\-\\/^_&@]{3,64}$"},
+    (validate.rules).string = {
+      pattern: "^[a-zA-Z0-9\\s\\.\\-\\/^_&@]{3,64}$"
+      ignore_empty: true
+    },
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"my-store-name\""}
   ];
 }
