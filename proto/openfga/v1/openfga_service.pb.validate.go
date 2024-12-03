@@ -2036,6 +2036,17 @@ func (m *WriteRequest) validate(all bool) error {
 
 	}
 
+	if _, ok := UpsertPreference_name[int32(m.GetUpsertAllowed())]; !ok {
+		err := WriteRequestValidationError{
+			field:  "UpsertAllowed",
+			reason: "value must be one of the defined enum values",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
 	if len(errors) > 0 {
 		return WriteRequestMultiError(errors)
 	}

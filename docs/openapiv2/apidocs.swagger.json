@@ -1647,6 +1647,10 @@
                 "authorization_model_id": {
                   "type": "string",
                   "example": "01G5JAVJ41T49E9TT3SKVS7X1J"
+                },
+                "upsertAllowed": {
+                  "$ref": "#/definitions/UpsertPreference",
+                  "description": "Controls whether insert only or allow upsert. Default value is UPSERT_UNSPECIFIED, which will have the same behavior as INSERT_ONLY."
                 }
               }
             }
@@ -2864,6 +2868,16 @@
           "type": "string"
         }
       }
+    },
+    "UpsertPreference": {
+      "type": "string",
+      "enum": [
+        "UPSERT_UNSPECIFIED",
+        "INSERT_ONLY",
+        "ALLOW_UPSERT"
+      ],
+      "default": "UPSERT_UNSPECIFIED",
+      "description": "Controls whether duplicate is allowed.\n\n - UPSERT_UNSPECIFIED: Default if not set. Behavior will be the same as INSERT_ONLY.\n - INSERT_ONLY: Write failed when there are duplicate entry.\n - ALLOW_UPSERT: Upsert when there are existing entry."
     },
     "User": {
       "type": "object",

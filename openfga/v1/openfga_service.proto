@@ -12,6 +12,7 @@ import "openfga/v1/authzmodel.proto";
 import "openfga/v1/errors_ignore.proto";
 import "openfga/v1/openfga.proto";
 import "openfga/v1/openfga_service_consistency.proto";
+import "openfga/v1/openfga_upsert.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 import "validate/validate.proto";
 
@@ -1162,6 +1163,9 @@ message WriteRequest {
     },
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01G5JAVJ41T49E9TT3SKVS7X1J\""}
   ];
+
+  // Controls whether insert only or allow upsert. Default value is UPSERT_UNSPECIFIED, which will have the same behavior as INSERT_ONLY.
+  UpsertPreference upsert_allowed = 5 [(validate.rules).enum.defined_only = true];
 }
 
 message WriteResponse {}
