@@ -22,6 +22,7 @@ const (
 	OpenFGAService_Read_FullMethodName                    = "/openfga.v1.OpenFGAService/Read"
 	OpenFGAService_Write_FullMethodName                   = "/openfga.v1.OpenFGAService/Write"
 	OpenFGAService_Check_FullMethodName                   = "/openfga.v1.OpenFGAService/Check"
+	OpenFGAService_BatchCheck_FullMethodName              = "/openfga.v1.OpenFGAService/BatchCheck"
 	OpenFGAService_Expand_FullMethodName                  = "/openfga.v1.OpenFGAService/Expand"
 	OpenFGAService_ReadAuthorizationModels_FullMethodName = "/openfga.v1.OpenFGAService/ReadAuthorizationModels"
 	OpenFGAService_ReadAuthorizationModel_FullMethodName  = "/openfga.v1.OpenFGAService/ReadAuthorizationModel"
@@ -46,6 +47,7 @@ type OpenFGAServiceClient interface {
 	Read(ctx context.Context, in *ReadRequest, opts ...grpc.CallOption) (*ReadResponse, error)
 	Write(ctx context.Context, in *WriteRequest, opts ...grpc.CallOption) (*WriteResponse, error)
 	Check(ctx context.Context, in *CheckRequest, opts ...grpc.CallOption) (*CheckResponse, error)
+	BatchCheck(ctx context.Context, in *BatchCheckRequest, opts ...grpc.CallOption) (*BatchCheckResponse, error)
 	Expand(ctx context.Context, in *ExpandRequest, opts ...grpc.CallOption) (*ExpandResponse, error)
 	ReadAuthorizationModels(ctx context.Context, in *ReadAuthorizationModelsRequest, opts ...grpc.CallOption) (*ReadAuthorizationModelsResponse, error)
 	ReadAuthorizationModel(ctx context.Context, in *ReadAuthorizationModelRequest, opts ...grpc.CallOption) (*ReadAuthorizationModelResponse, error)
@@ -92,6 +94,15 @@ func (c *openFGAServiceClient) Write(ctx context.Context, in *WriteRequest, opts
 func (c *openFGAServiceClient) Check(ctx context.Context, in *CheckRequest, opts ...grpc.CallOption) (*CheckResponse, error) {
 	out := new(CheckResponse)
 	err := c.cc.Invoke(ctx, OpenFGAService_Check_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *openFGAServiceClient) BatchCheck(ctx context.Context, in *BatchCheckRequest, opts ...grpc.CallOption) (*BatchCheckResponse, error) {
+	out := new(BatchCheckResponse)
+	err := c.cc.Invoke(ctx, OpenFGAService_BatchCheck_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -263,6 +274,7 @@ type OpenFGAServiceServer interface {
 	Read(context.Context, *ReadRequest) (*ReadResponse, error)
 	Write(context.Context, *WriteRequest) (*WriteResponse, error)
 	Check(context.Context, *CheckRequest) (*CheckResponse, error)
+	BatchCheck(context.Context, *BatchCheckRequest) (*BatchCheckResponse, error)
 	Expand(context.Context, *ExpandRequest) (*ExpandResponse, error)
 	ReadAuthorizationModels(context.Context, *ReadAuthorizationModelsRequest) (*ReadAuthorizationModelsResponse, error)
 	ReadAuthorizationModel(context.Context, *ReadAuthorizationModelRequest) (*ReadAuthorizationModelResponse, error)
@@ -293,6 +305,9 @@ func (UnimplementedOpenFGAServiceServer) Write(context.Context, *WriteRequest) (
 }
 func (UnimplementedOpenFGAServiceServer) Check(context.Context, *CheckRequest) (*CheckResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Check not implemented")
+}
+func (UnimplementedOpenFGAServiceServer) BatchCheck(context.Context, *BatchCheckRequest) (*BatchCheckResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method BatchCheck not implemented")
 }
 func (UnimplementedOpenFGAServiceServer) Expand(context.Context, *ExpandRequest) (*ExpandResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Expand not implemented")
@@ -402,6 +417,24 @@ func _OpenFGAService_Check_Handler(srv interface{}, ctx context.Context, dec fun
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(OpenFGAServiceServer).Check(ctx, req.(*CheckRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _OpenFGAService_BatchCheck_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(BatchCheckRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OpenFGAServiceServer).BatchCheck(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: OpenFGAService_BatchCheck_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OpenFGAServiceServer).BatchCheck(ctx, req.(*BatchCheckRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -697,6 +730,10 @@ var OpenFGAService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Check",
 			Handler:    _OpenFGAService_Check_Handler,
+		},
+		{
+			MethodName: "BatchCheck",
+			Handler:    _OpenFGAService_BatchCheck_Handler,
 		},
 		{
 			MethodName: "Expand",
