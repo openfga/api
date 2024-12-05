@@ -1,4 +1,6 @@
 # OpenFGA API
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fopenfga%2Fapi.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fopenfga%2Fapi?ref=badge_shield)
+
 This project contains the definitions of [Protocol Buffers](https://developers.google.com/protocol-buffers/) used by OpenFGA.
 
 [Buf](https://github.com/bufbuild/buf) is used to manage, package, and generate source code from the protocol buffer definitions. The API definitions
@@ -45,3 +47,7 @@ Or you can just use
 ```bash
 make
 ```
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fopenfga%2Fapi.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fopenfga%2Fapi?ref=badge_large)
