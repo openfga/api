@@ -1,0 +1,163 @@
+syntax = "proto3";
+
+package openfga.v2beta1;
+
+import "google/protobuf/struct.proto";
+
+message RelationshipTuple {
+    
+    Subject subject = 1;
+    
+    string relation = 2;
+    
+    Object object = 3;
+
+    RelationshipCondition condition = 4;
+}
+
+message RelationshipCondition {
+    string name = 1;
+    google.protobuf.Struct context = 2;
+}
+
+message RelationshipTupleWithoutCondition {
+    Subject subject = 1;
+    string relation = 2;
+    Object object = 3;
+}
+
+message Subject {
+    oneof subject_ref{
+        Object object = 1;
+        TypedWildcard typed_wildcard = 2;
+        SubjectSet subject_set = 3;
+    }
+}
+
+message Object {
+    string type = 1;
+    string id = 2;
+}
+
+// TypedWildcard represents the public wildcard of the specified object type.
+// For example, `user:*` represents all objects of the `user` object type.
+message TypedWildcard {
+    string type = 1;
+}
+
+message SubjectSet {
+    Object object = 1;
+    string relation = 2;
+}
+
+message AuthorizationModel {
+    string id = 1;
+    map<string, Relation> relations = 2;
+    map<string, Condition> conditions = 3;
+}
+
+message Relation {
+
+    // The name of the relation.
+    string name = 1;
+
+    // The relationship rewrite rule for the relation.
+    RelationRewrite rewrite = 2;
+
+    // A list of type restrictions that apply to the relation.
+    repeated TypeRestriction type_restrictions = 3;
+}
+
+// RelationRewrite represents a relationship rule that is used to rewrite or define a relation
+// in terms of a direct relationship or some other rewritten relationship definition including
+// through set operations involving union, intersection, and exclusion.
+message RelationRewrite {
+    oneof rewrite_rule {
+        DirectRelationship direct = 1;
+        ComputedRelationship computed = 2;
+        TupleToSubjectSetRelationship tuple_to_subjectset = 3;
+        // union, intersection, exclusion
+    }
+}
+
+// DirectRelationship represents a directly assignable relationship.
+//
+// These relationships are the kinds of relationships that are permissible for writes to an
+// OpenFGA store. The kinds of objects that can be assignable to the directly assignable 
+// relationship are based on the  relations type restrictions.
+message DirectRelationship {}
+
+// ComputedRelationship represents a relationship that is rewritten through a recomputed relation.
+//
+// For example, if a relation `viewer` is rewritten through a computed relationship `editor`. In
+// Zanzibar nomenclature this is identical to computed userset rewrites. 
+message ComputedRelationship {
+    string relation = 1;
+}
+
+// TupleToSubjectSetRelationship represents a relationship 
+//
+// In Zanzibar nomenclature this is identical to tuple to userset rewrites.
+message TupleToSubjectSetRelationship {
+    string tupleset_relation = 1;
+    ComputedRelationship computed_relationship = 2;
+}
+
+// TypeRestriction represents a relationship constraint that applies to a directly
+// assignable relationship. A directl relationship is only permissible if the type
+// restriction allows it.
+message TypeRestriction {
+    oneof type_reference {
+        UnconditionedObjectTypeRestriction unconditioned_object_type_reference = 1;
+        ConditionedObjectTypeRestriction conditioned_object_type_reference = 2;
+        TypedWildcard typed_wildcard_reference = 3;
+        SubjectSetTypeRestriction subject_set_reference = 4;
+    }
+}
+
+// UnconditionedObjectTypeRestriction represents a type restriction that enforces a relationship with
+// only a specific object type and is not conditioned on anything.
+message UnconditionedObjectTypeRestriction {
+    string type = 1;
+}
+
+// ConditionedObjectTypeRestriction represents a type restriction that enforces a relationship with
+// a specific object type and is conditioned on the provided condition name.
+message ConditionedObjectTypeRestriction {
+    string type = 1;
+    string condition = 2;
+}
+
+// SubjectSetTypeRestriction represents a type restriction that references a relation defined on a specific
+// object type. For example `group#member` or `team#admin`.
+message SubjectSetTypeRestriction {
+    string type = 1;
+    string relation = 2;
+}
+
+message Condition {
+    string name = 1;
+    string expression = 2;
+    map<string, ConditionParameterTypeRef> parameters = 3;
+}
+
+message ConditionParameterTypeRef {
+  enum TypeName {
+    TYPE_NAME_UNSPECIFIED = 0;
+    TYPE_NAME_ANY = 1;
+    TYPE_NAME_BOOL = 2;
+    TYPE_NAME_STRING = 3;
+    TYPE_NAME_INT = 4;
+    TYPE_NAME_UINT = 5;
+    TYPE_NAME_DOUBLE = 6;
+    TYPE_NAME_DURATION = 7;
+    TYPE_NAME_TIMESTAMP = 8;
+    TYPE_NAME_MAP = 9;
+    TYPE_NAME_LIST = 10;
+    TYPE_NAME_IPADDRESS = 11;
+  }
+
+  TypeName type_name = 1;
+
+  repeated ConditionParameterTypeRef generic_types = 2;
+}
