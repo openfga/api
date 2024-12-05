@@ -1796,6 +1796,20 @@ message ListStoresRequest {
     (validate.rules).string.max_bytes = 5120,
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ==\""}
   ];
+
+  string name = 3 [
+    (google.api.field_behavior) = OPTIONAL,
+    (validate.rules).string = {
+      pattern: "^[a-zA-Z0-9\\s\\.\\-\\/^_&@]{3,64}$"
+      ignore_empty: true
+    },
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"my-store-name\""
+      description:
+        "The name parameter instructs the API to only include results that match that name."
+        "Multiple results may be returned. Only exact matches will be returned; substring matches and regexes will not be evaluated"
+    }
+  ];
 }
 
 message ListStoresResponse {
