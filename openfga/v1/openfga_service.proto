@@ -1694,7 +1694,12 @@ message ListStoresRequest {
       pattern: "^[a-zA-Z0-9\\s\\.\\-\\/^_&@]{3,64}$"
       ignore_empty: true
     },
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"my-store-name\""}
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"my-store-name\""
+      description:
+        "The name parameter instructs the API to only include results that match that name."
+        "Multiple results may be returned. Only exact matches will be returned; substring matches and regexes will not be evaluated"
+    }
   ];
 }
 
