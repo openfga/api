@@ -1411,8 +1411,8 @@ message BatchCheckSingleResult {
 
 message CheckError {
   oneof code {
-    ErrorCode input_error = 1;
-    InternalErrorCode internal_error = 2;
+    ErrorCode input_error = 1 [json_name = "input_error"];
+    InternalErrorCode internal_error = 2 [json_name = "internal_error"];
   }
   string message = 3;
 }
