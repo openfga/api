@@ -1886,10 +1886,10 @@
     "CheckError": {
       "type": "object",
       "properties": {
-        "inputError": {
+        "input_error": {
           "$ref": "#/definitions/ErrorCode"
         },
-        "internalError": {
+        "internal_error": {
           "$ref": "#/definitions/InternalErrorCode"
         },
         "message": {
