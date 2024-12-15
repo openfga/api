@@ -1014,33 +1014,37 @@ func (m *EvaluationResponse) validate(all bool) error {
 
 	// no validation rules for Decision
 
-	if all {
-		switch v := interface{}(m.GetContext()).(type) {
-		case interface{ ValidateAll() error }:
-			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, EvaluationResponseValidationError{
-					field:  "Context",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
+	if m.Context != nil {
+
+		if all {
+			switch v := interface{}(m.GetContext()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, EvaluationResponseValidationError{
+						field:  "Context",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, EvaluationResponseValidationError{
+						field:  "Context",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
 			}
-		case interface{ Validate() error }:
+		} else if v, ok := interface{}(m.GetContext()).(interface{ Validate() error }); ok {
 			if err := v.Validate(); err != nil {
-				errors = append(errors, EvaluationResponseValidationError{
+				return EvaluationResponseValidationError{
 					field:  "Context",
 					reason: "embedded message failed validation",
 					cause:  err,
-				})
+				}
 			}
 		}
-	} else if v, ok := interface{}(m.GetContext()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return EvaluationResponseValidationError{
-				field:  "Context",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
-		}
+
 	}
 
 	if len(errors) > 0 {
@@ -1145,64 +1149,107 @@ func (m *EvaluationResponseContext) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for Id
-
-	if all {
-		switch v := interface{}(m.GetReasonAdmin()).(type) {
-		case interface{ ValidateAll() error }:
-			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, EvaluationResponseContextValidationError{
-					field:  "ReasonAdmin",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		case interface{ Validate() error }:
-			if err := v.Validate(); err != nil {
-				errors = append(errors, EvaluationResponseContextValidationError{
-					field:  "ReasonAdmin",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		}
-	} else if v, ok := interface{}(m.GetReasonAdmin()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return EvaluationResponseContextValidationError{
-				field:  "ReasonAdmin",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
-		}
+	if m.Id != nil {
+		// no validation rules for Id
 	}
 
-	if all {
-		switch v := interface{}(m.GetReasonUser()).(type) {
-		case interface{ ValidateAll() error }:
-			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, EvaluationResponseContextValidationError{
-					field:  "ReasonUser",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
+	if m.ReasonAdmin != nil {
+
+		if all {
+			switch v := interface{}(m.GetReasonAdmin()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, EvaluationResponseContextValidationError{
+						field:  "ReasonAdmin",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, EvaluationResponseContextValidationError{
+						field:  "ReasonAdmin",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
 			}
-		case interface{ Validate() error }:
+		} else if v, ok := interface{}(m.GetReasonAdmin()).(interface{ Validate() error }); ok {
 			if err := v.Validate(); err != nil {
-				errors = append(errors, EvaluationResponseContextValidationError{
+				return EvaluationResponseContextValidationError{
+					field:  "ReasonAdmin",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	if m.ReasonUser != nil {
+
+		if all {
+			switch v := interface{}(m.GetReasonUser()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, EvaluationResponseContextValidationError{
+						field:  "ReasonUser",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, EvaluationResponseContextValidationError{
+						field:  "ReasonUser",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetReasonUser()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return EvaluationResponseContextValidationError{
 					field:  "ReasonUser",
 					reason: "embedded message failed validation",
 					cause:  err,
-				})
+				}
 			}
 		}
-	} else if v, ok := interface{}(m.GetReasonUser()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return EvaluationResponseContextValidationError{
-				field:  "ReasonUser",
-				reason: "embedded message failed validation",
-				cause:  err,
+
+	}
+
+	if m.Error != nil {
+
+		if all {
+			switch v := interface{}(m.GetError()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, EvaluationResponseContextValidationError{
+						field:  "Error",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, EvaluationResponseContextValidationError{
+						field:  "Error",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetError()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return EvaluationResponseContextValidationError{
+					field:  "Error",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
 			}
 		}
+
 	}
 
 	if len(errors) > 0 {
@@ -1705,3 +1752,109 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = EvaluationsResponseValidationError{}
+
+// Validate checks the field values on ResponseContextError with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *ResponseContextError) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ResponseContextError with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// ResponseContextErrorMultiError, or nil if none found.
+func (m *ResponseContextError) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ResponseContextError) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Status
+
+	// no validation rules for Message
+
+	if len(errors) > 0 {
+		return ResponseContextErrorMultiError(errors)
+	}
+
+	return nil
+}
+
+// ResponseContextErrorMultiError is an error wrapping multiple validation
+// errors returned by ResponseContextError.ValidateAll() if the designated
+// constraints aren't met.
+type ResponseContextErrorMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ResponseContextErrorMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ResponseContextErrorMultiError) AllErrors() []error { return m }
+
+// ResponseContextErrorValidationError is the validation error returned by
+// ResponseContextError.Validate if the designated constraints aren't met.
+type ResponseContextErrorValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ResponseContextErrorValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ResponseContextErrorValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ResponseContextErrorValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ResponseContextErrorValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ResponseContextErrorValidationError) ErrorName() string {
+	return "ResponseContextErrorValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ResponseContextErrorValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sResponseContextError.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ResponseContextErrorValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ResponseContextErrorValidationError{}

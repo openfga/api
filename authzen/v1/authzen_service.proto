@@ -256,15 +256,17 @@ message Action {
 message EvaluationResponse {
   bool decision = 1;
 
-  EvaluationResponseContext context = 2;
+  optional EvaluationResponseContext context = 2;
 }
 
 message EvaluationResponseContext {
-  string id = 1;
+  optional string id = 1;
 
-  google.protobuf.Struct reason_admin = 2;
+  optional google.protobuf.Struct reason_admin = 2;
 
-  google.protobuf.Struct reason_user = 3;
+  optional google.protobuf.Struct reason_user = 3;
+
+  optional ResponseContextError error = 4;
 }
 
 message EvaluationsRequest {
@@ -286,4 +288,9 @@ message EvaluationsRequest {
 
 message EvaluationsResponse {
   repeated EvaluationResponse evaluation_responses = 1 [json_name = "evaluations"];
+}
+
+message ResponseContextError {
+  uint32 status = 1;
+  string message = 2;
 }
