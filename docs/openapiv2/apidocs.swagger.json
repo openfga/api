@@ -97,6 +97,13 @@
             "in": "query",
             "required": false,
             "type": "string"
+          },
+          {
+            "name": "name",
+            "description": "The name parameter instructs the API to only include results that match that name.Multiple results may be returned. Only exact matches will be returned; substring matches and regexes will not be evaluated",
+            "in": "query",
+            "required": false,
+            "type": "string"
           }
         ],
         "tags": [
