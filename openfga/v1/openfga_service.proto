@@ -1180,6 +1180,7 @@ message ReadRequest {
   string continuation_token = 4 [
     json_name = "continuation_token",
     (validate.rules).string.max_bytes = 5120,
+    (validate.rules).string.pattern = "^[A-Za-z0-9+/]+={0,2}$",
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ==\""}
   ];
 
@@ -1226,6 +1227,7 @@ message ReadResponse {
     json_name = "continuation_token",
     (google.api.field_behavior) = REQUIRED,
     (validate.rules).string.max_bytes = 5120,
+    (validate.rules).string.pattern = "^[A-Za-z0-9+/]+={0,2}$",
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       description: "The continuation token will be empty if there are no more tuples."
       example: "\"eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ==\""
@@ -1559,6 +1561,7 @@ message ReadAuthorizationModelsRequest {
   string continuation_token = 3 [
     json_name = "continuation_token",
     (validate.rules).string.max_bytes = 5120,
+    (validate.rules).string.pattern = "^[A-Za-z0-9+/]+={0,2}$",
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ==\""}
   ];
 }
@@ -1572,6 +1575,7 @@ message ReadAuthorizationModelsResponse {
   string continuation_token = 2 [
     json_name = "continuation_token",
     (validate.rules).string.max_bytes = 5120,
+    (validate.rules).string.pattern = "^[A-Za-z0-9+/]+={0,2}$",
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       description: "The continuation token will be empty if there are no more models."
       example: "\"eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ==\""
@@ -1662,6 +1666,7 @@ message ReadChangesRequest {
   string continuation_token = 4 [
     json_name = "continuation_token",
     (validate.rules).string.max_bytes = 5120,
+    (validate.rules).string.pattern = "^[A-Za-z0-9+/]+={0,2}$",
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ==\""}
   ];
 
@@ -1684,6 +1689,7 @@ message ReadChangesResponse {
   string continuation_token = 2 [
     json_name = "continuation_token",
     (validate.rules).string.max_bytes = 5120,
+    (validate.rules).string.pattern = "^[A-Za-z0-9+/]+={0,2}$",
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       description: "The continuation token will be identical if there are no new changes."
       example: "\"eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ==\""
@@ -1794,6 +1800,7 @@ message ListStoresRequest {
   string continuation_token = 2 [
     json_name = "continuation_token",
     (validate.rules).string.max_bytes = 5120,
+    (validate.rules).string.pattern = "^[A-Za-z0-9+/]+={0,2}$",
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ==\""}
   ];
 
@@ -1818,6 +1825,7 @@ message ListStoresResponse {
     json_name = "continuation_token",
     (google.api.field_behavior) = REQUIRED,
     (validate.rules).string.max_bytes = 5120,
+    (validate.rules).string.pattern = "^[A-Za-z0-9+/]+={0,2}$",
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       description: "The continuation token will be empty if there are no more stores."
       example: "\"eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ==\""
