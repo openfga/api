@@ -1258,7 +1258,7 @@ func (m *ReadRequest) validate(all bool) error {
 	if !_ReadRequest_ContinuationToken_Pattern.MatchString(m.GetContinuationToken()) {
 		err := ReadRequestValidationError{
 			field:  "ContinuationToken",
-			reason: "value does not match regex pattern \"^[A-Za-z0-9+/]+={0,2}$\"",
+			reason: "value does not match regex pattern \"^[A-Za-z0-9-_]+={0,2}$\"",
 		}
 		if !all {
 			return err
@@ -1356,7 +1356,7 @@ var _ interface {
 
 var _ReadRequest_StoreId_Pattern = regexp.MustCompile("^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$")
 
-var _ReadRequest_ContinuationToken_Pattern = regexp.MustCompile("^[A-Za-z0-9+/]+={0,2}$")
+var _ReadRequest_ContinuationToken_Pattern = regexp.MustCompile("^[A-Za-z0-9-_]+={0,2}$")
 
 // Validate checks the field values on ReadRequestTupleKey with the rules
 // defined in the proto definition for this message. If any rules are
@@ -1575,7 +1575,7 @@ func (m *ReadResponse) validate(all bool) error {
 	if !_ReadResponse_ContinuationToken_Pattern.MatchString(m.GetContinuationToken()) {
 		err := ReadResponseValidationError{
 			field:  "ContinuationToken",
-			reason: "value does not match regex pattern \"^[A-Za-z0-9+/]+={0,2}$\"",
+			reason: "value does not match regex pattern \"^[A-Za-z0-9-_]+={0,2}$\"",
 		}
 		if !all {
 			return err
@@ -1660,7 +1660,7 @@ var _ interface {
 	ErrorName() string
 } = ReadResponseValidationError{}
 
-var _ReadResponse_ContinuationToken_Pattern = regexp.MustCompile("^[A-Za-z0-9+/]+={0,2}$")
+var _ReadResponse_ContinuationToken_Pattern = regexp.MustCompile("^[A-Za-z0-9-_]+={0,2}$")
 
 // Validate checks the field values on WriteRequestWrites with the rules
 // defined in the proto definition for this message. If any rules are
@@ -4714,7 +4714,7 @@ func (m *ReadAuthorizationModelsRequest) validate(all bool) error {
 	if !_ReadAuthorizationModelsRequest_ContinuationToken_Pattern.MatchString(m.GetContinuationToken()) {
 		err := ReadAuthorizationModelsRequestValidationError{
 			field:  "ContinuationToken",
-			reason: "value does not match regex pattern \"^[A-Za-z0-9+/]+={0,2}$\"",
+			reason: "value does not match regex pattern \"^[A-Za-z0-9-_]+={0,2}$\"",
 		}
 		if !all {
 			return err
@@ -4805,7 +4805,7 @@ var _ interface {
 
 var _ReadAuthorizationModelsRequest_StoreId_Pattern = regexp.MustCompile("^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$")
 
-var _ReadAuthorizationModelsRequest_ContinuationToken_Pattern = regexp.MustCompile("^[A-Za-z0-9+/]+={0,2}$")
+var _ReadAuthorizationModelsRequest_ContinuationToken_Pattern = regexp.MustCompile("^[A-Za-z0-9-_]+={0,2}$")
 
 // Validate checks the field values on ReadAuthorizationModelsResponse with the
 // rules defined in the proto definition for this message. If any rules are
@@ -4877,7 +4877,7 @@ func (m *ReadAuthorizationModelsResponse) validate(all bool) error {
 	if !_ReadAuthorizationModelsResponse_ContinuationToken_Pattern.MatchString(m.GetContinuationToken()) {
 		err := ReadAuthorizationModelsResponseValidationError{
 			field:  "ContinuationToken",
-			reason: "value does not match regex pattern \"^[A-Za-z0-9+/]+={0,2}$\"",
+			reason: "value does not match regex pattern \"^[A-Za-z0-9-_]+={0,2}$\"",
 		}
 		if !all {
 			return err
@@ -4966,7 +4966,7 @@ var _ interface {
 	ErrorName() string
 } = ReadAuthorizationModelsResponseValidationError{}
 
-var _ReadAuthorizationModelsResponse_ContinuationToken_Pattern = regexp.MustCompile("^[A-Za-z0-9+/]+={0,2}$")
+var _ReadAuthorizationModelsResponse_ContinuationToken_Pattern = regexp.MustCompile("^[A-Za-z0-9-_]+={0,2}$")
 
 // Validate checks the field values on WriteAssertionsRequest with the rules
 // defined in the proto definition for this message. If any rules are
@@ -5597,7 +5597,7 @@ func (m *ReadChangesRequest) validate(all bool) error {
 	if !_ReadChangesRequest_ContinuationToken_Pattern.MatchString(m.GetContinuationToken()) {
 		err := ReadChangesRequestValidationError{
 			field:  "ContinuationToken",
-			reason: "value does not match regex pattern \"^[A-Za-z0-9+/]+={0,2}$\"",
+			reason: "value does not match regex pattern \"^[A-Za-z0-9-_]+={0,2}$\"",
 		}
 		if !all {
 			return err
@@ -5719,7 +5719,7 @@ var _ReadChangesRequest_StoreId_Pattern = regexp.MustCompile("^[ABCDEFGHJKMNPQRS
 
 var _ReadChangesRequest_Type_Pattern = regexp.MustCompile("^[^:#\\s]{1,254}$")
 
-var _ReadChangesRequest_ContinuationToken_Pattern = regexp.MustCompile("^[A-Za-z0-9+/]+={0,2}$")
+var _ReadChangesRequest_ContinuationToken_Pattern = regexp.MustCompile("^[A-Za-z0-9-_]+={0,2}$")
 
 // Validate checks the field values on ReadChangesResponse with the rules
 // defined in the proto definition for this message. If any rules are
@@ -5791,7 +5791,7 @@ func (m *ReadChangesResponse) validate(all bool) error {
 	if !_ReadChangesResponse_ContinuationToken_Pattern.MatchString(m.GetContinuationToken()) {
 		err := ReadChangesResponseValidationError{
 			field:  "ContinuationToken",
-			reason: "value does not match regex pattern \"^[A-Za-z0-9+/]+={0,2}$\"",
+			reason: "value does not match regex pattern \"^[A-Za-z0-9-_]+={0,2}$\"",
 		}
 		if !all {
 			return err
@@ -5879,7 +5879,7 @@ var _ interface {
 	ErrorName() string
 } = ReadChangesResponseValidationError{}
 
-var _ReadChangesResponse_ContinuationToken_Pattern = regexp.MustCompile("^[A-Za-z0-9+/]+={0,2}$")
+var _ReadChangesResponse_ContinuationToken_Pattern = regexp.MustCompile("^[A-Za-z0-9-_]+={0,2}$")
 
 // Validate checks the field values on CreateStoreRequest with the rules
 // defined in the proto definition for this message. If any rules are
@@ -7024,7 +7024,7 @@ func (m *ListStoresRequest) validate(all bool) error {
 	if !_ListStoresRequest_ContinuationToken_Pattern.MatchString(m.GetContinuationToken()) {
 		err := ListStoresRequestValidationError{
 			field:  "ContinuationToken",
-			reason: "value does not match regex pattern \"^[A-Za-z0-9+/]+={0,2}$\"",
+			reason: "value does not match regex pattern \"^[A-Za-z0-9-_]+={0,2}$\"",
 		}
 		if !all {
 			return err
@@ -7127,7 +7127,7 @@ var _ interface {
 	ErrorName() string
 } = ListStoresRequestValidationError{}
 
-var _ListStoresRequest_ContinuationToken_Pattern = regexp.MustCompile("^[A-Za-z0-9+/]+={0,2}$")
+var _ListStoresRequest_ContinuationToken_Pattern = regexp.MustCompile("^[A-Za-z0-9-_]+={0,2}$")
 
 var _ListStoresRequest_Name_Pattern = regexp.MustCompile("^[a-zA-Z0-9\\s\\.\\-\\/^_&@]{3,64}$")
 
@@ -7201,7 +7201,7 @@ func (m *ListStoresResponse) validate(all bool) error {
 	if !_ListStoresResponse_ContinuationToken_Pattern.MatchString(m.GetContinuationToken()) {
 		err := ListStoresResponseValidationError{
 			field:  "ContinuationToken",
-			reason: "value does not match regex pattern \"^[A-Za-z0-9+/]+={0,2}$\"",
+			reason: "value does not match regex pattern \"^[A-Za-z0-9-_]+={0,2}$\"",
 		}
 		if !all {
 			return err
@@ -7289,7 +7289,7 @@ var _ interface {
 	ErrorName() string
 } = ListStoresResponseValidationError{}
 
-var _ListStoresResponse_ContinuationToken_Pattern = regexp.MustCompile("^[A-Za-z0-9+/]+={0,2}$")
+var _ListStoresResponse_ContinuationToken_Pattern = regexp.MustCompile("^[A-Za-z0-9-_]+={0,2}$")
 
 // Validate checks the field values on AssertionTupleKey with the rules defined
 // in the proto definition for this message. If any rules are violated, the
