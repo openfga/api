@@ -1528,7 +1528,7 @@ message WriteAuthorizationModelRequest {
   map<string, openfga.v1.Condition> conditions = 4 [
     json_name = "conditions",
     (validate.rules).map.max_pairs = 25,
-    (validate.rules).map.keys.string = {pattern: "^[^:#@\\s]{1,50}$"} /* map key pattern restriction */
+    (validate.rules).map.keys.string = {pattern: "^[^:#@\\s]{1,50}$"}
   ];
 }
 
