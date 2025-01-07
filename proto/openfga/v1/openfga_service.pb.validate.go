@@ -1380,15 +1380,30 @@ func (m *ReadRequestTupleKey) validate(all bool) error {
 
 	var errors []error
 
-	if len(m.GetUser()) > 512 {
-		err := ReadRequestTupleKeyValidationError{
-			field:  "User",
-			reason: "value length must be at most 512 bytes",
+	if m.GetUser() != "" {
+
+		if len(m.GetUser()) > 512 {
+			err := ReadRequestTupleKeyValidationError{
+				field:  "User",
+				reason: "value length must be at most 512 bytes",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
 		}
-		if !all {
-			return err
+
+		if !_ReadRequestTupleKey_User_Pattern.MatchString(m.GetUser()) {
+			err := ReadRequestTupleKeyValidationError{
+				field:  "User",
+				reason: "value does not match regex pattern \"^[^\\\\s]{1,511}:[^\\\\s]{1,511}$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
 		}
-		errors = append(errors, err)
+
 	}
 
 	if m.GetRelation() != "" {
@@ -1500,6 +1515,8 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = ReadRequestTupleKeyValidationError{}
+
+var _ReadRequestTupleKey_User_Pattern = regexp.MustCompile("^[^\\s]{1,511}:[^\\s]{1,511}$")
 
 var _ReadRequestTupleKey_Relation_Pattern = regexp.MustCompile("^[^:#@\\s]{1,50}$")
 
