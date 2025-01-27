@@ -1386,6 +1386,7 @@ message BatchCheckRequest {
 message BatchCheckItem {
   CheckRequestTupleKey tuple_key = 1 [
     json_name = "tuple_key",
+    (validate.rules).message.required = true,
     (google.api.field_behavior) = REQUIRED
   ];
   openfga.v1.ContextualTupleKeys contextual_tuples = 2 [json_name = "contextual_tuples"];

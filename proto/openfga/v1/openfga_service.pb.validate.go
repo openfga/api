@@ -2955,6 +2955,17 @@ func (m *BatchCheckItem) validate(all bool) error {
 
 	var errors []error
 
+	if m.GetTupleKey() == nil {
+		err := BatchCheckItemValidationError{
+			field:  "TupleKey",
+			reason: "value is required",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
 	if all {
 		switch v := interface{}(m.GetTupleKey()).(type) {
 		case interface{ ValidateAll() error }:
