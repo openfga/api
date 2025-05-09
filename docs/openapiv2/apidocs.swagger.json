@@ -308,6 +308,89 @@
         "tags": [
           "Stores"
         ]
+      },
+      "patch": {
+        "summary": "Update a store",
+        "description": "Updates an existing store.",
+        "operationId": "UpdateStore",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/UpdateStoreResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "401": {
+            "description": "Not authenticated.",
+            "schema": {
+              "$ref": "#/definitions/UnauthenticatedResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "schema": {
+              "$ref": "#/definitions/ForbiddenResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "409": {
+            "description": "Request was aborted due a transaction conflict.",
+            "schema": {
+              "$ref": "#/definitions/AbortedMessageResponse"
+            }
+          },
+          "422": {
+            "description": "Request timed out due to excessive request throttling.",
+            "schema": {
+              "$ref": "#/definitions/UnprocessableContentMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "store_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "my-new-store-name"
+                }
+              },
+              "required": [
+                "name"
+              ]
+            }
+          }
+        ],
+        "tags": [
+          "Stores"
+        ]
       }
     },
     "/stores/{store_id}/assertions/{authorization_model_id}": {
@@ -2871,6 +2954,32 @@
           "type": "string"
         }
       }
+    },
+    "UpdateStoreResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "01YCP46JKYM8FJCQ37NMBYHE5X"
+        },
+        "name": {
+          "type": "string"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "created_at",
+        "updated_at"
+      ]
     },
     "User": {
       "type": "object",
