@@ -347,6 +347,7 @@ service OpenFGAService {
         "of each check to the item which was checked, so it must be unique for each item in the batch. "
         "We recommend using a UUID or ULID as the `correlation_id`, but you can use whatever unique identifier you need as long "
         " as it matches this regex pattern: `^[\\w\\d-]{1,36}$`\n\n"
+        "NOTE: The maximum number of tuples that can be passed in the batch check API is 50 by default. If batch check is called using the SDK, the SDK can split the batch check requests for you. \n\n"
         "For more details on how `Check` functions, see the docs for `/check`.\n\n"
         "### Examples\n"
         "#### A BatchCheckRequest\n"
