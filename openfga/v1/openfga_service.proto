@@ -347,7 +347,7 @@ service OpenFGAService {
         "of each check to the item which was checked, so it must be unique for each item in the batch. "
         "We recommend using a UUID or ULID as the `correlation_id`, but you can use whatever unique identifier you need as long "
         " as it matches this regex pattern: `^[\\w\\d-]{1,36}$`\n\n"
-        "NOTE: The maximum number of checks that can be passed in the `BatchCheck` API is configurable via the [OPENFGA_MAX_CHECKS_PER_BATCH_CHECK](https://openfga.dev/docs/getting-started/setup-openfga/configuration#OPENFGA_MAX_CHECKS_PER_BATCH_CHECK) environment variable. If `BatchCheck` is called using the SDK, the SDK can split the batch check requests for you."
+        "NOTE: The maximum number of checks that can be passed in the `BatchCheck` API is configurable via the [OPENFGA_MAX_CHECKS_PER_BATCH_CHECK](https://openfga.dev/docs/getting-started/setup-openfga/configuration#OPENFGA_MAX_CHECKS_PER_BATCH_CHECK) environment variable. If `BatchCheck` is called using the SDK, the SDK can split the batch check requests for you.\n\n"
         "For more details on how `Check` functions, see the docs for `/check`.\n\n"
         "### Examples\n"
         "#### A BatchCheckRequest\n"
