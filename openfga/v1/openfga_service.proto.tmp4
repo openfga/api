@@ -1555,7 +1555,7 @@ message WriteAuthorizationModelRequest {
       example: "{\"environment\": \"production\", \"team\": \"platform\", \"version\": \"v1.2.3\"}"
     }
   ];
-}
+
 message WriteAuthorizationModelResponse {
   string authorization_model_id = 1 [
     json_name = "authorization_model_id",

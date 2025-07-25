@@ -1554,8 +1554,8 @@ message WriteAuthorizationModelRequest {
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       example: "{\"environment\": \"production\", \"team\": \"platform\", \"version\": \"v1.2.3\"}"
     }
-  ];
-}
+  ];}
+
 message WriteAuthorizationModelResponse {
   string authorization_model_id = 1 [
     json_name = "authorization_model_id",
