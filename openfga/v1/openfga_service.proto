@@ -1537,8 +1537,25 @@ message WriteAuthorizationModelRequest {
     (validate.rules).map.max_pairs = 25,
     (validate.rules).map.keys.string = {pattern: "^[^:#@\\s]{1,50}$"}
   ];
-}
 
+  // Labels and metadata for the authorization model (similar to Kubernetes labels)
+  map<string, string> metadata = 5 [
+    json_name = "metadata",
+    (validate.rules).map.max_pairs = 20,
+    (validate.rules).map.keys.string = {
+      pattern: "^[a-z0-9]([a-z0-9\\-\\.]*[a-z0-9])?$"
+      max_bytes: 63
+      ignore_empty: true
+    },
+    (validate.rules).map.values.string = {
+      max_bytes: 256
+      ignore_empty: true
+    },
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "{\"environment\": \"production\", \"team\": \"platform\", \"version\": \"v1.2.3\"}"
+    }
+  ];
+}
 message WriteAuthorizationModelResponse {
   string authorization_model_id = 1 [
     json_name = "authorization_model_id",
