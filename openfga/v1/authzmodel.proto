@@ -38,10 +38,11 @@ message AuthorizationModel {
       pattern: "^[^:#@\\s]{1,50}$"
       ignore_empty: false
     }
+  ];
 
   // Labels and metadata for the authorization model (similar to Kubernetes labels)
-  map<string, string> authorization_model_metadata = 5 [
-    json_name = "authorization_model_metadata",
+  map<string, string> metadata = 5 [
+    json_name = "metadata",
     (validate.rules).map.max_pairs = 20,
     (validate.rules).map.keys.string = {
       pattern: "^[a-z0-9]([a-z0-9\\-\\.]*[a-z0-9])?$"

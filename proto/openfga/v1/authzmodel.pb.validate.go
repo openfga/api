@@ -179,6 +179,73 @@ func (m *AuthorizationModel) validate(all bool) error {
 		}
 	}
 
+	if len(m.GetMetadata()) > 20 {
+		err := AuthorizationModelValidationError{
+			field:  "Metadata",
+			reason: "value must contain no more than 20 pair(s)",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	{
+		sorted_keys := make([]string, len(m.GetMetadata()))
+		i := 0
+		for key := range m.GetMetadata() {
+			sorted_keys[i] = key
+			i++
+		}
+		sort.Slice(sorted_keys, func(i, j int) bool { return sorted_keys[i] < sorted_keys[j] })
+		for _, key := range sorted_keys {
+			val := m.GetMetadata()[key]
+			_ = val
+
+			if key != "" {
+
+				if len(key) > 63 {
+					err := AuthorizationModelValidationError{
+						field:  fmt.Sprintf("Metadata[%v]", key),
+						reason: "value length must be at most 63 bytes",
+					}
+					if !all {
+						return err
+					}
+					errors = append(errors, err)
+				}
+
+				if !_AuthorizationModel_Metadata_Pattern.MatchString(key) {
+					err := AuthorizationModelValidationError{
+						field:  fmt.Sprintf("Metadata[%v]", key),
+						reason: "value does not match regex pattern \"^[a-z0-9]([a-z0-9\\\\-\\\\.]*[a-z0-9])?$\"",
+					}
+					if !all {
+						return err
+					}
+					errors = append(errors, err)
+				}
+
+			}
+
+			if val != "" {
+
+				if len(val) > 256 {
+					err := AuthorizationModelValidationError{
+						field:  fmt.Sprintf("Metadata[%v]", key),
+						reason: "value length must be at most 256 bytes",
+					}
+					if !all {
+						return err
+					}
+					errors = append(errors, err)
+				}
+
+			}
+
+		}
+	}
+
 	if len(errors) > 0 {
 		return AuthorizationModelMultiError(errors)
 	}
@@ -264,6 +331,8 @@ var _AuthorizationModel_Id_Pattern = regexp.MustCompile("^[ABCDEFGHJKMNPQRSTVWXY
 var _AuthorizationModel_SchemaVersion_Pattern = regexp.MustCompile("^[1-9].[1-9]$")
 
 var _AuthorizationModel_Conditions_Pattern = regexp.MustCompile("^[^:#@\\s]{1,50}$")
+
+var _AuthorizationModel_Metadata_Pattern = regexp.MustCompile("^[a-z0-9]([a-z0-9\\-\\.]*[a-z0-9])?$")
 
 // Validate checks the field values on TypeDefinition with the rules defined in
 // the proto definition for this message. If any rules are violated, the first
