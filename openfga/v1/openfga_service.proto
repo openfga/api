@@ -1269,9 +1269,9 @@ message WriteRequestWrites {
 }
 
 enum OnMissing {
-  ON_MISSING_UNSPECIFIED = 0; // If set to 'ON_DUPLICATE_UNSPECIFIED' OR not set, the API will behave as if it was set to 'ON_MISSING_ERROR'.
-  ON_MISSING_ERROR = 1; // If set to 'ON_MISSING_ERROR', the API will return an error if a tuple does not exist.
-  ON_MISSING_IGNORE = 2; // If set to 'ON_MISSING_IGNORE', the API will not return an error if a tuple does not exist.
+  ON_MISSING_UNSPECIFIED = 0; // If set to 'ON_MISSING_UNSPECIFIED' or not set, the API behaves as if it were set to 'ON_MISSING_ERROR'.
+  ON_MISSING_ERROR = 1;      // Return an error if a tuple does not exist.
+  ON_MISSING_IGNORE = 2;     // Do not return an error if a tuple does not exist.
 }
 
 message WriteRequestDeletes {
