@@ -2419,7 +2419,7 @@
         "ON_DUPLICATE_IGNORE"
       ],
       "default": "ON_DUPLICATE_UNSPECIFIED",
-      "description": " - ON_DUPLICATE_UNSPECIFIED: If set to 'ON_DUPLICATE_UNSPECIFIED' OR not set, the API will behave as if it was set to 'ON_DUPLICATE_ERROR'.\n - ON_DUPLICATE_ERROR: Return an error if a tuple already exists.\n - ON_DUPLICATE_IGNORE: Do not return an error if a tuple already exists and all the attributes (including condition and context ) are matching."
+      "description": " - ON_DUPLICATE_UNSPECIFIED: If set to 'ON_DUPLICATE_UNSPECIFIED' OR not set, the API will behave as if it was set to 'ON_DUPLICATE_ERROR'.\n - ON_DUPLICATE_ERROR: Return an error if a tuple already exists.\n - ON_DUPLICATE_IGNORE: Treat identical writes as no-ops if all attributes (including the RelationshipCondition) match."
     },
     "OnMissing": {
       "type": "string",
@@ -3088,7 +3088,7 @@
         "on_missing": {
           "$ref": "#/definitions/OnMissing",
           "example": "ON_MISSING_ERROR",
-          "description": "If set to 'ON_MISSING_ERROR', the API will return an error if a tuple does not exist. If set to 'ON_MISSING_IGNORE', the API will not return an error if a tuple does not exist."
+          "description": "If 'ON_MISSING_ERROR', the API returns an error when deleting a tuple that does not exist. If 'ON_MISSING_IGNORE', deletes of non-existent tuples are treated as no-ops."
         }
       },
       "required": [
@@ -3109,7 +3109,7 @@
         "on_duplicate": {
           "$ref": "#/definitions/OnDuplicate",
           "example": "ON_DUPLICATE_ERROR",
-          "description": "If set to 'ON_DUPLICATE_ERROR', the API will return an error if a tuple already exists. If set to 'ON_DUPLICATE_IGNORE', the API will not return an error if a tuple already exists and all the attributes are matching."
+          "description": "If 'ON_DUPLICATE_ERROR', the API returns an error if an identical tuple already exists. If 'ON_DUPLICATE_IGNORE', identical writes are treated as no-ops (matching on user, relation, object, and RelationshipCondition)."
         }
       },
       "required": [
