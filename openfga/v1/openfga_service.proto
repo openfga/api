@@ -154,7 +154,9 @@ service OpenFGAService {
         "type definitions allow OpenFGA to determine whether a "
         "relationship exists between an object and an user.\n"
         "In the body, `writes` adds new tuples and `deletes` removes existing tuples. When deleting a tuple, any `condition` specified with it is ignored.\n"
-        "The API is not idempotent: if, later on, you try to add the same tuple key (even if the `condition` is different), or if you try to delete a non-existing tuple, it will throw an error.\n"
+        "The API is not idempotent by default: if, later on, you try to add the same tuple key (even if the `condition` is different), or if you try to delete a non-existing tuple, it will throw an error.\n"
+        "In order to allow writes in case an identical tuple already exists in the database, you may modify the behavior using `\"on_duplicate\": \"ON_DUPLICATE_IGNORE\"`\n"
+        "In order to allow deletes in case a tuple was already deleted from  the database, you may modify the behavior using `\"on_missing\": \"ON_MISSING_IGNORE\"`\n"
         "The API will not allow you to write tuples such as `document:2021-budget#viewer@document:2021-budget#viewer`, because they are implicit.\n"
         "An `authorization_model_id` may be specified in the body. If it is, it will be used to assert that each written tuple (not deleted) "
         "is valid for the model specified. If it is not specified, the latest authorization model ID will be used.\n"
@@ -170,7 +172,8 @@ service OpenFGAService {
         "        \"user\": \"user:anne\",\n"
         "        \"relation\": \"writer\",\n"
         "        \"object\": \"document:2021-budget\"\n"
-        "      }\n"
+        "      },\n"
+        "      \"on_duplicate\": \"ON_DUPLICATE_ERROR\"\n"
         "    ]\n"
         "  },\n"
         "  \"authorization_model_id\": \"01G50QVV17PECNVAHX1GG4Y5NC\"\n"
@@ -187,7 +190,8 @@ service OpenFGAService {
         "        \"user\": \"user:bob\",\n"
         "        \"relation\": \"reader\",\n"
         "        \"object\": \"document:2021-budget\"\n"
-        "      }\n"
+        "      },\n"
+        "      \"on_missing\": \"ON_MISSING_ERROR\"\n"
         "    ]\n"
         "  }\n"
         "}\n"
@@ -1241,6 +1245,12 @@ message ReadResponse {
   ];
 }
 
+enum OnDuplicate {
+  ON_DUPLICATE_UNSPECIFIED = 0; // If set to 'ON_DUPLICATE_UNSPECIFIED' OR not set, the API will behave as if it was set to 'ON_DUPLICATE_ERROR'.
+  ON_DUPLICATE_ERROR = 1; // If set to 'ON_DUPLICATE_ERROR', the API will return an error if a tuple already exists.
+  ON_DUPLICATE_IGNORE = 2; // If set to 'ON_DUPLICATE_IGNORE', the API will not return an error if a tuple already exists and all the attributes (including condition and context ) are matching.
+}
+
 message WriteRequestWrites {
   repeated TupleKey tuple_keys = 1 [
     json_name = "tuple_keys",
@@ -1248,6 +1258,20 @@ message WriteRequestWrites {
     (validate.rules).repeated.min_items = 1,
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {min_items: 1}
   ];
+  OnDuplicate on_duplicate = 2 [
+    json_name = "on_duplicate",
+    (validate.rules).enum.defined_only = true,
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"ON_DUPLICATE_ERROR\""
+      description: "If set to 'ON_DUPLICATE_ERROR', the API will return an error if a tuple already exists. If set to 'ON_DUPLICATE_IGNORE', the API will not return an error if a tuple already exists and all the attributes are matching."
+    }
+  ];
+}
+
+enum OnMissing {
+  ON_MISSING_UNSPECIFIED = 0; // If set to 'ON_DUPLICATE_UNSPECIFIED' OR not set, the API will behave as if it was set to 'ON_MISSING_ERROR'.
+  ON_MISSING_ERROR = 1; // If set to 'ON_MISSING_ERROR', the API will return an error if a tuple does not exist.
+  ON_MISSING_IGNORE = 2; // If set to 'ON_MISSING_IGNORE', the API will not return an error if a tuple does not exist.
 }
 
 message WriteRequestDeletes {
@@ -1256,6 +1280,14 @@ message WriteRequestDeletes {
     (google.api.field_behavior) = REQUIRED,
     (validate.rules).repeated.min_items = 1,
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {min_items: 1}
+  ];
+  OnMissing on_missing = 2 [
+    json_name = "on_missing",
+    (validate.rules).enum.defined_only = true,
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"ON_MISSING_ERROR\""
+      description: "If set to 'ON_MISSING_ERROR', the API will return an error if a tuple does not exist. If set to 'ON_MISSING_IGNORE', the API will not return an error if a tuple does not exist."
+    }
   ];
 }
 

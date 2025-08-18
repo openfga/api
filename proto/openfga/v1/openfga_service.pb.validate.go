@@ -1746,6 +1746,17 @@ func (m *WriteRequestWrites) validate(all bool) error {
 
 	}
 
+	if _, ok := OnDuplicate_name[int32(m.GetOnDuplicate())]; !ok {
+		err := WriteRequestWritesValidationError{
+			field:  "OnDuplicate",
+			reason: "value must be one of the defined enum values",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
 	if len(errors) > 0 {
 		return WriteRequestWritesMultiError(errors)
 	}
@@ -1891,6 +1902,17 @@ func (m *WriteRequestDeletes) validate(all bool) error {
 			}
 		}
 
+	}
+
+	if _, ok := OnMissing_name[int32(m.GetOnMissing())]; !ok {
+		err := WriteRequestDeletesValidationError{
+			field:  "OnMissing",
+			reason: "value must be one of the defined enum values",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
 	}
 
 	if len(errors) > 0 {
