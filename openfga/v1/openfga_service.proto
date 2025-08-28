@@ -1255,6 +1255,7 @@ message WriteRequestWrites {
   ];
   string on_duplicate = 2 [
     json_name = "on_duplicate",
+    (google.api.field_behavior) = OPTIONAL,
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       enum: [
         "error", // Return an error if a tuple already exists.
@@ -1276,6 +1277,7 @@ message WriteRequestDeletes {
   ];
   string on_missing = 2 [
     json_name = "on_missing",
+    (google.api.field_behavior) = OPTIONAL,
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       enum: [
         "error", // Return an error if a tuple does not exist.
