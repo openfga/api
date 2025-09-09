@@ -1746,6 +1746,8 @@ func (m *WriteRequestWrites) validate(all bool) error {
 
 	}
 
+	// no validation rules for OnDuplicate
+
 	if len(errors) > 0 {
 		return WriteRequestWritesMultiError(errors)
 	}
@@ -1892,6 +1894,8 @@ func (m *WriteRequestDeletes) validate(all bool) error {
 		}
 
 	}
+
+	// no validation rules for OnMissing
 
 	if len(errors) > 0 {
 		return WriteRequestDeletesMultiError(errors)

@@ -21,12 +21,12 @@ may be overly strict. In those cases you can bypass it with `commit --no-verify`
 
 1. Generate the sources as above
 2. In the `proto` directory execute the following commands:
-    ```
+    ```shell
     go mod init go.buf.build/openfga/go/openfga/api
     go mod tidy
     ```
 3. In OpenFGA, add the following line to your `go.mod`:
-    ```
+    ```shell
     replace github.com/openfga/api/proto => /path/to/proto
     ```
 
