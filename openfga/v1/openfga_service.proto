@@ -154,7 +154,10 @@ service OpenFGAService {
         "type definitions allow OpenFGA to determine whether a "
         "relationship exists between an object and an user.\n"
         "In the body, `writes` adds new tuples and `deletes` removes existing tuples. When deleting a tuple, any `condition` specified with it is ignored.\n"
-        "The API is not idempotent: if, later on, you try to add the same tuple key (even if the `condition` is different), or if you try to delete a non-existing tuple, it will throw an error.\n"
+        "The API is not idempotent by default: if, later on, you try to add the same tuple key (even if the `condition` is different), or if you try to delete a non-existing tuple, it will throw an error.\n"
+        "To allow writes when an identical tuple already exists in the database, set `\"on_duplicate\": \"ignore\"` on the `writes` object.\n"
+        "To allow deletes when a tuple was already removed from the database, set `\"on_missing\": \"ignore\"` on the `deletes` object.\n"
+        "If a Write request contains both idempotent (ignore) and non-idempotent (error) operations, the most restrictive action (error) will take precedence. If a condition fails for a sub-request with an error flag, the entire transaction will be rolled back. This gives developers explicit control over the atomicity of the requests.\n"
         "The API will not allow you to write tuples such as `document:2021-budget#viewer@document:2021-budget#viewer`, because they are implicit.\n"
         "An `authorization_model_id` may be specified in the body. If it is, it will be used to assert that each written tuple (not deleted) "
         "is valid for the model specified. If it is not specified, the latest authorization model ID will be used.\n"
@@ -171,7 +174,8 @@ service OpenFGAService {
         "        \"relation\": \"writer\",\n"
         "        \"object\": \"document:2021-budget\"\n"
         "      }\n"
-        "    ]\n"
+        "    ],\n"
+        "    \"on_duplicate\": \"ignore\"\n"
         "  },\n"
         "  \"authorization_model_id\": \"01G50QVV17PECNVAHX1GG4Y5NC\"\n"
         "}\n"
@@ -188,7 +192,8 @@ service OpenFGAService {
         "        \"relation\": \"reader\",\n"
         "        \"object\": \"document:2021-budget\"\n"
         "      }\n"
-        "    ]\n"
+        "    ],\n"
+        "    \"on_missing\": \"ignore\"\n"
         "  }\n"
         "}\n"
         "```\n"
@@ -1248,6 +1253,19 @@ message WriteRequestWrites {
     (validate.rules).repeated.min_items = 1,
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {min_items: 1}
   ];
+  string on_duplicate = 2 [
+    json_name = "on_duplicate",
+    (google.api.field_behavior) = OPTIONAL,
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      enum: [
+        "error", // Return an error if a tuple already exists.
+        "ignore" // Treat identical writes as no-ops if all attributes (including the RelationshipCondition) match.
+      ]
+      default: "error"
+      example: "\"ignore\""
+      description: "On 'error' ( or unspecified ), the API returns an error if an identical tuple already exists. On 'ignore', identical writes are treated as no-ops (matching on user, relation, object, and RelationshipCondition)."
+    }
+  ];
 }
 
 message WriteRequestDeletes {
@@ -1256,6 +1274,19 @@ message WriteRequestDeletes {
     (google.api.field_behavior) = REQUIRED,
     (validate.rules).repeated.min_items = 1,
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {min_items: 1}
+  ];
+  string on_missing = 2 [
+    json_name = "on_missing",
+    (google.api.field_behavior) = OPTIONAL,
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      enum: [
+        "error", // Return an error if a tuple does not exist.
+        "ignore" // Do not return an error if a tuple does not exist.
+      ]
+      default: "error"
+      example: "\"ignore\""
+      description: "On 'error', the API returns an error when deleting a tuple that does not exist. On 'ignore', deletes of non-existent tuples are treated as no-ops."
+    }
   ];
 }
 
