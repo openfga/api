@@ -185,6 +185,8 @@ func (m *ListObjectsRequest) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
+	// no validation rules for ContinuationToken
+
 	if len(errors) > 0 {
 		return ListObjectsRequestMultiError(errors)
 	}
@@ -294,6 +296,8 @@ func (m *ListObjectsResponse) validate(all bool) error {
 	}
 
 	var errors []error
+
+	// no validation rules for ContinuationToken
 
 	if len(errors) > 0 {
 		return ListObjectsResponseMultiError(errors)

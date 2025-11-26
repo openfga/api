@@ -1214,6 +1214,10 @@
                 "consistency": {
                   "$ref": "#/definitions/ConsistencyPreference",
                   "description": "Controls the consistency preference for this request. Default value is UNSPECIFIED, which will have the same behavior as MINIMIZE_LATENCY."
+                },
+                "continuation_token": {
+                  "type": "string",
+                  "description": "An opaque token used to continue paginated results from a previous ListObjects call."
                 }
               },
               "required": [
@@ -2267,6 +2271,10 @@
           "items": {
             "type": "string"
           }
+        },
+        "continuation_token": {
+          "type": "string",
+          "description": "An opaque token to continue paginated results. Empty if all results have been returned."
         }
       },
       "required": [
