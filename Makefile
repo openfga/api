@@ -1,7 +1,8 @@
 all: patch-swagger-doc format
 
 buf-gen: init-git-hooks
-	./buf.gen.yaml
+	buf generate --template buf.gen.yaml
+	buf generate --template buf.gen.swagger.yaml --exclude-path storage/v1beta1
 
 patch-swagger-doc: buf-gen
 	./scripts/update_swagger.sh docs/openapiv2/apidocs.swagger.json
