@@ -18,8 +18,6 @@ import "openfga/v1/openfga_service_consistency.proto";
 // - Changelog operations: ReadChanges
 // - Service operations: IsReady
 service StorageService {
-  option (google.api.api_visibility).restriction = "INTERNAL";
-
   // Read streams tuples matching the provided filter.
   // Returns an iterator over all matching tuples with no guaranteed order.
   rpc Read(ReadRequest) returns (stream ReadResponse);
