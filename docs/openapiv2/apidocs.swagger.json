@@ -475,7 +475,7 @@
     "/stores/{store_id}/access/v1/evaluations": {
       "post": {
         "summary": "Check whether one or more users are authorized to access resources",
-        "description": "The Evaluations API allows batch authorization checks in a single request. It supports request-level defaults for subject, action, resource, and context that can be overridden per evaluation item.\n\n## Evaluation Semantics\nThe `options.evaluations_semantic` field controls how evaluations are processed:\n- `EXECUTE_ALL` (default): Execute all evaluations and return all results\n- `DENY_ON_FIRST_DENY`: Stop processing on first deny decision\n- `PERMIT_ON_FIRST_PERMIT`: Stop processing on first permit decision\n\n## Examples\n### Basic batch evaluation\nCheck if a user can perform multiple actions on a document:\n```json\n{\n  \"subject\": {\"type\": \"user\", \"id\": \"anne\"},\n  \"resource\": {\"type\": \"document\", \"id\": \"roadmap\"},\n  \"evaluations\": [\n    {\"action\": {\"name\": \"can_read\"}},\n    {\"action\": {\"name\": \"can_write\"}},\n    {\"action\": {\"name\": \"can_delete\"}}\n  ]\n}\n```\n### Using evaluation semantics\nStop on first permitted action (useful for finding any valid permission):\n```json\n{\n  \"subject\": {\"type\": \"user\", \"id\": \"anne\"},\n  \"resource\": {\"type\": \"document\", \"id\": \"roadmap\"},\n  \"evaluations\": [\n    {\"action\": {\"name\": \"can_read\"}},\n    {\"action\": {\"name\": \"can_write\"}}\n  ],\n  \"options\": {\n    \"evaluations_semantic\": \"PERMIT_ON_FIRST_PERMIT\"\n  }\n}\n```\n### Overriding defaults per evaluation\nCheck permissions across multiple resources:\n```json\n{\n  \"subject\": {\"type\": \"user\", \"id\": \"anne\"},\n  \"action\": {\"name\": \"can_read\"},\n  \"evaluations\": [\n    {\"resource\": {\"type\": \"document\", \"id\": \"doc1\"}},\n    {\"resource\": {\"type\": \"document\", \"id\": \"doc2\"}},\n    {\"resource\": {\"type\": \"folder\", \"id\": \"folder1\"}}\n  ]\n}\n```\n",
+        "description": "The Evaluations API allows batch authorization checks in a single request. It supports request-level defaults for subject, action, resource, and context that can be overridden per evaluation item.\n\n## Evaluation Semantics\nThe `options.evaluations_semantic` field controls how evaluations are processed:\n- `EVALUATIONS_SEMANTIC_EXECUTE_ALL_UNSPECIFIED` (default): Execute all evaluations and return all results\n- `EVALUATIONS_SEMANTIC_DENY_ON_FIRST_DENY`: Stop processing on first deny decision\n- `EVALUATIONS_SEMANTIC_PERMIT_ON_FIRST_PERMIT`: Stop processing on first permit decision\n\n## Examples\n### Basic batch evaluation\nCheck if a user can perform multiple actions on a document:\n```json\n{\n  \"subject\": {\"type\": \"user\", \"id\": \"anne\"},\n  \"resource\": {\"type\": \"document\", \"id\": \"roadmap\"},\n  \"evaluations\": [\n    {\"action\": {\"name\": \"can_read\"}},\n    {\"action\": {\"name\": \"can_write\"}},\n    {\"action\": {\"name\": \"can_delete\"}}\n  ]\n}\n```\n### Using evaluation semantics\nStop on first permitted action (useful for finding any valid permission):\n```json\n{\n  \"subject\": {\"type\": \"user\", \"id\": \"anne\"},\n  \"resource\": {\"type\": \"document\", \"id\": \"roadmap\"},\n  \"evaluations\": [\n    {\"action\": {\"name\": \"can_read\"}},\n    {\"action\": {\"name\": \"can_write\"}}\n  ],\n  \"options\": {\n    \"evaluations_semantic\": \"EVALUATIONS_SEMANTIC_PERMIT_ON_FIRST_PERMIT\"\n  }\n}\n```\n### Overriding defaults per evaluation\nCheck permissions across multiple resources:\n```json\n{\n  \"subject\": {\"type\": \"user\", \"id\": \"anne\"},\n  \"action\": {\"name\": \"can_read\"},\n  \"evaluations\": [\n    {\"resource\": {\"type\": \"document\", \"id\": \"doc1\"}},\n    {\"resource\": {\"type\": \"document\", \"id\": \"doc2\"}},\n    {\"resource\": {\"type\": \"folder\", \"id\": \"folder1\"}}\n  ]\n}\n```\n",
         "operationId": "Evaluations",
         "responses": {
           "200": {
@@ -2822,12 +2822,12 @@
     "EvaluationsSemantic": {
       "type": "string",
       "enum": [
-        "EXECUTE_ALL",
-        "DENY_ON_FIRST_DENY",
-        "PERMIT_ON_FIRST_PERMIT"
+        "EVALUATIONS_SEMANTIC_EXECUTE_ALL_UNSPECIFIED",
+        "EVALUATIONS_SEMANTIC_DENY_ON_FIRST_DENY",
+        "EVALUATIONS_SEMANTIC_PERMIT_ON_FIRST_PERMIT"
       ],
-      "default": "EXECUTE_ALL",
-      "description": "- EXECUTE_ALL: Execute all evaluations (default behavior)\n - DENY_ON_FIRST_DENY: Stop on first deny decision\n - PERMIT_ON_FIRST_PERMIT: Stop on first permit decision",
+      "default": "EVALUATIONS_SEMANTIC_EXECUTE_ALL_UNSPECIFIED",
+      "description": "- EVALUATIONS_SEMANTIC_EXECUTE_ALL_UNSPECIFIED: Execute all evaluations (default behavior)\n - EVALUATIONS_SEMANTIC_DENY_ON_FIRST_DENY: Stop on first deny decision\n - EVALUATIONS_SEMANTIC_PERMIT_ON_FIRST_PERMIT: Stop on first permit decision",
       "title": "Enum for evaluation semantics"
     },
     "ExpandRequestTupleKey": {
