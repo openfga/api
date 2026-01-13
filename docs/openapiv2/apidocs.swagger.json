@@ -32,6 +32,66 @@
     "application/json"
   ],
   "paths": {
+    "/.well-known/authzen-configuration": {
+      "get": {
+        "summary": "Get AuthZEN PDP configuration and capabilities",
+        "description": "The GetConfiguration API returns metadata about the Policy Decision Point (PDP) including its name, version, supported endpoints, and capabilities. This endpoint follows the AuthZEN specification section 13 for PDP discovery.\n\nThis endpoint is available at the well-known path `/.well-known/authzen-configuration` and does not require authentication.\n\n## Example Response\n```json\n{\n  \"policy_decision_point\": {\n    \"name\": \"OpenFGA\",\n    \"version\": \"1.8.0\",\n    \"description\": \"OpenFGA is a high-performance authorization system\"\n  },\n  \"access_endpoints\": {\n    \"evaluation\": \"/access/v1/evaluation\",\n    \"evaluations\": \"/access/v1/evaluations\",\n    \"subject_search\": \"/access/v1/search/subject\",\n    \"resource_search\": \"/access/v1/search/resource\",\n    \"action_search\": \"/access/v1/search/action\"\n  },\n  \"capabilities\": [\n    \"evaluation\",\n    \"evaluations\",\n    \"subject_search\",\n    \"resource_search\",\n    \"action_search\"\n  ]\n}\n```\n",
+        "operationId": "GetConfiguration",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/GetConfigurationResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "401": {
+            "description": "Not authenticated.",
+            "schema": {
+              "$ref": "#/definitions/UnauthenticatedResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "schema": {
+              "$ref": "#/definitions/ForbiddenResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "409": {
+            "description": "Request was aborted due a transaction conflict.",
+            "schema": {
+              "$ref": "#/definitions/AbortedMessageResponse"
+            }
+          },
+          "422": {
+            "description": "Request timed out due to excessive request throttling.",
+            "schema": {
+              "$ref": "#/definitions/UnprocessableContentMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          }
+        },
+        "tags": [
+          "AuthZen"
+        ]
+      }
+    },
     "/stores": {
       "get": {
         "summary": "List all stores",
@@ -85,12 +145,6 @@
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
             }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Status"
-            }
           }
         },
         "parameters": [
@@ -124,12 +178,6 @@
         "description": "Create a unique OpenFGA store which will be used to store authorization models and relationship tuples.",
         "operationId": "CreateStore",
         "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/CreateStoreResponse"
-            }
-          },
           "201": {
             "description": "A successful response.",
             "schema": {
@@ -176,12 +224,6 @@
             "description": "Request failed due to internal server error.",
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Status"
             }
           }
         },
@@ -253,12 +295,6 @@
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
             }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Status"
-            }
           }
         },
         "parameters": [
@@ -278,17 +314,8 @@
         "description": "Delete an OpenFGA store. This does not delete the data associated with the store, like tuples or authorization models.",
         "operationId": "DeleteStore",
         "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/DeleteStoreResponse"
-            }
-          },
           "204": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/DeleteStoreResponse"
-            }
+            "description": "A successful response."
           },
           "400": {
             "description": "Request failed due to invalid input.",
@@ -330,12 +357,6 @@
             "description": "Request failed due to internal server error.",
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Status"
             }
           }
         },
@@ -405,12 +426,6 @@
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
             }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Status"
-            }
           }
         },
         "parameters": [
@@ -459,7 +474,8 @@
     },
     "/stores/{store_id}/access/v1/evaluations": {
       "post": {
-        "summary": "Check whether one or more users are authorized to access an object",
+        "summary": "Check whether one or more users are authorized to access resources",
+        "description": "The Evaluations API allows batch authorization checks in a single request. It supports request-level defaults for subject, action, resource, and context that can be overridden per evaluation item.\n\n## Evaluation Semantics\nThe `options.evaluations_semantic` field controls how evaluations are processed:\n- `EXECUTE_ALL` (default): Execute all evaluations and return all results\n- `DENY_ON_FIRST_DENY`: Stop processing on first deny decision\n- `PERMIT_ON_FIRST_PERMIT`: Stop processing on first permit decision\n\n## Examples\n### Basic batch evaluation\nCheck if a user can perform multiple actions on a document:\n```json\n{\n  \"subject\": {\"type\": \"user\", \"id\": \"anne\"},\n  \"resource\": {\"type\": \"document\", \"id\": \"roadmap\"},\n  \"evaluations\": [\n    {\"action\": {\"name\": \"can_read\"}},\n    {\"action\": {\"name\": \"can_write\"}},\n    {\"action\": {\"name\": \"can_delete\"}}\n  ]\n}\n```\n### Using evaluation semantics\nStop on first permitted action (useful for finding any valid permission):\n```json\n{\n  \"subject\": {\"type\": \"user\", \"id\": \"anne\"},\n  \"resource\": {\"type\": \"document\", \"id\": \"roadmap\"},\n  \"evaluations\": [\n    {\"action\": {\"name\": \"can_read\"}},\n    {\"action\": {\"name\": \"can_write\"}}\n  ],\n  \"options\": {\n    \"evaluations_semantic\": \"PERMIT_ON_FIRST_PERMIT\"\n  }\n}\n```\n### Overriding defaults per evaluation\nCheck permissions across multiple resources:\n```json\n{\n  \"subject\": {\"type\": \"user\", \"id\": \"anne\"},\n  \"action\": {\"name\": \"can_read\"},\n  \"evaluations\": [\n    {\"resource\": {\"type\": \"document\", \"id\": \"doc1\"}},\n    {\"resource\": {\"type\": \"document\", \"id\": \"doc2\"}},\n    {\"resource\": {\"type\": \"folder\", \"id\": \"folder1\"}}\n  ]\n}\n```\n",
         "operationId": "Evaluations",
         "responses": {
           "200": {
@@ -509,12 +525,6 @@
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
             }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Status"
-            }
           }
         },
         "parameters": [
@@ -549,8 +559,314 @@
                     "type": "object",
                     "$ref": "#/definitions/EvaluationsItemRequest"
                   }
+                },
+                "options": {
+                  "$ref": "#/definitions/EvaluationsOptions",
+                  "title": "Options for batch evaluation semantics"
                 }
               }
+            }
+          }
+        ],
+        "tags": [
+          "AuthZen"
+        ]
+      }
+    },
+    "/stores/{store_id}/access/v1/search/action": {
+      "post": {
+        "summary": "Search for actions a subject can perform on a resource",
+        "description": "The ActionSearch API returns all actions (relations) that a subject can perform on a specific resource. This is useful for answering questions like \"What can Anne do with this document?\" or building dynamic UIs that show only the actions a user is permitted to perform.\n\n## Examples\n### Find all actions a user can perform on a document\n```json\n{\n  \"subject\": {\"type\": \"user\", \"id\": \"anne\"},\n  \"resource\": {\"type\": \"document\", \"id\": \"roadmap\"}\n}\n```\nResponse:\n```json\n{\n  \"actions\": [\n    {\"name\": \"can_read\"},\n    {\"name\": \"can_write\"},\n    {\"name\": \"can_share\"}\n  ],\n  \"page\": {\"count\": 3}\n}\n```\n### Search with ABAC context for time-based permissions\n```json\n{\n  \"subject\": {\"type\": \"user\", \"id\": \"bob\"},\n  \"resource\": {\"type\": \"report\", \"id\": \"quarterly-financials\"},\n  \"context\": {\n    \"current_time\": \"2024-01-15T14:30:00Z\",\n    \"user_department\": \"finance\"\n  }\n}\n```\n### Paginated action search\n```json\n{\n  \"subject\": {\"type\": \"user\", \"id\": \"admin\"},\n  \"resource\": {\"type\": \"system\", \"id\": \"production\"},\n  \"page\": {\"limit\": 50}\n}\n```\n",
+        "operationId": "ActionSearch",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ActionSearchResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "401": {
+            "description": "Not authenticated.",
+            "schema": {
+              "$ref": "#/definitions/UnauthenticatedResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "schema": {
+              "$ref": "#/definitions/ForbiddenResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "409": {
+            "description": "Request was aborted due a transaction conflict.",
+            "schema": {
+              "$ref": "#/definitions/AbortedMessageResponse"
+            }
+          },
+          "422": {
+            "description": "Request timed out due to excessive request throttling.",
+            "schema": {
+              "$ref": "#/definitions/UnprocessableContentMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "store_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "subject": {
+                  "$ref": "#/definitions/Subject"
+                },
+                "resource": {
+                  "$ref": "#/definitions/Resource"
+                },
+                "context": {
+                  "type": "object"
+                },
+                "page": {
+                  "$ref": "#/definitions/PageRequest"
+                },
+                "authorization_model_id": {
+                  "type": "string"
+                }
+              },
+              "title": "ActionSearch request",
+              "required": [
+                "subject",
+                "resource"
+              ]
+            }
+          }
+        ],
+        "tags": [
+          "AuthZen"
+        ]
+      }
+    },
+    "/stores/{store_id}/access/v1/search/resource": {
+      "post": {
+        "summary": "Search for resources a subject has access to",
+        "description": "The ResourceSearch API returns all resources of a given type that a subject has a specific action (relation) on. This is useful for answering questions like \"What documents can Anne read?\" or \"What folders can Bob administer?\"\n\nThe resource type filter is required. Results support pagination for large result sets.\n\n## Examples\n### Find all documents a user can read\n```json\n{\n  \"subject\": {\"type\": \"user\", \"id\": \"anne\"},\n  \"action\": {\"name\": \"can_read\"},\n  \"resource\": {\"type\": \"document\"}\n}\n```\nResponse:\n```json\n{\n  \"resources\": [\n    {\"type\": \"document\", \"id\": \"roadmap\"},\n    {\"type\": \"document\", \"id\": \"budget-2024\"},\n    {\"type\": \"document\", \"id\": \"team-roster\"}\n  ],\n  \"page\": {\"count\": 3}\n}\n```\n### Find folders a user can administer with pagination\n```json\n{\n  \"subject\": {\"type\": \"user\", \"id\": \"bob\"},\n  \"action\": {\"name\": \"can_admin\"},\n  \"resource\": {\"type\": \"folder\"},\n  \"page\": {\"limit\": 25}\n}\n```\n### Search with ABAC context\n```json\n{\n  \"subject\": {\"type\": \"user\", \"id\": \"anne\"},\n  \"action\": {\"name\": \"can_read\"},\n  \"resource\": {\"type\": \"document\"},\n  \"context\": {\n    \"current_time\": \"2024-01-15T10:00:00Z\",\n    \"ip_address\": \"192.168.1.100\"\n  }\n}\n```\n",
+        "operationId": "ResourceSearch",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ResourceSearchResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "401": {
+            "description": "Not authenticated.",
+            "schema": {
+              "$ref": "#/definitions/UnauthenticatedResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "schema": {
+              "$ref": "#/definitions/ForbiddenResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "409": {
+            "description": "Request was aborted due a transaction conflict.",
+            "schema": {
+              "$ref": "#/definitions/AbortedMessageResponse"
+            }
+          },
+          "422": {
+            "description": "Request timed out due to excessive request throttling.",
+            "schema": {
+              "$ref": "#/definitions/UnprocessableContentMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "store_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "subject": {
+                  "$ref": "#/definitions/Subject"
+                },
+                "action": {
+                  "$ref": "#/definitions/Action"
+                },
+                "resource": {
+                  "$ref": "#/definitions/Resource",
+                  "title": "Optional filter by resource type"
+                },
+                "context": {
+                  "type": "object"
+                },
+                "page": {
+                  "$ref": "#/definitions/PageRequest"
+                },
+                "authorization_model_id": {
+                  "type": "string"
+                }
+              },
+              "title": "ResourceSearch request",
+              "required": [
+                "subject",
+                "action"
+              ]
+            }
+          }
+        ],
+        "tags": [
+          "AuthZen"
+        ]
+      }
+    },
+    "/stores/{store_id}/access/v1/search/subject": {
+      "post": {
+        "summary": "Search for subjects with access to a resource",
+        "description": "The SubjectSearch API returns all subjects that have a specific action (relation) on a given resource. This is useful for answering questions like \"Who can read this document?\" or \"Who can administer this folder?\"\n\nResults can be filtered by subject type and support pagination for large result sets.\n\n## Examples\n### Find all users who can read a document\n```json\n{\n  \"resource\": {\"type\": \"document\", \"id\": \"roadmap\"},\n  \"action\": {\"name\": \"can_read\"},\n  \"subject\": {\"type\": \"user\"}\n}\n```\nResponse:\n```json\n{\n  \"subjects\": [\n    {\"type\": \"user\", \"id\": \"anne\"},\n    {\"type\": \"user\", \"id\": \"bob\"},\n    {\"type\": \"user\", \"id\": \"charlie\"}\n  ],\n  \"page\": {\"count\": 3}\n}\n```\n### Paginated search with limit\n```json\n{\n  \"resource\": {\"type\": \"folder\", \"id\": \"engineering\"},\n  \"action\": {\"name\": \"can_view\"},\n  \"subject\": {\"type\": \"user\"},\n  \"page\": {\"limit\": 10}\n}\n```\n### Continue from previous page\n```json\n{\n  \"resource\": {\"type\": \"folder\", \"id\": \"engineering\"},\n  \"action\": {\"name\": \"can_view\"},\n  \"subject\": {\"type\": \"user\"},\n  \"page\": {\"token\": \"eyJsYXN0X2lkIjoiMTAwIn0=\", \"limit\": 10}\n}\n```\n",
+        "operationId": "SubjectSearch",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/SubjectSearchResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "401": {
+            "description": "Not authenticated.",
+            "schema": {
+              "$ref": "#/definitions/UnauthenticatedResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "schema": {
+              "$ref": "#/definitions/ForbiddenResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "409": {
+            "description": "Request was aborted due a transaction conflict.",
+            "schema": {
+              "$ref": "#/definitions/AbortedMessageResponse"
+            }
+          },
+          "422": {
+            "description": "Request timed out due to excessive request throttling.",
+            "schema": {
+              "$ref": "#/definitions/UnprocessableContentMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "store_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "resource": {
+                  "$ref": "#/definitions/Resource"
+                },
+                "action": {
+                  "$ref": "#/definitions/Action"
+                },
+                "subject": {
+                  "$ref": "#/definitions/SubjectFilter",
+                  "title": "Optional filter by subject type (id is optional in filter)"
+                },
+                "context": {
+                  "type": "object"
+                },
+                "page": {
+                  "$ref": "#/definitions/PageRequest"
+                },
+                "authorization_model_id": {
+                  "type": "string"
+                }
+              },
+              "title": "SubjectSearch request",
+              "required": [
+                "resource",
+                "action"
+              ]
             }
           }
         ],
@@ -612,12 +928,6 @@
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
             }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Status"
-            }
           }
         },
         "parameters": [
@@ -643,17 +953,8 @@
         "description": "The WriteAssertions API will upsert new assertions for an authorization model id, or overwrite the existing ones. An assertion is an object that contains a tuple key, the expectation of whether a call to the Check API of that tuple key will return true or false, and optionally a list of contextual tuples.",
         "operationId": "WriteAssertions",
         "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/WriteAssertionsResponse"
-            }
-          },
           "204": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/WriteAssertionsResponse"
-            }
+            "description": "A successful response."
           },
           "400": {
             "description": "Request failed due to invalid input.",
@@ -695,12 +996,6 @@
             "description": "Request failed due to internal server error.",
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Status"
             }
           }
         },
@@ -797,12 +1092,6 @@
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
             }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Status"
-            }
           }
         },
         "parameters": [
@@ -835,12 +1124,6 @@
         "description": "The WriteAuthorizationModel API will add a new authorization model to a store.\nEach item in the `type_definitions` array is a type definition as specified in the field `type_definition`.\nThe response will return the authorization model's ID in the `id` field.\n\n## Example\nTo add an authorization model with `user` and `document` type definitions, call POST authorization-models API with the body: \n```json\n{\n  \"type_definitions\":[\n    {\n      \"type\":\"user\"\n    },\n    {\n      \"type\":\"document\",\n      \"relations\":{\n        \"reader\":{\n          \"union\":{\n            \"child\":[\n              {\n                \"this\":{}\n              },\n              {\n                \"computedUserset\":{\n                  \"object\":\"\",\n                  \"relation\":\"writer\"\n                }\n              }\n            ]\n          }\n        },\n        \"writer\":{\n          \"this\":{}\n        }\n      }\n    }\n  ]\n}\n```\nOpenFGA's response will include the version id for this authorization model, which will look like \n```\n{\"authorization_model_id\": \"01G50QVV17PECNVAHX1GG4Y5NC\"}\n```\n",
         "operationId": "WriteAuthorizationModel",
         "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/WriteAuthorizationModelResponse"
-            }
-          },
           "201": {
             "description": "A successful response.",
             "schema": {
@@ -887,12 +1170,6 @@
             "description": "Request failed due to internal server error.",
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Status"
             }
           }
         },
@@ -993,12 +1270,6 @@
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
             }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Status"
-            }
           }
         },
         "parameters": [
@@ -1072,12 +1343,6 @@
             "description": "Request failed due to internal server error.",
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Status"
             }
           }
         },
@@ -1175,12 +1440,6 @@
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
             }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Status"
-            }
           }
         },
         "parameters": [
@@ -1275,12 +1534,6 @@
             "description": "Request failed due to internal server error.",
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Status"
             }
           }
         },
@@ -1387,12 +1640,6 @@
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
             }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Status"
-            }
           }
         },
         "parameters": [
@@ -1438,7 +1685,7 @@
     "/stores/{store_id}/list-objects": {
       "post": {
         "summary": "List all objects of the given type that the user has a relation with",
-        "description": "The ListObjects API returns a list of all the objects of the given type that the user has a relation with.\n To arrive at a result, the API uses: an authorization model, explicit tuples written through the Write API, contextual tuples present in the request, and implicit tuples that exist by virtue of applying set theory (such as `document:2021-budget#viewer@document:2021-budget#viewer`; the set of users who are viewers of `document:2021-budget` are the set of users who are the viewers of `document:2021-budget`).\nAn `authorization_model_id` may be specified in the body. If it is not specified, the latest authorization model ID will be used. It is strongly recommended to specify authorization model id for better performance.\nYou may also specify `contextual_tuples` that will be treated as regular tuples. Each of these tuples may have an associated `condition`.\nYou may also provide a `context` object that will be used to evaluate the conditioned tuples in the system. It is strongly recommended to provide a value for all the input parameters of all the conditions, to ensure that all tuples be evaluated correctly.\nBy default, the Check API caches results for a short time to optimize performance. You may specify a value of `HIGHER_CONSISTENCY` for the optional `consistency` parameter in the body to inform the server that higher conisistency is preferred at the expense of increased latency. Consideration should be given to the increased latency if requesting higher consistency.\nThe response will contain the related objects in an array in the \"objects\" field of the response and they will be strings in the object format `\u003ctype\u003e:\u003cid\u003e` (e.g. \"document:roadmap\").\nThe number of objects in the response array will be limited by the execution timeout specified in the flag OPENFGA_LIST_OBJECTS_DEADLINE and by the upper bound specified in the flag OPENFGA_LIST_OBJECTS_MAX_RESULTS, whichever is hit first.\nThe objects given will not be sorted, and therefore two identical calls can give a given different set of objects.",
+        "description": "The ListObjects API returns a list of all the objects of the given type that the user has a relation with.\n To arrive at a result, the API uses: an authorization model, explicit tuples written through the Write API, contextual tuples present in the request, and implicit tuples that exist by virtue of applying set theory (such as `document:2021-budget#viewer@document:2021-budget#viewer`; the set of users who are viewers of `document:2021-budget` are the set of users who are the viewers of `document:2021-budget`).\nAn `authorization_model_id` may be specified in the body. If it is not specified, the latest authorization model ID will be used. It is strongly recommended to specify authorization model id for better performance.\nYou may also specify `contextual_tuples` that will be treated as regular tuples. Each of these tuples may have an associated `condition`.\nYou may also provide a `context` object that will be used to evaluate the conditioned tuples in the system. It is strongly recommended to provide a value for all the input parameters of all the conditions, to ensure that all tuples be evaluated correctly.\nBy default, the Check API caches results for a short time to optimize performance. You may specify a value of `HIGHER_CONSISTENCY` for the optional `consistency` parameter in the body to inform the server that higher conisistency is preferred at the expense of increased latency. Consideration should be given to the increased latency if requesting higher consistency.\nThe response will contain the related objects in an array in the \"objects\" field of the response and they will be strings in the object format `<type>:<id>` (e.g. \"document:roadmap\").\nThe number of objects in the response array will be limited by the execution timeout specified in the flag OPENFGA_LIST_OBJECTS_DEADLINE and by the upper bound specified in the flag OPENFGA_LIST_OBJECTS_MAX_RESULTS, whichever is hit first.\nThe objects given will not be sorted, and therefore two identical calls can give a given different set of objects.",
         "operationId": "ListObjects",
         "responses": {
           "200": {
@@ -1487,12 +1734,6 @@
             "description": "Request failed due to internal server error.",
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Status"
             }
           }
         },
@@ -1605,12 +1846,6 @@
             "description": "Request failed due to internal server error.",
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Status"
             }
           }
         },
@@ -1742,12 +1977,6 @@
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
             }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Status"
-            }
           }
         },
         "parameters": [
@@ -1852,12 +2081,6 @@
             "description": "Request failed due to internal server error.",
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Status"
             }
           }
         },
@@ -1971,12 +2194,6 @@
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
             }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Status"
-            }
           }
         },
         "parameters": [
@@ -2043,6 +2260,21 @@
       "required": [
         "name"
       ]
+    },
+    "ActionSearchResponse": {
+      "type": "object",
+      "properties": {
+        "actions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/Action"
+          }
+        },
+        "page": {
+          "$ref": "#/definitions/PageResponse"
+        }
+      }
     },
     "Any": {
       "type": "object",
@@ -2380,7 +2612,8 @@
         "HIGHER_CONSISTENCY"
       ],
       "default": "UNSPECIFIED",
-      "description": "Controls the consistency preferences when calling the query APIs.\n\n - UNSPECIFIED: Default if not set. Behavior will be the same as MINIMIZE_LATENCY.\n - MINIMIZE_LATENCY: Minimize latency at the potential expense of lower consistency.\n - HIGHER_CONSISTENCY: Prefer higher consistency, at the potential expense of increased latency."
+      "description": "Controls the consistency preferences when calling the query APIs.\n\n - UNSPECIFIED: Default if not set. Behavior will be the same as MINIMIZE_LATENCY.\n - MINIMIZE_LATENCY: Minimize latency at the potential expense of lower consistency.\n - HIGHER_CONSISTENCY: Prefer higher consistency, at the potential expense of increased latency.",
+      "example": "MINIMIZE_LATENCY"
     },
     "ContextualTupleKeys": {
       "type": "object",
@@ -2442,6 +2675,26 @@
     "DirectUserset": {
       "type": "object",
       "description": "A DirectUserset is a sentinel message for referencing\nthe direct members specified by an object/relation mapping."
+    },
+    "Endpoints": {
+      "type": "object",
+      "properties": {
+        "evaluation": {
+          "type": "string"
+        },
+        "evaluations": {
+          "type": "string"
+        },
+        "subject_search": {
+          "type": "string"
+        },
+        "resource_search": {
+          "type": "string"
+        },
+        "action_search": {
+          "type": "string"
+        }
+      }
     },
     "ErrorCode": {
       "type": "string",
@@ -2544,6 +2797,16 @@
         }
       }
     },
+    "EvaluationsOptions": {
+      "type": "object",
+      "properties": {
+        "evaluations_semantic": {
+          "$ref": "#/definitions/EvaluationsSemantic",
+          "title": "Controls how batch evaluations are processed"
+        }
+      },
+      "title": "Options for batch evaluations"
+    },
     "EvaluationsResponse": {
       "type": "object",
       "properties": {
@@ -2555,6 +2818,17 @@
           }
         }
       }
+    },
+    "EvaluationsSemantic": {
+      "type": "string",
+      "enum": [
+        "EXECUTE_ALL",
+        "DENY_ON_FIRST_DENY",
+        "PERMIT_ON_FIRST_PERMIT"
+      ],
+      "default": "EXECUTE_ALL",
+      "description": "- EXECUTE_ALL: Execute all evaluations (default behavior)\n - DENY_ON_FIRST_DENY: Stop on first deny decision\n - PERMIT_ON_FIRST_PERMIT: Stop on first permit decision",
+      "title": "Enum for evaluation semantics"
     },
     "ExpandRequestTupleKey": {
       "type": "object",
@@ -2597,6 +2871,24 @@
           "type": "string"
         }
       }
+    },
+    "GetConfigurationResponse": {
+      "type": "object",
+      "properties": {
+        "policy_decision_point": {
+          "$ref": "#/definitions/PolicyDecisionPoint"
+        },
+        "access_endpoints": {
+          "$ref": "#/definitions/Endpoints"
+        },
+        "capabilities": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "title": "GetConfiguration response - PDP metadata per AuthZEN spec section 13"
     },
     "GetStoreResponse": {
       "type": "object",
@@ -2830,6 +3122,41 @@
         }
       }
     },
+    "PageRequest": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string",
+          "title": "Continuation token from previous response"
+        },
+        "limit": {
+          "type": "integer",
+          "format": "int64",
+          "title": "Maximum number of results to return (default: 50, max: 1000)"
+        }
+      },
+      "title": "Pagination request parameters for search operations"
+    },
+    "PageResponse": {
+      "type": "object",
+      "properties": {
+        "next_token": {
+          "type": "string",
+          "title": "Token to retrieve next page (empty if no more results)"
+        },
+        "count": {
+          "type": "integer",
+          "format": "int64",
+          "title": "Number of results in this page"
+        },
+        "total": {
+          "type": "integer",
+          "format": "int64",
+          "title": "Total number of results (if known, otherwise 0)"
+        }
+      },
+      "title": "Pagination response parameters"
+    },
     "PathUnknownErrorMessageResponse": {
       "type": "object",
       "example": {
@@ -2841,6 +3168,20 @@
           "$ref": "#/definitions/NotFoundErrorCode"
         },
         "message": {
+          "type": "string"
+        }
+      }
+    },
+    "PolicyDecisionPoint": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "description": {
           "type": "string"
         }
       }
@@ -3033,6 +3374,21 @@
         "id"
       ]
     },
+    "ResourceSearchResponse": {
+      "type": "object",
+      "properties": {
+        "resources": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/Resource"
+          }
+        },
+        "page": {
+          "$ref": "#/definitions/PageResponse"
+        }
+      }
+    },
     "ResponseContextError": {
       "type": "object",
       "properties": {
@@ -3133,6 +3489,42 @@
         "type",
         "id"
       ]
+    },
+    "SubjectFilter": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "example": "user"
+        },
+        "id": {
+          "type": "string",
+          "example": "anne",
+          "title": "Optional subject id filter"
+        },
+        "properties": {
+          "type": "object"
+        }
+      },
+      "title": "SubjectFilter is used for search operations where id is optional",
+      "required": [
+        "type"
+      ]
+    },
+    "SubjectSearchResponse": {
+      "type": "object",
+      "properties": {
+        "subjects": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/Subject"
+          }
+        },
+        "page": {
+          "$ref": "#/definitions/PageResponse"
+        }
+      }
     },
     "Tuple": {
       "type": "object",
@@ -3300,7 +3692,7 @@
           "example": "employee"
         }
       },
-      "description": "Type bound public access.\n\nNormally represented using the `\u003ctype\u003e:*` syntax\n\n`employee:*` represents every object of type `employee`, including those not currently present in the system\n\nSee https://openfga.dev/docs/concepts#what-is-type-bound-public-access",
+      "description": "Type bound public access.\n\nNormally represented using the `<type>:*` syntax\n\n`employee:*` represents every object of type `employee`, including those not currently present in the system\n\nSee https://openfga.dev/docs/concepts#what-is-type-bound-public-access",
       "required": [
         "type"
       ]
@@ -3470,7 +3862,7 @@
           "example": "member"
         }
       },
-      "description": "Userset.\n\nA set or group of users, represented in the `\u003ctype\u003e:\u003cid\u003e#\u003crelation\u003e` format\n\n`group:fga#member` represents all members of group FGA, not to be confused by `group:fga` which represents the group itself as a specific object.\n\nSee: https://openfga.dev/docs/modeling/building-blocks/usersets#what-is-a-userset",
+      "description": "Userset.\n\nA set or group of users, represented in the `<type>:<id>#<relation>` format\n\n`group:fga#member` represents all members of group FGA, not to be confused by `group:fga` which represents the group itself as a specific object.\n\nSee: https://openfga.dev/docs/modeling/building-blocks/usersets#what-is-a-userset",
       "required": [
         "type",
         "id",

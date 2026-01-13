@@ -19,8 +19,12 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	AuthZenService_Evaluation_FullMethodName  = "/authzen.v1.AuthZenService/Evaluation"
-	AuthZenService_Evaluations_FullMethodName = "/authzen.v1.AuthZenService/Evaluations"
+	AuthZenService_Evaluation_FullMethodName       = "/authzen.v1.AuthZenService/Evaluation"
+	AuthZenService_Evaluations_FullMethodName      = "/authzen.v1.AuthZenService/Evaluations"
+	AuthZenService_SubjectSearch_FullMethodName    = "/authzen.v1.AuthZenService/SubjectSearch"
+	AuthZenService_ResourceSearch_FullMethodName   = "/authzen.v1.AuthZenService/ResourceSearch"
+	AuthZenService_ActionSearch_FullMethodName     = "/authzen.v1.AuthZenService/ActionSearch"
+	AuthZenService_GetConfiguration_FullMethodName = "/authzen.v1.AuthZenService/GetConfiguration"
 )
 
 // AuthZenServiceClient is the client API for AuthZenService service.
@@ -29,6 +33,14 @@ const (
 type AuthZenServiceClient interface {
 	Evaluation(ctx context.Context, in *EvaluationRequest, opts ...grpc.CallOption) (*EvaluationResponse, error)
 	Evaluations(ctx context.Context, in *EvaluationsRequest, opts ...grpc.CallOption) (*EvaluationsResponse, error)
+	// SubjectSearch returns subjects that have access to the specified resource
+	SubjectSearch(ctx context.Context, in *SubjectSearchRequest, opts ...grpc.CallOption) (*SubjectSearchResponse, error)
+	// ResourceSearch returns resources that a subject has access to
+	ResourceSearch(ctx context.Context, in *ResourceSearchRequest, opts ...grpc.CallOption) (*ResourceSearchResponse, error)
+	// ActionSearch returns actions a subject can perform on a resource
+	ActionSearch(ctx context.Context, in *ActionSearchRequest, opts ...grpc.CallOption) (*ActionSearchResponse, error)
+	// GetConfiguration returns PDP metadata and capabilities per AuthZEN spec section 13
+	GetConfiguration(ctx context.Context, in *GetConfigurationRequest, opts ...grpc.CallOption) (*GetConfigurationResponse, error)
 }
 
 type authZenServiceClient struct {
@@ -57,12 +69,56 @@ func (c *authZenServiceClient) Evaluations(ctx context.Context, in *EvaluationsR
 	return out, nil
 }
 
+func (c *authZenServiceClient) SubjectSearch(ctx context.Context, in *SubjectSearchRequest, opts ...grpc.CallOption) (*SubjectSearchResponse, error) {
+	out := new(SubjectSearchResponse)
+	err := c.cc.Invoke(ctx, AuthZenService_SubjectSearch_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *authZenServiceClient) ResourceSearch(ctx context.Context, in *ResourceSearchRequest, opts ...grpc.CallOption) (*ResourceSearchResponse, error) {
+	out := new(ResourceSearchResponse)
+	err := c.cc.Invoke(ctx, AuthZenService_ResourceSearch_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *authZenServiceClient) ActionSearch(ctx context.Context, in *ActionSearchRequest, opts ...grpc.CallOption) (*ActionSearchResponse, error) {
+	out := new(ActionSearchResponse)
+	err := c.cc.Invoke(ctx, AuthZenService_ActionSearch_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *authZenServiceClient) GetConfiguration(ctx context.Context, in *GetConfigurationRequest, opts ...grpc.CallOption) (*GetConfigurationResponse, error) {
+	out := new(GetConfigurationResponse)
+	err := c.cc.Invoke(ctx, AuthZenService_GetConfiguration_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // AuthZenServiceServer is the server API for AuthZenService service.
 // All implementations must embed UnimplementedAuthZenServiceServer
 // for forward compatibility
 type AuthZenServiceServer interface {
 	Evaluation(context.Context, *EvaluationRequest) (*EvaluationResponse, error)
 	Evaluations(context.Context, *EvaluationsRequest) (*EvaluationsResponse, error)
+	// SubjectSearch returns subjects that have access to the specified resource
+	SubjectSearch(context.Context, *SubjectSearchRequest) (*SubjectSearchResponse, error)
+	// ResourceSearch returns resources that a subject has access to
+	ResourceSearch(context.Context, *ResourceSearchRequest) (*ResourceSearchResponse, error)
+	// ActionSearch returns actions a subject can perform on a resource
+	ActionSearch(context.Context, *ActionSearchRequest) (*ActionSearchResponse, error)
+	// GetConfiguration returns PDP metadata and capabilities per AuthZEN spec section 13
+	GetConfiguration(context.Context, *GetConfigurationRequest) (*GetConfigurationResponse, error)
 	mustEmbedUnimplementedAuthZenServiceServer()
 }
 
@@ -75,6 +131,18 @@ func (UnimplementedAuthZenServiceServer) Evaluation(context.Context, *Evaluation
 }
 func (UnimplementedAuthZenServiceServer) Evaluations(context.Context, *EvaluationsRequest) (*EvaluationsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Evaluations not implemented")
+}
+func (UnimplementedAuthZenServiceServer) SubjectSearch(context.Context, *SubjectSearchRequest) (*SubjectSearchResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SubjectSearch not implemented")
+}
+func (UnimplementedAuthZenServiceServer) ResourceSearch(context.Context, *ResourceSearchRequest) (*ResourceSearchResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ResourceSearch not implemented")
+}
+func (UnimplementedAuthZenServiceServer) ActionSearch(context.Context, *ActionSearchRequest) (*ActionSearchResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ActionSearch not implemented")
+}
+func (UnimplementedAuthZenServiceServer) GetConfiguration(context.Context, *GetConfigurationRequest) (*GetConfigurationResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetConfiguration not implemented")
 }
 func (UnimplementedAuthZenServiceServer) mustEmbedUnimplementedAuthZenServiceServer() {}
 
@@ -125,6 +193,78 @@ func _AuthZenService_Evaluations_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
+func _AuthZenService_SubjectSearch_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SubjectSearchRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthZenServiceServer).SubjectSearch(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AuthZenService_SubjectSearch_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthZenServiceServer).SubjectSearch(ctx, req.(*SubjectSearchRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AuthZenService_ResourceSearch_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ResourceSearchRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthZenServiceServer).ResourceSearch(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AuthZenService_ResourceSearch_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthZenServiceServer).ResourceSearch(ctx, req.(*ResourceSearchRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AuthZenService_ActionSearch_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ActionSearchRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthZenServiceServer).ActionSearch(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AuthZenService_ActionSearch_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthZenServiceServer).ActionSearch(ctx, req.(*ActionSearchRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AuthZenService_GetConfiguration_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetConfigurationRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthZenServiceServer).GetConfiguration(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AuthZenService_GetConfiguration_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthZenServiceServer).GetConfiguration(ctx, req.(*GetConfigurationRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // AuthZenService_ServiceDesc is the grpc.ServiceDesc for AuthZenService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -139,6 +279,22 @@ var AuthZenService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Evaluations",
 			Handler:    _AuthZenService_Evaluations_Handler,
+		},
+		{
+			MethodName: "SubjectSearch",
+			Handler:    _AuthZenService_SubjectSearch_Handler,
+		},
+		{
+			MethodName: "ResourceSearch",
+			Handler:    _AuthZenService_ResourceSearch_Handler,
+		},
+		{
+			MethodName: "ActionSearch",
+			Handler:    _AuthZenService_ActionSearch_Handler,
+		},
+		{
+			MethodName: "GetConfiguration",
+			Handler:    _AuthZenService_GetConfiguration_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
