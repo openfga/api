@@ -335,6 +335,23 @@ func request_AuthZenService_GetConfiguration_0(ctx context.Context, marshaler ru
 	var protoReq GetConfigurationRequest
 	var metadata runtime.ServerMetadata
 
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["store_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "store_id")
+	}
+
+	protoReq.StoreId, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "store_id", err)
+	}
+
 	msg, err := client.GetConfiguration(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
@@ -343,6 +360,23 @@ func request_AuthZenService_GetConfiguration_0(ctx context.Context, marshaler ru
 func local_request_AuthZenService_GetConfiguration_0(ctx context.Context, marshaler runtime.Marshaler, server AuthZenServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq GetConfigurationRequest
 	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["store_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "store_id")
+	}
+
+	protoReq.StoreId, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "store_id", err)
+	}
 
 	msg, err := server.GetConfiguration(ctx, &protoReq)
 	return msg, metadata, err
@@ -488,7 +522,7 @@ func RegisterAuthZenServiceHandlerServer(ctx context.Context, mux *runtime.Serve
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/authzen.v1.AuthZenService/GetConfiguration", runtime.WithHTTPPathPattern("/.well-known/authzen-configuration"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/authzen.v1.AuthZenService/GetConfiguration", runtime.WithHTTPPathPattern("/.well-known/authzen-configuration/{store_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -662,7 +696,7 @@ func RegisterAuthZenServiceHandlerClient(ctx context.Context, mux *runtime.Serve
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/authzen.v1.AuthZenService/GetConfiguration", runtime.WithHTTPPathPattern("/.well-known/authzen-configuration"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/authzen.v1.AuthZenService/GetConfiguration", runtime.WithHTTPPathPattern("/.well-known/authzen-configuration/{store_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -692,7 +726,7 @@ var (
 
 	pattern_AuthZenService_ActionSearch_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2, 2, 3, 2, 4, 2, 5}, []string{"stores", "store_id", "access", "v1", "search", "action"}, ""))
 
-	pattern_AuthZenService_GetConfiguration_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{".well-known", "authzen-configuration"}, ""))
+	pattern_AuthZenService_GetConfiguration_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{".well-known", "authzen-configuration", "store_id"}, ""))
 )
 
 var (

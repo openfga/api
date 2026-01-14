@@ -3756,6 +3756,8 @@ func (m *GetConfigurationRequest) validate(all bool) error {
 
 	var errors []error
 
+	// no validation rules for StoreId
+
 	if len(errors) > 0 {
 		return GetConfigurationRequestMultiError(errors)
 	}

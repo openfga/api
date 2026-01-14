@@ -375,7 +375,7 @@ service AuthZenService {
 
   // GetConfiguration returns PDP metadata and capabilities per AuthZEN spec section 13
   rpc GetConfiguration(GetConfigurationRequest) returns (GetConfigurationResponse) {
-    option (google.api.http) = {get: "/.well-known/authzen-configuration"};
+    option (google.api.http) = {get: "/.well-known/authzen-configuration/{store_id}"};
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       summary: "Get AuthZEN PDP configuration and capabilities"
       tags: ["AuthZen"]
@@ -383,7 +383,8 @@ service AuthZenService {
       description:
         "The GetConfiguration API returns metadata about the Policy Decision Point (PDP) including its name, version, "
         "supported endpoints, and capabilities. This endpoint follows the AuthZEN specification section 13 for PDP discovery.\n\n"
-        "This endpoint is available at the well-known path `/.well-known/authzen-configuration` and does not require authentication.\n\n"
+        "Following the AuthZEN spec's multi-tenant pattern, OpenFGA provides a per-store discovery endpoint at "
+        "`/.well-known/authzen-configuration/{store_id}`. This returns absolute endpoint URLs specific to that store.\n\n"
         "## Example Response\n"
         "```json\n"
         "{\n"
@@ -393,11 +394,11 @@ service AuthZenService {
         "    \"description\": \"OpenFGA is a high-performance authorization system\"\n"
         "  },\n"
         "  \"access_endpoints\": {\n"
-        "    \"evaluation\": \"/access/v1/evaluation\",\n"
-        "    \"evaluations\": \"/access/v1/evaluations\",\n"
-        "    \"subject_search\": \"/access/v1/search/subject\",\n"
-        "    \"resource_search\": \"/access/v1/search/resource\",\n"
-        "    \"action_search\": \"/access/v1/search/action\"\n"
+        "    \"evaluation\": \"/stores/01ARZ3NDEKTSV4RRFFQ69G5FAV/access/v1/evaluation\",\n"
+        "    \"evaluations\": \"/stores/01ARZ3NDEKTSV4RRFFQ69G5FAV/access/v1/evaluations\",\n"
+        "    \"subject_search\": \"/stores/01ARZ3NDEKTSV4RRFFQ69G5FAV/access/v1/search/subject\",\n"
+        "    \"resource_search\": \"/stores/01ARZ3NDEKTSV4RRFFQ69G5FAV/access/v1/search/resource\",\n"
+        "    \"action_search\": \"/stores/01ARZ3NDEKTSV4RRFFQ69G5FAV/access/v1/search/action\"\n"
         "  },\n"
         "  \"capabilities\": [\n"
         "    \"evaluation\",\n"
@@ -713,8 +714,12 @@ message ActionSearchResponse {
   PageResponse page = 2;
 }
 
-// GetConfiguration request (empty)
-message GetConfigurationRequest {}
+// GetConfiguration request
+message GetConfigurationRequest {
+  // The store ID for which to retrieve configuration.
+  // Following the AuthZEN spec's multi-tenant pattern, each store has its own discovery endpoint.
+  string store_id = 1;
+}
 
 // GetConfiguration response - PDP metadata per AuthZEN spec section 13
 message GetConfigurationResponse {
