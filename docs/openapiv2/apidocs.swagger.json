@@ -385,7 +385,7 @@
     "/stores/{store_id}/access/v1/evaluation": {
       "post": {
         "summary": "Evaluate whether a subject can perform an action on a resource",
-        "description": "The Evaluation API determines whether a subject is authorized to perform an action on a resource. This endpoint implements the AuthZEN Access Evaluation API specification.\n\n## Request Structure\nThe request requires three components:\n- **subject**: The entity requesting access (e.g., a user or service)\n- **action**: The operation being performed (maps to a relation in the authorization model)\n- **resource**: The object being accessed\n\nEach component has a `type` and `id` field, and may include optional `properties` for ABAC (Attribute-Based Access Control) conditions.\n\n## Response\nThe response contains a `decision` field (boolean) indicating whether access is permitted, and an optional `context` object with additional information such as the evaluation ID or error details.\n\n## ABAC Support\nProperties on subject, action, and resource are automatically merged into the evaluation context with prefixes:\n- Subject properties: `subject_<property_name>`\n- Resource properties: `resource_<property_name>`\n- Action properties: `action_<property_name>`\n\nThese merged properties can be used in conditions defined in your authorization model.\n\n## Examples\n### Basic authorization check\nCheck if user Anne can read a document:\n```json\n{\n  \"subject\": {\"type\": \"user\", \"id\": \"anne\"},\n  \"action\": {\"name\": \"can_read\"},\n  \"resource\": {\"type\": \"document\", \"id\": \"roadmap\"}\n}\n```\nResponse when authorized:\n```json\n{\n  \"decision\": true\n}\n```\n### Using properties for ABAC\nCheck access with subject and resource attributes:\n```json\n{\n  \"subject\": {\n    \"type\": \"user\",\n    \"id\": \"anne\",\n    \"properties\": {\"department\": \"engineering\", \"clearance_level\": 3}\n  },\n  \"action\": {\"name\": \"can_read\"},\n  \"resource\": {\n    \"type\": \"document\",\n    \"id\": \"secret-project\",\n    \"properties\": {\"classification\": \"confidential\", \"required_clearance\": 2}\n  }\n}\n```\n### Using request context\nProvide additional context for time-based or environmental conditions:\n```json\n{\n  \"subject\": {\"type\": \"user\", \"id\": \"bob\"},\n  \"action\": {\"name\": \"can_access\"},\n  \"resource\": {\"type\": \"system\", \"id\": \"production\"},\n  \"context\": {\n    \"current_time\": \"2024-01-15T14:30:00Z\",\n    \"ip_address\": \"192.168.1.100\",\n    \"is_vpn_connected\": true\n  }\n}\n```\n### Specifying authorization model\nPin the evaluation to a specific authorization model version:\n```json\n{\n  \"subject\": {\"type\": \"user\", \"id\": \"anne\"},\n  \"action\": {\"name\": \"can_write\"},\n  \"resource\": {\"type\": \"document\", \"id\": \"budget-2024\"},\n  \"authorization_model_id\": \"01G50QVV17PECNVAHX1GG4Y5NC\"\n}\n```\n",
+        "description": "The Evaluation API determines whether a subject is authorized to perform an action on a resource. This endpoint implements the AuthZEN Access Evaluation API specification.\n\n## Request Structure\nThe request requires three components:\n- **subject**: The entity requesting access (e.g., a user or service)\n- **action**: The operation being performed (maps to a relation in the authorization model)\n- **resource**: The object being accessed\n\nEach component has a `type` and `id` field, and may include optional `properties` for ABAC (Attribute-Based Access Control) conditions.\n\n## Response\nThe response contains a `decision` field (boolean) indicating whether access is permitted, and an optional `context` object with additional information such as the evaluation ID or error details.\n\n## ABAC Support\nProperties on subject, action, and resource are automatically merged into the evaluation context with prefixes:\n- Subject properties: `subject_<property_name>`\n- Resource properties: `resource_<property_name>`\n- Action properties: `action_<property_name>`\n\nThese merged properties can be used in conditions defined in your authorization model.\n\n## Examples\n### Basic authorization check\nCheck if user Anne can read a document:\n```json\n{\n  \"subject\": {\"type\": \"user\", \"id\": \"anne\"},\n  \"action\": {\"name\": \"can_read\"},\n  \"resource\": {\"type\": \"document\", \"id\": \"roadmap\"}\n}\n```\nResponse when authorized:\n```json\n{\n  \"decision\": true\n}\n```\n### Using properties for ABAC\nCheck access with subject and resource attributes:\n```json\n{\n  \"subject\": {\n    \"type\": \"user\",\n    \"id\": \"anne\",\n    \"properties\": {\"department\": \"engineering\", \"clearance_level\": 3}\n  },\n  \"action\": {\"name\": \"can_read\"},\n  \"resource\": {\n    \"type\": \"document\",\n    \"id\": \"secret-project\",\n    \"properties\": {\"classification\": \"confidential\", \"required_clearance\": 2}\n  }\n}\n```\n### Using request context\nProvide additional context for time-based or environmental conditions:\n```json\n{\n  \"subject\": {\"type\": \"user\", \"id\": \"bob\"},\n  \"action\": {\"name\": \"can_access\"},\n  \"resource\": {\"type\": \"system\", \"id\": \"production\"},\n  \"context\": {\n    \"current_time\": \"2024-01-15T14:30:00Z\",\n    \"ip_address\": \"192.168.1.100\",\n    \"is_vpn_connected\": true\n  }\n}\n```\n### Specifying authorization model\nPin the evaluation to a specific authorization model version using the `Openfga-Authorization-Model-Id` header:\n```\nPOST /stores/{store_id}/access/v1/evaluation\nOpenfga-Authorization-Model-Id: 01G50QVV17PECNVAHX1GG4Y5NC\n\n{\n  \"subject\": {\"type\": \"user\", \"id\": \"anne\"},\n  \"action\": {\"name\": \"can_write\"},\n  \"resource\": {\"type\": \"document\", \"id\": \"budget-2024\"}\n}\n```\n",
         "operationId": "Evaluation",
         "responses": {
           "200": {
@@ -462,10 +462,6 @@
                 },
                 "context": {
                   "type": "object"
-                },
-                "authorization_model_id": {
-                  "type": "string",
-                  "example": "01G5JAVJ41T49E9TT3SKVS7X1J"
                 }
               },
               "required": [
@@ -662,9 +658,6 @@
                 },
                 "page": {
                   "$ref": "#/definitions/PageRequest"
-                },
-                "authorization_model_id": {
-                  "type": "string"
                 }
               },
               "title": "ActionSearch request",
@@ -764,9 +757,6 @@
                 },
                 "page": {
                   "$ref": "#/definitions/PageRequest"
-                },
-                "authorization_model_id": {
-                  "type": "string"
                 }
               },
               "title": "ResourceSearch request",
@@ -866,9 +856,6 @@
                 },
                 "page": {
                   "$ref": "#/definitions/PageRequest"
-                },
-                "authorization_model_id": {
-                  "type": "string"
                 }
               },
               "title": "SubjectSearch request",

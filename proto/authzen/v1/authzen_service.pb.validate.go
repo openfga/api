@@ -221,21 +221,6 @@ func (m *EvaluationRequest) validate(all bool) error {
 
 	}
 
-	if m.GetAuthorizationModelId() != "" {
-
-		if !_EvaluationRequest_AuthorizationModelId_Pattern.MatchString(m.GetAuthorizationModelId()) {
-			err := EvaluationRequestValidationError{
-				field:  "AuthorizationModelId",
-				reason: "value does not match regex pattern \"^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$\"",
-			}
-			if !all {
-				return err
-			}
-			errors = append(errors, err)
-		}
-
-	}
-
 	if len(errors) > 0 {
 		return EvaluationRequestMultiError(errors)
 	}
@@ -317,8 +302,6 @@ var _ interface {
 } = EvaluationRequestValidationError{}
 
 var _EvaluationRequest_StoreId_Pattern = regexp.MustCompile("^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$")
-
-var _EvaluationRequest_AuthorizationModelId_Pattern = regexp.MustCompile("^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$")
 
 // Validate checks the field values on EvaluationsItemRequest with the rules
 // defined in the proto definition for this message. If any rules are
@@ -2571,8 +2554,6 @@ func (m *SubjectSearchRequest) validate(all bool) error {
 
 	}
 
-	// no validation rules for AuthorizationModelId
-
 	if m.Subject != nil {
 
 		if all {
@@ -3028,8 +3009,6 @@ func (m *ResourceSearchRequest) validate(all bool) error {
 
 	}
 
-	// no validation rules for AuthorizationModelId
-
 	if m.Resource != nil {
 
 		if all {
@@ -3484,8 +3463,6 @@ func (m *ActionSearchRequest) validate(all bool) error {
 		}
 
 	}
-
-	// no validation rules for AuthorizationModelId
 
 	if len(errors) > 0 {
 		return ActionSearchRequestMultiError(errors)
