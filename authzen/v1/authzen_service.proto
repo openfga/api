@@ -85,13 +85,15 @@ service AuthZenService {
         "}\n"
         "```\n"
         "### Specifying authorization model\n"
-        "Pin the evaluation to a specific authorization model version:\n"
-        "```json\n"
+        "Pin the evaluation to a specific authorization model version using the `Openfga-Authorization-Model-Id` header:\n"
+        "```\n"
+        "POST /stores/{store_id}/access/v1/evaluation\n"
+        "Openfga-Authorization-Model-Id: 01G50QVV17PECNVAHX1GG4Y5NC\n"
+        "\n"
         "{\n"
         "  \"subject\": {\"type\": \"user\", \"id\": \"anne\"},\n"
         "  \"action\": {\"name\": \"can_write\"},\n"
-        "  \"resource\": {\"type\": \"document\", \"id\": \"budget-2024\"},\n"
-        "  \"authorization_model_id\": \"01G50QVV17PECNVAHX1GG4Y5NC\"\n"
+        "  \"resource\": {\"type\": \"document\", \"id\": \"budget-2024\"}\n"
         "}\n"
         "```\n"
     };
@@ -395,14 +397,9 @@ message EvaluationRequest {
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01G5JAVJ41T49E9TT3SKVS7X1J\""}
   ];
 
-  string authorization_model_id = 6 [
-    json_name = "authorization_model_id",
-    (validate.rules).string = {
-      pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"
-      ignore_empty: true
-    },
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01G5JAVJ41T49E9TT3SKVS7X1J\""}
-  ];
+  // authorization_model_id removed - use Openfga-Authorization-Model-Id header instead
+  reserved 6;
+  reserved "authorization_model_id";
 }
 
 message EvaluationsItemRequest {
@@ -597,7 +594,9 @@ message SubjectSearchRequest {
     }
   ];
 
-  string authorization_model_id = 7 [json_name = "authorization_model_id"];
+  // authorization_model_id removed - use Openfga-Authorization-Model-Id header instead
+  reserved 7;
+  reserved "authorization_model_id";
 }
 
 message SubjectSearchResponse {
@@ -632,7 +631,9 @@ message ResourceSearchRequest {
     }
   ];
 
-  string authorization_model_id = 7 [json_name = "authorization_model_id"];
+  // authorization_model_id removed - use Openfga-Authorization-Model-Id header instead
+  reserved 7;
+  reserved "authorization_model_id";
 }
 
 message ResourceSearchResponse {
@@ -664,7 +665,9 @@ message ActionSearchRequest {
     }
   ];
 
-  string authorization_model_id = 6 [json_name = "authorization_model_id"];
+  // authorization_model_id removed - use Openfga-Authorization-Model-Id header instead
+  reserved 6;
+  reserved "authorization_model_id";
 }
 
 message ActionSearchResponse {
