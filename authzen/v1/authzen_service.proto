@@ -601,7 +601,8 @@ message SubjectSearchRequest {
 
 message SubjectSearchResponse {
   repeated Subject subjects = 1;
-  PageResponse page = 2;
+  // Optional per AuthZEN spec - omit if pagination not supported
+  optional PageResponse page = 2;
 }
 
 // ResourceSearch request
@@ -638,7 +639,8 @@ message ResourceSearchRequest {
 
 message ResourceSearchResponse {
   repeated Resource resources = 1;
-  PageResponse page = 2;
+  // Optional per AuthZEN spec - omit if pagination not supported
+  optional PageResponse page = 2;
 }
 
 // ActionSearch request
@@ -672,7 +674,8 @@ message ActionSearchRequest {
 
 message ActionSearchResponse {
   repeated Action actions = 1;
-  PageResponse page = 2;
+  // Optional per AuthZEN spec - omit if pagination not supported
+  optional PageResponse page = 2;
 }
 
 // GetConfiguration request

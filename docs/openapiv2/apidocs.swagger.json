@@ -2268,7 +2268,8 @@
           }
         },
         "page": {
-          "$ref": "#/definitions/PageResponse"
+          "$ref": "#/definitions/PageResponse",
+          "title": "Optional per AuthZEN spec - omit if pagination not supported"
         }
       }
     },
@@ -3381,7 +3382,8 @@
           }
         },
         "page": {
-          "$ref": "#/definitions/PageResponse"
+          "$ref": "#/definitions/PageResponse",
+          "title": "Optional per AuthZEN spec - omit if pagination not supported"
         }
       }
     },
@@ -3518,7 +3520,8 @@
           }
         },
         "page": {
-          "$ref": "#/definitions/PageResponse"
+          "$ref": "#/definitions/PageResponse",
+          "title": "Optional per AuthZEN spec - omit if pagination not supported"
         }
       }
     },
