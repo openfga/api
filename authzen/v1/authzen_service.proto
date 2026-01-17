@@ -188,7 +188,7 @@ service AuthZenService {
         "Response:\n"
         "```json\n"
         "{\n"
-        "  \"subjects\": [\n"
+        "  \"results\": [\n"
         "    {\"type\": \"user\", \"id\": \"anne\"},\n"
         "    {\"type\": \"user\", \"id\": \"bob\"},\n"
         "    {\"type\": \"user\", \"id\": \"charlie\"}\n"
@@ -243,7 +243,7 @@ service AuthZenService {
         "Response:\n"
         "```json\n"
         "{\n"
-        "  \"resources\": [\n"
+        "  \"results\": [\n"
         "    {\"type\": \"document\", \"id\": \"roadmap\"},\n"
         "    {\"type\": \"document\", \"id\": \"budget-2024\"},\n"
         "    {\"type\": \"document\", \"id\": \"team-roster\"}\n"
@@ -300,7 +300,7 @@ service AuthZenService {
         "Response:\n"
         "```json\n"
         "{\n"
-        "  \"actions\": [\n"
+        "  \"results\": [\n"
         "    {\"name\": \"can_read\"},\n"
         "    {\"name\": \"can_write\"},\n"
         "    {\"name\": \"can_share\"}\n"
@@ -600,7 +600,7 @@ message SubjectSearchRequest {
 }
 
 message SubjectSearchResponse {
-  repeated Subject subjects = 1;
+  repeated Subject results = 1;
   // Optional per AuthZEN spec - omit if pagination not supported
   optional PageResponse page = 2;
 }
@@ -638,7 +638,7 @@ message ResourceSearchRequest {
 }
 
 message ResourceSearchResponse {
-  repeated Resource resources = 1;
+  repeated Resource results = 1;
   // Optional per AuthZEN spec - omit if pagination not supported
   optional PageResponse page = 2;
 }
@@ -673,7 +673,7 @@ message ActionSearchRequest {
 }
 
 message ActionSearchResponse {
-  repeated Action actions = 1;
+  repeated Action results = 1;
   // Optional per AuthZEN spec - omit if pagination not supported
   optional PageResponse page = 2;
 }
