@@ -85,12 +85,6 @@
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
             }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Status"
-            }
           }
         },
         "parameters": [
@@ -160,12 +154,6 @@
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
             }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Status"
-            }
           }
         },
         "parameters": [
@@ -199,12 +187,6 @@
         "description": "Create a unique OpenFGA store which will be used to store authorization models and relationship tuples.",
         "operationId": "CreateStore",
         "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/CreateStoreResponse"
-            }
-          },
           "201": {
             "description": "A successful response.",
             "schema": {
@@ -251,12 +233,6 @@
             "description": "Request failed due to internal server error.",
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Status"
             }
           }
         },
@@ -328,12 +304,6 @@
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
             }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Status"
-            }
           }
         },
         "parameters": [
@@ -353,17 +323,8 @@
         "description": "Delete an OpenFGA store. This does not delete the data associated with the store, like tuples or authorization models.",
         "operationId": "DeleteStore",
         "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/DeleteStoreResponse"
-            }
-          },
           "204": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/DeleteStoreResponse"
-            }
+            "description": "A successful response."
           },
           "400": {
             "description": "Request failed due to invalid input.",
@@ -406,12 +367,6 @@
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
             }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Status"
-            }
           }
         },
         "parameters": [
@@ -430,7 +385,7 @@
     "/stores/{store_id}/access/v1/evaluation": {
       "post": {
         "summary": "Evaluate whether a subject can perform an action on a resource",
-        "description": "The Evaluation API determines whether a subject is authorized to perform an action on a resource. This endpoint implements the AuthZEN Access Evaluation API specification.\n\n## Request Structure\nThe request requires three components:\n- **subject**: The entity requesting access (e.g., a user or service)\n- **action**: The operation being performed (maps to a relation in the authorization model)\n- **resource**: The object being accessed\n\nEach component has a `type` and `id` field, and may include optional `properties` for ABAC (Attribute-Based Access Control) conditions.\n\n## Response\nThe response contains a `decision` field (boolean) indicating whether access is permitted, and an optional `context` object with additional information such as the evaluation ID or error details.\n\n## ABAC Support\nProperties on subject, action, and resource are automatically merged into the evaluation context with prefixes:\n- Subject properties: `subject_\u003cproperty_name\u003e`\n- Resource properties: `resource_\u003cproperty_name\u003e`\n- Action properties: `action_\u003cproperty_name\u003e`\n\nThese merged properties can be used in conditions defined in your authorization model.\n\n## Examples\n### Basic authorization check\nCheck if user Anne can read a document:\n```json\n{\n  \"subject\": {\"type\": \"user\", \"id\": \"anne\"},\n  \"action\": {\"name\": \"can_read\"},\n  \"resource\": {\"type\": \"document\", \"id\": \"roadmap\"}\n}\n```\nResponse when authorized:\n```json\n{\n  \"decision\": true\n}\n```\n### Using properties for ABAC\nCheck access with subject and resource attributes:\n```json\n{\n  \"subject\": {\n    \"type\": \"user\",\n    \"id\": \"anne\",\n    \"properties\": {\"department\": \"engineering\", \"clearance_level\": 3}\n  },\n  \"action\": {\"name\": \"can_read\"},\n  \"resource\": {\n    \"type\": \"document\",\n    \"id\": \"secret-project\",\n    \"properties\": {\"classification\": \"confidential\", \"required_clearance\": 2}\n  }\n}\n```\n### Using request context\nProvide additional context for time-based or environmental conditions:\n```json\n{\n  \"subject\": {\"type\": \"user\", \"id\": \"bob\"},\n  \"action\": {\"name\": \"can_access\"},\n  \"resource\": {\"type\": \"system\", \"id\": \"production\"},\n  \"context\": {\n    \"current_time\": \"2024-01-15T14:30:00Z\",\n    \"ip_address\": \"192.168.1.100\",\n    \"is_vpn_connected\": true\n  }\n}\n```\n### Specifying authorization model\nPin the evaluation to a specific authorization model version using the `Openfga-Authorization-Model-Id` header:\n```\nPOST /stores/{store_id}/access/v1/evaluation\nOpenfga-Authorization-Model-Id: 01G50QVV17PECNVAHX1GG4Y5NC\n\n{\n  \"subject\": {\"type\": \"user\", \"id\": \"anne\"},\n  \"action\": {\"name\": \"can_write\"},\n  \"resource\": {\"type\": \"document\", \"id\": \"budget-2024\"}\n}\n```\n",
+        "description": "The Evaluation API determines whether a subject is authorized to perform an action on a resource. This endpoint implements the AuthZEN Access Evaluation API specification.\n\n## Request Structure\nThe request requires three components:\n- **subject**: The entity requesting access (e.g., a user or service)\n- **action**: The operation being performed (maps to a relation in the authorization model)\n- **resource**: The object being accessed\n\nEach component has a `type` and `id` field, and may include optional `properties` for ABAC (Attribute-Based Access Control) conditions.\n\n## Response\nThe response contains a `decision` field (boolean) indicating whether access is permitted, and an optional `context` object with additional information such as the evaluation ID or error details.\n\n## ABAC Support\nProperties on subject, action, and resource are automatically merged into the evaluation context with prefixes:\n- Subject properties: `subject_<property_name>`\n- Resource properties: `resource_<property_name>`\n- Action properties: `action_<property_name>`\n\nThese merged properties can be used in conditions defined in your authorization model.\n\n## Examples\n### Basic authorization check\nCheck if user Anne can read a document:\n```json\n{\n  \"subject\": {\"type\": \"user\", \"id\": \"anne\"},\n  \"action\": {\"name\": \"can_read\"},\n  \"resource\": {\"type\": \"document\", \"id\": \"roadmap\"}\n}\n```\nResponse when authorized:\n```json\n{\n  \"decision\": true\n}\n```\n### Using properties for ABAC\nCheck access with subject and resource attributes:\n```json\n{\n  \"subject\": {\n    \"type\": \"user\",\n    \"id\": \"anne\",\n    \"properties\": {\"department\": \"engineering\", \"clearance_level\": 3}\n  },\n  \"action\": {\"name\": \"can_read\"},\n  \"resource\": {\n    \"type\": \"document\",\n    \"id\": \"secret-project\",\n    \"properties\": {\"classification\": \"confidential\", \"required_clearance\": 2}\n  }\n}\n```\n### Using request context\nProvide additional context for time-based or environmental conditions:\n```json\n{\n  \"subject\": {\"type\": \"user\", \"id\": \"bob\"},\n  \"action\": {\"name\": \"can_access\"},\n  \"resource\": {\"type\": \"system\", \"id\": \"production\"},\n  \"context\": {\n    \"current_time\": \"2024-01-15T14:30:00Z\",\n    \"ip_address\": \"192.168.1.100\",\n    \"is_vpn_connected\": true\n  }\n}\n```\n### Specifying authorization model\nPin the evaluation to a specific authorization model version using the `Openfga-Authorization-Model-Id` header:\n```\nPOST /stores/{store_id}/access/v1/evaluation\nOpenfga-Authorization-Model-Id: 01G50QVV17PECNVAHX1GG4Y5NC\n\n{\n  \"subject\": {\"type\": \"user\", \"id\": \"anne\"},\n  \"action\": {\"name\": \"can_write\"},\n  \"resource\": {\"type\": \"document\", \"id\": \"budget-2024\"}\n}\n```\n",
         "operationId": "Evaluation",
         "responses": {
           "200": {
@@ -479,12 +434,6 @@
             "description": "Request failed due to internal server error.",
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Status"
             }
           }
         },
@@ -580,12 +529,6 @@
             "description": "Request failed due to internal server error.",
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Status"
             }
           }
         },
@@ -688,12 +631,6 @@
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
             }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Status"
-            }
           }
         },
         "parameters": [
@@ -788,12 +725,6 @@
             "description": "Request failed due to internal server error.",
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Status"
             }
           }
         },
@@ -894,12 +825,6 @@
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
             }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Status"
-            }
           }
         },
         "parameters": [
@@ -999,12 +924,6 @@
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
             }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Status"
-            }
           }
         },
         "parameters": [
@@ -1030,17 +949,8 @@
         "description": "The WriteAssertions API will upsert new assertions for an authorization model id, or overwrite the existing ones. An assertion is an object that contains a tuple key, the expectation of whether a call to the Check API of that tuple key will return true or false, and optionally a list of contextual tuples.",
         "operationId": "WriteAssertions",
         "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/WriteAssertionsResponse"
-            }
-          },
           "204": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/WriteAssertionsResponse"
-            }
+            "description": "A successful response."
           },
           "400": {
             "description": "Request failed due to invalid input.",
@@ -1082,12 +992,6 @@
             "description": "Request failed due to internal server error.",
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Status"
             }
           }
         },
@@ -1184,12 +1088,6 @@
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
             }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Status"
-            }
           }
         },
         "parameters": [
@@ -1222,12 +1120,6 @@
         "description": "The WriteAuthorizationModel API will add a new authorization model to a store.\nEach item in the `type_definitions` array is a type definition as specified in the field `type_definition`.\nThe response will return the authorization model's ID in the `id` field.\n\n## Example\nTo add an authorization model with `user` and `document` type definitions, call POST authorization-models API with the body: \n```json\n{\n  \"type_definitions\":[\n    {\n      \"type\":\"user\"\n    },\n    {\n      \"type\":\"document\",\n      \"relations\":{\n        \"reader\":{\n          \"union\":{\n            \"child\":[\n              {\n                \"this\":{}\n              },\n              {\n                \"computedUserset\":{\n                  \"object\":\"\",\n                  \"relation\":\"writer\"\n                }\n              }\n            ]\n          }\n        },\n        \"writer\":{\n          \"this\":{}\n        }\n      }\n    }\n  ]\n}\n```\nOpenFGA's response will include the version id for this authorization model, which will look like \n```\n{\"authorization_model_id\": \"01G50QVV17PECNVAHX1GG4Y5NC\"}\n```\n",
         "operationId": "WriteAuthorizationModel",
         "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/WriteAuthorizationModelResponse"
-            }
-          },
           "201": {
             "description": "A successful response.",
             "schema": {
@@ -1274,12 +1166,6 @@
             "description": "Request failed due to internal server error.",
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Status"
             }
           }
         },
@@ -1380,12 +1266,6 @@
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
             }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Status"
-            }
           }
         },
         "parameters": [
@@ -1459,12 +1339,6 @@
             "description": "Request failed due to internal server error.",
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Status"
             }
           }
         },
@@ -1562,12 +1436,6 @@
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
             }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Status"
-            }
           }
         },
         "parameters": [
@@ -1662,12 +1530,6 @@
             "description": "Request failed due to internal server error.",
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Status"
             }
           }
         },
@@ -1774,12 +1636,6 @@
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
             }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Status"
-            }
           }
         },
         "parameters": [
@@ -1825,7 +1681,7 @@
     "/stores/{store_id}/list-objects": {
       "post": {
         "summary": "List all objects of the given type that the user has a relation with",
-        "description": "The ListObjects API returns a list of all the objects of the given type that the user has a relation with.\n To arrive at a result, the API uses: an authorization model, explicit tuples written through the Write API, contextual tuples present in the request, and implicit tuples that exist by virtue of applying set theory (such as `document:2021-budget#viewer@document:2021-budget#viewer`; the set of users who are viewers of `document:2021-budget` are the set of users who are the viewers of `document:2021-budget`).\nAn `authorization_model_id` may be specified in the body. If it is not specified, the latest authorization model ID will be used. It is strongly recommended to specify authorization model id for better performance.\nYou may also specify `contextual_tuples` that will be treated as regular tuples. Each of these tuples may have an associated `condition`.\nYou may also provide a `context` object that will be used to evaluate the conditioned tuples in the system. It is strongly recommended to provide a value for all the input parameters of all the conditions, to ensure that all tuples be evaluated correctly.\nBy default, the Check API caches results for a short time to optimize performance. You may specify a value of `HIGHER_CONSISTENCY` for the optional `consistency` parameter in the body to inform the server that higher conisistency is preferred at the expense of increased latency. Consideration should be given to the increased latency if requesting higher consistency.\nThe response will contain the related objects in an array in the \"objects\" field of the response and they will be strings in the object format `\u003ctype\u003e:\u003cid\u003e` (e.g. \"document:roadmap\").\nThe number of objects in the response array will be limited by the execution timeout specified in the flag OPENFGA_LIST_OBJECTS_DEADLINE and by the upper bound specified in the flag OPENFGA_LIST_OBJECTS_MAX_RESULTS, whichever is hit first.\nThe objects given will not be sorted, and therefore two identical calls can give a given different set of objects.",
+        "description": "The ListObjects API returns a list of all the objects of the given type that the user has a relation with.\n To arrive at a result, the API uses: an authorization model, explicit tuples written through the Write API, contextual tuples present in the request, and implicit tuples that exist by virtue of applying set theory (such as `document:2021-budget#viewer@document:2021-budget#viewer`; the set of users who are viewers of `document:2021-budget` are the set of users who are the viewers of `document:2021-budget`).\nAn `authorization_model_id` may be specified in the body. If it is not specified, the latest authorization model ID will be used. It is strongly recommended to specify authorization model id for better performance.\nYou may also specify `contextual_tuples` that will be treated as regular tuples. Each of these tuples may have an associated `condition`.\nYou may also provide a `context` object that will be used to evaluate the conditioned tuples in the system. It is strongly recommended to provide a value for all the input parameters of all the conditions, to ensure that all tuples be evaluated correctly.\nBy default, the Check API caches results for a short time to optimize performance. You may specify a value of `HIGHER_CONSISTENCY` for the optional `consistency` parameter in the body to inform the server that higher conisistency is preferred at the expense of increased latency. Consideration should be given to the increased latency if requesting higher consistency.\nThe response will contain the related objects in an array in the \"objects\" field of the response and they will be strings in the object format `<type>:<id>` (e.g. \"document:roadmap\").\nThe number of objects in the response array will be limited by the execution timeout specified in the flag OPENFGA_LIST_OBJECTS_DEADLINE and by the upper bound specified in the flag OPENFGA_LIST_OBJECTS_MAX_RESULTS, whichever is hit first.\nThe objects given will not be sorted, and therefore two identical calls can give a given different set of objects.",
         "operationId": "ListObjects",
         "responses": {
           "200": {
@@ -1874,12 +1730,6 @@
             "description": "Request failed due to internal server error.",
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Status"
             }
           }
         },
@@ -1992,12 +1842,6 @@
             "description": "Request failed due to internal server error.",
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Status"
             }
           }
         },
@@ -2129,12 +1973,6 @@
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
             }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Status"
-            }
           }
         },
         "parameters": [
@@ -2239,12 +2077,6 @@
             "description": "Request failed due to internal server error.",
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Status"
             }
           }
         },
@@ -2357,12 +2189,6 @@
             "description": "Request failed due to internal server error.",
             "schema": {
               "$ref": "#/definitions/InternalErrorMessageResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Status"
             }
           }
         },
@@ -2783,7 +2609,8 @@
         "HIGHER_CONSISTENCY"
       ],
       "default": "UNSPECIFIED",
-      "description": "Controls the consistency preferences when calling the query APIs.\n\n - UNSPECIFIED: Default if not set. Behavior will be the same as MINIMIZE_LATENCY.\n - MINIMIZE_LATENCY: Minimize latency at the potential expense of lower consistency.\n - HIGHER_CONSISTENCY: Prefer higher consistency, at the potential expense of increased latency."
+      "description": "Controls the consistency preferences when calling the query APIs.\n\n - UNSPECIFIED: Default if not set. Behavior will be the same as MINIMIZE_LATENCY.\n - MINIMIZE_LATENCY: Minimize latency at the potential expense of lower consistency.\n - HIGHER_CONSISTENCY: Prefer higher consistency, at the potential expense of increased latency.",
+      "example": "MINIMIZE_LATENCY"
     },
     "ContextualTupleKeys": {
       "type": "object",
@@ -3864,7 +3691,7 @@
           "example": "employee"
         }
       },
-      "description": "Type bound public access.\n\nNormally represented using the `\u003ctype\u003e:*` syntax\n\n`employee:*` represents every object of type `employee`, including those not currently present in the system\n\nSee https://openfga.dev/docs/concepts#what-is-type-bound-public-access",
+      "description": "Type bound public access.\n\nNormally represented using the `<type>:*` syntax\n\n`employee:*` represents every object of type `employee`, including those not currently present in the system\n\nSee https://openfga.dev/docs/concepts#what-is-type-bound-public-access",
       "required": [
         "type"
       ]
@@ -4034,7 +3861,7 @@
           "example": "member"
         }
       },
-      "description": "Userset.\n\nA set or group of users, represented in the `\u003ctype\u003e:\u003cid\u003e#\u003crelation\u003e` format\n\n`group:fga#member` represents all members of group FGA, not to be confused by `group:fga` which represents the group itself as a specific object.\n\nSee: https://openfga.dev/docs/modeling/building-blocks/usersets#what-is-a-userset",
+      "description": "Userset.\n\nA set or group of users, represented in the `<type>:<id>#<relation>` format\n\n`group:fga#member` represents all members of group FGA, not to be confused by `group:fga` which represents the group itself as a specific object.\n\nSee: https://openfga.dev/docs/modeling/building-blocks/usersets#what-is-a-userset",
       "required": [
         "type",
         "id",
