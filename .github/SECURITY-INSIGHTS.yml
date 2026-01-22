@@ -54,10 +54,6 @@ repository:
     affiliation: Okta
     email: yamil.asusta@okta.com
     social: https://github.com/elbuo8
-  - name: Zilvinas Vilutis
-    affiliation: Okta
-    email: zilvinas.vilutis@okta.com
-    social: https://github.com/cikasfm
 
   license:
     url: https://raw.githubusercontent.com/openfga/api/main/LICENSE
