@@ -41,6 +41,7 @@ jobs:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
           fetch-depth: 0
-      - uses: swaggerexpert/swagger-editor-validate@264fd875d3c6e1bf65da1f0a63e095cbe41ffef3 # v1.5.1
+      - uses: swaggerexpert/apidom-validate@e5f5f23a9258709b041cf2b8d7040858057fface # v1
         with:
-          definition-file: ./docs/openapiv2/apidocs.swagger.json
+          definition-file: './docs/openapiv2/apidocs.swagger.json'
+          fails-on: 1
