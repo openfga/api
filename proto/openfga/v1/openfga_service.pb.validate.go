@@ -5602,10 +5602,10 @@ func (m *ReadChangesRequest) validate(all bool) error {
 
 	if wrapper := m.GetPageSize(); wrapper != nil {
 
-		if val := wrapper.GetValue(); val < 1 || val > 100 {
+		if wrapper.GetValue() < 1 {
 			err := ReadChangesRequestValidationError{
 				field:  "PageSize",
-				reason: "value must be inside range [1, 100]",
+				reason: "value must be greater than or equal to 1",
 			}
 			if !all {
 				return err
