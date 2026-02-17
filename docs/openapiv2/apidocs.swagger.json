@@ -16,6 +16,9 @@
   },
   "tags": [
     {
+      "name": "AuthZenService"
+    },
+    {
       "name": "OpenFGAService"
     }
   ],
@@ -29,6 +32,75 @@
     "application/json"
   ],
   "paths": {
+    "/.well-known/authzen-configuration/{storeId}": {
+      "get": {
+        "summary": "Get AuthZEN PDP configuration and capabilities",
+        "description": "The GetConfiguration API returns metadata about the Policy Decision Point (PDP) including its name, version, supported endpoints, and capabilities. This endpoint follows the AuthZEN specification section 13 for PDP discovery.\n\nFollowing the AuthZEN spec's multi-tenant pattern, OpenFGA provides a per-store discovery endpoint at `/.well-known/authzen-configuration/{store_id}`. This returns absolute endpoint URLs specific to that store.\n\n## Example Response\n```json\n{\n  \"policy_decision_point\": {\n    \"name\": \"OpenFGA\",\n    \"version\": \"1.8.0\",\n    \"description\": \"OpenFGA is a high-performance authorization system\"\n  },\n  \"access_endpoints\": {\n    \"evaluation\": \"/stores/01ARZ3NDEKTSV4RRFFQ69G5FAV/access/v1/evaluation\",\n    \"evaluations\": \"/stores/01ARZ3NDEKTSV4RRFFQ69G5FAV/access/v1/evaluations\",\n    \"subject_search\": \"/stores/01ARZ3NDEKTSV4RRFFQ69G5FAV/access/v1/search/subject\",\n    \"resource_search\": \"/stores/01ARZ3NDEKTSV4RRFFQ69G5FAV/access/v1/search/resource\",\n    \"action_search\": \"/stores/01ARZ3NDEKTSV4RRFFQ69G5FAV/access/v1/search/action\"\n  },\n  \"capabilities\": [\n    \"evaluation\",\n    \"evaluations\",\n    \"subject_search\",\n    \"resource_search\",\n    \"action_search\"\n  ]\n}\n```\n",
+        "operationId": "GetConfiguration",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/GetConfigurationResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "401": {
+            "description": "Not authenticated.",
+            "schema": {
+              "$ref": "#/definitions/UnauthenticatedResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "schema": {
+              "$ref": "#/definitions/ForbiddenResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "409": {
+            "description": "Request was aborted due a transaction conflict.",
+            "schema": {
+              "$ref": "#/definitions/AbortedMessageResponse"
+            }
+          },
+          "422": {
+            "description": "Request timed out due to excessive request throttling.",
+            "schema": {
+              "$ref": "#/definitions/UnprocessableContentMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "storeId",
+            "description": "The store ID for which to retrieve configuration.\nFollowing the AuthZEN spec's multi-tenant pattern, each store has its own discovery endpoint.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "AuthZen"
+        ]
+      }
+    },
     "/stores": {
       "get": {
         "summary": "List all stores",
@@ -307,6 +379,495 @@
         ],
         "tags": [
           "Stores"
+        ]
+      }
+    },
+    "/stores/{store_id}/access/v1/evaluation": {
+      "post": {
+        "summary": "Evaluate whether a subject can perform an action on a resource",
+        "description": "The Evaluation API determines whether a subject is authorized to perform an action on a resource. This endpoint implements the AuthZEN Access Evaluation API specification.\n\n## Request Structure\nThe request requires three components:\n- **subject**: The entity requesting access (e.g., a user or service)\n- **action**: The operation being performed (maps to a relation in the authorization model)\n- **resource**: The object being accessed\n\nEach component has a `type` and `id` field, and may include optional `properties` for ABAC (Attribute-Based Access Control) conditions.\n\n## Response\nThe response contains a `decision` field (boolean) indicating whether access is permitted, and an optional `context` object with additional information such as the evaluation ID or error details.\n\n## ABAC Support\nProperties on subject, action, and resource are automatically merged into the evaluation context with prefixes:\n- Subject properties: `subject_<property_name>`\n- Resource properties: `resource_<property_name>`\n- Action properties: `action_<property_name>`\n\nThese merged properties can be used in conditions defined in your authorization model.\n\n## Examples\n### Basic authorization check\nCheck if user Anne can read a document:\n```json\n{\n  \"subject\": {\"type\": \"user\", \"id\": \"anne\"},\n  \"action\": {\"name\": \"can_read\"},\n  \"resource\": {\"type\": \"document\", \"id\": \"roadmap\"}\n}\n```\nResponse when authorized:\n```json\n{\n  \"decision\": true\n}\n```\n### Using properties for ABAC\nCheck access with subject and resource attributes:\n```json\n{\n  \"subject\": {\n    \"type\": \"user\",\n    \"id\": \"anne\",\n    \"properties\": {\"department\": \"engineering\", \"clearance_level\": 3}\n  },\n  \"action\": {\"name\": \"can_read\"},\n  \"resource\": {\n    \"type\": \"document\",\n    \"id\": \"secret-project\",\n    \"properties\": {\"classification\": \"confidential\", \"required_clearance\": 2}\n  }\n}\n```\n### Using request context\nProvide additional context for time-based or environmental conditions:\n```json\n{\n  \"subject\": {\"type\": \"user\", \"id\": \"bob\"},\n  \"action\": {\"name\": \"can_access\"},\n  \"resource\": {\"type\": \"system\", \"id\": \"production\"},\n  \"context\": {\n    \"current_time\": \"2024-01-15T14:30:00Z\",\n    \"ip_address\": \"192.168.1.100\",\n    \"is_vpn_connected\": true\n  }\n}\n```\n### Specifying authorization model\nPin the evaluation to a specific authorization model version using the `Openfga-Authorization-Model-Id` header:\n```\nPOST /stores/{store_id}/access/v1/evaluation\nOpenfga-Authorization-Model-Id: 01G50QVV17PECNVAHX1GG4Y5NC\n\n{\n  \"subject\": {\"type\": \"user\", \"id\": \"anne\"},\n  \"action\": {\"name\": \"can_write\"},\n  \"resource\": {\"type\": \"document\", \"id\": \"budget-2024\"}\n}\n```\n",
+        "operationId": "Evaluation",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/EvaluationResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "401": {
+            "description": "Not authenticated.",
+            "schema": {
+              "$ref": "#/definitions/UnauthenticatedResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "schema": {
+              "$ref": "#/definitions/ForbiddenResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "409": {
+            "description": "Request was aborted due a transaction conflict.",
+            "schema": {
+              "$ref": "#/definitions/AbortedMessageResponse"
+            }
+          },
+          "422": {
+            "description": "Request timed out due to excessive request throttling.",
+            "schema": {
+              "$ref": "#/definitions/UnprocessableContentMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "store_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "subject": {
+                  "$ref": "#/definitions/Subject"
+                },
+                "resource": {
+                  "$ref": "#/definitions/Resource"
+                },
+                "action": {
+                  "$ref": "#/definitions/Action"
+                },
+                "context": {
+                  "type": "object"
+                }
+              },
+              "required": [
+                "subject",
+                "resource",
+                "action"
+              ]
+            }
+          }
+        ],
+        "tags": [
+          "AuthZen"
+        ]
+      }
+    },
+    "/stores/{store_id}/access/v1/evaluations": {
+      "post": {
+        "summary": "Check whether one or more users are authorized to access resources",
+        "description": "The Evaluations API allows batch authorization checks in a single request. It supports request-level defaults for subject, action, resource, and context that can be overridden per evaluation item.\n\n## Evaluation Semantics\nThe `options.evaluations_semantic` field controls how evaluations are processed:\n- `execute_all` (default): Execute all evaluations and return all results\n- `deny_on_first_deny`: Stop processing on first deny decision\n- `permit_on_first_permit`: Stop processing on first permit decision\n\n## Examples\n### Basic batch evaluation\nCheck if a user can perform multiple actions on a document:\n```json\n{\n  \"subject\": {\"type\": \"user\", \"id\": \"anne\"},\n  \"resource\": {\"type\": \"document\", \"id\": \"roadmap\"},\n  \"evaluations\": [\n    {\"action\": {\"name\": \"can_read\"}},\n    {\"action\": {\"name\": \"can_write\"}},\n    {\"action\": {\"name\": \"can_delete\"}}\n  ]\n}\n```\n### Using evaluation semantics\nStop on first permitted action (useful for finding any valid permission):\n```json\n{\n  \"subject\": {\"type\": \"user\", \"id\": \"anne\"},\n  \"resource\": {\"type\": \"document\", \"id\": \"roadmap\"},\n  \"evaluations\": [\n    {\"action\": {\"name\": \"can_read\"}},\n    {\"action\": {\"name\": \"can_write\"}}\n  ],\n  \"options\": {\n    \"evaluations_semantic\": \"permit_on_first_permit\"\n  }\n}\n```\n### Overriding defaults per evaluation\nCheck permissions across multiple resources:\n```json\n{\n  \"subject\": {\"type\": \"user\", \"id\": \"anne\"},\n  \"action\": {\"name\": \"can_read\"},\n  \"evaluations\": [\n    {\"resource\": {\"type\": \"document\", \"id\": \"doc1\"}},\n    {\"resource\": {\"type\": \"document\", \"id\": \"doc2\"}},\n    {\"resource\": {\"type\": \"folder\", \"id\": \"folder1\"}}\n  ]\n}\n```\n",
+        "operationId": "Evaluations",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/EvaluationsResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "401": {
+            "description": "Not authenticated.",
+            "schema": {
+              "$ref": "#/definitions/UnauthenticatedResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "schema": {
+              "$ref": "#/definitions/ForbiddenResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "409": {
+            "description": "Request was aborted due a transaction conflict.",
+            "schema": {
+              "$ref": "#/definitions/AbortedMessageResponse"
+            }
+          },
+          "422": {
+            "description": "Request timed out due to excessive request throttling.",
+            "schema": {
+              "$ref": "#/definitions/UnprocessableContentMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "store_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "subject": {
+                  "$ref": "#/definitions/Subject"
+                },
+                "action": {
+                  "$ref": "#/definitions/Action"
+                },
+                "resource": {
+                  "$ref": "#/definitions/Resource"
+                },
+                "context": {
+                  "type": "object"
+                },
+                "evaluations": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "$ref": "#/definitions/EvaluationsItemRequest"
+                  }
+                },
+                "options": {
+                  "$ref": "#/definitions/EvaluationsOptions",
+                  "title": "Options for batch evaluation semantics"
+                }
+              }
+            }
+          }
+        ],
+        "tags": [
+          "AuthZen"
+        ]
+      }
+    },
+    "/stores/{store_id}/access/v1/search/action": {
+      "post": {
+        "summary": "Search for actions a subject can perform on a resource",
+        "description": "The ActionSearch API returns all actions (relations) that a subject can perform on a specific resource. This is useful for answering questions like \"What can Anne do with this document?\" or building dynamic UIs that show only the actions a user is permitted to perform.\n\n## Examples\n### Find all actions a user can perform on a document\n```json\n{\n  \"subject\": {\"type\": \"user\", \"id\": \"anne\"},\n  \"resource\": {\"type\": \"document\", \"id\": \"roadmap\"}\n}\n```\nResponse:\n```json\n{\n  \"results\": [\n    {\"name\": \"can_read\"},\n    {\"name\": \"can_write\"},\n    {\"name\": \"can_share\"}\n  ],\n  \"page\": {\"count\": 3}\n}\n```\n### Search with ABAC context for time-based permissions\n```json\n{\n  \"subject\": {\"type\": \"user\", \"id\": \"bob\"},\n  \"resource\": {\"type\": \"report\", \"id\": \"quarterly-financials\"},\n  \"context\": {\n    \"current_time\": \"2024-01-15T14:30:00Z\",\n    \"user_department\": \"finance\"\n  }\n}\n```\n### Paginated action search\n```json\n{\n  \"subject\": {\"type\": \"user\", \"id\": \"admin\"},\n  \"resource\": {\"type\": \"system\", \"id\": \"production\"},\n  \"page\": {\"limit\": 50}\n}\n```\n",
+        "operationId": "ActionSearch",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ActionSearchResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "401": {
+            "description": "Not authenticated.",
+            "schema": {
+              "$ref": "#/definitions/UnauthenticatedResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "schema": {
+              "$ref": "#/definitions/ForbiddenResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "409": {
+            "description": "Request was aborted due a transaction conflict.",
+            "schema": {
+              "$ref": "#/definitions/AbortedMessageResponse"
+            }
+          },
+          "422": {
+            "description": "Request timed out due to excessive request throttling.",
+            "schema": {
+              "$ref": "#/definitions/UnprocessableContentMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "store_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "subject": {
+                  "$ref": "#/definitions/Subject"
+                },
+                "resource": {
+                  "$ref": "#/definitions/Resource"
+                },
+                "context": {
+                  "type": "object"
+                },
+                "page": {
+                  "$ref": "#/definitions/PageRequest"
+                }
+              },
+              "title": "ActionSearch request",
+              "required": [
+                "subject",
+                "resource"
+              ]
+            }
+          }
+        ],
+        "tags": [
+          "AuthZen"
+        ]
+      }
+    },
+    "/stores/{store_id}/access/v1/search/resource": {
+      "post": {
+        "summary": "Search for resources a subject has access to",
+        "description": "The ResourceSearch API returns all resources of a given type that a subject has a specific action (relation) on. This is useful for answering questions like \"What documents can Anne read?\" or \"What folders can Bob administer?\"\n\nThe resource type filter is required. Results support pagination for large result sets.\n\n## Examples\n### Find all documents a user can read\n```json\n{\n  \"subject\": {\"type\": \"user\", \"id\": \"anne\"},\n  \"action\": {\"name\": \"can_read\"},\n  \"resource\": {\"type\": \"document\"}\n}\n```\nResponse:\n```json\n{\n  \"results\": [\n    {\"type\": \"document\", \"id\": \"roadmap\"},\n    {\"type\": \"document\", \"id\": \"budget-2024\"},\n    {\"type\": \"document\", \"id\": \"team-roster\"}\n  ],\n  \"page\": {\"count\": 3}\n}\n```\n### Find folders a user can administer with pagination\n```json\n{\n  \"subject\": {\"type\": \"user\", \"id\": \"bob\"},\n  \"action\": {\"name\": \"can_admin\"},\n  \"resource\": {\"type\": \"folder\"},\n  \"page\": {\"limit\": 25}\n}\n```\n### Search with ABAC context\n```json\n{\n  \"subject\": {\"type\": \"user\", \"id\": \"anne\"},\n  \"action\": {\"name\": \"can_read\"},\n  \"resource\": {\"type\": \"document\"},\n  \"context\": {\n    \"current_time\": \"2024-01-15T10:00:00Z\",\n    \"ip_address\": \"192.168.1.100\"\n  }\n}\n```\n",
+        "operationId": "ResourceSearch",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ResourceSearchResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "401": {
+            "description": "Not authenticated.",
+            "schema": {
+              "$ref": "#/definitions/UnauthenticatedResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "schema": {
+              "$ref": "#/definitions/ForbiddenResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "409": {
+            "description": "Request was aborted due a transaction conflict.",
+            "schema": {
+              "$ref": "#/definitions/AbortedMessageResponse"
+            }
+          },
+          "422": {
+            "description": "Request timed out due to excessive request throttling.",
+            "schema": {
+              "$ref": "#/definitions/UnprocessableContentMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "store_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "subject": {
+                  "$ref": "#/definitions/Subject"
+                },
+                "action": {
+                  "$ref": "#/definitions/Action"
+                },
+                "resource": {
+                  "$ref": "#/definitions/Resource",
+                  "title": "Optional filter by resource type"
+                },
+                "context": {
+                  "type": "object"
+                },
+                "page": {
+                  "$ref": "#/definitions/PageRequest"
+                }
+              },
+              "title": "ResourceSearch request",
+              "required": [
+                "subject",
+                "action"
+              ]
+            }
+          }
+        ],
+        "tags": [
+          "AuthZen"
+        ]
+      }
+    },
+    "/stores/{store_id}/access/v1/search/subject": {
+      "post": {
+        "summary": "Search for subjects with access to a resource",
+        "description": "The SubjectSearch API returns all subjects that have a specific action (relation) on a given resource. This is useful for answering questions like \"Who can read this document?\" or \"Who can administer this folder?\"\n\nResults can be filtered by subject type and support pagination for large result sets.\n\n## Examples\n### Find all users who can read a document\n```json\n{\n  \"resource\": {\"type\": \"document\", \"id\": \"roadmap\"},\n  \"action\": {\"name\": \"can_read\"},\n  \"subject\": {\"type\": \"user\"}\n}\n```\nResponse:\n```json\n{\n  \"results\": [\n    {\"type\": \"user\", \"id\": \"anne\"},\n    {\"type\": \"user\", \"id\": \"bob\"},\n    {\"type\": \"user\", \"id\": \"charlie\"}\n  ],\n  \"page\": {\"count\": 3}\n}\n```\n### Paginated search with limit\n```json\n{\n  \"resource\": {\"type\": \"folder\", \"id\": \"engineering\"},\n  \"action\": {\"name\": \"can_view\"},\n  \"subject\": {\"type\": \"user\"},\n  \"page\": {\"limit\": 10}\n}\n```\n### Continue from previous page\n```json\n{\n  \"resource\": {\"type\": \"folder\", \"id\": \"engineering\"},\n  \"action\": {\"name\": \"can_view\"},\n  \"subject\": {\"type\": \"user\"},\n  \"page\": {\"token\": \"eyJsYXN0X2lkIjoiMTAwIn0=\", \"limit\": 10}\n}\n```\n",
+        "operationId": "SubjectSearch",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/SubjectSearchResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "401": {
+            "description": "Not authenticated.",
+            "schema": {
+              "$ref": "#/definitions/UnauthenticatedResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "schema": {
+              "$ref": "#/definitions/ForbiddenResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "409": {
+            "description": "Request was aborted due a transaction conflict.",
+            "schema": {
+              "$ref": "#/definitions/AbortedMessageResponse"
+            }
+          },
+          "422": {
+            "description": "Request timed out due to excessive request throttling.",
+            "schema": {
+              "$ref": "#/definitions/UnprocessableContentMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "store_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "resource": {
+                  "$ref": "#/definitions/Resource"
+                },
+                "action": {
+                  "$ref": "#/definitions/Action"
+                },
+                "subject": {
+                  "$ref": "#/definitions/SubjectFilter",
+                  "title": "Optional filter by subject type (id is optional in filter)"
+                },
+                "context": {
+                  "type": "object"
+                },
+                "page": {
+                  "$ref": "#/definitions/PageRequest"
+                }
+              },
+              "title": "SubjectSearch request",
+              "required": [
+                "resource",
+                "action"
+              ]
+            }
+          }
+        ],
+        "tags": [
+          "AuthZen"
         ]
       }
     },
@@ -1681,6 +2242,37 @@
         }
       }
     },
+    "Action": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "can_read"
+        },
+        "properties": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "name"
+      ]
+    },
+    "ActionSearchResponse": {
+      "type": "object",
+      "properties": {
+        "results": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/Action"
+          }
+        },
+        "page": {
+          "$ref": "#/definitions/PageResponse",
+          "title": "Optional per AuthZEN spec - omit if pagination not supported"
+        }
+      }
+    },
     "Any": {
       "type": "object",
       "properties": {
@@ -2081,6 +2673,26 @@
       "type": "object",
       "description": "A DirectUserset is a sentinel message for referencing\nthe direct members specified by an object/relation mapping."
     },
+    "Endpoints": {
+      "type": "object",
+      "properties": {
+        "evaluation": {
+          "type": "string"
+        },
+        "evaluations": {
+          "type": "string"
+        },
+        "subject_search": {
+          "type": "string"
+        },
+        "resource_search": {
+          "type": "string"
+        },
+        "action_search": {
+          "type": "string"
+        }
+      }
+    },
     "ErrorCode": {
       "type": "string",
       "enum": [
@@ -2137,6 +2749,84 @@
       ],
       "default": "no_error"
     },
+    "EvaluationResponse": {
+      "type": "object",
+      "properties": {
+        "decision": {
+          "type": "boolean"
+        },
+        "context": {
+          "$ref": "#/definitions/EvaluationResponseContext"
+        }
+      }
+    },
+    "EvaluationResponseContext": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "reasonAdmin": {
+          "type": "object"
+        },
+        "reasonUser": {
+          "type": "object"
+        },
+        "error": {
+          "$ref": "#/definitions/ResponseContextError"
+        }
+      }
+    },
+    "EvaluationsItemRequest": {
+      "type": "object",
+      "properties": {
+        "subject": {
+          "$ref": "#/definitions/Subject"
+        },
+        "resource": {
+          "$ref": "#/definitions/Resource"
+        },
+        "action": {
+          "$ref": "#/definitions/Action"
+        },
+        "context": {
+          "type": "object"
+        }
+      }
+    },
+    "EvaluationsOptions": {
+      "type": "object",
+      "properties": {
+        "evaluations_semantic": {
+          "$ref": "#/definitions/EvaluationsSemantic",
+          "title": "Controls how batch evaluations are processed"
+        }
+      },
+      "title": "Options for batch evaluations"
+    },
+    "EvaluationsResponse": {
+      "type": "object",
+      "properties": {
+        "evaluations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/EvaluationResponse"
+          }
+        }
+      }
+    },
+    "EvaluationsSemantic": {
+      "type": "string",
+      "enum": [
+        "execute_all",
+        "deny_on_first_deny",
+        "permit_on_first_permit"
+      ],
+      "default": "execute_all",
+      "description": "- execute_all: Execute all evaluations (default behavior)\n - deny_on_first_deny: Stop on first deny decision\n - permit_on_first_permit: Stop on first permit decision",
+      "title": "Enum for evaluation semantics\nbuf:lint:ignore ENUM_ZERO_VALUE_SUFFIX\nbuf:lint:ignore ENUM_VALUE_PREFIX\nbuf:lint:ignore ENUM_VALUE_UPPER_SNAKE_CASE"
+    },
     "ExpandRequestTupleKey": {
       "type": "object",
       "properties": {
@@ -2178,6 +2868,24 @@
           "type": "string"
         }
       }
+    },
+    "GetConfigurationResponse": {
+      "type": "object",
+      "properties": {
+        "policy_decision_point": {
+          "$ref": "#/definitions/PolicyDecisionPoint"
+        },
+        "access_endpoints": {
+          "$ref": "#/definitions/Endpoints"
+        },
+        "capabilities": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "title": "GetConfiguration response - PDP metadata per AuthZEN spec section 13"
     },
     "GetStoreResponse": {
       "type": "object",
@@ -2411,6 +3119,41 @@
         }
       }
     },
+    "PageRequest": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string",
+          "title": "Continuation token from previous response"
+        },
+        "limit": {
+          "type": "integer",
+          "format": "int64",
+          "title": "Maximum number of results to return (default: 50, max: 1000)"
+        }
+      },
+      "title": "Pagination request parameters for search operations"
+    },
+    "PageResponse": {
+      "type": "object",
+      "properties": {
+        "next_token": {
+          "type": "string",
+          "title": "Token to retrieve next page (empty if no more results)"
+        },
+        "count": {
+          "type": "integer",
+          "format": "int64",
+          "title": "Number of results in this page"
+        },
+        "total": {
+          "type": "integer",
+          "format": "int64",
+          "title": "Total number of results (if known, otherwise 0)"
+        }
+      },
+      "title": "Pagination response parameters"
+    },
     "PathUnknownErrorMessageResponse": {
       "type": "object",
       "example": {
@@ -2422,6 +3165,20 @@
           "$ref": "#/definitions/NotFoundErrorCode"
         },
         "message": {
+          "type": "string"
+        }
+      }
+    },
+    "PolicyDecisionPoint": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "description": {
           "type": "string"
         }
       }
@@ -2594,6 +3351,54 @@
         "name"
       ]
     },
+    "Resource": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "example": "document"
+        },
+        "id": {
+          "type": "string",
+          "example": "roadmap"
+        },
+        "properties": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "type",
+        "id"
+      ]
+    },
+    "ResourceSearchResponse": {
+      "type": "object",
+      "properties": {
+        "results": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/Resource"
+          }
+        },
+        "page": {
+          "$ref": "#/definitions/PageResponse",
+          "title": "Optional per AuthZEN spec - omit if pagination not supported"
+        }
+      }
+    },
+    "ResponseContextError": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    },
     "SourceInfo": {
       "type": "object",
       "properties": {
@@ -2662,6 +3467,63 @@
       "required": [
         "object"
       ]
+    },
+    "Subject": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "example": "user"
+        },
+        "id": {
+          "type": "string",
+          "example": "anne"
+        },
+        "properties": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "type",
+        "id"
+      ]
+    },
+    "SubjectFilter": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "example": "user"
+        },
+        "id": {
+          "type": "string",
+          "example": "anne",
+          "title": "Optional subject id filter"
+        },
+        "properties": {
+          "type": "object"
+        }
+      },
+      "title": "SubjectFilter is used for search operations where id is optional",
+      "required": [
+        "type"
+      ]
+    },
+    "SubjectSearchResponse": {
+      "type": "object",
+      "properties": {
+        "results": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/Subject"
+          }
+        },
+        "page": {
+          "$ref": "#/definitions/PageResponse",
+          "title": "Optional per AuthZEN spec - omit if pagination not supported"
+        }
+      }
     },
     "Tuple": {
       "type": "object",
