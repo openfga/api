@@ -9,6 +9,10 @@ OpenFGA is designed to make it easy for application builders to model their perm
 
 ## Usage
 
+### AuthZEN API Status
+
+The AuthZEN API definitions in this repository are **experimental** and may change before general availability.
+
 [Buf](https://github.com/bufbuild/buf) is used to manage, package, and generate source code from the protocol buffer definitions. The API definitions
 are pushed to the [`buf.build/openfga/api`](https://buf.build/openfga/api) repository in the Buf Registry.
 
