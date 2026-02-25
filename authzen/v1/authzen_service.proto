@@ -390,10 +390,8 @@ message EvaluationRequest {
 
   string store_id = 5 [
     json_name = "store_id",
-    (validate.rules).string = {
-      pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"
-      ignore_empty: true
-    },
+    (validate.rules).string = {pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"},
+    (google.api.field_behavior) = REQUIRED,
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01G5JAVJ41T49E9TT3SKVS7X1J\""}
   ];
 
@@ -510,10 +508,8 @@ message EvaluationsRequest {
 
   string store_id = 6 [
     json_name = "store_id",
-    (validate.rules).string = {
-      pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"
-      ignore_empty: true
-    },
+    (validate.rules).string = {pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"},
+    (google.api.field_behavior) = REQUIRED,
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01G5JAVJ41T49E9TT3SKVS7X1J\""}
   ];
 
@@ -588,10 +584,8 @@ message SubjectSearchRequest {
 
   string store_id = 6 [
     json_name = "store_id",
-    (validate.rules).string = {
-      pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"
-      ignore_empty: true
-    }
+    (validate.rules).string = {pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"},
+    (google.api.field_behavior) = REQUIRED
   ];
 
   // authorization_model_id removed - use Openfga-Authorization-Model-Id header instead
@@ -626,10 +620,8 @@ message ResourceSearchRequest {
 
   string store_id = 6 [
     json_name = "store_id",
-    (validate.rules).string = {
-      pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"
-      ignore_empty: true
-    }
+    (validate.rules).string = {pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"},
+    (google.api.field_behavior) = REQUIRED
   ];
 
   // authorization_model_id removed - use Openfga-Authorization-Model-Id header instead
@@ -661,10 +653,8 @@ message ActionSearchRequest {
 
   string store_id = 5 [
     json_name = "store_id",
-    (validate.rules).string = {
-      pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"
-      ignore_empty: true
-    }
+    (validate.rules).string = {pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"},
+    (google.api.field_behavior) = REQUIRED
   ];
 
   // authorization_model_id removed - use Openfga-Authorization-Model-Id header instead
@@ -682,7 +672,12 @@ message ActionSearchResponse {
 message GetConfigurationRequest {
   // The store ID for which to retrieve configuration.
   // Following the AuthZEN spec's multi-tenant pattern, each store has its own discovery endpoint.
-  string store_id = 1;
+  string store_id = 1 [
+    json_name = "store_id",
+    (validate.rules).string = {pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"},
+    (google.api.field_behavior) = REQUIRED,
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01G5JAVJ41T49E9TT3SKVS7X1J\""}
+  ];
 }
 
 // GetConfiguration response - PDP metadata per AuthZEN spec section 13

@@ -206,19 +206,15 @@ func (m *EvaluationRequest) validate(all bool) error {
 		}
 	}
 
-	if m.GetStoreId() != "" {
-
-		if !_EvaluationRequest_StoreId_Pattern.MatchString(m.GetStoreId()) {
-			err := EvaluationRequestValidationError{
-				field:  "StoreId",
-				reason: "value does not match regex pattern \"^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$\"",
-			}
-			if !all {
-				return err
-			}
-			errors = append(errors, err)
+	if !_EvaluationRequest_StoreId_Pattern.MatchString(m.GetStoreId()) {
+		err := EvaluationRequestValidationError{
+			field:  "StoreId",
+			reason: "value does not match regex pattern \"^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$\"",
 		}
-
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
 	}
 
 	if len(errors) > 0 {
@@ -1550,19 +1546,15 @@ func (m *EvaluationsRequest) validate(all bool) error {
 
 	}
 
-	if m.GetStoreId() != "" {
-
-		if !_EvaluationsRequest_StoreId_Pattern.MatchString(m.GetStoreId()) {
-			err := EvaluationsRequestValidationError{
-				field:  "StoreId",
-				reason: "value does not match regex pattern \"^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$\"",
-			}
-			if !all {
-				return err
-			}
-			errors = append(errors, err)
+	if !_EvaluationsRequest_StoreId_Pattern.MatchString(m.GetStoreId()) {
+		err := EvaluationsRequestValidationError{
+			field:  "StoreId",
+			reason: "value does not match regex pattern \"^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$\"",
 		}
-
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
 	}
 
 	if all {
@@ -2539,19 +2531,15 @@ func (m *SubjectSearchRequest) validate(all bool) error {
 		}
 	}
 
-	if m.GetStoreId() != "" {
-
-		if !_SubjectSearchRequest_StoreId_Pattern.MatchString(m.GetStoreId()) {
-			err := SubjectSearchRequestValidationError{
-				field:  "StoreId",
-				reason: "value does not match regex pattern \"^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$\"",
-			}
-			if !all {
-				return err
-			}
-			errors = append(errors, err)
+	if !_SubjectSearchRequest_StoreId_Pattern.MatchString(m.GetStoreId()) {
+		err := SubjectSearchRequestValidationError{
+			field:  "StoreId",
+			reason: "value does not match regex pattern \"^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$\"",
 		}
-
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
 	}
 
 	if m.Subject != nil {
@@ -2998,19 +2986,15 @@ func (m *ResourceSearchRequest) validate(all bool) error {
 		}
 	}
 
-	if m.GetStoreId() != "" {
-
-		if !_ResourceSearchRequest_StoreId_Pattern.MatchString(m.GetStoreId()) {
-			err := ResourceSearchRequestValidationError{
-				field:  "StoreId",
-				reason: "value does not match regex pattern \"^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$\"",
-			}
-			if !all {
-				return err
-			}
-			errors = append(errors, err)
+	if !_ResourceSearchRequest_StoreId_Pattern.MatchString(m.GetStoreId()) {
+		err := ResourceSearchRequestValidationError{
+			field:  "StoreId",
+			reason: "value does not match regex pattern \"^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$\"",
 		}
-
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
 	}
 
 	if m.Resource != nil {
@@ -3457,19 +3441,15 @@ func (m *ActionSearchRequest) validate(all bool) error {
 		}
 	}
 
-	if m.GetStoreId() != "" {
-
-		if !_ActionSearchRequest_StoreId_Pattern.MatchString(m.GetStoreId()) {
-			err := ActionSearchRequestValidationError{
-				field:  "StoreId",
-				reason: "value does not match regex pattern \"^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$\"",
-			}
-			if !all {
-				return err
-			}
-			errors = append(errors, err)
+	if !_ActionSearchRequest_StoreId_Pattern.MatchString(m.GetStoreId()) {
+		err := ActionSearchRequestValidationError{
+			field:  "StoreId",
+			reason: "value does not match regex pattern \"^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$\"",
 		}
-
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
 	}
 
 	if len(errors) > 0 {
@@ -3745,7 +3725,16 @@ func (m *GetConfigurationRequest) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for StoreId
+	if !_GetConfigurationRequest_StoreId_Pattern.MatchString(m.GetStoreId()) {
+		err := GetConfigurationRequestValidationError{
+			field:  "StoreId",
+			reason: "value does not match regex pattern \"^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$\"",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
 
 	if len(errors) > 0 {
 		return GetConfigurationRequestMultiError(errors)
@@ -3826,6 +3815,8 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = GetConfigurationRequestValidationError{}
+
+var _GetConfigurationRequest_StoreId_Pattern = regexp.MustCompile("^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$")
 
 // Validate checks the field values on GetConfigurationResponse with the rules
 // defined in the proto definition for this message. If any rules are

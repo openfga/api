@@ -32,7 +32,7 @@
     "application/json"
   ],
   "paths": {
-    "/.well-known/authzen-configuration/{storeId}": {
+    "/.well-known/authzen-configuration/{store_id}": {
       "get": {
         "summary": "Get AuthZEN PDP configuration and capabilities",
         "description": "The GetConfiguration API returns metadata about the Policy Decision Point (PDP) including its name, version, supported endpoints, and capabilities. This endpoint follows the AuthZEN specification section 13 for PDP discovery.\n\nFollowing the AuthZEN spec's multi-tenant pattern, OpenFGA provides a per-store discovery endpoint at `/.well-known/authzen-configuration/{store_id}`. This returns absolute endpoint URLs specific to that store.\n\n## Example Response\n```json\n{\n  \"policy_decision_point\": {\n    \"name\": \"OpenFGA\",\n    \"version\": \"1.8.0\",\n    \"description\": \"OpenFGA is a high-performance authorization system\"\n  },\n  \"access_endpoints\": {\n    \"evaluation\": \"/stores/01ARZ3NDEKTSV4RRFFQ69G5FAV/access/v1/evaluation\",\n    \"evaluations\": \"/stores/01ARZ3NDEKTSV4RRFFQ69G5FAV/access/v1/evaluations\",\n    \"subject_search\": \"/stores/01ARZ3NDEKTSV4RRFFQ69G5FAV/access/v1/search/subject\",\n    \"resource_search\": \"/stores/01ARZ3NDEKTSV4RRFFQ69G5FAV/access/v1/search/resource\",\n    \"action_search\": \"/stores/01ARZ3NDEKTSV4RRFFQ69G5FAV/access/v1/search/action\"\n  },\n  \"capabilities\": [\n    \"evaluation\",\n    \"evaluations\",\n    \"subject_search\",\n    \"resource_search\",\n    \"action_search\"\n  ]\n}\n```\n",
@@ -89,7 +89,7 @@
         },
         "parameters": [
           {
-            "name": "storeId",
+            "name": "store_id",
             "description": "The store ID for which to retrieve configuration.\nFollowing the AuthZEN spec's multi-tenant pattern, each store has its own discovery endpoint.",
             "in": "path",
             "required": true,
