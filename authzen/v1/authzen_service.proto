@@ -348,25 +348,12 @@ service AuthZenService {
         "## Example Response\n"
         "```json\n"
         "{\n"
-        "  \"policy_decision_point\": {\n"
-        "    \"name\": \"OpenFGA\",\n"
-        "    \"version\": \"1.8.0\",\n"
-        "    \"description\": \"OpenFGA is a high-performance authorization system\"\n"
-        "  },\n"
-        "  \"access_endpoints\": {\n"
-        "    \"evaluation\": \"/stores/01ARZ3NDEKTSV4RRFFQ69G5FAV/access/v1/evaluation\",\n"
-        "    \"evaluations\": \"/stores/01ARZ3NDEKTSV4RRFFQ69G5FAV/access/v1/evaluations\",\n"
-        "    \"subject_search\": \"/stores/01ARZ3NDEKTSV4RRFFQ69G5FAV/access/v1/search/subject\",\n"
-        "    \"resource_search\": \"/stores/01ARZ3NDEKTSV4RRFFQ69G5FAV/access/v1/search/resource\",\n"
-        "    \"action_search\": \"/stores/01ARZ3NDEKTSV4RRFFQ69G5FAV/access/v1/search/action\"\n"
-        "  },\n"
-        "  \"capabilities\": [\n"
-        "    \"evaluation\",\n"
-        "    \"evaluations\",\n"
-        "    \"subject_search\",\n"
-        "    \"resource_search\",\n"
-        "    \"action_search\"\n"
-        "  ]\n"
+        "  \"policy_decision_point\": \"https://example.com/stores/01ARZ3NDEKTSV4RRFFQ69G5FAV\",\n"
+        "  \"access_evaluation_endpoint\": \"https://example.com/stores/01ARZ3NDEKTSV4RRFFQ69G5FAV/access/v1/evaluation\",\n"
+        "  \"access_evaluations_endpoint\": \"https://example.com/stores/01ARZ3NDEKTSV4RRFFQ69G5FAV/access/v1/evaluations\",\n"
+        "  \"search_subject_endpoint\": \"https://example.com/stores/01ARZ3NDEKTSV4RRFFQ69G5FAV/access/v1/search/subject\",\n"
+        "  \"search_resource_endpoint\": \"https://example.com/stores/01ARZ3NDEKTSV4RRFFQ69G5FAV/access/v1/search/resource\",\n"
+        "  \"search_action_endpoint\": \"https://example.com/stores/01ARZ3NDEKTSV4RRFFQ69G5FAV/access/v1/search/action\"\n"
         "}\n"
         "```\n"
     };
@@ -683,23 +670,26 @@ message GetConfigurationRequest {
   ];
 }
 
-// GetConfiguration response - PDP metadata per AuthZEN spec section 13
+// GetConfiguration response - PDP metadata per AuthZEN spec section 9.2.2
 message GetConfigurationResponse {
-  PolicyDecisionPoint policy_decision_point = 1 [json_name = "policy_decision_point"];
-  Endpoints access_endpoints = 2 [json_name = "access_endpoints"];
-  repeated string capabilities = 3;
-}
+  // REQUIRED. The PDP identifier URL (HTTPS, no query or fragment).
+  string policy_decision_point = 1 [json_name = "policy_decision_point"];
 
-message PolicyDecisionPoint {
-  string name = 1;
-  string version = 2;
-  string description = 3;
-}
+  // REQUIRED. The access evaluation endpoint URL.
+  string access_evaluation_endpoint = 2 [json_name = "access_evaluation_endpoint"];
 
-message Endpoints {
-  string evaluation = 1;
-  string evaluations = 2;
-  string subject_search = 3 [json_name = "subject_search"];
-  string resource_search = 4 [json_name = "resource_search"];
-  string action_search = 5 [json_name = "action_search"];
+  // OPTIONAL. The batch evaluations endpoint URL.
+  string access_evaluations_endpoint = 3 [json_name = "access_evaluations_endpoint"];
+
+  // OPTIONAL. The subject search endpoint URL.
+  string search_subject_endpoint = 4 [json_name = "search_subject_endpoint"];
+
+  // OPTIONAL. The resource search endpoint URL.
+  string search_resource_endpoint = 5 [json_name = "search_resource_endpoint"];
+
+  // OPTIONAL. The action search endpoint URL.
+  string search_action_endpoint = 6 [json_name = "search_action_endpoint"];
+
+  // OPTIONAL. Supported capabilities as URN strings.
+  repeated string capabilities = 7;
 }
