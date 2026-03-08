@@ -25,9 +25,6 @@ const (
 )
 
 // Enum for evaluation semantics
-// buf:lint:ignore ENUM_ZERO_VALUE_SUFFIX
-// buf:lint:ignore ENUM_VALUE_PREFIX
-// buf:lint:ignore ENUM_VALUE_UPPER_SNAKE_CASE
 type EvaluationsSemantic int32
 
 const (

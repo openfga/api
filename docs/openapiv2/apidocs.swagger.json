@@ -2792,7 +2792,7 @@
       ],
       "default": "execute_all",
       "description": "- execute_all: Execute all evaluations (default behavior)\n - deny_on_first_deny: Stop on first deny decision\n - permit_on_first_permit: Stop on first permit decision",
-      "title": "Enum for evaluation semantics\nbuf:lint:ignore ENUM_ZERO_VALUE_SUFFIX\nbuf:lint:ignore ENUM_VALUE_PREFIX\nbuf:lint:ignore ENUM_VALUE_UPPER_SNAKE_CASE"
+      "title": "Enum for evaluation semantics"
     },
     "ExpandRequestTupleKey": {
       "type": "object",
