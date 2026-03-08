@@ -2742,6 +2742,46 @@ func (m *ResourceSearchRequest) validate(all bool) error {
 		}
 	}
 
+	if m.GetResource() == nil {
+		err := ResourceSearchRequestValidationError{
+			field:  "Resource",
+			reason: "value is required",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if all {
+		switch v := interface{}(m.GetResource()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, ResourceSearchRequestValidationError{
+					field:  "Resource",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, ResourceSearchRequestValidationError{
+					field:  "Resource",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetResource()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return ResourceSearchRequestValidationError{
+				field:  "Resource",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
 	if all {
 		switch v := interface{}(m.GetContext()).(type) {
 		case interface{ ValidateAll() error }:
@@ -2809,39 +2849,6 @@ func (m *ResourceSearchRequest) validate(all bool) error {
 			return err
 		}
 		errors = append(errors, err)
-	}
-
-	if m.Resource != nil {
-
-		if all {
-			switch v := interface{}(m.GetResource()).(type) {
-			case interface{ ValidateAll() error }:
-				if err := v.ValidateAll(); err != nil {
-					errors = append(errors, ResourceSearchRequestValidationError{
-						field:  "Resource",
-						reason: "embedded message failed validation",
-						cause:  err,
-					})
-				}
-			case interface{ Validate() error }:
-				if err := v.Validate(); err != nil {
-					errors = append(errors, ResourceSearchRequestValidationError{
-						field:  "Resource",
-						reason: "embedded message failed validation",
-						cause:  err,
-					})
-				}
-			}
-		} else if v, ok := interface{}(m.GetResource()).(interface{ Validate() error }); ok {
-			if err := v.Validate(); err != nil {
-				return ResourceSearchRequestValidationError{
-					field:  "Resource",
-					reason: "embedded message failed validation",
-					cause:  err,
-				}
-			}
-		}
-
 	}
 
 	if len(errors) > 0 {

@@ -750,7 +750,7 @@
                 },
                 "resource": {
                   "$ref": "#/definitions/ResourceFilter",
-                  "title": "Optional filter by resource type"
+                  "title": "Filter by resource type"
                 },
                 "context": {
                   "type": "object"
@@ -762,7 +762,8 @@
               "title": "ResourceSearch request",
               "required": [
                 "subject",
-                "action"
+                "action",
+                "resource"
               ]
             }
           }
