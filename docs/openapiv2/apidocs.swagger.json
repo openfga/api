@@ -569,7 +569,10 @@
                   "$ref": "#/definitions/EvaluationsOptions",
                   "title": "Options for batch evaluation semantics"
                 }
-              }
+              },
+              "required": [
+                "evaluations"
+              ]
             }
           }
         ],

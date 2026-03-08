@@ -444,6 +444,10 @@ message Resource {
   ];
 
   string id = 2 [
+    (validate.rules).string = {
+      pattern: "^[^\\s]{1,256}$"
+      ignore_empty: false
+    },
     (google.api.field_behavior) = REQUIRED,
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"roadmap\""}
   ];
@@ -489,7 +493,10 @@ message EvaluationsRequest {
   optional Action action = 2;
   optional Resource resource = 3;
   optional google.protobuf.Struct context = 4;
-  repeated EvaluationsItemRequest evaluations = 5;
+  repeated EvaluationsItemRequest evaluations = 5 [
+    (validate.rules).repeated.min_items = 1,
+    (google.api.field_behavior) = REQUIRED
+  ];
 
   string store_id = 6 [
     json_name = "store_id",

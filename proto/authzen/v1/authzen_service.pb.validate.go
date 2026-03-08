@@ -869,7 +869,16 @@ func (m *Resource) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
-	// no validation rules for Id
+	if !_Resource_Id_Pattern.MatchString(m.GetId()) {
+		err := ResourceValidationError{
+			field:  "Id",
+			reason: "value does not match regex pattern \"^[^\\\\s]{1,256}$\"",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
 
 	if m.Properties != nil {
 
@@ -982,6 +991,8 @@ var _ interface {
 } = ResourceValidationError{}
 
 var _Resource_Type_Pattern = regexp.MustCompile("^[^:#@\\s]{1,50}$")
+
+var _Resource_Id_Pattern = regexp.MustCompile("^[^\\s]{1,256}$")
 
 // Validate checks the field values on ResourceFilter with the rules defined in
 // the proto definition for this message. If any rules are violated, the first
@@ -1431,6 +1442,17 @@ func (m *EvaluationsRequest) validate(all bool) error {
 	}
 
 	var errors []error
+
+	if len(m.GetEvaluations()) < 1 {
+		err := EvaluationsRequestValidationError{
+			field:  "Evaluations",
+			reason: "value must contain at least 1 item(s)",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
 
 	for idx, item := range m.GetEvaluations() {
 		_, _ = idx, item
