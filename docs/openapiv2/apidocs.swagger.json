@@ -749,7 +749,7 @@
                   "$ref": "#/definitions/Action"
                 },
                 "resource": {
-                  "$ref": "#/definitions/Resource",
+                  "$ref": "#/definitions/ResourceFilter",
                   "title": "Optional filter by resource type"
                 },
                 "context": {
@@ -2736,24 +2736,7 @@
           "type": "boolean"
         },
         "context": {
-          "$ref": "#/definitions/EvaluationResponseContext"
-        }
-      }
-    },
-    "EvaluationResponseContext": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "string"
-        },
-        "reasonAdmin": {
           "type": "object"
-        },
-        "reasonUser": {
-          "type": "object"
-        },
-        "error": {
-          "$ref": "#/definitions/ResponseContextError"
         }
       }
     },
@@ -3356,6 +3339,22 @@
         "id"
       ]
     },
+    "ResourceFilter": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "example": "document"
+        },
+        "properties": {
+          "type": "object"
+        }
+      },
+      "title": "ResourceFilter is used for search operations where only type is required",
+      "required": [
+        "type"
+      ]
+    },
     "ResourceSearchResponse": {
       "type": "object",
       "properties": {
@@ -3369,18 +3368,6 @@
         "page": {
           "$ref": "#/definitions/PageResponse",
           "title": "Optional per AuthZEN spec - omit if pagination not supported"
-        }
-      }
-    },
-    "ResponseContextError": {
-      "type": "object",
-      "properties": {
-        "status": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "message": {
-          "type": "string"
         }
       }
     },
@@ -3480,16 +3467,11 @@
           "type": "string",
           "example": "user"
         },
-        "id": {
-          "type": "string",
-          "example": "anne",
-          "title": "Optional subject id filter"
-        },
         "properties": {
           "type": "object"
         }
       },
-      "title": "SubjectFilter is used for search operations where id is optional",
+      "title": "SubjectFilter is used for search operations where only type is required",
       "required": [
         "type"
       ]

@@ -419,7 +419,7 @@ message Subject {
   optional google.protobuf.Struct properties = 3;
 }
 
-// SubjectFilter is used for search operations where id is optional
+// SubjectFilter is used for search operations where only type is required
 message SubjectFilter {
   string type = 1 [
     (validate.rules).string = {
@@ -430,16 +430,7 @@ message SubjectFilter {
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"user\""}
   ];
 
-  // Optional subject id filter
-  optional string id = 2 [
-    (validate.rules).string = {
-      pattern: "^[^:#@\\s]{1,500}$"
-      ignore_empty: true
-    },
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"anne\""}
-  ];
-
-  optional google.protobuf.Struct properties = 3;
+  optional google.protobuf.Struct properties = 2;
 }
 
 message Resource {
@@ -460,6 +451,20 @@ message Resource {
   optional google.protobuf.Struct properties = 3;
 }
 
+// ResourceFilter is used for search operations where only type is required
+message ResourceFilter {
+  string type = 1 [
+    (validate.rules).string = {
+      pattern: "^[^:#@\\s]{1,50}$"
+      ignore_empty: false
+    },
+    (google.api.field_behavior) = REQUIRED,
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"document\""}
+  ];
+
+  optional google.protobuf.Struct properties = 2;
+}
+
 message Action {
   string name = 1 [
     (validate.rules).string = {
@@ -476,17 +481,7 @@ message Action {
 message EvaluationResponse {
   bool decision = 1;
 
-  optional EvaluationResponseContext context = 2;
-}
-
-message EvaluationResponseContext {
-  optional string id = 1;
-
-  optional google.protobuf.Struct reason_admin = 2;
-
-  optional google.protobuf.Struct reason_user = 3;
-
-  optional ResponseContextError error = 4;
+  optional google.protobuf.Struct context = 2;
 }
 
 message EvaluationsRequest {
@@ -508,7 +503,7 @@ message EvaluationsRequest {
 }
 
 message EvaluationsResponse {
-  repeated EvaluationResponse evaluation_responses = 1 [json_name = "evaluations"];
+  repeated EvaluationResponse evaluations = 1;
 }
 
 // Options for batch evaluations
@@ -528,11 +523,6 @@ enum EvaluationsSemantic {
   deny_on_first_deny = 1;
   // Stop on first permit decision
   permit_on_first_permit = 2;
-}
-
-message ResponseContextError {
-  uint32 status = 1;
-  string message = 2;
 }
 
 // Pagination request parameters for search operations
@@ -602,7 +592,7 @@ message ResourceSearchRequest {
   ];
 
   // Optional filter by resource type
-  optional Resource resource = 3;
+  optional ResourceFilter resource = 3;
 
   google.protobuf.Struct context = 4;
 
