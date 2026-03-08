@@ -97,7 +97,7 @@
           }
         ],
         "tags": [
-          "AuthZen"
+          "AuthZenService"
         ]
       }
     },
@@ -473,7 +473,7 @@
           }
         ],
         "tags": [
-          "AuthZen"
+          "AuthZenService"
         ]
       }
     },
@@ -577,7 +577,7 @@
           }
         ],
         "tags": [
-          "AuthZen"
+          "AuthZenService"
         ]
       }
     },
@@ -672,7 +672,7 @@
           }
         ],
         "tags": [
-          "AuthZen"
+          "AuthZenService"
         ]
       }
     },
@@ -772,7 +772,7 @@
           }
         ],
         "tags": [
-          "AuthZen"
+          "AuthZenService"
         ]
       }
     },
@@ -853,7 +853,7 @@
                 },
                 "subject": {
                   "$ref": "#/definitions/SubjectFilter",
-                  "title": "Optional filter by subject type (id is optional in filter)"
+                  "title": "Optional filter by subject type"
                 },
                 "context": {
                   "type": "object"
@@ -871,7 +871,7 @@
           }
         ],
         "tags": [
-          "AuthZen"
+          "AuthZenService"
         ]
       }
     },
@@ -2871,7 +2871,11 @@
           "description": "OPTIONAL. Supported capabilities as URN strings."
         }
       },
-      "title": "GetConfiguration response - PDP metadata per AuthZEN spec section 9.2.2"
+      "title": "GetConfiguration response - PDP metadata per AuthZEN spec section 9",
+      "required": [
+        "policy_decision_point",
+        "access_evaluation_endpoint"
+      ]
     },
     "GetStoreResponse": {
       "type": "object",

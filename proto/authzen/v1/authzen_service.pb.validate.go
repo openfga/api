@@ -177,35 +177,6 @@ func (m *EvaluationRequest) validate(all bool) error {
 		}
 	}
 
-	if all {
-		switch v := interface{}(m.GetContext()).(type) {
-		case interface{ ValidateAll() error }:
-			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, EvaluationRequestValidationError{
-					field:  "Context",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		case interface{ Validate() error }:
-			if err := v.Validate(); err != nil {
-				errors = append(errors, EvaluationRequestValidationError{
-					field:  "Context",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		}
-	} else if v, ok := interface{}(m.GetContext()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return EvaluationRequestValidationError{
-				field:  "Context",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
-		}
-	}
-
 	if !_EvaluationRequest_StoreId_Pattern.MatchString(m.GetStoreId()) {
 		err := EvaluationRequestValidationError{
 			field:  "StoreId",
@@ -215,6 +186,39 @@ func (m *EvaluationRequest) validate(all bool) error {
 			return err
 		}
 		errors = append(errors, err)
+	}
+
+	if m.Context != nil {
+
+		if all {
+			switch v := interface{}(m.GetContext()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, EvaluationRequestValidationError{
+						field:  "Context",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, EvaluationRequestValidationError{
+						field:  "Context",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetContext()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return EvaluationRequestValidationError{
+					field:  "Context",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
 	}
 
 	if len(errors) > 0 {
@@ -2310,35 +2314,6 @@ func (m *SubjectSearchRequest) validate(all bool) error {
 	}
 
 	if all {
-		switch v := interface{}(m.GetContext()).(type) {
-		case interface{ ValidateAll() error }:
-			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, SubjectSearchRequestValidationError{
-					field:  "Context",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		case interface{ Validate() error }:
-			if err := v.Validate(); err != nil {
-				errors = append(errors, SubjectSearchRequestValidationError{
-					field:  "Context",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		}
-	} else if v, ok := interface{}(m.GetContext()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return SubjectSearchRequestValidationError{
-				field:  "Context",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
-		}
-	}
-
-	if all {
 		switch v := interface{}(m.GetPage()).(type) {
 		case interface{ ValidateAll() error }:
 			if err := v.ValidateAll(); err != nil {
@@ -2403,6 +2378,39 @@ func (m *SubjectSearchRequest) validate(all bool) error {
 			if err := v.Validate(); err != nil {
 				return SubjectSearchRequestValidationError{
 					field:  "Subject",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	if m.Context != nil {
+
+		if all {
+			switch v := interface{}(m.GetContext()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, SubjectSearchRequestValidationError{
+						field:  "Context",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, SubjectSearchRequestValidationError{
+						field:  "Context",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetContext()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return SubjectSearchRequestValidationError{
+					field:  "Context",
 					reason: "embedded message failed validation",
 					cause:  err,
 				}
@@ -2805,35 +2813,6 @@ func (m *ResourceSearchRequest) validate(all bool) error {
 	}
 
 	if all {
-		switch v := interface{}(m.GetContext()).(type) {
-		case interface{ ValidateAll() error }:
-			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, ResourceSearchRequestValidationError{
-					field:  "Context",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		case interface{ Validate() error }:
-			if err := v.Validate(); err != nil {
-				errors = append(errors, ResourceSearchRequestValidationError{
-					field:  "Context",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		}
-	} else if v, ok := interface{}(m.GetContext()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return ResourceSearchRequestValidationError{
-				field:  "Context",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
-		}
-	}
-
-	if all {
 		switch v := interface{}(m.GetPage()).(type) {
 		case interface{ ValidateAll() error }:
 			if err := v.ValidateAll(); err != nil {
@@ -2871,6 +2850,39 @@ func (m *ResourceSearchRequest) validate(all bool) error {
 			return err
 		}
 		errors = append(errors, err)
+	}
+
+	if m.Context != nil {
+
+		if all {
+			switch v := interface{}(m.GetContext()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ResourceSearchRequestValidationError{
+						field:  "Context",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ResourceSearchRequestValidationError{
+						field:  "Context",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetContext()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return ResourceSearchRequestValidationError{
+					field:  "Context",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
 	}
 
 	if len(errors) > 0 {
@@ -3227,35 +3239,6 @@ func (m *ActionSearchRequest) validate(all bool) error {
 	}
 
 	if all {
-		switch v := interface{}(m.GetContext()).(type) {
-		case interface{ ValidateAll() error }:
-			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, ActionSearchRequestValidationError{
-					field:  "Context",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		case interface{ Validate() error }:
-			if err := v.Validate(); err != nil {
-				errors = append(errors, ActionSearchRequestValidationError{
-					field:  "Context",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		}
-	} else if v, ok := interface{}(m.GetContext()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return ActionSearchRequestValidationError{
-				field:  "Context",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
-		}
-	}
-
-	if all {
 		switch v := interface{}(m.GetPage()).(type) {
 		case interface{ ValidateAll() error }:
 			if err := v.ValidateAll(); err != nil {
@@ -3293,6 +3276,39 @@ func (m *ActionSearchRequest) validate(all bool) error {
 			return err
 		}
 		errors = append(errors, err)
+	}
+
+	if m.Context != nil {
+
+		if all {
+			switch v := interface{}(m.GetContext()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ActionSearchRequestValidationError{
+						field:  "Context",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ActionSearchRequestValidationError{
+						field:  "Context",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetContext()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return ActionSearchRequestValidationError{
+					field:  "Context",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
 	}
 
 	if len(errors) > 0 {

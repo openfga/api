@@ -8,6 +8,8 @@ import "google/protobuf/struct.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 import "validate/validate.proto";
 
+// Based on https://openid.net/specs/authorization-api-1_0.html
+
 service AuthZenService {
   rpc Evaluation(EvaluationRequest) returns (EvaluationResponse) {
     option (google.api.http) = {
@@ -17,7 +19,7 @@ service AuthZenService {
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       summary: "[Experimental] Evaluate whether a subject can perform an action on a resource"
-      tags: ["AuthZen"]
+
       operation_id: "Evaluation"
       description:
         "[Experimental] The Evaluation API determines whether a subject is authorized to perform an action on a resource. "
@@ -107,7 +109,7 @@ service AuthZenService {
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       summary: "[Experimental] Check whether one or more users are authorized to access resources"
-      tags: ["AuthZen"]
+
       operation_id: "Evaluations"
       description:
         "[Experimental] The Evaluations API allows batch authorization checks in a single request. "
@@ -173,7 +175,7 @@ service AuthZenService {
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       summary: "[Experimental] Search for subjects with access to a resource"
-      tags: ["AuthZen"]
+
       operation_id: "SubjectSearch"
       description:
         "[Experimental] The SubjectSearch API returns all subjects that have a specific action (relation) on a given resource. "
@@ -228,7 +230,7 @@ service AuthZenService {
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       summary: "[Experimental] Search for resources a subject has access to"
-      tags: ["AuthZen"]
+
       operation_id: "ResourceSearch"
       description:
         "[Experimental] The ResourceSearch API returns all resources of a given type that a subject has a specific action (relation) on. "
@@ -286,7 +288,7 @@ service AuthZenService {
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       summary: "[Experimental] Search for actions a subject can perform on a resource"
-      tags: ["AuthZen"]
+
       operation_id: "ActionSearch"
       description:
         "[Experimental] The ActionSearch API returns all actions (relations) that a subject can perform on a specific resource. "
@@ -338,7 +340,7 @@ service AuthZenService {
     option (google.api.http) = {get: "/.well-known/authzen-configuration/{store_id}"};
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       summary: "[Experimental] Get AuthZEN PDP configuration and capabilities"
-      tags: ["AuthZen"]
+
       operation_id: "GetConfiguration"
       description:
         "[Experimental] The GetConfiguration API returns metadata about the Policy Decision Point (PDP) including its name, version, "
@@ -376,7 +378,7 @@ message EvaluationRequest {
     (google.api.field_behavior) = REQUIRED
   ];
 
-  google.protobuf.Struct context = 4;
+  optional google.protobuf.Struct context = 4;
 
   string store_id = 5 [
     json_name = "store_id",
@@ -562,10 +564,10 @@ message SubjectSearchRequest {
     (google.api.field_behavior) = REQUIRED
   ];
 
-  // Optional filter by subject type (id is optional in filter)
+  // Optional filter by subject type
   optional SubjectFilter subject = 3;
 
-  google.protobuf.Struct context = 4;
+  optional google.protobuf.Struct context = 4;
 
   PageRequest page = 5;
 
@@ -604,7 +606,7 @@ message ResourceSearchRequest {
     (google.api.field_behavior) = REQUIRED
   ];
 
-  google.protobuf.Struct context = 4;
+  optional google.protobuf.Struct context = 4;
 
   PageRequest page = 5;
 
@@ -637,7 +639,7 @@ message ActionSearchRequest {
     (google.api.field_behavior) = REQUIRED
   ];
 
-  google.protobuf.Struct context = 3;
+  optional google.protobuf.Struct context = 3;
 
   PageRequest page = 4;
 
@@ -670,26 +672,44 @@ message GetConfigurationRequest {
   ];
 }
 
-// GetConfiguration response - PDP metadata per AuthZEN spec section 9.2.2
+// GetConfiguration response - PDP metadata per AuthZEN spec section 9
 message GetConfigurationResponse {
   // REQUIRED. The PDP identifier URL (HTTPS, no query or fragment).
-  string policy_decision_point = 1 [json_name = "policy_decision_point"];
+  string policy_decision_point = 1 [
+    json_name = "policy_decision_point",
+    (google.api.field_behavior) = REQUIRED
+  ];
 
   // REQUIRED. The access evaluation endpoint URL.
-  string access_evaluation_endpoint = 2 [json_name = "access_evaluation_endpoint"];
+  string access_evaluation_endpoint = 2 [
+    json_name = "access_evaluation_endpoint",
+    (google.api.field_behavior) = REQUIRED
+  ];
 
   // OPTIONAL. The batch evaluations endpoint URL.
-  string access_evaluations_endpoint = 3 [json_name = "access_evaluations_endpoint"];
+  string access_evaluations_endpoint = 3 [
+    json_name = "access_evaluations_endpoint",
+    (google.api.field_behavior) = OPTIONAL
+  ];
 
   // OPTIONAL. The subject search endpoint URL.
-  string search_subject_endpoint = 4 [json_name = "search_subject_endpoint"];
+  string search_subject_endpoint = 4 [
+    json_name = "search_subject_endpoint",
+    (google.api.field_behavior) = OPTIONAL
+  ];
 
   // OPTIONAL. The resource search endpoint URL.
-  string search_resource_endpoint = 5 [json_name = "search_resource_endpoint"];
+  string search_resource_endpoint = 5 [
+    json_name = "search_resource_endpoint",
+    (google.api.field_behavior) = OPTIONAL
+  ];
 
   // OPTIONAL. The action search endpoint URL.
-  string search_action_endpoint = 6 [json_name = "search_action_endpoint"];
+  string search_action_endpoint = 6 [
+    json_name = "search_action_endpoint",
+    (google.api.field_behavior) = OPTIONAL
+  ];
 
   // OPTIONAL. Supported capabilities as URN strings.
-  repeated string capabilities = 7;
+  repeated string capabilities = 7 [(google.api.field_behavior) = OPTIONAL];
 }
