@@ -591,8 +591,11 @@ message ResourceSearchRequest {
     (google.api.field_behavior) = REQUIRED
   ];
 
-  // Optional filter by resource type
-  optional ResourceFilter resource = 3;
+  // Filter by resource type
+  ResourceFilter resource = 3 [
+    (validate.rules).message.required = true,
+    (google.api.field_behavior) = REQUIRED
+  ];
 
   google.protobuf.Struct context = 4;
 
