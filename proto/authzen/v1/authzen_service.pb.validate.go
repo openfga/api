@@ -727,6 +727,10 @@ func (m *SubjectFilter) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
+	if m.Id != nil {
+		// no validation rules for Id
+	}
+
 	if m.Properties != nil {
 
 		if all {
@@ -1029,6 +1033,10 @@ func (m *ResourceFilter) validate(all bool) error {
 			return err
 		}
 		errors = append(errors, err)
+	}
+
+	if m.Id != nil {
+		// no validation rules for Id
 	}
 
 	if m.Properties != nil {
@@ -1446,17 +1454,6 @@ func (m *EvaluationsRequest) validate(all bool) error {
 	}
 
 	var errors []error
-
-	if len(m.GetEvaluations()) < 1 {
-		err := EvaluationsRequestValidationError{
-			field:  "Evaluations",
-			reason: "value must contain at least 1 item(s)",
-		}
-		if !all {
-			return err
-		}
-		errors = append(errors, err)
-	}
 
 	for idx, item := range m.GetEvaluations() {
 		_, _ = idx, item
@@ -1904,7 +1901,16 @@ func (m *EvaluationsOptions) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for EvaluationsSemantic
+	if _, ok := EvaluationsSemantic_name[int32(m.GetEvaluationsSemantic())]; !ok {
+		err := EvaluationsOptionsValidationError{
+			field:  "EvaluationsSemantic",
+			reason: "value must be one of the defined enum values",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
 
 	if len(errors) > 0 {
 		return EvaluationsOptionsMultiError(errors)
@@ -2313,6 +2319,46 @@ func (m *SubjectSearchRequest) validate(all bool) error {
 		}
 	}
 
+	if m.GetSubject() == nil {
+		err := SubjectSearchRequestValidationError{
+			field:  "Subject",
+			reason: "value is required",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if all {
+		switch v := interface{}(m.GetSubject()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, SubjectSearchRequestValidationError{
+					field:  "Subject",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, SubjectSearchRequestValidationError{
+					field:  "Subject",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetSubject()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return SubjectSearchRequestValidationError{
+				field:  "Subject",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
 	if all {
 		switch v := interface{}(m.GetPage()).(type) {
 		case interface{ ValidateAll() error }:
@@ -2351,39 +2397,6 @@ func (m *SubjectSearchRequest) validate(all bool) error {
 			return err
 		}
 		errors = append(errors, err)
-	}
-
-	if m.Subject != nil {
-
-		if all {
-			switch v := interface{}(m.GetSubject()).(type) {
-			case interface{ ValidateAll() error }:
-				if err := v.ValidateAll(); err != nil {
-					errors = append(errors, SubjectSearchRequestValidationError{
-						field:  "Subject",
-						reason: "embedded message failed validation",
-						cause:  err,
-					})
-				}
-			case interface{ Validate() error }:
-				if err := v.Validate(); err != nil {
-					errors = append(errors, SubjectSearchRequestValidationError{
-						field:  "Subject",
-						reason: "embedded message failed validation",
-						cause:  err,
-					})
-				}
-			}
-		} else if v, ok := interface{}(m.GetSubject()).(interface{ Validate() error }); ok {
-			if err := v.Validate(); err != nil {
-				return SubjectSearchRequestValidationError{
-					field:  "Subject",
-					reason: "embedded message failed validation",
-					cause:  err,
-				}
-			}
-		}
-
 	}
 
 	if m.Context != nil {
@@ -3710,6 +3723,10 @@ func (m *GetConfigurationResponse) validate(all bool) error {
 	// no validation rules for SearchResourceEndpoint
 
 	// no validation rules for SearchActionEndpoint
+
+	if m.SignedMetadata != nil {
+		// no validation rules for SignedMetadata
+	}
 
 	if len(errors) > 0 {
 		return GetConfigurationResponseMultiError(errors)

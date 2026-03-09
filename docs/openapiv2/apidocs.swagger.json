@@ -172,7 +172,7 @@
           },
           {
             "name": "name",
-            "description": "The name parameter instructs the API to only include results that match that name. Multiple results may be returned. Only exact matches will be returned; substring matches and regexes will not be evaluated",
+            "description": "The name parameter instructs the API to only include results that match that name.Multiple results may be returned. Only exact matches will be returned; substring matches and regexes will not be evaluated",
             "in": "query",
             "required": false,
             "type": "string"
@@ -563,16 +563,14 @@
                   "items": {
                     "type": "object",
                     "$ref": "#/definitions/EvaluationsItemRequest"
-                  }
+                  },
+                  "description": "Optional. If omitted or empty, behaves like a single Access Evaluation request."
                 },
                 "options": {
                   "$ref": "#/definitions/EvaluationsOptions",
                   "title": "Options for batch evaluation semantics"
                 }
-              },
-              "required": [
-                "evaluations"
-              ]
+              }
             }
           }
         ],
@@ -853,7 +851,7 @@
                 },
                 "subject": {
                   "$ref": "#/definitions/SubjectFilter",
-                  "title": "Optional filter by subject type"
+                  "description": "REQUIRED by AuthZEN Subject Search. Subject `id` may be provided but is ignored."
                 },
                 "context": {
                   "type": "object"
@@ -865,7 +863,8 @@
               "title": "SubjectSearch request",
               "required": [
                 "resource",
-                "action"
+                "action",
+                "subject"
               ]
             }
           }
@@ -2869,6 +2868,10 @@
             "type": "string"
           },
           "description": "OPTIONAL. Supported capabilities as URN strings."
+        },
+        "signed_metadata": {
+          "type": "string",
+          "description": "OPTIONAL. Signed metadata JWT per AuthZEN metadata specification."
         }
       },
       "title": "GetConfiguration response - PDP metadata per AuthZEN spec",
@@ -3354,6 +3357,10 @@
           "type": "string",
           "example": "document"
         },
+        "id": {
+          "type": "string",
+          "description": "Optional resource id. If present in Resource Search, it is ignored per AuthZEN spec."
+        },
         "properties": {
           "type": "object"
         }
@@ -3474,6 +3481,10 @@
         "type": {
           "type": "string",
           "example": "user"
+        },
+        "id": {
+          "type": "string",
+          "description": "Optional subject id. If present in Subject Search, it is ignored per AuthZEN spec."
         },
         "properties": {
           "type": "object"

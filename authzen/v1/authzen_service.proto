@@ -386,7 +386,6 @@ message EvaluationRequest {
     (google.api.field_behavior) = REQUIRED,
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01G5JAVJ41T49E9TT3SKVS7X1J\""}
   ];
-
 }
 
 message EvaluationsItemRequest {
@@ -429,7 +428,10 @@ message SubjectFilter {
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"user\""}
   ];
 
-  optional google.protobuf.Struct properties = 2;
+  // Optional subject id. If present in Subject Search, it is ignored per AuthZEN spec.
+  optional string id = 2;
+
+  optional google.protobuf.Struct properties = 3;
 }
 
 message Resource {
@@ -465,7 +467,10 @@ message ResourceFilter {
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"document\""}
   ];
 
-  optional google.protobuf.Struct properties = 2;
+  // Optional resource id. If present in Resource Search, it is ignored per AuthZEN spec.
+  optional string id = 2;
+
+  optional google.protobuf.Struct properties = 3;
 }
 
 message Action {
@@ -492,10 +497,8 @@ message EvaluationsRequest {
   optional Action action = 2;
   optional Resource resource = 3;
   optional google.protobuf.Struct context = 4;
-  repeated EvaluationsItemRequest evaluations = 5 [
-    (validate.rules).repeated.min_items = 1,
-    (google.api.field_behavior) = REQUIRED
-  ];
+  // Optional. If omitted or empty, behaves like a single Access Evaluation request.
+  repeated EvaluationsItemRequest evaluations = 5;
 
   string store_id = 6 [
     json_name = "store_id",
@@ -515,7 +518,10 @@ message EvaluationsResponse {
 // Options for batch evaluations
 message EvaluationsOptions {
   // Controls how batch evaluations are processed
-  EvaluationsSemantic evaluations_semantic = 1 [json_name = "evaluations_semantic"];
+  EvaluationsSemantic evaluations_semantic = 1 [
+    json_name = "evaluations_semantic",
+    (validate.rules).enum = {defined_only: true}
+  ];
 }
 
 // Enum for evaluation semantics
@@ -558,8 +564,11 @@ message SubjectSearchRequest {
     (google.api.field_behavior) = REQUIRED
   ];
 
-  // Optional filter by subject type
-  optional SubjectFilter subject = 3;
+  // REQUIRED by AuthZEN Subject Search. Subject `id` may be provided but is ignored.
+  SubjectFilter subject = 3 [
+    (validate.rules).message.required = true,
+    (google.api.field_behavior) = REQUIRED
+  ];
 
   optional google.protobuf.Struct context = 4;
 
@@ -694,4 +703,10 @@ message GetConfigurationResponse {
 
   // OPTIONAL. Supported capabilities as URN strings.
   repeated string capabilities = 7 [(google.api.field_behavior) = OPTIONAL];
+
+  // OPTIONAL. Signed metadata JWT per AuthZEN metadata specification.
+  optional string signed_metadata = 8 [
+    json_name = "signed_metadata",
+    (google.api.field_behavior) = OPTIONAL
+  ];
 }
