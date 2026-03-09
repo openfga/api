@@ -39,7 +39,7 @@ type AuthZenServiceClient interface {
 	ResourceSearch(ctx context.Context, in *ResourceSearchRequest, opts ...grpc.CallOption) (*ResourceSearchResponse, error)
 	// ActionSearch returns actions a subject can perform on a resource
 	ActionSearch(ctx context.Context, in *ActionSearchRequest, opts ...grpc.CallOption) (*ActionSearchResponse, error)
-	// GetConfiguration returns PDP metadata and capabilities per AuthZEN spec section 13
+	// GetConfiguration returns PDP metadata and capabilities per AuthZEN spec
 	GetConfiguration(ctx context.Context, in *GetConfigurationRequest, opts ...grpc.CallOption) (*GetConfigurationResponse, error)
 }
 
@@ -117,7 +117,7 @@ type AuthZenServiceServer interface {
 	ResourceSearch(context.Context, *ResourceSearchRequest) (*ResourceSearchResponse, error)
 	// ActionSearch returns actions a subject can perform on a resource
 	ActionSearch(context.Context, *ActionSearchRequest) (*ActionSearchResponse, error)
-	// GetConfiguration returns PDP metadata and capabilities per AuthZEN spec section 13
+	// GetConfiguration returns PDP metadata and capabilities per AuthZEN spec
 	GetConfiguration(context.Context, *GetConfigurationRequest) (*GetConfigurationResponse, error)
 	mustEmbedUnimplementedAuthZenServiceServer()
 }

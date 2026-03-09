@@ -335,7 +335,7 @@ service AuthZenService {
     };
   }
 
-  // GetConfiguration returns PDP metadata and capabilities per AuthZEN spec section 13
+  // GetConfiguration returns PDP metadata and capabilities per AuthZEN spec
   rpc GetConfiguration(GetConfigurationRequest) returns (GetConfigurationResponse) {
     option (google.api.http) = {get: "/.well-known/authzen-configuration/{store_id}"};
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
@@ -344,7 +344,7 @@ service AuthZenService {
       operation_id: "GetConfiguration"
       description:
         "[Experimental] The GetConfiguration API returns metadata about the Policy Decision Point (PDP) including its name, version, "
-        "supported endpoints, and capabilities. This endpoint follows the AuthZEN specification section 13 for PDP discovery.\n\n"
+        "supported endpoints, and capabilities. This endpoint follows the AuthZEN specification for PDP discovery.\n\n"
         "Following the AuthZEN spec's multi-tenant pattern, OpenFGA provides a per-store discovery endpoint at "
         "`/.well-known/authzen-configuration/{store_id}`. This returns absolute endpoint URLs specific to that store.\n\n"
         "## Example Response\n"
@@ -387,9 +387,6 @@ message EvaluationRequest {
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01G5JAVJ41T49E9TT3SKVS7X1J\""}
   ];
 
-  // authorization_model_id removed - use Openfga-Authorization-Model-Id header instead
-  reserved 6;
-  reserved "authorization_model_id";
 }
 
 message EvaluationsItemRequest {
@@ -481,7 +478,7 @@ message Action {
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"can_read\""}
   ];
 
-  optional google.protobuf.Struct properties = 3;
+  optional google.protobuf.Struct properties = 2;
 }
 
 message EvaluationResponse {
@@ -573,10 +570,6 @@ message SubjectSearchRequest {
     (validate.rules).string = {pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"},
     (google.api.field_behavior) = REQUIRED
   ];
-
-  // authorization_model_id removed - use Openfga-Authorization-Model-Id header instead
-  reserved 7;
-  reserved "authorization_model_id";
 }
 
 message SubjectSearchResponse {
@@ -612,10 +605,6 @@ message ResourceSearchRequest {
     (validate.rules).string = {pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"},
     (google.api.field_behavior) = REQUIRED
   ];
-
-  // authorization_model_id removed - use Openfga-Authorization-Model-Id header instead
-  reserved 7;
-  reserved "authorization_model_id";
 }
 
 message ResourceSearchResponse {
@@ -645,10 +634,6 @@ message ActionSearchRequest {
     (validate.rules).string = {pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"},
     (google.api.field_behavior) = REQUIRED
   ];
-
-  // authorization_model_id removed - use Openfga-Authorization-Model-Id header instead
-  reserved 6;
-  reserved "authorization_model_id";
 }
 
 message ActionSearchResponse {
@@ -669,7 +654,7 @@ message GetConfigurationRequest {
   ];
 }
 
-// GetConfiguration response - PDP metadata per AuthZEN spec section 9
+// GetConfiguration response - PDP metadata per AuthZEN spec
 message GetConfigurationResponse {
   // REQUIRED. The PDP identifier URL (HTTPS, no query or fragment).
   string policy_decision_point = 1 [

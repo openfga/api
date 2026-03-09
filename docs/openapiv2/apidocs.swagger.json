@@ -35,7 +35,7 @@
     "/.well-known/authzen-configuration/{store_id}": {
       "get": {
         "summary": "[Experimental] Get AuthZEN PDP configuration and capabilities",
-        "description": "[Experimental] The GetConfiguration API returns metadata about the Policy Decision Point (PDP) including its name, version, supported endpoints, and capabilities. This endpoint follows the AuthZEN specification section 13 for PDP discovery.\n\nFollowing the AuthZEN spec's multi-tenant pattern, OpenFGA provides a per-store discovery endpoint at `/.well-known/authzen-configuration/{store_id}`. This returns absolute endpoint URLs specific to that store.\n\n## Example Response\n```json\n{\n  \"policy_decision_point\": \"https://example.com/stores/01ARZ3NDEKTSV4RRFFQ69G5FAV\",\n  \"access_evaluation_endpoint\": \"https://example.com/stores/01ARZ3NDEKTSV4RRFFQ69G5FAV/access/v1/evaluation\",\n  \"access_evaluations_endpoint\": \"https://example.com/stores/01ARZ3NDEKTSV4RRFFQ69G5FAV/access/v1/evaluations\",\n  \"search_subject_endpoint\": \"https://example.com/stores/01ARZ3NDEKTSV4RRFFQ69G5FAV/access/v1/search/subject\",\n  \"search_resource_endpoint\": \"https://example.com/stores/01ARZ3NDEKTSV4RRFFQ69G5FAV/access/v1/search/resource\",\n  \"search_action_endpoint\": \"https://example.com/stores/01ARZ3NDEKTSV4RRFFQ69G5FAV/access/v1/search/action\"\n}\n```\n",
+        "description": "[Experimental] The GetConfiguration API returns metadata about the Policy Decision Point (PDP) including its name, version, supported endpoints, and capabilities. This endpoint follows the AuthZEN specification for PDP discovery.\n\nFollowing the AuthZEN spec's multi-tenant pattern, OpenFGA provides a per-store discovery endpoint at `/.well-known/authzen-configuration/{store_id}`. This returns absolute endpoint URLs specific to that store.\n\n## Example Response\n```json\n{\n  \"policy_decision_point\": \"https://example.com/stores/01ARZ3NDEKTSV4RRFFQ69G5FAV\",\n  \"access_evaluation_endpoint\": \"https://example.com/stores/01ARZ3NDEKTSV4RRFFQ69G5FAV/access/v1/evaluation\",\n  \"access_evaluations_endpoint\": \"https://example.com/stores/01ARZ3NDEKTSV4RRFFQ69G5FAV/access/v1/evaluations\",\n  \"search_subject_endpoint\": \"https://example.com/stores/01ARZ3NDEKTSV4RRFFQ69G5FAV/access/v1/search/subject\",\n  \"search_resource_endpoint\": \"https://example.com/stores/01ARZ3NDEKTSV4RRFFQ69G5FAV/access/v1/search/resource\",\n  \"search_action_endpoint\": \"https://example.com/stores/01ARZ3NDEKTSV4RRFFQ69G5FAV/access/v1/search/action\"\n}\n```\n",
         "operationId": "GetConfiguration",
         "responses": {
           "200": {
@@ -172,7 +172,7 @@
           },
           {
             "name": "name",
-            "description": "The name parameter instructs the API to only include results that match that name.Multiple results may be returned. Only exact matches will be returned; substring matches and regexes will not be evaluated",
+            "description": "The name parameter instructs the API to only include results that match that name. Multiple results may be returned. Only exact matches will be returned; substring matches and regexes will not be evaluated",
             "in": "query",
             "required": false,
             "type": "string"
@@ -2871,7 +2871,7 @@
           "description": "OPTIONAL. Supported capabilities as URN strings."
         }
       },
-      "title": "GetConfiguration response - PDP metadata per AuthZEN spec section 9",
+      "title": "GetConfiguration response - PDP metadata per AuthZEN spec",
       "required": [
         "policy_decision_point",
         "access_evaluation_endpoint"
