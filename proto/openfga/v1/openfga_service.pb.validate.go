@@ -7056,7 +7056,7 @@ func (m *ListStoresRequest) validate(all bool) error {
 	if !_ListStoresRequest_ContinuationToken_Pattern.MatchString(m.GetContinuationToken()) {
 		err := ListStoresRequestValidationError{
 			field:  "ContinuationToken",
-			reason: "value does not match regex pattern \"^$|^$|^[A-Za-z0-9-_]+={0,2}$\"",
+			reason: "value does not match regex pattern \"^$|^[A-Za-z0-9-_]+={0,2}$\"",
 		}
 		if !all {
 			return err
@@ -7159,7 +7159,7 @@ var _ interface {
 	ErrorName() string
 } = ListStoresRequestValidationError{}
 
-var _ListStoresRequest_ContinuationToken_Pattern = regexp.MustCompile("^$|^$|^[A-Za-z0-9-_]+={0,2}$")
+var _ListStoresRequest_ContinuationToken_Pattern = regexp.MustCompile("^$|^[A-Za-z0-9-_]+={0,2}$")
 
 var _ListStoresRequest_Name_Pattern = regexp.MustCompile("^[a-zA-Z0-9\\s\\.\\-\\/^_&@]{3,64}$")
 
