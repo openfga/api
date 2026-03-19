@@ -363,29 +363,29 @@ service AuthZenService {
 }
 
 message EvaluationRequest {
-  Subject subject = 1 [
-    (validate.rules).message.required = true,
-    (google.api.field_behavior) = REQUIRED
-  ];
-
-  Resource resource = 2 [
-    (validate.rules).message.required = true,
-    (google.api.field_behavior) = REQUIRED
-  ];
-
-  Action action = 3 [
-    (validate.rules).message.required = true,
-    (google.api.field_behavior) = REQUIRED
-  ];
-
-  optional google.protobuf.Struct context = 4;
-
-  string store_id = 5 [
+  string store_id = 1 [
     json_name = "store_id",
     (validate.rules).string = {pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"},
     (google.api.field_behavior) = REQUIRED,
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01G5JAVJ41T49E9TT3SKVS7X1J\""}
   ];
+
+  Subject subject = 2 [
+    (validate.rules).message.required = true,
+    (google.api.field_behavior) = REQUIRED
+  ];
+
+  Resource resource = 3 [
+    (validate.rules).message.required = true,
+    (google.api.field_behavior) = REQUIRED
+  ];
+
+  Action action = 4 [
+    (validate.rules).message.required = true,
+    (google.api.field_behavior) = REQUIRED
+  ];
+
+  optional google.protobuf.Struct context = 5;
 }
 
 message EvaluationsItemRequest {
@@ -446,7 +446,7 @@ message Resource {
 
   string id = 2 [
     (validate.rules).string = {
-      pattern: "^[^\\s]{1,256}$"
+      pattern: "^[^:#@\\s]{1,256}$"
       ignore_empty: false
     },
     (google.api.field_behavior) = REQUIRED,
@@ -493,19 +493,19 @@ message EvaluationResponse {
 }
 
 message EvaluationsRequest {
-  optional Subject subject = 1;
-  optional Action action = 2;
-  optional Resource resource = 3;
-  optional google.protobuf.Struct context = 4;
-  // Optional. If omitted or empty, behaves like a single Access Evaluation request.
-  repeated EvaluationsItemRequest evaluations = 5;
-
-  string store_id = 6 [
+  string store_id = 1 [
     json_name = "store_id",
     (validate.rules).string = {pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"},
     (google.api.field_behavior) = REQUIRED,
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"01G5JAVJ41T49E9TT3SKVS7X1J\""}
   ];
+
+  optional Subject subject = 2;
+  optional Action action = 3;
+  optional Resource resource = 4;
+  optional google.protobuf.Struct context = 5;
+  // Optional. If omitted or empty, behaves like a single Access Evaluation request.
+  repeated EvaluationsItemRequest evaluations = 6;
 
   // Options for batch evaluation semantics
   EvaluationsOptions options = 7;
@@ -554,31 +554,31 @@ message PageResponse {
 
 // SubjectSearch request
 message SubjectSearchRequest {
-  Resource resource = 1 [
+  string store_id = 1 [
+    json_name = "store_id",
+    (validate.rules).string = {pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"},
+    (google.api.field_behavior) = REQUIRED
+  ];
+
+  Resource resource = 2 [
     (validate.rules).message.required = true,
     (google.api.field_behavior) = REQUIRED
   ];
 
-  Action action = 2 [
+  Action action = 3 [
     (validate.rules).message.required = true,
     (google.api.field_behavior) = REQUIRED
   ];
 
   // REQUIRED by AuthZEN Subject Search. Subject `id` may be provided but is ignored.
-  SubjectFilter subject = 3 [
+  SubjectFilter subject = 4 [
     (validate.rules).message.required = true,
     (google.api.field_behavior) = REQUIRED
   ];
 
-  optional google.protobuf.Struct context = 4;
+  optional google.protobuf.Struct context = 5;
 
-  PageRequest page = 5;
-
-  string store_id = 6 [
-    json_name = "store_id",
-    (validate.rules).string = {pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"},
-    (google.api.field_behavior) = REQUIRED
-  ];
+  PageRequest page = 6;
 }
 
 message SubjectSearchResponse {
@@ -589,31 +589,31 @@ message SubjectSearchResponse {
 
 // ResourceSearch request
 message ResourceSearchRequest {
-  Subject subject = 1 [
+  string store_id = 1 [
+    json_name = "store_id",
+    (validate.rules).string = {pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"},
+    (google.api.field_behavior) = REQUIRED
+  ];
+
+  Subject subject = 2 [
     (validate.rules).message.required = true,
     (google.api.field_behavior) = REQUIRED
   ];
 
-  Action action = 2 [
+  Action action = 3 [
     (validate.rules).message.required = true,
     (google.api.field_behavior) = REQUIRED
   ];
 
   // Filter by resource type
-  ResourceFilter resource = 3 [
+  ResourceFilter resource = 4 [
     (validate.rules).message.required = true,
     (google.api.field_behavior) = REQUIRED
   ];
 
-  optional google.protobuf.Struct context = 4;
+  optional google.protobuf.Struct context = 5;
 
-  PageRequest page = 5;
-
-  string store_id = 6 [
-    json_name = "store_id",
-    (validate.rules).string = {pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"},
-    (google.api.field_behavior) = REQUIRED
-  ];
+  PageRequest page = 6;
 }
 
 message ResourceSearchResponse {
@@ -624,25 +624,25 @@ message ResourceSearchResponse {
 
 // ActionSearch request
 message ActionSearchRequest {
-  Subject subject = 1 [
-    (validate.rules).message.required = true,
-    (google.api.field_behavior) = REQUIRED
-  ];
-
-  Resource resource = 2 [
-    (validate.rules).message.required = true,
-    (google.api.field_behavior) = REQUIRED
-  ];
-
-  optional google.protobuf.Struct context = 3;
-
-  PageRequest page = 4;
-
-  string store_id = 5 [
+  string store_id = 1 [
     json_name = "store_id",
     (validate.rules).string = {pattern: "^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$"},
     (google.api.field_behavior) = REQUIRED
   ];
+
+  Subject subject = 2 [
+    (validate.rules).message.required = true,
+    (google.api.field_behavior) = REQUIRED
+  ];
+
+  Resource resource = 3 [
+    (validate.rules).message.required = true,
+    (google.api.field_behavior) = REQUIRED
+  ];
+
+  optional google.protobuf.Struct context = 4;
+
+  PageRequest page = 5;
 }
 
 message ActionSearchResponse {
