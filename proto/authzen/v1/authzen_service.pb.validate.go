@@ -57,6 +57,17 @@ func (m *EvaluationRequest) validate(all bool) error {
 
 	var errors []error
 
+	if !_EvaluationRequest_StoreId_Pattern.MatchString(m.GetStoreId()) {
+		err := EvaluationRequestValidationError{
+			field:  "StoreId",
+			reason: "value does not match regex pattern \"^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$\"",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
 	if m.GetSubject() == nil {
 		err := EvaluationRequestValidationError{
 			field:  "Subject",
@@ -175,17 +186,6 @@ func (m *EvaluationRequest) validate(all bool) error {
 				cause:  err,
 			}
 		}
-	}
-
-	if !_EvaluationRequest_StoreId_Pattern.MatchString(m.GetStoreId()) {
-		err := EvaluationRequestValidationError{
-			field:  "StoreId",
-			reason: "value does not match regex pattern \"^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$\"",
-		}
-		if !all {
-			return err
-		}
-		errors = append(errors, err)
 	}
 
 	if m.Context != nil {
@@ -880,7 +880,7 @@ func (m *Resource) validate(all bool) error {
 	if !_Resource_Id_Pattern.MatchString(m.GetId()) {
 		err := ResourceValidationError{
 			field:  "Id",
-			reason: "value does not match regex pattern \"^[^\\\\s]{1,256}$\"",
+			reason: "value does not match regex pattern \"^[^:#@\\\\s]{1,256}$\"",
 		}
 		if !all {
 			return err
@@ -1000,7 +1000,7 @@ var _ interface {
 
 var _Resource_Type_Pattern = regexp.MustCompile("^[^:#@\\s]{1,50}$")
 
-var _Resource_Id_Pattern = regexp.MustCompile("^[^\\s]{1,256}$")
+var _Resource_Id_Pattern = regexp.MustCompile("^[^:#@\\s]{1,256}$")
 
 // Validate checks the field values on ResourceFilter with the rules defined in
 // the proto definition for this message. If any rules are violated, the first
@@ -1455,6 +1455,17 @@ func (m *EvaluationsRequest) validate(all bool) error {
 
 	var errors []error
 
+	if !_EvaluationsRequest_StoreId_Pattern.MatchString(m.GetStoreId()) {
+		err := EvaluationsRequestValidationError{
+			field:  "StoreId",
+			reason: "value does not match regex pattern \"^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$\"",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
 	for idx, item := range m.GetEvaluations() {
 		_, _ = idx, item
 
@@ -1487,17 +1498,6 @@ func (m *EvaluationsRequest) validate(all bool) error {
 			}
 		}
 
-	}
-
-	if !_EvaluationsRequest_StoreId_Pattern.MatchString(m.GetStoreId()) {
-		err := EvaluationsRequestValidationError{
-			field:  "StoreId",
-			reason: "value does not match regex pattern \"^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$\"",
-		}
-		if !all {
-			return err
-		}
-		errors = append(errors, err)
 	}
 
 	if all {
@@ -2239,6 +2239,17 @@ func (m *SubjectSearchRequest) validate(all bool) error {
 
 	var errors []error
 
+	if !_SubjectSearchRequest_StoreId_Pattern.MatchString(m.GetStoreId()) {
+		err := SubjectSearchRequestValidationError{
+			field:  "StoreId",
+			reason: "value does not match regex pattern \"^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$\"",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
 	if m.GetResource() == nil {
 		err := SubjectSearchRequestValidationError{
 			field:  "Resource",
@@ -2386,17 +2397,6 @@ func (m *SubjectSearchRequest) validate(all bool) error {
 				cause:  err,
 			}
 		}
-	}
-
-	if !_SubjectSearchRequest_StoreId_Pattern.MatchString(m.GetStoreId()) {
-		err := SubjectSearchRequestValidationError{
-			field:  "StoreId",
-			reason: "value does not match regex pattern \"^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$\"",
-		}
-		if !all {
-			return err
-		}
-		errors = append(errors, err)
 	}
 
 	if m.Context != nil {
@@ -2705,6 +2705,17 @@ func (m *ResourceSearchRequest) validate(all bool) error {
 
 	var errors []error
 
+	if !_ResourceSearchRequest_StoreId_Pattern.MatchString(m.GetStoreId()) {
+		err := ResourceSearchRequestValidationError{
+			field:  "StoreId",
+			reason: "value does not match regex pattern \"^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$\"",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
 	if m.GetSubject() == nil {
 		err := ResourceSearchRequestValidationError{
 			field:  "Subject",
@@ -2852,17 +2863,6 @@ func (m *ResourceSearchRequest) validate(all bool) error {
 				cause:  err,
 			}
 		}
-	}
-
-	if !_ResourceSearchRequest_StoreId_Pattern.MatchString(m.GetStoreId()) {
-		err := ResourceSearchRequestValidationError{
-			field:  "StoreId",
-			reason: "value does not match regex pattern \"^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$\"",
-		}
-		if !all {
-			return err
-		}
-		errors = append(errors, err)
 	}
 
 	if m.Context != nil {
@@ -3171,6 +3171,17 @@ func (m *ActionSearchRequest) validate(all bool) error {
 
 	var errors []error
 
+	if !_ActionSearchRequest_StoreId_Pattern.MatchString(m.GetStoreId()) {
+		err := ActionSearchRequestValidationError{
+			field:  "StoreId",
+			reason: "value does not match regex pattern \"^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$\"",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
 	if m.GetSubject() == nil {
 		err := ActionSearchRequestValidationError{
 			field:  "Subject",
@@ -3278,17 +3289,6 @@ func (m *ActionSearchRequest) validate(all bool) error {
 				cause:  err,
 			}
 		}
-	}
-
-	if !_ActionSearchRequest_StoreId_Pattern.MatchString(m.GetStoreId()) {
-		err := ActionSearchRequestValidationError{
-			field:  "StoreId",
-			reason: "value does not match regex pattern \"^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$\"",
-		}
-		if !all {
-			return err
-		}
-		errors = append(errors, err)
 	}
 
 	if m.Context != nil {
