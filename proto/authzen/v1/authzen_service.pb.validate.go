@@ -17,6 +17,8 @@ import (
 	"unicode/utf8"
 
 	"google.golang.org/protobuf/types/known/anypb"
+
+	openfgav1 "github.com/openfga/api/proto/openfga/v1"
 )
 
 // ensure the imports are used
@@ -33,7 +35,177 @@ var (
 	_ = (*mail.Address)(nil)
 	_ = anypb.Any{}
 	_ = sort.Sort
+
+	_ = openfgav1.ConsistencyPreference(0)
 )
+
+// Validate checks the field values on Context with the rules defined in the
+// proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *Context) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on Context with the rules defined in the
+// proto definition for this message. If any rules are violated, the result is
+// a list of violation errors wrapped in ContextMultiError, or nil if none found.
+func (m *Context) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *Context) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if m.Consistency != nil {
+		// no validation rules for Consistency
+	}
+
+	if m.Tuples != nil {
+
+		if all {
+			switch v := interface{}(m.GetTuples()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ContextValidationError{
+						field:  "Tuples",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ContextValidationError{
+						field:  "Tuples",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetTuples()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return ContextValidationError{
+					field:  "Tuples",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	if m.Data != nil {
+
+		if all {
+			switch v := interface{}(m.GetData()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ContextValidationError{
+						field:  "Data",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ContextValidationError{
+						field:  "Data",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetData()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return ContextValidationError{
+					field:  "Data",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	if len(errors) > 0 {
+		return ContextMultiError(errors)
+	}
+
+	return nil
+}
+
+// ContextMultiError is an error wrapping multiple validation errors returned
+// by Context.ValidateAll() if the designated constraints aren't met.
+type ContextMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ContextMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ContextMultiError) AllErrors() []error { return m }
+
+// ContextValidationError is the validation error returned by Context.Validate
+// if the designated constraints aren't met.
+type ContextValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ContextValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ContextValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ContextValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ContextValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ContextValidationError) ErrorName() string { return "ContextValidationError" }
+
+// Error satisfies the builtin error interface
+func (e ContextValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sContext.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ContextValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ContextValidationError{}
 
 // Validate checks the field values on EvaluationRequest with the rules defined
 // in the proto definition for this message. If any rules are violated, the

@@ -461,7 +461,7 @@
                   "$ref": "#/definitions/Action"
                 },
                 "context": {
-                  "type": "object"
+                  "$ref": "#/definitions/Context"
                 }
               },
               "required": [
@@ -556,7 +556,7 @@
                   "$ref": "#/definitions/Resource"
                 },
                 "context": {
-                  "type": "object"
+                  "$ref": "#/definitions/Context"
                 },
                 "evaluations": {
                   "type": "array",
@@ -655,7 +655,7 @@
                   "$ref": "#/definitions/Resource"
                 },
                 "context": {
-                  "type": "object"
+                  "$ref": "#/definitions/Context"
                 },
                 "page": {
                   "$ref": "#/definitions/PageRequest"
@@ -754,7 +754,7 @@
                   "title": "Filter by resource type"
                 },
                 "context": {
-                  "type": "object"
+                  "$ref": "#/definitions/Context"
                 },
                 "page": {
                   "$ref": "#/definitions/PageRequest"
@@ -854,7 +854,7 @@
                   "description": "REQUIRED by AuthZEN Subject Search. Subject `id` may be provided but is ignored."
                 },
                 "context": {
-                  "type": "object"
+                  "$ref": "#/definitions/Context"
                 },
                 "page": {
                   "$ref": "#/definitions/PageRequest"
@@ -2615,6 +2615,24 @@
       "description": "Controls the consistency preferences when calling the query APIs.\n\n - UNSPECIFIED: Default if not set. Behavior will be the same as MINIMIZE_LATENCY.\n - MINIMIZE_LATENCY: Minimize latency at the potential expense of lower consistency.\n - HIGHER_CONSISTENCY: Prefer higher consistency, at the potential expense of increased latency.",
       "example": "MINIMIZE_LATENCY"
     },
+    "Context": {
+      "type": "object",
+      "properties": {
+        "openfga.dev/consistency": {
+          "$ref": "#/definitions/ConsistencyPreference",
+          "title": "OpenFGA consistency preference for this request"
+        },
+        "openfga.dev/tuple_keys": {
+          "$ref": "#/definitions/ContextualTupleKeys",
+          "title": "Contextual tuples to use for this request"
+        },
+        "data": {
+          "type": "object",
+          "title": "Arbitrary additional context values (time, ip_address, etc.)"
+        }
+      },
+      "description": "Context provides typed fields for OpenFGA-specific values alongside arbitrary additional context."
+    },
     "ContextualTupleKeys": {
       "type": "object",
       "properties": {
@@ -2739,7 +2757,7 @@
           "type": "boolean"
         },
         "context": {
-          "type": "object"
+          "$ref": "#/definitions/Context"
         }
       }
     },
@@ -2756,7 +2774,7 @@
           "$ref": "#/definitions/Action"
         },
         "context": {
-          "type": "object"
+          "$ref": "#/definitions/Context"
         }
       }
     },
