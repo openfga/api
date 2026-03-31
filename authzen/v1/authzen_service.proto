@@ -5,6 +5,8 @@ package authzen.v1;
 import "google/api/annotations.proto";
 import "google/api/field_behavior.proto";
 import "google/protobuf/struct.proto";
+import "openfga/v1/openfga.proto";
+import "openfga/v1/openfga_service_consistency.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 import "validate/validate.proto";
 
@@ -362,6 +364,18 @@ service AuthZenService {
   }
 }
 
+// Context provides typed fields for OpenFGA-specific values alongside arbitrary additional context.
+message Context {
+  // OpenFGA consistency preference for this request
+  optional openfga.v1.ConsistencyPreference consistency = 1 [json_name = "openfga.dev/consistency"];
+
+  // Contextual tuples to use for this request
+  optional openfga.v1.ContextualTupleKeys tuples = 2 [json_name = "openfga.dev/tuple_keys"];
+
+  // Arbitrary additional context values (time, ip_address, etc.)
+  optional google.protobuf.Struct data = 3;
+}
+
 message EvaluationRequest {
   string store_id = 1 [
     json_name = "store_id",
@@ -385,14 +399,14 @@ message EvaluationRequest {
     (google.api.field_behavior) = REQUIRED
   ];
 
-  optional google.protobuf.Struct context = 5;
+  optional Context context = 5;
 }
 
 message EvaluationsItemRequest {
   optional Subject subject = 1;
   optional Resource resource = 2;
   optional Action action = 3;
-  optional google.protobuf.Struct context = 4;
+  optional Context context = 4;
 }
 
 message Subject {
@@ -489,7 +503,7 @@ message Action {
 message EvaluationResponse {
   bool decision = 1;
 
-  optional google.protobuf.Struct context = 2;
+  optional Context context = 2;
 }
 
 message EvaluationsRequest {
@@ -503,7 +517,7 @@ message EvaluationsRequest {
   optional Subject subject = 2;
   optional Action action = 3;
   optional Resource resource = 4;
-  optional google.protobuf.Struct context = 5;
+  optional Context context = 5;
   // Optional. If omitted or empty, behaves like a single Access Evaluation request.
   repeated EvaluationsItemRequest evaluations = 6;
 
@@ -576,7 +590,7 @@ message SubjectSearchRequest {
     (google.api.field_behavior) = REQUIRED
   ];
 
-  optional google.protobuf.Struct context = 5;
+  optional Context context = 5;
 
   PageRequest page = 6;
 }
@@ -611,7 +625,7 @@ message ResourceSearchRequest {
     (google.api.field_behavior) = REQUIRED
   ];
 
-  optional google.protobuf.Struct context = 5;
+  optional Context context = 5;
 
   PageRequest page = 6;
 }
@@ -640,7 +654,7 @@ message ActionSearchRequest {
     (google.api.field_behavior) = REQUIRED
   ];
 
-  optional google.protobuf.Struct context = 4;
+  optional Context context = 4;
 
   PageRequest page = 5;
 }
