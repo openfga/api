@@ -18,7 +18,7 @@ plugins:
     out: proto/
     opt:
       - paths=source_relative
-  - plugin: buf.build/bufbuild/validate-go:v1.0.4
+  - plugin: buf.build/bufbuild/validate-go:v1.3.0
     out: proto/
     opt:
       - paths=source_relative
