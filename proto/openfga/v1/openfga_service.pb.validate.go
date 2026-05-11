@@ -5667,6 +5667,21 @@ func (m *ReadChangesRequest) validate(all bool) error {
 		}
 	}
 
+	if m.GetCorrelationId() != "" {
+
+		if !_ReadChangesRequest_CorrelationId_Pattern.MatchString(m.GetCorrelationId()) {
+			err := ReadChangesRequestValidationError{
+				field:  "CorrelationId",
+				reason: "value does not match regex pattern \"^[a-zA-Z0-9]([a-zA-Z0-9-]{0,34}[a-zA-Z0-9]|[a-zA-Z0-9])?$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
 	if len(errors) > 0 {
 		return ReadChangesRequestMultiError(errors)
 	}
@@ -5752,6 +5767,8 @@ var _ReadChangesRequest_StoreId_Pattern = regexp.MustCompile("^[ABCDEFGHJKMNPQRS
 var _ReadChangesRequest_Type_Pattern = regexp.MustCompile("^[^:#\\s]{1,254}$")
 
 var _ReadChangesRequest_ContinuationToken_Pattern = regexp.MustCompile("^$|^[A-Za-z0-9-_]+={0,2}$")
+
+var _ReadChangesRequest_CorrelationId_Pattern = regexp.MustCompile("^[a-zA-Z0-9]([a-zA-Z0-9-]{0,34}[a-zA-Z0-9]|[a-zA-Z0-9])?$")
 
 // Validate checks the field values on ReadChangesResponse with the rules
 // defined in the proto definition for this message. If any rules are

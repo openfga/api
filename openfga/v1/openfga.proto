@@ -305,6 +305,17 @@ message TupleChange {
     (google.api.field_behavior) = REQUIRED
   ];
   google.protobuf.Timestamp timestamp = 3 [(google.api.field_behavior) = REQUIRED];
+
+  string correlation_id = 4 [
+    json_name = "correlation_id",
+    (validate.rules).string = {
+      pattern: "^[a-zA-Z0-9]([a-zA-Z0-9-]{0,34}[a-zA-Z0-9]|[a-zA-Z0-9])?$"
+      ignore_empty: true
+    },
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "The correlation ID from the write request that produced this change, if one was provided."
+    }
+  ];
 }
 
 message Store {

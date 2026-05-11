@@ -1792,6 +1792,21 @@ func (m *TupleChange) validate(all bool) error {
 		}
 	}
 
+	if m.GetCorrelationId() != "" {
+
+		if !_TupleChange_CorrelationId_Pattern.MatchString(m.GetCorrelationId()) {
+			err := TupleChangeValidationError{
+				field:  "CorrelationId",
+				reason: "value does not match regex pattern \"^[a-zA-Z0-9]([a-zA-Z0-9-]{0,34}[a-zA-Z0-9]|[a-zA-Z0-9])?$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
 	if len(errors) > 0 {
 		return TupleChangeMultiError(errors)
 	}
@@ -1868,6 +1883,8 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = TupleChangeValidationError{}
+
+var _TupleChange_CorrelationId_Pattern = regexp.MustCompile("^[a-zA-Z0-9]([a-zA-Z0-9-]{0,34}[a-zA-Z0-9]|[a-zA-Z0-9])?$")
 
 // Validate checks the field values on Store with the rules defined in the
 // proto definition for this message. If any rules are violated, the first

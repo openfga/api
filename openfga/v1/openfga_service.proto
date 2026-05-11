@@ -161,6 +161,8 @@ service OpenFGAService {
         "The API will not allow you to write tuples such as `document:2021-budget#viewer@document:2021-budget#viewer`, because they are implicit.\n"
         "An `authorization_model_id` may be specified in the body. If it is, it will be used to assert that each written tuple (not deleted) "
         "is valid for the model specified. If it is not specified, the latest authorization model ID will be used.\n"
+        "An optional `X-Correlation-ID` header may be provided to correlate the request with external systems. "
+        "It must be 1–36 characters containing only alphanumeric characters or hyphens.\n"
         "## Example\n"
         "### Adding relationships\n"
         "To add `user:anne` as a `writer` for `document:2021-budget`, call "
@@ -197,6 +199,16 @@ service OpenFGAService {
         "  }\n"
         "}\n"
         "```\n"
+      parameters: {
+        headers: [
+          {
+            name: "X-Correlation-ID"
+            description: "Optional correlation ID. Must be 1–36 characters containing only alphanumeric characters or hyphens."
+            type: STRING
+            required: false
+          }
+        ]
+      }
     };
   }
 
@@ -1714,6 +1726,17 @@ message ReadChangesRequest {
         "Format: ISO 8601 timestamp (e.g., 2022-01-01T00:00:00Z)\n"
         "If a continuation_token is provided along side start_time, the continuation_token will take precedence over start_time."
       example: "2021-01-01T00:00:00.000Z"
+    }
+  ];
+
+  string correlation_id = 6 [
+    json_name = "correlation_id",
+    (validate.rules).string = {
+      pattern: "^[a-zA-Z0-9]([a-zA-Z0-9-]{0,34}[a-zA-Z0-9]|[a-zA-Z0-9])?$"
+      ignore_empty: true
+    },
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Optional filter to return only changes associated with this correlation ID."
     }
   ];
 }
