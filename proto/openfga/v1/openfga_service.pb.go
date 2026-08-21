@@ -38,7 +38,7 @@ type ListObjectsRequest struct {
 	Relation             string               `protobuf:"bytes,4,opt,name=relation,proto3" json:"relation,omitempty"`
 	User                 string               `protobuf:"bytes,5,opt,name=user,proto3" json:"user,omitempty"`
 	ContextualTuples     *ContextualTupleKeys `protobuf:"bytes,6,opt,name=contextual_tuples,proto3" json:"contextual_tuples,omitempty"`
-	// Additional request context that will be used to evaluate any ABAC conditions encountered
+	// Additional request context that will be used to evaluate any conditions encountered
 	// in the query evaluation.
 	Context *structpb.Struct `protobuf:"bytes,7,opt,name=context,proto3" json:"context,omitempty"`
 	// Controls the consistency preference for this request. Default value is UNSPECIFIED, which will have the same behavior as MINIMIZE_LATENCY.
@@ -191,7 +191,7 @@ type ListUsersRequest struct {
 	Relation             string            `protobuf:"bytes,4,opt,name=relation,proto3" json:"relation,omitempty"`
 	UserFilters          []*UserTypeFilter `protobuf:"bytes,5,rep,name=user_filters,proto3" json:"user_filters,omitempty"`
 	ContextualTuples     []*TupleKey       `protobuf:"bytes,6,rep,name=contextual_tuples,proto3" json:"contextual_tuples,omitempty"`
-	// Additional request context that will be used to evaluate any ABAC conditions encountered
+	// Additional request context that will be used to evaluate any conditions encountered
 	// in the query evaluation.
 	Context *structpb.Struct `protobuf:"bytes,7,opt,name=context,proto3" json:"context,omitempty"`
 	// Controls the consistency preference for this request. Default value is UNSPECIFIED, which will have the same behavior as MINIMIZE_LATENCY.
@@ -344,7 +344,7 @@ type StreamedListObjectsRequest struct {
 	Relation             string               `protobuf:"bytes,4,opt,name=relation,proto3" json:"relation,omitempty"`
 	User                 string               `protobuf:"bytes,5,opt,name=user,proto3" json:"user,omitempty"`
 	ContextualTuples     *ContextualTupleKeys `protobuf:"bytes,6,opt,name=contextual_tuples,proto3" json:"contextual_tuples,omitempty"`
-	// Additional request context that will be used to evaluate any ABAC conditions encountered
+	// Additional request context that will be used to evaluate any conditions encountered
 	// in the query evaluation.
 	Context *structpb.Struct `protobuf:"bytes,7,opt,name=context,proto3" json:"context,omitempty"`
 	// Controls the consistency preference for this request. Default value is UNSPECIFIED, which will have the same behavior as MINIMIZE_LATENCY.
@@ -915,7 +915,7 @@ type CheckRequest struct {
 	AuthorizationModelId string                `protobuf:"bytes,4,opt,name=authorization_model_id,proto3" json:"authorization_model_id,omitempty"`
 	// Defaults to false. Making it true has performance implications.
 	Trace bool `protobuf:"varint,5,opt,name=trace,proto3" json:"trace,omitempty"`
-	// Additional request context that will be used to evaluate any ABAC conditions encountered
+	// Additional request context that will be used to evaluate any conditions encountered
 	// in the query evaluation.
 	Context *structpb.Struct `protobuf:"bytes,6,opt,name=context,proto3" json:"context,omitempty"`
 	// Controls the consistency preference for this request. Default value is UNSPECIFIED, which will have the same behavior as MINIMIZE_LATENCY.
@@ -2990,7 +2990,7 @@ type Assertion struct {
 	TupleKey         *AssertionTupleKey `protobuf:"bytes,1,opt,name=tuple_key,proto3" json:"tuple_key,omitempty"`
 	Expectation      bool               `protobuf:"varint,2,opt,name=expectation,proto3" json:"expectation,omitempty"`
 	ContextualTuples []*TupleKey        `protobuf:"bytes,3,rep,name=contextual_tuples,proto3" json:"contextual_tuples,omitempty"`
-	// Additional request context that will be used to evaluate any ABAC conditions encountered
+	// Additional request context that will be used to evaluate any conditions encountered
 	// in the query evaluation.
 	Context *structpb.Struct `protobuf:"bytes,4,opt,name=context,proto3" json:"context,omitempty"`
 }

@@ -107,7 +107,7 @@ type AuthorizationModel struct {
 	Id              string            `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	SchemaVersion   string            `protobuf:"bytes,2,opt,name=schema_version,proto3" json:"schema_version,omitempty"`
 	TypeDefinitions []*TypeDefinition `protobuf:"bytes,3,rep,name=type_definitions,proto3" json:"type_definitions,omitempty"`
-	// The set of ABAC conditions available to this model, keyed by condition name. A relation's type
+	// The set of conditions available to this model, keyed by condition name. A relation's type
 	// restriction can reference a condition by name (e.g. `[user with non_expired_grant]`); the
 	// referenced condition must be defined here. See the `Condition` message for details.
 	Conditions map[string]*Condition `protobuf:"bytes,4,rep,name=conditions,proto3" json:"conditions,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
@@ -1097,7 +1097,7 @@ func (x *TupleToUserset) GetComputedUserset() *ObjectRelation {
 }
 
 // A Condition is a named, reusable boolean expression that can be attached to a relationship
-// tuple via `RelationshipCondition` to make the relationship conditional (ABAC). Conditions are
+// tuple via `RelationshipCondition` to make the relationship conditional. Conditions are
 // defined once per authorization model (see `AuthorizationModel.conditions`) and referenced by
 // name from a relation's type restriction, e.g. `define viewer: [user with non_expired_grant]`.
 //

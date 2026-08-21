@@ -85,7 +85,7 @@ message UsersetUser {
   ];
 }
 
-// RelationshipCondition attaches an ABAC condition to a relationship tuple, making the
+// RelationshipCondition attaches a condition to a relationship tuple, making the
 // relationship it's attached to conditional: the relationship only holds when the named
 // `Condition`'s CEL expression evaluates to true.
 //
@@ -174,7 +174,7 @@ message TypedWildcard {
 }
 
 // TupleKey identifies a relationship tuple by its user/relation/object triplet, optionally with a
-// `condition` that makes the relationship it describes conditional (ABAC). This is the shape used
+// `condition` that makes the relationship it describes conditional. This is the shape used
 // when writing tuples and when specifying `contextual_tuples`; a stored tuple returned by the Read
 // or ReadChanges APIs is wrapped in a `Tuple`, which pairs a `TupleKey` (including its `condition`,
 // if any) with the tuple's write timestamp.

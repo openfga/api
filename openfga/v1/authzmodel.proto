@@ -31,7 +31,7 @@ message AuthorizationModel {
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "[{\"type\": \"user\"}, {\"type\":\"document\",\"relations\":{\"reader\":{\"union\":{\"child\":[{\"this\":{}},{\"computedUserset\":{\"object\":\"\",\"relation\":\"writer\"}}]}},\"writer\":{\"this\":{}}},\"metadata\":{\"relations\":{\"reader\":{\"directly_related_user_types\":[{\"type\":\"user\"}]},\"writer\":{\"directly_related_user_types\":[{\"type\":\"user\"}]}}}}]"}
   ];
 
-  // The set of ABAC conditions available to this model, keyed by condition name. A relation's type
+  // The set of conditions available to this model, keyed by condition name. A relation's type
   // restriction can reference a condition by name (e.g. `[user with non_expired_grant]`); the
   // referenced condition must be defined here. See the `Condition` message for details.
   map<string, Condition> conditions = 4 [
@@ -203,7 +203,7 @@ message TupleToUserset {
 }
 
 // A Condition is a named, reusable boolean expression that can be attached to a relationship
-// tuple via `RelationshipCondition` to make the relationship conditional (ABAC). Conditions are
+// tuple via `RelationshipCondition` to make the relationship conditional. Conditions are
 // defined once per authorization model (see `AuthorizationModel.conditions`) and referenced by
 // name from a relation's type restriction, e.g. `define viewer: [user with non_expired_grant]`.
 //

@@ -1346,7 +1346,7 @@ message ListObjectsRequest {
 
   openfga.v1.ContextualTupleKeys contextual_tuples = 6 [json_name = "contextual_tuples"];
 
-  // Additional request context that will be used to evaluate any ABAC conditions encountered
+  // Additional request context that will be used to evaluate any conditions encountered
   // in the query evaluation.
   google.protobuf.Struct context = 7;
 
@@ -1413,7 +1413,7 @@ message ListUsersRequest {
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {max_items: 100}
   ];
 
-  // Additional request context that will be used to evaluate any ABAC conditions encountered
+  // Additional request context that will be used to evaluate any conditions encountered
   // in the query evaluation.
   google.protobuf.Struct context = 7;
 
@@ -1473,7 +1473,7 @@ message StreamedListObjectsRequest {
 
   openfga.v1.ContextualTupleKeys contextual_tuples = 6 [json_name = "contextual_tuples"];
 
-  // Additional request context that will be used to evaluate any ABAC conditions encountered
+  // Additional request context that will be used to evaluate any conditions encountered
   // in the query evaluation.
   google.protobuf.Struct context = 7;
 
@@ -1678,7 +1678,7 @@ message CheckRequest {
     example: "false"
   }];
 
-  // Additional request context that will be used to evaluate any ABAC conditions encountered
+  // Additional request context that will be used to evaluate any conditions encountered
   // in the query evaluation.
   google.protobuf.Struct context = 6;
 
@@ -2251,7 +2251,7 @@ message Assertion {
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {max_items: 20}
   ];
 
-  // Additional request context that will be used to evaluate any ABAC conditions encountered
+  // Additional request context that will be used to evaluate any conditions encountered
   // in the query evaluation.
   google.protobuf.Struct context = 4 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: '{"view_count": 100}'}];
 }
