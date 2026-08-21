@@ -249,7 +249,7 @@ service OpenFGAService {
         "}\n"
         "```\n"
         "\n"
-        "### Adding a conditioned relationship\n"
+        "### Adding a conditional relationship tuple\n"
         "To grant `user:anne` `viewer` access to `document:2021-budget` for a limited, one-hour window starting at a fixed time "
         "(assuming the model defines `viewer: [user with non_expired_grant]` and `condition non_expired_grant(current_time: timestamp, "
         "grant_time: timestamp, grant_duration: duration) { current_time < grant_time + grant_duration }`), call write API with\n"
@@ -1109,7 +1109,7 @@ service OpenFGAService {
         "2. The number of results returned is only limited by the execution timeout specified in the flag OPENFGA_LIST_OBJECTS_DEADLINE. \n"
         "\n"
         "Like ListObjects, you may specify `contextual_tuples` (each of which may have an associated `condition`) and a `context` object used to evaluate "
-        "any conditioned tuples in the system. See the ListObjects API docs for a worked example.\n"
+        "any conditioned tuples in the system. See the ListObjects API docs for an example.\n"
     };
   }
 
