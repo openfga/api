@@ -1109,7 +1109,7 @@ service OpenFGAService {
         "2. The number of results returned is only limited by the execution timeout specified in the flag OPENFGA_LIST_OBJECTS_DEADLINE. \n"
         "\n"
         "Like ListObjects, you may specify `contextual_tuples` (each of which may have an associated `condition`) and a `context` object used to evaluate "
-        "any conditioned tuples in the system. See the ListObjects API docs for a worked example.\n"
+        "any conditioned tuples in the system. See the ListObjects API docs for an example.\n"
     };
   }
 
