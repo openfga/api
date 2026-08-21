@@ -3357,9 +3357,9 @@ const file_openfga_v1_openfga_service_proto_rawDesc = "" +
 	"```\n" +
 	"\n" +
 	"Note that this only reflects what was stored: Read does not check whether `current_time` still falls within the grant.\n" +
-	"*\x04Read\x82\xd3\xe4\x93\x02\x1c:\x01*\"\x17/stores/{store_id}/read\x12\xb4\x1f\n" +
-	"\x05Write\x12\x18.openfga.v1.WriteRequest\x1a\x19.openfga.v1.WriteResponse\"\xf5\x1e\x92A\xce\x1e\n" +
-	"\x13Relationship Tuples\x12#Add or delete tuples from the store\x1a\x8a\x1eThe Write API will transactionally update the tuples for a certain store. Tuples and type definitions allow OpenFGA to determine whether a relationship exists between an object and an user.\n" +
+	"*\x04Read\x82\xd3\xe4\x93\x02\x1c:\x01*\"\x17/stores/{store_id}/read\x12\xba\x1f\n" +
+	"\x05Write\x12\x18.openfga.v1.WriteRequest\x1a\x19.openfga.v1.WriteResponse\"\xfb\x1e\x92A\xd4\x1e\n" +
+	"\x13Relationship Tuples\x12#Add or delete tuples from the store\x1a\x90\x1eThe Write API will transactionally update the tuples for a certain store. Tuples and type definitions allow OpenFGA to determine whether a relationship exists between an object and an user.\n" +
 	"\n" +
 	"In the body, `writes` adds new tuples and `deletes` removes existing tuples. When deleting a tuple, any `condition` specified with it is ignored.\n" +
 	"\n" +
@@ -3397,7 +3397,7 @@ const file_openfga_v1_openfga_service_proto_rawDesc = "" +
 	"}\n" +
 	"```\n" +
 	"\n" +
-	"### Adding a conditioned relationship\n" +
+	"### Adding a conditional relationship tuple\n" +
 	"To grant `user:anne` `viewer` access to `document:2021-budget` for a limited, one-hour window starting at a fixed time (assuming the model defines `viewer: [user with non_expired_grant]` and `condition non_expired_grant(current_time: timestamp, grant_time: timestamp, grant_duration: duration) { current_time < grant_time + grant_duration }`), call write API with\n" +
 	"```json\n" +
 	"{\n" +
@@ -4027,13 +4027,13 @@ const file_openfga_v1_openfga_service_proto_rawDesc = "" +
 	"\x06Stores\x12\x0fList all stores\x1a\xa0\x01Returns a paginated list of OpenFGA stores and a continuation token to get additional stores.\n" +
 	"The continuation token will be empty if there are no more stores.\n" +
 	"*\n" +
-	"ListStores\x82\xd3\xe4\x93\x02\t\x12\a/stores\x12\xdc\x06\n" +
-	"\x13StreamedListObjects\x12&.openfga.v1.StreamedListObjectsRequest\x1a'.openfga.v1.StreamedListObjectsResponse\"\xf1\x05\x92A\xba\x05\n" +
-	"\x14Relationship Queries\x12FStream all objects of the given type that the user has a relation with\x1a\xc4\x04The Streamed ListObjects API is very similar to the the ListObjects API, with two differences: \n" +
+	"ListStores\x82\xd3\xe4\x93\x02\t\x12\a/stores\x12\xd6\x06\n" +
+	"\x13StreamedListObjects\x12&.openfga.v1.StreamedListObjectsRequest\x1a'.openfga.v1.StreamedListObjectsResponse\"\xeb\x05\x92A\xb4\x05\n" +
+	"\x14Relationship Queries\x12FStream all objects of the given type that the user has a relation with\x1a\xbe\x04The Streamed ListObjects API is very similar to the the ListObjects API, with two differences: \n" +
 	"1. Instead of collecting all objects before returning a response, it streams them to the client as they are collected. \n" +
 	"2. The number of results returned is only limited by the execution timeout specified in the flag OPENFGA_LIST_OBJECTS_DEADLINE. \n" +
 	"\n" +
-	"Like ListObjects, you may specify `contextual_tuples` (each of which may have an associated `condition`) and a `context` object used to evaluate any conditioned tuples in the system. See the ListObjects API docs for a worked example.\n" +
+	"Like ListObjects, you may specify `contextual_tuples` (each of which may have an associated `condition`) and a `context` object used to evaluate any conditioned tuples in the system. See the ListObjects API docs for an example.\n" +
 	"*\x13StreamedListObjects\x82\xd3\xe4\x93\x02-:\x01*\"(/stores/{store_id}/streamed-list-objects0\x01\x12\xcc!\n" +
 	"\vListObjects\x12\x1e.openfga.v1.ListObjectsRequest\x1a\x1f.openfga.v1.ListObjectsResponse\"\xfb \x92A\xcd \n" +
 	"\x14Relationship Queries\x12DList all objects of the given type that the user has a relation with\x1a\xe1\x1fThe ListObjects API returns a list of all the objects of the given type that the user has a relation with.\n" +
