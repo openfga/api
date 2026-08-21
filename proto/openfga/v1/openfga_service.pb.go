@@ -3207,10 +3207,10 @@ const file_openfga_v1_openfga_service_proto_rawDesc = "" +
 	"Assertions\x12:\n" +
 	"\n" +
 	"assertions\x18\x01 \x03(\v2\x15.openfga.v1.AssertionB\x03\xe0A\x02R\n" +
-	"assertions2\xf6\xcb\x02\n" +
-	"\x0eOpenFGAService\x12\xf9)\n" +
-	"\x04Read\x12\x17.openfga.v1.ReadRequest\x1a\x18.openfga.v1.ReadResponse\"\xbd)\x92A\x97)\n" +
-	"\x13Relationship Tuples\x12WGet tuples from the store that matches a query, without following userset rewrite rules\x1a\xa0(The Read API will return the tuples for a certain store that match a query filter specified in the body of the request. \n" +
+	"assertions2\x9b\xcc\x02\n" +
+	"\x0eOpenFGAService\x12\xff)\n" +
+	"\x04Read\x12\x17.openfga.v1.ReadRequest\x1a\x18.openfga.v1.ReadResponse\"\xc3)\x92A\x9d)\n" +
+	"\x13Relationship Tuples\x12WGet tuples from the store that matches a query, without following userset rewrite rules\x1a\xa6(The Read API will return the tuples for a certain store that match a query filter specified in the body of the request. \n" +
 	"The API doesn't guarantee order by any field. \n" +
 	"It is different from the `/stores/{store_id}/expand` API in that it only returns relationship tuples that are stored in the system and satisfy the query. \n" +
 	"In the body:\n" +
@@ -3284,7 +3284,7 @@ const file_openfga_v1_openfga_service_proto_rawDesc = "" +
 	"\n" +
 	"This means that `document:2021-budget` has 1 `reader` (`user:bob`).  Note that, even if the model said that all `writers` are also `readers`, the API will not return writers such as `user:anne` because it only returns tuples and does not evaluate them.\n" +
 	"\n" +
-	"### Query for all users with all relationships for a particular document\n" +
+	"### Query for all users with all relationship tuples for a particular document\n" +
 	"To query for all users that have any relationship with `document:2021-budget`, call read API with body of \n" +
 	"```json\n" +
 	"{\n" +
@@ -3357,9 +3357,9 @@ const file_openfga_v1_openfga_service_proto_rawDesc = "" +
 	"```\n" +
 	"\n" +
 	"Note that this only reflects what was stored: Read does not check whether `current_time` still falls within the grant.\n" +
-	"*\x04Read\x82\xd3\xe4\x93\x02\x1c:\x01*\"\x17/stores/{store_id}/read\x12\xba\x1f\n" +
-	"\x05Write\x12\x18.openfga.v1.WriteRequest\x1a\x19.openfga.v1.WriteResponse\"\xfb\x1e\x92A\xd4\x1e\n" +
-	"\x13Relationship Tuples\x12#Add or delete tuples from the store\x1a\x90\x1eThe Write API will transactionally update the tuples for a certain store. Tuples and type definitions allow OpenFGA to determine whether a relationship exists between an object and an user.\n" +
+	"*\x04Read\x82\xd3\xe4\x93\x02\x1c:\x01*\"\x17/stores/{store_id}/read\x12\xc6\x1f\n" +
+	"\x05Write\x12\x18.openfga.v1.WriteRequest\x1a\x19.openfga.v1.WriteResponse\"\x87\x1f\x92A\xe0\x1e\n" +
+	"\x13Relationship Tuples\x12#Add or delete tuples from the store\x1a\x9c\x1eThe Write API will transactionally update the tuples for a certain store. Tuples and type definitions allow OpenFGA to determine whether a relationship exists between an object and an user.\n" +
 	"\n" +
 	"In the body, `writes` adds new tuples and `deletes` removes existing tuples. When deleting a tuple, any `condition` specified with it is ignored.\n" +
 	"\n" +
@@ -3379,7 +3379,7 @@ const file_openfga_v1_openfga_service_proto_rawDesc = "" +
 	"\n" +
 	"## Example\n" +
 	"\n" +
-	"### Adding relationships\n" +
+	"### Adding relationship tuples\n" +
 	"To add `user:anne` as a `writer` for `document:2021-budget`, call write API with the following \n" +
 	"```json\n" +
 	"{\n" +
@@ -3423,7 +3423,7 @@ const file_openfga_v1_openfga_service_proto_rawDesc = "" +
 	"\n" +
 	"`current_time` is intentionally left out of the tuple's `context` here — it's supplied later, per Check/ListObjects/ListUsers request, so the same grant can be evaluated against whatever the current time is at query time. See the Check API docs for that example.\n" +
 	"\n" +
-	"### Removing relationships\n" +
+	"### Removing relationship tuples\n" +
 	"To remove `user:bob` as a `reader` for `document:2021-budget`, call write API with the following \n" +
 	"```json\n" +
 	"{\n" +
@@ -3449,7 +3449,7 @@ const file_openfga_v1_openfga_service_proto_rawDesc = "" +
 	"\n" +
 	"A `contextual_tuples` object may also be included in the body of the request. This object contains one field `tuple_keys`, which is an array of tuple keys. Each of these tuples may have an associated `condition`.\n" +
 	"\n" +
-	"You may also provide a `context` object that will be used to evaluate the conditioned tuples in the system. It is strongly recommended to provide a value for all the input parameters of all the conditions, to ensure that all tuples be evaluated correctly. If the tuple being evaluated was itself written with a `condition.context` (see the Write API docs), that tuple-level context is merged with the request's `context` for evaluation; if the same parameter name appears in both, the tuple's own value takes precedence. If a required parameter is missing from both after merging, the API returns a `validation_error` (code 2000).\n" +
+	"You may also provide a `context` object that will be used to evaluate the conditional tuples in the system. It is strongly recommended to provide a value for all the input parameters of all the conditions, to ensure that all tuples be evaluated correctly. If the tuple being evaluated was itself written with a `condition.context` (see the Write API docs), that tuple-level context is merged with the request's `context` for evaluation; if the same parameter name appears in both, the tuple's own value takes precedence. If a required parameter is missing from both after merging, the API returns a `validation_error` (code 2000).\n" +
 	"\n" +
 	"By default, the Check API caches results for a short time to optimize performance. You may specify a value of `HIGHER_CONSISTENCY` for the optional `consistency` parameter in the body to inform the server that higher conisistency is preferred at the expense of increased latency. Consideration should be given to the increased latency if requesting higher consistency.\n" +
 	"\n" +
@@ -3474,7 +3474,7 @@ const file_openfga_v1_openfga_service_proto_rawDesc = "" +
 	"\n" +
 	"This returns `{ \"allowed\": true }` if the relationship holds, or `{ \"allowed\": false }` otherwise.\n" +
 	"\n" +
-	"### Querying a conditioned tuple\n" +
+	"### Querying a conditional tuple\n" +
 	"Given a model that defines `viewer: [user with non_expired_grant]` and `condition non_expired_grant(current_time: timestamp, grant_time: timestamp, grant_duration: duration) { current_time < grant_time + grant_duration }`, and `user:anne` written as a `viewer` of `document:2021-budget` with `condition: {\"name\": \"non_expired_grant\", \"context\": {\"grant_time\": \"2021-10-11T09:00:00Z\", \"grant_duration\": \"1h\"}}`, the caller supplies the missing `current_time` parameter as request `context`:\n" +
 	"```json\n" +
 	"{\n" +
@@ -3962,13 +3962,13 @@ const file_openfga_v1_openfga_service_proto_rawDesc = "" +
 	"%\x1a#.openfga.v1.WriteAssertionsResponse\x82\xd3\xe4\x93\x02;:\x01*\x1a6/stores/{store_id}/assertions/{authorization_model_id}\x12\xd3\x02\n" +
 	"\x0eReadAssertions\x12!.openfga.v1.ReadAssertionsRequest\x1a\".openfga.v1.ReadAssertionsResponse\"\xf9\x01\x92A\xb7\x01\n" +
 	"\n" +
-	"Assertions\x12-Read assertions for an authorization model ID\x1ajThe ReadAssertions API will return, for a given authorization model id, all the assertions stored for it. *\x0eReadAssertions\x82\xd3\xe4\x93\x028\x126/stores/{store_id}/assertions/{authorization_model_id}\x12\xa5\x11\n" +
-	"\vReadChanges\x12\x1e.openfga.v1.ReadChangesRequest\x1a\x1f.openfga.v1.ReadChangesResponse\"\xd4\x10\x92A\xae\x10\n" +
-	"\x13Relationship Tuples\x12&Return a list of all the tuple changes\x1a\xe1\x0fThe ReadChanges API will return a paginated list of tuple changes (additions and deletions) that occurred in a given store, sorted by ascending time. The response will include a continuation token that is used to get the next set of changes. If there are no changes after the provided continuation token, the same token will be returned in order for it to be used when new changes are recorded. If the store never had any tuples added or removed, this token will be empty.\n" +
+	"Assertions\x12-Read assertions for an authorization model ID\x1ajThe ReadAssertions API will return, for a given authorization model id, all the assertions stored for it. *\x0eReadAssertions\x82\xd3\xe4\x93\x028\x126/stores/{store_id}/assertions/{authorization_model_id}\x12\xbe\x11\n" +
+	"\vReadChanges\x12\x1e.openfga.v1.ReadChangesRequest\x1a\x1f.openfga.v1.ReadChangesResponse\"\xed\x10\x92A\xc7\x10\n" +
+	"\x13Relationship Tuples\x12&Return a list of all the tuple changes\x1a\xfa\x0fThe ReadChanges API will return a paginated list of tuple changes (additions and deletions) that occurred in a given store, sorted by ascending time. The response will include a continuation token that is used to get the next set of changes. If there are no changes after the provided continuation token, the same token will be returned in order for it to be used when new changes are recorded. If the store never had any tuples added or removed, this token will be empty.\n" +
 	"\n" +
 	"You can use the `type` parameter to only get the list of tuple changes that affect objects of that type.\n" +
 	"\n" +
-	"When reading a write tuple change, if it was conditioned, the condition will be returned. When reading a delete tuple change, the condition will NOT be returned regardless of whether it was originally conditioned or not.\n" +
+	"When reading a write tuple change, if the relationship tuple had a condition, the condition will be returned. When reading a delete tuple change, the condition will NOT be returned regardless of whether the relationship tuple originally had one.\n" +
 	"\n" +
 	"## Example\n" +
 	"Suppose `user:anne` was written as a `viewer` of `document:2021-budget` with `condition: {\"name\": \"non_expired_grant\", \"context\": {\"grant_time\": \"2021-10-11T09:00:00Z\", \"grant_duration\": \"1h\"}}`, and later that same tuple was deleted. Calling ReadChanges for `type: \"document\"` returns both changes, in ascending order, with the condition present on the write and absent on the delete:\n" +
@@ -4033,17 +4033,17 @@ const file_openfga_v1_openfga_service_proto_rawDesc = "" +
 	"1. Instead of collecting all objects before returning a response, it streams them to the client as they are collected. \n" +
 	"2. The number of results returned is only limited by the execution timeout specified in the flag OPENFGA_LIST_OBJECTS_DEADLINE. \n" +
 	"\n" +
-	"Like ListObjects, you may specify `contextual_tuples` (each of which may have an associated `condition`) and a `context` object used to evaluate any conditioned tuples in the system. See the ListObjects API docs for an example.\n" +
-	"*\x13StreamedListObjects\x82\xd3\xe4\x93\x02-:\x01*\"(/stores/{store_id}/streamed-list-objects0\x01\x12\xcc!\n" +
-	"\vListObjects\x12\x1e.openfga.v1.ListObjectsRequest\x1a\x1f.openfga.v1.ListObjectsResponse\"\xfb \x92A\xcd \n" +
-	"\x14Relationship Queries\x12DList all objects of the given type that the user has a relation with\x1a\xe1\x1fThe ListObjects API returns a list of all the objects of the given type that the user has a relation with.\n" +
+	"Like ListObjects, you may specify `contextual_tuples` (each of which may have an associated `condition`) and a `context` object used to evaluate any conditional tuples in the system. See the ListObjects API docs for an example.\n" +
+	"*\x13StreamedListObjects\x82\xd3\xe4\x93\x02-:\x01*\"(/stores/{store_id}/streamed-list-objects0\x01\x12\xc9!\n" +
+	"\vListObjects\x12\x1e.openfga.v1.ListObjectsRequest\x1a\x1f.openfga.v1.ListObjectsResponse\"\xf8 \x92A\xca \n" +
+	"\x14Relationship Queries\x12DList all objects of the given type that the user has a relation with\x1a\xde\x1fThe ListObjects API returns a list of all the objects of the given type that the user has a relation with.\n" +
 	" To arrive at a result, the API uses: an authorization model, explicit tuples written through the Write API, contextual tuples present in the request, and implicit tuples that exist by virtue of applying set theory (such as `document:2021-budget#viewer@document:2021-budget#viewer`; the set of users who are viewers of `document:2021-budget` are the set of users who are the viewers of `document:2021-budget`).\n" +
 	"\n" +
 	"An `authorization_model_id` may be specified in the body. If it is not specified, the latest authorization model ID will be used. It is strongly recommended to specify authorization model id for better performance.\n" +
 	"\n" +
 	"You may also specify `contextual_tuples` that will be treated as regular tuples. Each of these tuples may have an associated `condition`.\n" +
 	"\n" +
-	"You may also provide a `context` object that will be used to evaluate the conditioned tuples in the system. It is strongly recommended to provide a value for all the input parameters of all the conditions, to ensure that all tuples be evaluated correctly.\n" +
+	"You may also provide a `context` object that will be used to evaluate the conditional tuples in the system. It is strongly recommended to provide a value for all the input parameters of all the conditions, to ensure that all tuples be evaluated correctly.\n" +
 	"\n" +
 	"By default, the Check API caches results for a short time to optimize performance. You may specify a value of `HIGHER_CONSISTENCY` for the optional `consistency` parameter in the body to inform the server that higher conisistency is preferred at the expense of increased latency. Consideration should be given to the increased latency if requesting higher consistency.\n" +
 	"\n" +
@@ -4065,7 +4065,7 @@ const file_openfga_v1_openfga_service_proto_rawDesc = "" +
 	"\n" +
 	"This returns something like `{ \"objects\": [\"document:2021-budget\"] }`.\n" +
 	"\n" +
-	"### Querying a conditioned relation\n" +
+	"### Querying a conditional tuple\n" +
 	"Given a model that defines `viewer: [user with non_expired_grant]` and `condition non_expired_grant(current_time: timestamp, grant_time: timestamp, grant_duration: duration) { current_time < grant_time + grant_duration }`, and `user:anne` written as a `viewer` of `document:2021-budget` with `condition: {\"name\": \"non_expired_grant\", \"context\": {\"grant_time\": \"2021-10-11T09:00:00Z\", \"grant_duration\": \"1h\"}}`, supply the missing `current_time` parameter as request `context`:\n" +
 	"```json\n" +
 	"{\n" +
@@ -4099,16 +4099,16 @@ const file_openfga_v1_openfga_service_proto_rawDesc = "" +
 	"}\n" +
 	"```\n" +
 	"\n" +
-	"This returns `{ \"objects\": [\"document:2021-budget\"] }`, even though no `viewer` or `writer` tuple for `user:anne` was ever written to the store — the contextual tuple is treated as if it existed for the duration of this request only.*\vListObjects\x82\xd3\xe4\x93\x02$:\x01*\"\x1f/stores/{store_id}/list-objects\x12\x99$\n" +
-	"\tListUsers\x12\x1c.openfga.v1.ListUsersRequest\x1a\x1d.openfga.v1.ListUsersResponse\"\xce#\x92A\xa2#\n" +
-	"\x14Relationship Queries\x12]List the users matching the provided filter who have a certain relation to a particular type.\x1a\x9f\"The ListUsers API returns a list of all the users of a specific type that have a relation to a given object.\n" +
+	"This returns `{ \"objects\": [\"document:2021-budget\"] }`, even though no `viewer` or `writer` tuple for `user:anne` was ever written to the store — the contextual tuple is treated as if it existed for the duration of this request only.*\vListObjects\x82\xd3\xe4\x93\x02$:\x01*\"\x1f/stores/{store_id}/list-objects\x12\x96$\n" +
+	"\tListUsers\x12\x1c.openfga.v1.ListUsersRequest\x1a\x1d.openfga.v1.ListUsersResponse\"\xcb#\x92A\x9f#\n" +
+	"\x14Relationship Queries\x12]List the users matching the provided filter who have a certain relation to a particular type.\x1a\x9c\"The ListUsers API returns a list of all the users of a specific type that have a relation to a given object.\n" +
 	" To arrive at a result, the API uses: an authorization model, explicit tuples written through the Write API, contextual tuples present in the request, and implicit tuples that exist by virtue of applying set theory (such as `document:2021-budget#viewer@document:2021-budget#viewer`; the set of users who are viewers of `document:2021-budget` are the set of users who are the viewers of `document:2021-budget`).\n" +
 	"\n" +
 	"An `authorization_model_id` may be specified in the body. If it is not specified, the latest authorization model ID will be used. It is strongly recommended to specify authorization model id for better performance.\n" +
 	"\n" +
 	"You may also specify `contextual_tuples` that will be treated as regular tuples. Each of these tuples may have an associated `condition`.\n" +
 	"\n" +
-	"You may also provide a `context` object that will be used to evaluate the conditioned tuples in the system. It is strongly recommended to provide a value for all the input parameters of all the conditions, to ensure that all tuples be evaluated correctly.\n" +
+	"You may also provide a `context` object that will be used to evaluate the conditional tuples in the system. It is strongly recommended to provide a value for all the input parameters of all the conditions, to ensure that all tuples be evaluated correctly.\n" +
 	"\n" +
 	"The response will contain the related users in an array in the \"users\" field of the response. These results may include specific objects, usersets or type-bound public access. Each of these types of results is encoded in its own type and not represented as a string.\n" +
 	"\n" +
@@ -4134,7 +4134,7 @@ const file_openfga_v1_openfga_service_proto_rawDesc = "" +
 	"\n" +
 	"This returns something like `{ \"users\": [{ \"object\": { \"type\": \"user\", \"id\": \"anne\" } }] }`.\n" +
 	"\n" +
-	"### Querying a conditioned relation\n" +
+	"### Querying a conditional tuple\n" +
 	"Given a model that defines `viewer: [user with non_expired_grant]` and `condition non_expired_grant(current_time: timestamp, grant_time: timestamp, grant_duration: duration) { current_time < grant_time + grant_duration }`, and `user:anne` written as a `viewer` of `document:2021-budget` with `condition: {\"name\": \"non_expired_grant\", \"context\": {\"grant_time\": \"2021-10-11T09:00:00Z\", \"grant_duration\": \"1h\"}}`, supply the missing `current_time` parameter as request `context`:\n" +
 	"```json\n" +
 	"{\n" +
