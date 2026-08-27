@@ -30,10 +30,15 @@ jobs:
         with:
           fetch-depth: 0
       - uses: bufbuild/buf-setup-action@a47c93e0b1648d5651a065437926377d060baa99 # v1.50.0
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
       - name: "Generate OpenAPI & Diff"
         run: |
           make all
-          git diff --text --exit-code docs/openapiv2/apidocs.swagger.json proto/**/*.go
+          git diff --text --exit-code docs/openapiv2/apidocs.swagger.json docs/openapiv3/apidocs.openapi.json proto/**/*.go
 
   validate-openapi:
     runs-on: ubuntu-latest
@@ -44,4 +49,15 @@ jobs:
       - uses: swaggerexpert/apidom-validate@f839307deab4db59c7814834a2076d309e23b535 # v1
         with:
           definition-file: './docs/openapiv2/apidocs.swagger.json'
+          fails-on: 1
+
+  validate-openapiv3:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          fetch-depth: 0
+      - uses: swaggerexpert/apidom-validate@f839307deab4db59c7814834a2076d309e23b535 # v1
+        with:
+          definition-file: './docs/openapiv3/apidocs.openapi.json'
           fails-on: 1
