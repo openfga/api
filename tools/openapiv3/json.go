@@ -10,6 +10,7 @@ import (
 	"io"
 	"net/url"
 	"sort"
+	"strconv"
 	"strings"
 )
 
@@ -74,9 +75,9 @@ func resolveJSONPointer(document any, ref string) (any, error) {
 			}
 			current = next
 		case []any:
-			var index int
-			if _, err := fmt.Sscanf(decoded, "%d", &index); err != nil || index < 0 || index >= len(value) {
-				return nil, fmt.Errorf("invalid array index %q", decoded)
+			index, err := parseArrayIndex(decoded, len(value))
+			if err != nil {
+				return nil, err
 			}
 			current = value[index]
 		default:
@@ -84,6 +85,33 @@ func resolveJSONPointer(document any, ref string) (any, error) {
 		}
 	}
 	return current, nil
+}
+
+func parseArrayIndex(token string, length int) (int, error) {
+	if token == "0" {
+		if length == 0 {
+			return 0, fmt.Errorf("array index %q is out of range", token)
+		}
+		return 0, nil
+	}
+	if token == "" || token[0] < '1' || token[0] > '9' {
+		return 0, fmt.Errorf("invalid array index %q", token)
+	}
+	for index := 1; index < len(token); index++ {
+		if token[index] < '0' || token[index] > '9' {
+			return 0, fmt.Errorf("invalid array index %q", token)
+		}
+	}
+
+	parsed, err := strconv.ParseInt(token, 10, strconv.IntSize)
+	if err != nil {
+		return 0, fmt.Errorf("invalid array index %q: %w", token, err)
+	}
+	index := int(parsed)
+	if index >= length {
+		return 0, fmt.Errorf("array index %q is out of range", token)
+	}
+	return index, nil
 }
 
 func requiredObject(container object, key, label string) (object, error) {

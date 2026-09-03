@@ -1,4 +1,7 @@
-all: openapi-v3 format
+all:
+	$(MAKE) patch-swagger-doc
+	buf format -w
+	$(MAKE) openapi-v3
 
 buf-gen: init-git-hooks
 	./buf.gen.yaml
@@ -6,7 +9,7 @@ buf-gen: init-git-hooks
 patch-swagger-doc: buf-gen
 	./scripts/update_swagger.sh docs/openapiv2/apidocs.swagger.json
 
-openapi-v3: patch-swagger-doc
+openapi-v3:
 	cd tools/openapiv3 && go run .
 
 test-openapi-v3:

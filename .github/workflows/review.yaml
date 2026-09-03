@@ -35,6 +35,10 @@ jobs:
           go-version: 1.26.6
           cache-dependency-path: tools/openapiv3/go.sum
       - run: make test-openapi-v3
+      - name: "Verify Standalone OpenAPI v3 Generation"
+        run: |
+          make openapi-v3
+          git diff --text --exit-code -- docs/openapiv2 proto
       - name: "Generate OpenAPI & Diff"
         run: |
           make all
