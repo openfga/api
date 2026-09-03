@@ -50,6 +50,7 @@ jobs:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
           fetch-depth: 0
+          persist-credentials: false
       - uses: swaggerexpert/apidom-validate@f839307deab4db59c7814834a2076d309e23b535 # v1
         with:
           definition-file: './docs/openapiv2/apidocs.swagger.json'
@@ -61,6 +62,7 @@ jobs:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
           fetch-depth: 0
+          persist-credentials: false
       - uses: swaggerexpert/apidom-validate@f839307deab4db59c7814834a2076d309e23b535 # v1
         with:
           definition-file: './docs/openapiv3/apidocs.openapi.json'
