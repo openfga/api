@@ -75,6 +75,7 @@ make
 
 The OpenAPI 3 document is deterministically converted from the finalized Swagger 2 document
 using the Go tool in `tools/openapiv3`.
+Run `make test-openapi-v3` to exercise its conversion and parity guards.
 Existing SDK generation remains compatible with, and must continue to use,
 `docs/openapiv2/apidocs.swagger.json`.
 
