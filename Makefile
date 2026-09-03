@@ -7,7 +7,10 @@ patch-swagger-doc: buf-gen
 	./scripts/update_swagger.sh docs/openapiv2/apidocs.swagger.json
 
 openapi-v3: patch-swagger-doc
-	npm run --silent generate:openapiv3
+	cd tools/openapiv3 && go run .
+
+test-openapi-v3:
+	cd tools/openapiv3 && go test ./...
 
 format: buf-gen
 	buf format -w

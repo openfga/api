@@ -11,8 +11,8 @@ updates:
         patterns:
           - "*"
 
-  - package-ecosystem: "npm"
-    directory: "/"
+  - package-ecosystem: "gomod"
+    directory: "/tools/openapiv3"
     schedule:
       interval: "weekly"
     groups:

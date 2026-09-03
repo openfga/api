@@ -59,23 +59,22 @@ Generation produces both the finalized Swagger 2.0 document at
 `docs/openapiv2/apidocs.swagger.json` and an additive OpenAPI 3.0.3 document at
 `docs/openapiv3/apidocs.openapi.json`.
 
-> **Note**: You must have [jq](https://jqlang.github.io/jq/download/), Node.js, and npm installed.
+> **Note**: You must have [jq](https://jqlang.github.io/jq/download/) and Go installed.
 
 ```bash
-npm ci
 ./buf.gen.yaml
 ./scripts/update_swagger.sh docs/openapiv2/apidocs.swagger.json
-npm run generate:openapiv3
+(cd tools/openapiv3 && go run .)
 buf format -w
 ```
 
 Or you can just use
 ```bash
-npm ci
 make
 ```
 
-The OpenAPI 3 document is deterministically converted from the finalized Swagger 2 document.
+The OpenAPI 3 document is deterministically converted from the finalized Swagger 2 document
+using the Go tool in `tools/openapiv3`.
 Existing SDK generation remains compatible with, and must continue to use,
 `docs/openapiv2/apidocs.swagger.json`.
 
