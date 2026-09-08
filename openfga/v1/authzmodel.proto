@@ -31,6 +31,9 @@ message AuthorizationModel {
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "[{\"type\": \"user\"}, {\"type\":\"document\",\"relations\":{\"reader\":{\"union\":{\"child\":[{\"this\":{}},{\"computedUserset\":{\"object\":\"\",\"relation\":\"writer\"}}]}},\"writer\":{\"this\":{}}},\"metadata\":{\"relations\":{\"reader\":{\"directly_related_user_types\":[{\"type\":\"user\"}]},\"writer\":{\"directly_related_user_types\":[{\"type\":\"user\"}]}}}}]"}
   ];
 
+  // The set of conditions available to this model, keyed by condition name. A relation's type
+  // restriction can reference a condition by name (e.g. `[user with non_expired_grant]`); the
+  // referenced condition must be defined here. See the `Condition` message for details.
   map<string, Condition> conditions = 4 [
     json_name = "conditions",
     (validate.rules).map.max_pairs = 25,
@@ -199,6 +202,20 @@ message TupleToUserset {
   ];
 }
 
+// A Condition is a named, reusable boolean expression that can be attached to a relationship
+// tuple via `RelationshipCondition` to make the relationship conditional. Conditions are
+// defined once per authorization model (see `AuthorizationModel.conditions`) and referenced by
+// name from a relation's type restriction, e.g. `define viewer: [user with non_expired_grant]`.
+//
+// Example: a condition that only holds while a time-limited grant is still active.
+// ```
+// condition non_expired_grant(current_time: timestamp, grant_time: timestamp, grant_duration: duration) {
+//   current_time < grant_time + grant_duration
+// }
+// ```
+// A tuple referencing this condition supplies `grant_time`/`grant_duration` (typically fixed at
+// write time); `current_time` is then supplied as request `context` when the relationship is
+// evaluated by Check, ListObjects, or ListUsers.
 message Condition {
   // A unique name for the condition
   string name = 1 [
@@ -227,6 +244,8 @@ message Condition {
   ConditionMetadata metadata = 4;
 }
 
+// Metadata about where a Condition was defined, populated when the model was constructed from a
+// modular model (e.g. the module name and the `.fga` source file the condition came from).
 message ConditionMetadata {
   string module = 1 [(validate.rules).string = {
     pattern: "^[^:#@\\s]{1,50}$"
@@ -236,6 +255,9 @@ message ConditionMetadata {
   SourceInfo source_info = 2 [json_name = "source_info"];
 }
 
+// The type of a single named parameter accepted by a `Condition`'s CEL expression (e.g. `int`,
+// `timestamp`, `duration`, `ipaddress`). The corresponding value is supplied via `context` on a
+// `RelationshipCondition` or on a Check/ListObjects/ListUsers request.
 message ConditionParamTypeRef {
   enum TypeName {
     TYPE_NAME_UNSPECIFIED = 0;

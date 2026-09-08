@@ -303,6 +303,17 @@ func (x *UsersetUser) GetRelation() string {
 	return ""
 }
 
+// RelationshipCondition attaches a condition to a relationship tuple, making the
+// relationship it's attached to conditional: the relationship only holds when the named
+// `Condition`'s CEL expression evaluates to true.
+//
+// `context` on this message is optional and is typically used to pin parameter values that are
+// fixed for the lifetime of the tuple (e.g. `grant_time`/`grant_duration` for a time-limited
+// grant), as opposed to parameters that vary per request (e.g. `current_time`), which are instead
+// supplied via the top-level `context` on Check/ListObjects/ListUsers requests.
+//
+// When a relationship is evaluated, this tuple-level `context` is merged with any request-level
+// `context`; if the same key is present in both, the value from this tuple's `context` wins.
 type RelationshipCondition struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// A reference (by name) of the relationship condition defined in the authorization model.
@@ -359,6 +370,10 @@ func (x *RelationshipCondition) GetContext() *structpb.Struct {
 	return nil
 }
 
+// TupleKeyWithoutCondition identifies a relationship tuple by its user/relation/object triplet
+// only, with no `RelationshipCondition`. It's used where a condition would be meaningless or
+// ignored: deleting a tuple (`WriteRequestDeletes.tuple_keys`) only needs the triplet to find the
+// matching row, and any `condition` on the delete request itself is ignored by the Write API.
 type TupleKeyWithoutCondition struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	User          string                 `protobuf:"bytes,1,opt,name=user,proto3" json:"user,omitempty"`
@@ -470,6 +485,11 @@ func (x *TypedWildcard) GetType() string {
 	return ""
 }
 
+// TupleKey identifies a relationship tuple by its user/relation/object triplet, optionally with a
+// `condition` that makes the relationship it describes conditional. This is the shape used
+// when writing tuples and when specifying `contextual_tuples`; a stored tuple returned by the Read
+// or ReadChanges APIs is wrapped in a `Tuple`, which pairs a `TupleKey` (including its `condition`,
+// if any) with the tuple's write timestamp.
 type TupleKey struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	User          string                 `protobuf:"bytes,1,opt,name=user,proto3" json:"user,omitempty"`
@@ -538,6 +558,9 @@ func (x *TupleKey) GetCondition() *RelationshipCondition {
 	return nil
 }
 
+// Tuple pairs a stored relationship (`TupleKey`, including its `condition` if it was written with
+// one) with the timestamp it was written at. This is the shape returned by the Read API; note that
+// Read returns the tuple's condition verbatim without evaluating it.
 type Tuple struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Key           *TupleKey              `protobuf:"bytes,1,opt,name=key,proto3" json:"key,omitempty"`
@@ -1393,10 +1416,10 @@ const file_openfga_v1_openfga_proto_rawDesc = "" +
 	"\x04type\x18\x01 \x01(\tB*\x92A\tJ\a\"group\"\xe0A\x02\xfaB\x18r\x162\x11^[^:#@\\s]{1,254}$\xd0\x01\x00R\x04type\x120\n" +
 	"\x02id\x18\x02 \x01(\tB \x92A\aJ\x05\"fga\"\xe0A\x02\xfaB\x10r\x0e2\t[^#:\\s]+$\xd0\x01\x00R\x02id\x12F\n" +
 	"\brelation\x18\x03 \x01(\tB*\x92A\n" +
-	"J\b\"member\"\xe0A\x02\xfaB\x17r\x152\x10^[^:#@\\s]{1,50}$\xd0\x01\x01R\brelation\"\x8f\x01\n" +
+	"J\b\"member\"\xe0A\x02\xfaB\x17r\x152\x10^[^:#@\\s]{1,50}$\xd0\x01\x01R\brelation\"\xd4\x01\n" +
 	"\x15RelationshipCondition\x12C\n" +
-	"\x04name\x18\x01 \x01(\tB/\x92A\x11J\f\"condition1\"x\x80\x02\xe0A\x02\xfaB\x15r\x132\x0e^[^\\s]{2,256}$\xd0\x01\x00R\x04name\x121\n" +
-	"\acontext\x18\x02 \x01(\v2\x17.google.protobuf.StructR\acontext\"\xeb\x01\n" +
+	"\x04name\x18\x01 \x01(\tB/\x92A\x11J\f\"condition1\"x\x80\x02\xe0A\x02\xfaB\x15r\x132\x0e^[^\\s]{2,256}$\xd0\x01\x00R\x04name\x12v\n" +
+	"\acontext\x18\x02 \x01(\v2\x17.google.protobuf.StructBC\x92A@J>{\"grant_time\": \"2021-10-11T09:00:00Z\", \"grant_duration\": \"1h\"}R\acontext\"\xeb\x01\n" +
 	"\x18TupleKeyWithoutCondition\x122\n" +
 	"\x04user\x18\x01 \x01(\tB\x1e\x92A\x10J\v\"user:anne\"x\x80\x04\xe0A\x02\xfaB\x05r\x03(\x80\x04R\x04user\x12H\n" +
 	"\brelation\x18\x02 \x01(\tB,\x92A\fJ\b\"reader\"x2\xe0A\x02\xfaB\x17r\x152\x10^[^:#@\\s]{1,50}$\xd0\x01\x01R\brelation\x12Q\n" +

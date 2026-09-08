@@ -105,9 +105,12 @@ type AuthorizationModel struct {
 	Id              string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	SchemaVersion   string                 `protobuf:"bytes,2,opt,name=schema_version,proto3" json:"schema_version,omitempty"`
 	TypeDefinitions []*TypeDefinition      `protobuf:"bytes,3,rep,name=type_definitions,proto3" json:"type_definitions,omitempty"`
-	Conditions      map[string]*Condition  `protobuf:"bytes,4,rep,name=conditions,proto3" json:"conditions,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
-	unknownFields   protoimpl.UnknownFields
-	sizeCache       protoimpl.SizeCache
+	// The set of conditions available to this model, keyed by condition name. A relation's type
+	// restriction can reference a condition by name (e.g. `[user with non_expired_grant]`); the
+	// referenced condition must be defined here. See the `Condition` message for details.
+	Conditions    map[string]*Condition `protobuf:"bytes,4,rep,name=conditions,proto3" json:"conditions,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *AuthorizationModel) Reset() {
@@ -1064,6 +1067,22 @@ func (x *TupleToUserset) GetComputedUserset() *ObjectRelation {
 	return nil
 }
 
+// A Condition is a named, reusable boolean expression that can be attached to a relationship
+// tuple via `RelationshipCondition` to make the relationship conditional. Conditions are
+// defined once per authorization model (see `AuthorizationModel.conditions`) and referenced by
+// name from a relation's type restriction, e.g. `define viewer: [user with non_expired_grant]`.
+//
+// Example: a condition that only holds while a time-limited grant is still active.
+// ```
+//
+//	condition non_expired_grant(current_time: timestamp, grant_time: timestamp, grant_duration: duration) {
+//	  current_time < grant_time + grant_duration
+//	}
+//
+// ```
+// A tuple referencing this condition supplies `grant_time`/`grant_duration` (typically fixed at
+// write time); `current_time` is then supplied as request `context` when the relationship is
+// evaluated by Check, ListObjects, or ListUsers.
 type Condition struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// A unique name for the condition
@@ -1135,6 +1154,8 @@ func (x *Condition) GetMetadata() *ConditionMetadata {
 	return nil
 }
 
+// Metadata about where a Condition was defined, populated when the model was constructed from a
+// modular model (e.g. the module name and the `.fga` source file the condition came from).
 type ConditionMetadata struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Module        string                 `protobuf:"bytes,1,opt,name=module,proto3" json:"module,omitempty"`
@@ -1187,6 +1208,9 @@ func (x *ConditionMetadata) GetSourceInfo() *SourceInfo {
 	return nil
 }
 
+// The type of a single named parameter accepted by a `Condition`'s CEL expression (e.g. `int`,
+// `timestamp`, `duration`, `ipaddress`). The corresponding value is supplied via `context` on a
+// `RelationshipCondition` or on a Check/ListObjects/ListUsers request.
 type ConditionParamTypeRef struct {
 	state         protoimpl.MessageState         `protogen:"open.v1"`
 	TypeName      ConditionParamTypeRef_TypeName `protobuf:"varint,1,opt,name=type_name,proto3,enum=openfga.v1.ConditionParamTypeRef_TypeName" json:"type_name,omitempty"`
