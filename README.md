@@ -55,13 +55,16 @@ may be overly strict. In those cases you can bypass it with `commit --no-verify`
     ```
 
 ### Generating OpenAPI Documentation
-To generate the OpenAPI documentation from the protobuf sources you can run the following commands:
+Generation produces both the finalized Swagger 2.0 document at
+`docs/openapiv2/apidocs.swagger.json` and an additive OpenAPI 3.0.3 document at
+`docs/openapiv3/apidocs.openapi.json`.
 
-> **Note**: You must have [jq](https://jqlang.github.io/jq/download/) installed to run the `format` step below
+> **Note**: You must have [jq](https://jqlang.github.io/jq/download/) and Go installed.
 
 ```bash
 ./buf.gen.yaml
 ./scripts/update_swagger.sh docs/openapiv2/apidocs.swagger.json
+(cd tools/openapiv3 && go run .)
 buf format -w
 ```
 
@@ -69,6 +72,12 @@ Or you can just use
 ```bash
 make
 ```
+
+The OpenAPI 3 document is deterministically converted from the finalized Swagger 2 document
+using the Go tool in `tools/openapiv3`.
+Run `make test-openapi-v3` to exercise its conversion and parity guards.
+Existing SDK generation remains compatible with, and must continue to use,
+`docs/openapiv2/apidocs.swagger.json`.
 
 See [CONTRIBUTING](https://github.com/openfga/.github/blob/main/CONTRIBUTING.md).
 
