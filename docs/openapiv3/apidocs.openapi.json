@@ -93,7 +93,7 @@
       "Assertion": {
         "properties": {
           "context": {
-            "description": "Additional request context that will be used to evaluate any ABAC conditions encountered\nin the query evaluation.",
+            "description": "Additional request context is used to evaluate any ABAC conditions encountered\nin the query evaluation.",
             "example": {
               "view_count": 100
             },
@@ -306,7 +306,7 @@
             "additionalProperties": {
               "$ref": "#/components/schemas/BatchCheckSingleResult"
             },
-            "description": "map keys are the correlation_id values from the BatchCheckItems in the request",
+            "description": "Map keys are the `correlation_id` values from the `BatchCheckItems` in the request.",
             "example": {
               "1cd93d8c-8e45-43c6-9a15-cbb3c7f394bc": {
                 "allowed": true,
@@ -343,12 +343,12 @@
                 "$ref": "#/components/schemas/ConsistencyPreference"
               },
               {
-                "description": "Controls the consistency preference for this request. Default value is UNSPECIFIED, which will have the same behavior as MINIMIZE_LATENCY."
+                "description": "Controls the consistency preference for this request. Default value is `UNSPECIFIED`, which has the same behavior as `MINIMIZE_LATENCY`."
               }
             ]
           },
           "context": {
-            "description": "Additional request context that will be used to evaluate any ABAC conditions encountered\nin the query evaluation.",
+            "description": "Additional request context that is used to evaluate any ABAC conditions encountered\nin the query evaluation.",
             "type": "object"
           },
           "contextual_tuples": {
@@ -776,7 +776,7 @@
                 "$ref": "#/components/schemas/ConsistencyPreference"
               },
               {
-                "description": "Controls the consistency preference for this request. Default value is UNSPECIFIED, which will have the same behavior as MINIMIZE_LATENCY."
+                "description": "Controls the consistency preference for this request. Default value is `UNSPECIFIED`, which has the same behavior as `MINIMIZE_LATENCY`."
               }
             ]
           },
@@ -967,12 +967,12 @@
                 "$ref": "#/components/schemas/ConsistencyPreference"
               },
               {
-                "description": "Controls the consistency preference for this request. Default value is UNSPECIFIED, which will have the same behavior as MINIMIZE_LATENCY."
+                "description": "Controls the consistency preference for this request. Default value is `UNSPECIFIED`, which has the same behavior as `MINIMIZE_LATENCY`."
               }
             ]
           },
           "context": {
-            "description": "Additional request context that will be used to evaluate any ABAC conditions encountered\nin the query evaluation.",
+            "description": "Additional request context that are used to evaluate any ABAC conditions encountered\nin the query evaluation.",
             "type": "object"
           },
           "contextual_tuples": {
@@ -1021,7 +1021,7 @@
       "ListStoresResponse": {
         "properties": {
           "continuation_token": {
-            "description": "The continuation token will be empty if there are no more stores.",
+            "description": "The continuation token is empty if there are no more stores.",
             "example": "eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ==",
             "type": "string"
           },
@@ -1057,12 +1057,12 @@
                 "$ref": "#/components/schemas/ConsistencyPreference"
               },
               {
-                "description": "Controls the consistency preference for this request. Default value is UNSPECIFIED, which will have the same behavior as MINIMIZE_LATENCY."
+                "description": "Controls the consistency preference for this request. Default value is `UNSPECIFIED`, which has the same behavior as `MINIMIZE_LATENCY`."
               }
             ]
           },
           "context": {
-            "description": "Additional request context that will be used to evaluate any ABAC conditions encountered\nin the query evaluation.",
+            "description": "Additional request context used to evaluate any ABAC conditions encountered\nin the query evaluation.",
             "type": "object"
           },
           "contextual_tuples": {
@@ -1354,7 +1354,7 @@
             "type": "array"
           },
           "continuation_token": {
-            "description": "The continuation token will be empty if there are no more models.",
+            "description": "The continuation token is empty if there are no more models.",
             "example": "eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ==",
             "type": "string"
           }
@@ -1372,7 +1372,7 @@
                 "$ref": "#/components/schemas/ConsistencyPreference"
               },
               {
-                "description": "Controls the consistency preference for this request. Default value is UNSPECIFIED, which will have the same behavior as MINIMIZE_LATENCY."
+                "description": "Controls the consistency preference for this request. Default value is `UNSPECIFIED`, which has the same behavior as `MINIMIZE_LATENCY`."
               }
             ]
           },
@@ -1409,7 +1409,7 @@
             "type": "array"
           },
           "continuation_token": {
-            "description": "The continuation token will be identical if there are no new changes.",
+            "description": "The continuation token is identical if there are no new changes.",
             "example": "eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ==",
             "type": "string"
           }
@@ -1442,7 +1442,7 @@
       "ReadResponse": {
         "properties": {
           "continuation_token": {
-            "description": "The continuation token will be empty if there are no more tuples.",
+            "description": "The continuation token is empty if there are no more tuples.",
             "example": "eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ==",
             "type": "string"
           },
@@ -1707,12 +1707,12 @@
                 "$ref": "#/components/schemas/ConsistencyPreference"
               },
               {
-                "description": "Controls the consistency preference for this request. Default value is UNSPECIFIED, which will have the same behavior as MINIMIZE_LATENCY."
+                "description": "Controls the consistency preference for this request. Default value is `UNSPECIFIED`, which has the same behavior as `MINIMIZE_LATENCY`."
               }
             ]
           },
           "context": {
-            "description": "Additional request context that will be used to evaluate any ABAC conditions encountered\nin the query evaluation.",
+            "description": "Additional request context used to evaluate any ABAC conditions encountered\nin the query evaluation.",
             "type": "object"
           },
           "contextual_tuples": {
@@ -2559,7 +2559,7 @@
     },
     "/stores": {
       "get": {
-        "description": "Returns a paginated list of OpenFGA stores and a continuation token to get additional stores.\nThe continuation token will be empty if there are no more stores.\n",
+        "description": "Returns a paginated list of OpenFGA stores and a continuation token to get additional stores.\nThe continuation token is empty if there are no more stores.\n",
         "operationId": "ListStores",
         "parameters": [
           {
@@ -2580,7 +2580,7 @@
             }
           },
           {
-            "description": "The name parameter instructs the API to only include results that match that name.Multiple results may be returned. Only exact matches will be returned; substring matches and regexes will not be evaluated",
+            "description": "The name parameter instructs the API to only include results that match that name./nMultiple results may be returned. Only exact matches are returned; substring matches and regexes are not be evaluated.",
             "in": "query",
             "name": "name",
             "required": false,
@@ -2677,7 +2677,7 @@
         ]
       },
       "post": {
-        "description": "Create a unique OpenFGA store which will be used to store authorization models and relationship tuples.",
+        "description": "Create a unique OpenFGA store which is used to store authorization models and relationship tuples.",
         "operationId": "CreateStore",
         "requestBody": {
           "content": {
@@ -3534,7 +3534,7 @@
     },
     "/stores/{store_id}/assertions/{authorization_model_id}": {
       "get": {
-        "description": "The ReadAssertions API will return, for a given authorization model id, all the assertions stored for it. ",
+        "description": "The ReadAssertions API returns all the assertions stored for a given authorization model ID.",
         "operationId": "ReadAssertions",
         "parameters": [
           {
@@ -3636,13 +3636,13 @@
             "description": "Request failed due to internal server error."
           }
         },
-        "summary": "Read assertions for an authorization model ID",
+        "summary": "Get assertions for a model",
         "tags": [
           "Assertions"
         ]
       },
       "put": {
-        "description": "The WriteAssertions API will upsert new assertions for an authorization model id, or overwrite the existing ones. An assertion is an object that contains a tuple key, the expectation of whether a call to the Check API of that tuple key will return true or false, and optionally a list of contextual tuples.",
+        "description": "The WriteAssertions API upserts new assertions for an authorization model id, or overwrite the existing ones. An assertion is an object that contains a tuple key, the expectation of whether a call to the Check API of that tuple key returns true or false, and optionally a list of contextual tuples.",
         "operationId": "WriteAssertions",
         "parameters": [
           {
@@ -3747,7 +3747,7 @@
             "description": "Request failed due to internal server error."
           }
         },
-        "summary": "Upsert assertions for an authorization model ID",
+        "summary": "Upsert assertions for a model",
         "tags": [
           "Assertions"
         ]
@@ -3755,7 +3755,7 @@
     },
     "/stores/{store_id}/authorization-models": {
       "get": {
-        "description": "The ReadAuthorizationModels API will return all the authorization models for a certain store.\nOpenFGA's response will contain an array of all authorization models, sorted in descending order of creation.\n\n## Example\nAssume that a store's authorization model has been configured twice. To get all the authorization models that have been created in this store, call GET authorization-models. The API will return a response that looks like:\n```json\n{\n  \"authorization_models\": [\n    {\n      \"id\": \"01G50QVV17PECNVAHX1GG4Y5NC\",\n      \"type_definitions\": [...]\n    },\n    {\n      \"id\": \"01G4ZW8F4A07AKQ8RHSVG9RW04\",\n      \"type_definitions\": [...]\n    },\n  ],\n  \"continuation_token\": \"eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ==\"\n}\n```\nIf there are no more authorization models available, the `continuation_token` field will be empty\n```json\n{\n  \"authorization_models\": [\n    {\n      \"id\": \"01G50QVV17PECNVAHX1GG4Y5NC\",\n      \"type_definitions\": [...]\n    },\n    {\n      \"id\": \"01G4ZW8F4A07AKQ8RHSVG9RW04\",\n      \"type_definitions\": [...]\n    },\n  ],\n  \"continuation_token\": \"\"\n}\n```\n",
+        "description": "The ReadAuthorizationModels API returns all the authorization models for a certain store.\nOpenFGA's response contains an array of all authorization models, sorted in descending order of creation.\n\n## Example\n\nAssume that a store's authorization model has been configured twice. To get all the authorization models that have been created in this store, call `GET authorization-models`. The API returns a response that looks like:\n\n```json\n{\n  \"authorization_models\": [\n    {\n      \"id\": \"01G50QVV17PECNVAHX1GG4Y5NC\",\n      \"type_definitions\": [...]\n    },\n    {\n      \"id\": \"01G4ZW8F4A07AKQ8RHSVG9RW04\",\n      \"type_definitions\": [...]\n    },\n  ],\n  \"continuation_token\": \"eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ==\"\n}\n```\nIf there are no more authorization models available, then `continuation_token` field returns empty:\n\n```json\n{\n  \"authorization_models\": [\n    {\n      \"id\": \"01G50QVV17PECNVAHX1GG4Y5NC\",\n      \"type_definitions\": [...]\n    },\n    {\n      \"id\": \"01G4ZW8F4A07AKQ8RHSVG9RW04\",\n      \"type_definitions\": [...]\n    },\n  ],\n  \"continuation_token\": \"\"\n}\n```\n",
         "operationId": "ReadAuthorizationModels",
         "parameters": [
           {
@@ -3866,13 +3866,13 @@
             "description": "Request failed due to internal server error."
           }
         },
-        "summary": "Return all the authorization models for a particular store",
+        "summary": "Get all authorization models",
         "tags": [
           "Authorization Models"
         ]
       },
       "post": {
-        "description": "The WriteAuthorizationModel API will add a new authorization model to a store.\nEach item in the `type_definitions` array is a type definition as specified in the field `type_definition`.\nThe response will return the authorization model's ID in the `id` field.\n\n## Example\nTo add an authorization model with `user` and `document` type definitions, call POST authorization-models API with the body: \n```json\n{\n  \"type_definitions\":[\n    {\n      \"type\":\"user\"\n    },\n    {\n      \"type\":\"document\",\n      \"relations\":{\n        \"reader\":{\n          \"union\":{\n            \"child\":[\n              {\n                \"this\":{}\n              },\n              {\n                \"computedUserset\":{\n                  \"object\":\"\",\n                  \"relation\":\"writer\"\n                }\n              }\n            ]\n          }\n        },\n        \"writer\":{\n          \"this\":{}\n        }\n      }\n    }\n  ]\n}\n```\nOpenFGA's response will include the version id for this authorization model, which will look like \n```\n{\"authorization_model_id\": \"01G50QVV17PECNVAHX1GG4Y5NC\"}\n```\n",
+        "description": "The WriteAuthorizationModel API adds a new authorization model to a store.\nEach item in the `type_definitions` array is a type definition as specified in the field `type_definition`.\nThe response returns the authorization model's ID in the `id` field.\n\n## Example\n\nTo add an authorization model with `user` and `document` type definitions, call `POST` `authorization-models` API with the body: \n```json\n{\n  \"type_definitions\":[\n    {\n      \"type\":\"user\"\n    },\n    {\n      \"type\":\"document\",\n      \"relations\":{\n        \"reader\":{\n          \"union\":{\n            \"child\":[\n              {\n                \"this\":{}\n              },\n              {\n                \"computedUserset\":{\n                  \"object\":\"\",\n                  \"relation\":\"writer\"\n                }\n              }\n            ]\n          }\n        },\n        \"writer\":{\n          \"this\":{}\n        }\n      }\n    }\n  ]\n}\n```\nOpenFGA's response includes the version id for this authorization model, similar to:\n```\n{\"authorization_model_id\": \"01G50QVV17PECNVAHX1GG4Y5NC\"}\n```\n",
         "operationId": "WriteAuthorizationModel",
         "parameters": [
           {
@@ -3984,7 +3984,7 @@
     },
     "/stores/{store_id}/authorization-models/{id}": {
       "get": {
-        "description": "The ReadAuthorizationModel API returns an authorization model by its identifier.\nThe response will return the authorization model for the particular version.\n\n## Example\nTo retrieve the authorization model with ID `01G5JAVJ41T49E9TT3SKVS7X1J` for the store, call the GET authorization-models by ID API with `01G5JAVJ41T49E9TT3SKVS7X1J` as the `id` path parameter.  The API will return:\n```json\n{\n  \"authorization_model\":{\n    \"id\":\"01G5JAVJ41T49E9TT3SKVS7X1J\",\n    \"type_definitions\":[\n      {\n        \"type\":\"user\"\n      },\n      {\n        \"type\":\"document\",\n        \"relations\":{\n          \"reader\":{\n            \"union\":{\n              \"child\":[\n                {\n                  \"this\":{}\n                },\n                {\n                  \"computedUserset\":{\n                    \"object\":\"\",\n                    \"relation\":\"writer\"\n                  }\n                }\n              ]\n            }\n          },\n          \"writer\":{\n            \"this\":{}\n          }\n        }\n      }\n    ]\n  }\n}\n```\nIn the above example, there are 2 types (`user` and `document`). The `document` type has 2 relations (`writer` and `reader`).",
+        "description": "The response returns the authorization model for the particular ID.\nAuthorization Models in OpenFGA are [immutable](/docs/getting-started/immutable-models), new versions can be created, but existing ones cannot be deleted or modified.\n\n## Example\n\nTo retrieve the authorization model with ID `01G5JAVJ41T49E9TT3SKVS7X1J` for the store, call the `GET` authorization-models by ID API with `01G5JAVJ41T49E9TT3SKVS7X1J` as the `id` path parameter.  The API returns:\n```json\n{\n  \"authorization_model\":{\n    \"id\":\"01G5JAVJ41T49E9TT3SKVS7X1J\",\n    \"type_definitions\":[\n      {\n        \"type\":\"user\"\n      },\n      {\n        \"type\":\"document\",\n        \"relations\":{\n          \"reader\":{\n            \"union\":{\n              \"child\":[\n                {\n                  \"this\":{}\n                },\n                {\n                  \"computedUserset\":{\n                    \"object\":\"\",\n                    \"relation\":\"writer\"\n                  }\n                }\n              ]\n            }\n          },\n          \"writer\":{\n            \"this\":{}\n          }\n        }\n      }\n    ]\n  }\n}\n```\nIn the above example, there are 2 types (`user` and `document`). The `document` type has 2 relations (`writer` and `reader`).",
         "operationId": "ReadAuthorizationModel",
         "parameters": [
           {
@@ -4086,7 +4086,7 @@
             "description": "Request failed due to internal server error."
           }
         },
-        "summary": "Return a particular version of an authorization model",
+        "summary": "Get an authorization model by its ID",
         "tags": [
           "Authorization Models"
         ]
@@ -4094,7 +4094,7 @@
     },
     "/stores/{store_id}/batch-check": {
       "post": {
-        "description": "The `BatchCheck` API functions nearly identically to `Check`, but instead of checking a single user-object relationship BatchCheck accepts a list of relationships to check and returns a map containing `BatchCheckItem` response for each check it received.\n\nAn associated `correlation_id` is required for each check in the batch. This ID is used to correlate a check to the appropriate response. It is a string consisting of only alphanumeric characters or hyphens with a maximum length of 36 characters. This `correlation_id` is used to map the result of each check to the item which was checked, so it must be unique for each item in the batch. We recommend using a UUID or ULID as the `correlation_id`, but you can use whatever unique identifier you need as long  as it matches this regex pattern: `^[\\w\\d-]{1,36}$`\n\nNOTE: The maximum number of checks that can be passed in the `BatchCheck` API is configurable via the [OPENFGA_MAX_CHECKS_PER_BATCH_CHECK](https://openfga.dev/docs/getting-started/setup-openfga/configuration#OPENFGA_MAX_CHECKS_PER_BATCH_CHECK) environment variable. If `BatchCheck` is called using the SDK, the SDK can split the batch check requests for you.\n\nFor more details on how `Check` functions, see the docs for `/check`.\n\n### Examples\n#### A BatchCheckRequest\n```json\n{\n  \"checks\": [\n     {\n       \"tuple_key\": {\n         \"object\": \"document:2021-budget\"\n         \"relation\": \"reader\",\n         \"user\": \"user:anne\",\n       },\n       \"contextual_tuples\": {...}\n       \"context\": {}\n       \"correlation_id\": \"01JA8PM3QM7VBPGB8KMPK8SBD5\"\n     },\n     {\n       \"tuple_key\": {\n         \"object\": \"document:2021-budget\"\n         \"relation\": \"reader\",\n         \"user\": \"user:bob\",\n       },\n       \"contextual_tuples\": {...}\n       \"context\": {}\n       \"correlation_id\": \"01JA8PMM6A90NV5ET0F28CYSZQ\"\n     }\n   ]\n}\n```\n\nBelow is a possible response to the above request. Note that the result map's keys are the `correlation_id` values from the checked items in the request:\n```json\n{\n   \"result\": {\n     \"01JA8PMM6A90NV5ET0F28CYSZQ\": {\n       \"allowed\": false, \n       \"error\": {\"message\": \"\"} \n    },\n     \"01JA8PM3QM7VBPGB8KMPK8SBD5\": {\n       \"allowed\": true, \n       \"error\": {\"message\": \"\"} \n    }\n}\n```\n",
+        "description": "The `BatchCheck` API functions nearly identically to `Check`, but instead of checking a single user-object relationship BatchCheck accepts a list of relationships to check and returns a map containing `BatchCheckItem` response for each check it received.\n\nAn associated `correlation_id` is required for each check in the batch. This ID is used to correlate a check to the appropriate response. It is a string consisting of only alphanumeric characters or hyphens with a maximum length of 36 characters. This `correlation_id` is used to map the result of each check to the item which was checked, so it must be unique for each item in the batch. We recommend using a UUID or ULID as the `correlation_id`, but you can use whatever unique identifier you need as long  as it matches this regex pattern: `^[\\w\\d-]{1,36}$`\n\n> **Note:** The maximum number of checks that can be passed in the `BatchCheck` API is configurable using the environment variable: `[OPENFGA_MAX_CHECKS_PER_BATCH_CHECK](https://openfga.dev/docs/getting-started/setup-openfga/configuration#OPENFGA_MAX_CHECKS_PER_BATCH_CHECK)`. If `BatchCheck` is called using the SDK, the SDK can split the batch check requests for you.\n\nFor more details on how `Check` functions, review the docs for `/check`.\n\n### Examples\n\n#### A BatchCheckRequest\n```json\n{\n  \"checks\": [\n     {\n       \"tuple_key\": {\n         \"object\": \"document:2021-budget\"\n         \"relation\": \"reader\",\n         \"user\": \"user:anne\",\n       },\n       \"contextual_tuples\": {...}\n       \"context\": {}\n       \"correlation_id\": \"01JA8PM3QM7VBPGB8KMPK8SBD5\"\n     },\n     {\n       \"tuple_key\": {\n         \"object\": \"document:2021-budget\"\n         \"relation\": \"reader\",\n         \"user\": \"user:bob\",\n       },\n       \"contextual_tuples\": {...}\n       \"context\": {}\n       \"correlation_id\": \"01JA8PMM6A90NV5ET0F28CYSZQ\"\n     }\n   ]\n}\n```\n\nBelow is a possible response to the above request. Note that the result map's keys are the `correlation_id` values from the checked items in the request:\n```json\n{\n   \"result\": {\n     \"01JA8PMM6A90NV5ET0F28CYSZQ\": {\n       \"allowed\": false, \n       \"error\": {\"message\": \"\"} \n    },\n     \"01JA8PM3QM7VBPGB8KMPK8SBD5\": {\n       \"allowed\": true, \n       \"error\": {\"message\": \"\"} \n    }\n}\n```\n",
         "operationId": "BatchCheck",
         "parameters": [
           {
@@ -4198,7 +4198,7 @@
             "description": "Request failed due to internal server error."
           }
         },
-        "summary": "Send a list of `check` operations in a single request",
+        "summary": "Check multiple authorizations in a single request",
         "tags": [
           "Relationship Queries"
         ]
@@ -4206,7 +4206,7 @@
     },
     "/stores/{store_id}/changes": {
       "get": {
-        "description": "The ReadChanges API will return a paginated list of tuple changes (additions and deletions) that occurred in a given store, sorted by ascending time. The response will include a continuation token that is used to get the next set of changes. If there are no changes after the provided continuation token, the same token will be returned in order for it to be used when new changes are recorded. If the store never had any tuples added or removed, this token will be empty.\nYou can use the `type` parameter to only get the list of tuple changes that affect objects of that type.\nWhen reading a write tuple change, if it was conditioned, the condition will be returned.\nWhen reading a delete tuple change, the condition will NOT be returned regardless of whether it was originally conditioned or not.\n",
+        "description": "The ReadChanges API returns a paginated list of tuple changes (additions and deletions) that occurred in a given store, sorted by ascending time. The response includes a continuation token that is used to get the next set of changes. If there are no changes after the provided continuation token, the same token is returned in order for it to be used when new changes are recorded.\n\nIf the store never had any tuples added or removed, then this token returns empty.\nYou can use the `type` parameter to only get the list of tuple changes that affect objects of that type.\nWhen reading a write tuple change, if it was conditioned, the condition is returned.\nWhen reading a delete tuple change, the condition is NOT returned regardless of whether it was originally conditioned or not.\n",
         "operationId": "ReadChanges",
         "parameters": [
           {
@@ -4243,7 +4243,7 @@
             }
           },
           {
-            "description": "Start date and time of changes to read.\nFormat: ISO 8601 timestamp (e.g., 2022-01-01T00:00:00Z)\nIf a continuation_token is provided along side start_time, the continuation_token will take precedence over start_time.",
+            "description": "Start date and time of changes to read.\nFormat: ISO 8601 timestamp (e.g., 2022-01-01T00:00:00Z)\nIf a `continuation_token` is provided along side `start_time`, the `continuation_token` takes precedence over `start_time`.",
             "in": "query",
             "name": "start_time",
             "required": false,
@@ -4335,7 +4335,7 @@
             "description": "Request failed due to internal server error."
           }
         },
-        "summary": "Return a list of all the tuple changes",
+        "summary": "Get all tuple changes",
         "tags": [
           "Relationship Tuples"
         ]
@@ -4343,7 +4343,7 @@
     },
     "/stores/{store_id}/check": {
       "post": {
-        "description": "The Check API returns whether a given user has a relationship with a given object in a given store.\nThe `user` field of the request can be a specific target, such as `user:anne`, or a userset (set of users) such as `group:marketing#member` or a type-bound public access `user:*`.\nTo arrive at a result, the API uses: an authorization model, explicit tuples written through the Write API, contextual tuples present in the request, and implicit tuples that exist by virtue of applying set theory (such as `document:2021-budget#viewer@document:2021-budget#viewer`; the set of users who are viewers of `document:2021-budget` are the set of users who are the viewers of `document:2021-budget`).\nA `contextual_tuples` object may also be included in the body of the request. This object contains one field `tuple_keys`, which is an array of tuple keys. Each of these tuples may have an associated `condition`.\nYou may also provide an `authorization_model_id` in the body. This will be used to assert that the input `tuple_key` is valid for the model specified. If not specified, the assertion will be made against the latest authorization model ID. It is strongly recommended to specify authorization model id for better performance.\nYou may also provide a `context` object that will be used to evaluate the conditioned tuples in the system. It is strongly recommended to provide a value for all the input parameters of all the conditions, to ensure that all tuples be evaluated correctly.\nBy default, the Check API caches results for a short time to optimize performance. You may specify a value of `HIGHER_CONSISTENCY` for the optional `consistency` parameter in the body to inform the server that higher conisistency is preferred at the expense of increased latency. Consideration should be given to the increased latency if requesting higher consistency.\nThe response will return whether the relationship exists in the field `allowed`.\n\nSome exceptions apply, but in general, if a Check API responds with `{allowed: true}`, then you can expect the equivalent ListObjects query to return the object, and viceversa. \nFor example, if `Check(user:anne, reader, document:2021-budget)` responds with `{allowed: true}`, then `ListObjects(user:anne, reader, document)` may include `document:2021-budget` in the response.\n## Examples\n### Querying with contextual tuples\nIn order to check if user `user:anne` of type `user` has a `reader` relationship with object `document:2021-budget` given the following contextual tuple\n```json\n{\n  \"user\": \"user:anne\",\n  \"relation\": \"member\",\n  \"object\": \"time_slot:office_hours\"\n}\n```\nthe Check API can be used with the following request body:\n```json\n{\n  \"tuple_key\": {\n    \"user\": \"user:anne\",\n    \"relation\": \"reader\",\n    \"object\": \"document:2021-budget\"\n  },\n  \"contextual_tuples\": {\n    \"tuple_keys\": [\n      {\n        \"user\": \"user:anne\",\n        \"relation\": \"member\",\n        \"object\": \"time_slot:office_hours\"\n      }\n    ]\n  },\n  \"authorization_model_id\": \"01G50QVV17PECNVAHX1GG4Y5NC\"\n}\n```\n### Querying usersets\nSome Checks will always return `true`, even without any tuples. For example, for the following authorization model\n```python\nmodel\n  schema 1.1\ntype user\ntype document\n  relations\n    define reader: [user]\n```\nthe following query\n```json\n{\n  \"tuple_key\": {\n     \"user\": \"document:2021-budget#reader\",\n     \"relation\": \"reader\",\n     \"object\": \"document:2021-budget\"\n  }\n}\n```\nwill always return `{ \"allowed\": true }`. This is because usersets are self-defining: the userset `document:2021-budget#reader` will always have the `reader` relation with `document:2021-budget`.\n### Querying usersets with difference in the model\nA Check for a userset can yield results that must be treated carefully if the model involves difference. For example, for the following authorization model\n```python\nmodel\n  schema 1.1\ntype user\ntype group\n  relations\n    define member: [user]\ntype document\n  relations\n    define blocked: [user]\n    define reader: [group#member] but not blocked\n```\nthe following query\n```json\n{\n  \"tuple_key\": {\n     \"user\": \"group:finance#member\",\n     \"relation\": \"reader\",\n     \"object\": \"document:2021-budget\"\n  },\n  \"contextual_tuples\": {\n    \"tuple_keys\": [\n      {\n        \"user\": \"user:anne\",\n        \"relation\": \"member\",\n        \"object\": \"group:finance\"\n      },\n      {\n        \"user\": \"group:finance#member\",\n        \"relation\": \"reader\",\n        \"object\": \"document:2021-budget\"\n      },\n      {\n        \"user\": \"user:anne\",\n        \"relation\": \"blocked\",\n        \"object\": \"document:2021-budget\"\n      }\n    ]\n  },\n}\n```\nwill return `{ \"allowed\": true }`, even though a specific user of the userset `group:finance#member` does not have the `reader` relationship with the given object.\n### Requesting higher consistency\nBy default, the Check API caches results for a short time to optimize performance. You may request higher consistency to inform the server that higher consistency should be preferred at the expense of increased latency. Care should be taken when requesting higher consistency due to the increased latency.\n```json\n{\n  \"tuple_key\": {\n     \"user\": \"group:finance#member\",\n     \"relation\": \"reader\",\n     \"object\": \"document:2021-budget\"\n  },\n  \"consistency\": \"HIGHER_CONSISTENCY\"\n}\n```\n",
+        "description": "The Check API returns whether a given user has a relationship with a given object in a given store.\n\nThe `user` field of the request can be a specific target, such as `user:anne`, or a userset (set of users) such as `group:marketing#member` or a type-bound public access `user:*`.\nTo arrive at a result, the API uses:\n\n- An [authorization model](/docs/getting-started/configure-model)\n\n- Explicit tuples written through the Write API\n\n- Contextual tuples present in the request\n\n- Implicit tuples that exist by virtue of applying set theory\n\nFor example: `document:2021-budget#viewer@document:2021-budget#viewer`. In this example, the set of users who are viewers of `document:2021-budget` are the set of users who are the viewers of `document:2021-budget`.\n\nA `contextual_tuples` object may also be included in the body of the request. This object contains one field `tuple_keys`, which is an array of tuple keys. Each of these tuples may have an associated `condition`.\nYou may also provide an `authorization_model_id` in the body. This is used to assert that the input `tuple_key` is valid for the model specified. If not specified, the assertion is made against the latest authorization model ID.\n\n> **Note:** We recommend you specify authorization model id for better performance.\n\nYou may also provide a `context` object that is used to evaluate the conditioned tuples in the system.\n\n> **Note:** We recommend you provide a value for all the input parameters of all the conditions, to ensure that all tuples be evaluated correctly.\n\nBy default, the Check API caches results for a short time to optimize performance. You may specify a value of `HIGHER_CONSISTENCY` for the optional `consistency` parameter in the body to inform the server that higher conisistency is preferred at the expense of increased latency. Consideration should be given to the increased latency if requesting higher consistency.\nThe response returns whether the relationship exists in the field `allowed`.\n\nSome exceptions apply, but in general, if a Check API responds with `{allowed: true}`, then you can expect the equivalent ListObjects query to return the object, and viceversa. \nFor example, if `Check(user:anne, reader, document:2021-budget)` responds with `{allowed: true}`, then `ListObjects(user:anne, reader, document)` may include `document:2021-budget` in the response.\n## Examples\n\n### Querying with contextual tuples\n\nIn order to check if user `user:anne` of type `user` has a `reader` relationship with object `document:2021-budget` given the following contextual tuple:\n```json\n{\n  \"user\": \"user:anne\",\n  \"relation\": \"member\",\n  \"object\": \"time_slot:office_hours\"\n}\n```\nthe Check API can be used with the following request body:\n```json\n{\n  \"tuple_key\": {\n    \"user\": \"user:anne\",\n    \"relation\": \"reader\",\n    \"object\": \"document:2021-budget\"\n  },\n  \"contextual_tuples\": {\n    \"tuple_keys\": [\n      {\n        \"user\": \"user:anne\",\n        \"relation\": \"member\",\n        \"object\": \"time_slot:office_hours\"\n      }\n    ]\n  },\n  \"authorization_model_id\": \"01G50QVV17PECNVAHX1GG4Y5NC\"\n}\n```\n### Querying usersets\n\nSome Checks always return `true`, even without any tuples. For example, for the following authorization model:\n```python\nmodel\n  schema 1.1\ntype user\ntype document\n  relations\n    define reader: [user]\n```\nthe following query:\n```json\n{\n  \"tuple_key\": {\n     \"user\": \"document:2021-budget#reader\",\n     \"relation\": \"reader\",\n     \"object\": \"document:2021-budget\"\n  }\n}\n```\nalways returns `{ \"allowed\": true }`. This is because usersets are self-defining: the userset `document:2021-budget#reader` always has the `reader` relation with `document:2021-budget`.\n### Querying usersets with difference in the model\n\nA Check for a userset can yield results that must be treated carefully if the model involves difference. For example, for the following authorization model:\n```python\nmodel\n  schema 1.1\ntype user\ntype group\n  relations\n    define member: [user]\ntype document\n  relations\n    define blocked: [user]\n    define reader: [group#member] but not blocked\n```\nthe following query:\n```json\n{\n  \"tuple_key\": {\n     \"user\": \"group:finance#member\",\n     \"relation\": \"reader\",\n     \"object\": \"document:2021-budget\"\n  },\n  \"contextual_tuples\": {\n    \"tuple_keys\": [\n      {\n        \"user\": \"user:anne\",\n        \"relation\": \"member\",\n        \"object\": \"group:finance\"\n      },\n      {\n        \"user\": \"group:finance#member\",\n        \"relation\": \"reader\",\n        \"object\": \"document:2021-budget\"\n      },\n      {\n        \"user\": \"user:anne\",\n        \"relation\": \"blocked\",\n        \"object\": \"document:2021-budget\"\n      }\n    ]\n  },\n}\n```\nreturns `{ \"allowed\": true }`, even though a specific user of the userset `group:finance#member` does not have the `reader` relationship with the given object.\n### Requesting higher consistency\n\nBy default, the Check API caches results for a short time to optimize performance. You may request higher consistency to inform the server that higher consistency should be preferred at the expense of increased latency. Care should be taken when requesting higher consistency due to the increased latency.\n```json\n{\n  \"tuple_key\": {\n     \"user\": \"group:finance#member\",\n     \"relation\": \"reader\",\n     \"object\": \"document:2021-budget\"\n  },\n  \"consistency\": \"HIGHER_CONSISTENCY\"\n}\n```\n",
         "operationId": "Check",
         "parameters": [
           {
@@ -4447,7 +4447,7 @@
             "description": "Request failed due to internal server error."
           }
         },
-        "summary": "Check whether a user is authorized to access an object",
+        "summary": "Check user authorization",
         "tags": [
           "Relationship Queries"
         ]
@@ -4455,7 +4455,7 @@
     },
     "/stores/{store_id}/expand": {
       "post": {
-        "description": "The Expand API will return all users and usersets that have certain relationship with an object in a certain store.\nThis is different from the `/stores/{store_id}/read` API in that both users and computed usersets are returned.\nBody parameters `tuple_key.object` and `tuple_key.relation` are all required.\nA `contextual_tuples` object may also be included in the body of the request. This object contains one field `tuple_keys`, which is an array of tuple keys. Each of these tuples may have an associated `condition`.\nThe response will return a tree whose leaves are the specific users and usersets. Union, intersection and difference operator are located in the intermediate nodes.\n\n## Example\nTo expand all users that have the `reader` relationship with object `document:2021-budget`, use the Expand API with the following request body\n```json\n{\n  \"tuple_key\": {\n    \"object\": \"document:2021-budget\",\n    \"relation\": \"reader\"\n  },\n  \"authorization_model_id\": \"01G50QVV17PECNVAHX1GG4Y5NC\"\n}\n```\nOpenFGA's response will be a userset tree of the users and usersets that have read access to the document.\n```json\n{\n  \"tree\":{\n    \"root\":{\n      \"type\":\"document:2021-budget#reader\",\n      \"union\":{\n        \"nodes\":[\n          {\n            \"type\":\"document:2021-budget#reader\",\n            \"leaf\":{\n              \"users\":{\n                \"users\":[\n                  \"user:bob\"\n                ]\n              }\n            }\n          },\n          {\n            \"type\":\"document:2021-budget#reader\",\n            \"leaf\":{\n              \"computed\":{\n                \"userset\":\"document:2021-budget#writer\"\n              }\n            }\n          }\n        ]\n      }\n    }\n  }\n}\n```\nThe caller can then call expand API for the `writer` relationship for the `document:2021-budget`.\n### Expand Request with Contextual Tuples\n\nGiven the model\n```python\nmodel\n    schema 1.1\n\ntype user\n\ntype folder\n    relations\n        define owner: [user]\n\ntype document\n    relations\n        define parent: [folder]\n        define viewer: [user] or writer\n        define writer: [user] or owner from parent\n```\nand the initial tuples\n```json\n[{\n    \"user\": \"user:bob\",\n    \"relation\": \"owner\",\n    \"object\": \"folder:1\"\n}]\n```\n\nTo expand all `writers` of `document:1` when `document:1` is put in `folder:1`, the first call could be\n\n```json\n{\n  \"tuple_key\": {\n    \"object\": \"document:1\",\n    \"relation\": \"writer\"\n  },\n  \"contextual_tuples\": {\n    \"tuple_keys\": [\n      {\n        \"user\": \"folder:1\",\n        \"relation\": \"parent\",\n        \"object\": \"document:1\"\n      }\n    ]\n  }\n}\n```\nthis returns:\n```json\n{\n  \"tree\": {\n    \"root\": {\n      \"name\": \"document:1#writer\",\n      \"union\": {\n        \"nodes\": [\n          {\n            \"name\": \"document:1#writer\",\n            \"leaf\": {\n              \"users\": {\n                \"users\": []\n              }\n            }\n          },\n          {\n            \"name\": \"document:1#writer\",\n            \"leaf\": {\n              \"tupleToUserset\": {\n                \"tupleset\": \"document:1#parent\",\n                \"computed\": [\n                  {\n                    \"userset\": \"folder:1#owner\"\n                  }\n                ]\n              }\n            }\n          }\n        ]\n      }\n    }\n  }\n}\n```\nThis tells us that the `owner` of `folder:1` may also be a writer. So our next call could be to find the `owners` of `folder:1`\n```json\n{\n  \"tuple_key\": {\n    \"object\": \"folder:1\",\n    \"relation\": \"owner\"\n  }\n}\n```\nwhich gives\n```json\n{\n  \"tree\": {\n    \"root\": {\n      \"name\": \"folder:1#owner\",\n      \"leaf\": {\n        \"users\": {\n          \"users\": [\n            \"user:bob\"\n          ]\n        }\n      }\n    }\n  }\n}\n```\n",
+        "description": "The Expand API returns all users and usersets that have certain relationship with an object in a certain store.\nThis is different from the `/stores/{store_id}/read` API in that both users and computed usersets are returned.\n\nBody parameters `tuple_key.object` and `tuple_key.relation` are all required.\nA `contextual_tuples` object may also be included in the body of the request. This object contains one field `tuple_keys`, which is an array of tuple keys. Each of these tuples may have an associated `condition`.\nThe response returns a tree whose leaves are the specific users and usersets. Union, intersection and difference operator are located in the intermediate nodes.\n\n## Example\n\nTo expand all users that have the `reader` relationship with object `document:2021-budget`, use the Expand API with the following request body:\n```json\n{\n  \"tuple_key\": {\n    \"object\": \"document:2021-budget\",\n    \"relation\": \"reader\"\n  },\n  \"authorization_model_id\": \"01G50QVV17PECNVAHX1GG4Y5NC\"\n}\n```\nOpenFGA's response is a userset tree of the users and usersets that have read access to the document.\n```json\n{\n  \"tree\":{\n    \"root\":{\n      \"type\":\"document:2021-budget#reader\",\n      \"union\":{\n        \"nodes\":[\n          {\n            \"type\":\"document:2021-budget#reader\",\n            \"leaf\":{\n              \"users\":{\n                \"users\":[\n                  \"user:bob\"\n                ]\n              }\n            }\n          },\n          {\n            \"type\":\"document:2021-budget#reader\",\n            \"leaf\":{\n              \"computed\":{\n                \"userset\":\"document:2021-budget#writer\"\n              }\n            }\n          }\n        ]\n      }\n    }\n  }\n}\n```\nThe caller can then call expand API for the `writer` relationship for the `document:2021-budget`.\n### Expand Request with Contextual Tuples\n\n\nGiven the model\n```python\nmodel\n    schema 1.1\n\ntype user\n\ntype folder\n    relations\n        define owner: [user]\n\ntype document\n    relations\n        define parent: [folder]\n        define viewer: [user] or writer\n        define writer: [user] or owner from parent\n```\nand the initial tuples\n```json\n[{\n    \"user\": \"user:bob\",\n    \"relation\": \"owner\",\n    \"object\": \"folder:1\"\n}]\n```\n\nTo expand all `writers` of `document:1` when `document:1` is put in `folder:1`, the first call could be:\n\n```json\n{\n  \"tuple_key\": {\n    \"object\": \"document:1\",\n    \"relation\": \"writer\"\n  },\n  \"contextual_tuples\": {\n    \"tuple_keys\": [\n      {\n        \"user\": \"folder:1\",\n        \"relation\": \"parent\",\n        \"object\": \"document:1\"\n      }\n    ]\n  }\n}\n```\nthis returns:\n```json\n{\n  \"tree\": {\n    \"root\": {\n      \"name\": \"document:1#writer\",\n      \"union\": {\n        \"nodes\": [\n          {\n            \"name\": \"document:1#writer\",\n            \"leaf\": {\n              \"users\": {\n                \"users\": []\n              }\n            }\n          },\n          {\n            \"name\": \"document:1#writer\",\n            \"leaf\": {\n              \"tupleToUserset\": {\n                \"tupleset\": \"document:1#parent\",\n                \"computed\": [\n                  {\n                    \"userset\": \"folder:1#owner\"\n                  }\n                ]\n              }\n            }\n          }\n        ]\n      }\n    }\n  }\n}\n```\nThis tells us that the `owner` of `folder:1` may also be a writer. So our next call could be to find the `owners` of `folder:1`\n```json\n{\n  \"tuple_key\": {\n    \"object\": \"folder:1\",\n    \"relation\": \"owner\"\n  }\n}\n```\nwhich gives\n```json\n{\n  \"tree\": {\n    \"root\": {\n      \"name\": \"folder:1#owner\",\n      \"leaf\": {\n        \"users\": {\n          \"users\": [\n            \"user:bob\"\n          ]\n        }\n      }\n    }\n  }\n}\n```\n",
         "operationId": "Expand",
         "parameters": [
           {
@@ -4559,7 +4559,7 @@
             "description": "Request failed due to internal server error."
           }
         },
-        "summary": "Expand all relationships in userset tree format, and following userset rewrite rules.  Useful to reason about and debug a certain relationship",
+        "summary": "Expand relationships in userset tree format",
         "tags": [
           "Relationship Queries"
         ]
@@ -4567,7 +4567,7 @@
     },
     "/stores/{store_id}/list-objects": {
       "post": {
-        "description": "The ListObjects API returns a list of all the objects of the given type that the user has a relation with.\n To arrive at a result, the API uses: an authorization model, explicit tuples written through the Write API, contextual tuples present in the request, and implicit tuples that exist by virtue of applying set theory (such as `document:2021-budget#viewer@document:2021-budget#viewer`; the set of users who are viewers of `document:2021-budget` are the set of users who are the viewers of `document:2021-budget`).\nAn `authorization_model_id` may be specified in the body. If it is not specified, the latest authorization model ID will be used. It is strongly recommended to specify authorization model id for better performance.\nYou may also specify `contextual_tuples` that will be treated as regular tuples. Each of these tuples may have an associated `condition`.\nYou may also provide a `context` object that will be used to evaluate the conditioned tuples in the system. It is strongly recommended to provide a value for all the input parameters of all the conditions, to ensure that all tuples be evaluated correctly.\nBy default, the Check API caches results for a short time to optimize performance. You may specify a value of `HIGHER_CONSISTENCY` for the optional `consistency` parameter in the body to inform the server that higher conisistency is preferred at the expense of increased latency. Consideration should be given to the increased latency if requesting higher consistency.\nThe response will contain the related objects in an array in the \"objects\" field of the response and they will be strings in the object format `<type>:<id>` (e.g. \"document:roadmap\").\nThe number of objects in the response array will be limited by the execution timeout specified in the flag OPENFGA_LIST_OBJECTS_DEADLINE and by the upper bound specified in the flag OPENFGA_LIST_OBJECTS_MAX_RESULTS, whichever is hit first.\nThe objects given will not be sorted, and therefore two identical calls can give a given different set of objects.",
+        "description": "The ListObjects API returns a list of all the objects of the given type that the user has a relation with.\n To arrive at a result, the API uses:\n\n- An [authorization model](/docs/getting-started/configure-model)\n- Explicit tuples written through the Write API\n- Contextual tuples present in the request\n- Implicit tuples that exist by virtue of applying set theory. For example:\n\n`document:2021-budget#viewer@document:2021-budget#viewer`\n\nIn the example the set of users who are viewers of `document:2021-budget` are the set of users who are the viewers of `document:2021-budget`.\n\nAn `authorization_model_id` may be specified in the body. If it is not specified, the latest authorization model ID is used.\n\n> **Note:** We recommend you specify authorization model ID for better performance.\n\nYou may also specify `contextual_tuples` that is treated as regular tuples. Each of these tuples may have an associated `condition`.\nYou may also provide a `context` object that is used to evaluate the conditioned tuples in the system.\n\n> **Note:** We recommend you provide a value for all the input parameters of all the conditions, to ensure that all tuples be evaluated correctly.\n\nBy default, the Check API caches results for a short time to optimize performance. You may specify a value of `HIGHER_CONSISTENCY` for the optional `consistency` parameter in the body to inform the server that higher conisistency is preferred at the expense of increased latency. Consideration should be given to the increased latency if requesting higher consistency.\nThe response contains the related objects in an array in the \"objects\" field of the response and are strings in the object format `<type>:<id>` (e.g. \"document:roadmap\").\n\nThe number of objects in the response array are limited by the execution timeout specified in the flag `OPENFGA_LIST_OBJECTS_DEADLINE` and by the upper bound specified in the flag `OPENFGA_LIST_OBJECTS_MAX_RESULTS`, whichever is hit first.\nThe objects given are not sorted, and therefore two identical calls can give a given different set of objects.",
         "operationId": "ListObjects",
         "parameters": [
           {
@@ -4671,7 +4671,7 @@
             "description": "Request failed due to internal server error."
           }
         },
-        "summary": "List all objects of the given type that the user has a relation with",
+        "summary": "List objects a user is related to",
         "tags": [
           "Relationship Queries"
         ]
@@ -4679,7 +4679,7 @@
     },
     "/stores/{store_id}/list-users": {
       "post": {
-        "description": "The ListUsers API returns a list of all the users of a specific type that have a relation to a given object.\n To arrive at a result, the API uses: an authorization model, explicit tuples written through the Write API, contextual tuples present in the request, and implicit tuples that exist by virtue of applying set theory (such as `document:2021-budget#viewer@document:2021-budget#viewer`; the set of users who are viewers of `document:2021-budget` are the set of users who are the viewers of `document:2021-budget`).\nAn `authorization_model_id` may be specified in the body. If it is not specified, the latest authorization model ID will be used. It is strongly recommended to specify authorization model id for better performance.\nYou may also specify `contextual_tuples` that will be treated as regular tuples. Each of these tuples may have an associated `condition`.\nYou may also provide a `context` object that will be used to evaluate the conditioned tuples in the system. It is strongly recommended to provide a value for all the input parameters of all the conditions, to ensure that all tuples be evaluated correctly.\nThe response will contain the related users in an array in the \"users\" field of the response. These results may include specific objects, usersets \nor type-bound public access. Each of these types of results is encoded in its own type and not represented as a string.In cases where a type-bound public access result is returned (e.g. `user:*`), it cannot be inferred that all subjects\nof that type have a relation to the object; it is possible that negations exist and checks should still be queried\non individual subjects to ensure access to that document.The number of users in the response array will be limited by the execution timeout specified in the flag OPENFGA_LIST_USERS_DEADLINE and by the upper bound specified in the flag OPENFGA_LIST_USERS_MAX_RESULTS, whichever is hit first.\nThe returned users will not be sorted, and therefore two identical calls may yield different sets of users.",
+        "description": "The ListUsers API returns a list of all the users of a specific type that have a relation to a given object.\n\n To arrive at a result, the API uses:\n\n- An [authorization model](/docs/getting-started/configure-model)\n\n- Explicit tuples written through the Write API\n\n- Contextual tuples present in the request\n\n- Implicit tuples that exist by virtue of applying set theory\n\nFor example: `document:2021-budget#viewer@document:2021-budget#viewer`. In this example, the set of users who are viewers of `document:2021-budget` are the set of users who are the viewers of `document:2021-budget`.\n\nAn `authorization_model_id` may be specified in the body. If it is not specified, the latest authorization model ID is used.\n\n> **Note:** We recommend you specify authorization model ID for better performance.\n\nYou may also specify `contextual_tuples` that are treated as regular tuples. Each of these tuples may have an associated `condition`.\nYou may also provide a `context` object used to evaluate the conditioned tuples in the system.\n\n> **Note:** We recommend you provide a value for all the input parameters of all the conditions. This ensures that all tuples be evaluated correctly.\n\nThe response contains the related users in an array in the \"users\" field of the response. These results may include specific objects, usersets \nor type-bound public access. Each of these types of results is encoded in its own type and not represented as a string.\n\nIn cases where a type-bound public access result is returned (e.g. `user:*`), it cannot be inferred that all subjects\nof that type have a relation to the object; it is possible that negations exist and checks should still be queried\non individual subjects to ensure access to that document.\nThe number of users in the response array are limited by the execution timeout specified in the flag `OPENFGA_LIST_USERS_DEADLINE` and by the upper bound specified in the flag `OPENFGA_LIST_USERS_MAX_RESULTS`, whichever is hit first.\nThe returned users are not sorted, and therefore two identical calls may yield different sets of users.",
         "operationId": "ListUsers",
         "parameters": [
           {
@@ -4783,7 +4783,7 @@
             "description": "Request failed due to internal server error."
           }
         },
-        "summary": "List the users matching the provided filter who have a certain relation to a particular type.",
+        "summary": "List all users with a relationship to an object",
         "tags": [
           "Relationship Queries"
         ]
@@ -4791,7 +4791,7 @@
     },
     "/stores/{store_id}/read": {
       "post": {
-        "description": "The Read API will return the tuples for a certain store that match a query filter specified in the body of the request. \nThe API doesn't guarantee order by any field. \nIt is different from the `/stores/{store_id}/expand` API in that it only returns relationship tuples that are stored in the system and satisfy the query. \nIn the body:\n1. `tuple_key` is optional. If not specified, it will return all tuples in the store.\n2. `tuple_key.object` is mandatory if `tuple_key` is specified. It can be a full object (e.g., `type:object_id`) or type only (e.g., `type:`).\n3. `tuple_key.user` is mandatory if tuple_key is specified in the case the `tuple_key.object` is a type only. If tuple_key.user is specified, it needs to be a full object (e.g., `type:user_id`).\n## Examples\n### Query for all objects in a type definition\nTo query for all objects that `user:bob` has `reader` relationship in the `document` type definition, call read API with body of\n```json\n{\n \"tuple_key\": {\n     \"user\": \"user:bob\",\n     \"relation\": \"reader\",\n     \"object\": \"document:\"\n  }\n}\n```\nThe API will return tuples and a continuation token, something like\n```json\n{\n  \"tuples\": [\n    {\n      \"key\": {\n        \"user\": \"user:bob\",\n        \"relation\": \"reader\",\n        \"object\": \"document:2021-budget\"\n      },\n      \"timestamp\": \"2021-10-06T15:32:11.128Z\"\n    }\n  ],\n  \"continuation_token\": \"eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ==\"\n}\n```\nThis means that `user:bob` has a `reader` relationship with 1 document `document:2021-budget`. Note that this API, unlike the List Objects API, does not evaluate the tuples in the store.\nThe continuation token will be empty if there are no more tuples to query.\n### Query for all stored relationship tuples that have a particular relation and object\nTo query for all users that have `reader` relationship with `document:2021-budget`, call read API with body of \n```json\n{\n  \"tuple_key\": {\n     \"object\": \"document:2021-budget\",\n     \"relation\": \"reader\"\n   }\n}\n```\nThe API will return something like \n```json\n{\n  \"tuples\": [\n    {\n      \"key\": {\n        \"user\": \"user:bob\",\n        \"relation\": \"reader\",\n        \"object\": \"document:2021-budget\"\n      },\n      \"timestamp\": \"2021-10-06T15:32:11.128Z\"\n    }\n  ],\n  \"continuation_token\": \"eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ==\"\n}\n```\nThis means that `document:2021-budget` has 1 `reader` (`user:bob`).  Note that, even if the model said that all `writers` are also `readers`, the API will not return writers such as `user:anne` because it only returns tuples and does not evaluate them.\n### Query for all users with all relationships for a particular document\nTo query for all users that have any relationship with `document:2021-budget`, call read API with body of \n```json\n{\n  \"tuple_key\": {\n      \"object\": \"document:2021-budget\"\n   }\n}\n```\nThe API will return something like \n```json\n{\n  \"tuples\": [\n    {\n      \"key\": {\n        \"user\": \"user:anne\",\n        \"relation\": \"writer\",\n        \"object\": \"document:2021-budget\"\n      },\n      \"timestamp\": \"2021-10-05T13:42:12.356Z\"\n    },\n    {\n      \"key\": {\n        \"user\": \"user:bob\",\n        \"relation\": \"reader\",\n        \"object\": \"document:2021-budget\"\n      },\n      \"timestamp\": \"2021-10-06T15:32:11.128Z\"\n    }\n  ],\n  \"continuation_token\": \"eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ==\"\n}\n```\nThis means that `document:2021-budget` has 1 `reader` (`user:bob`) and 1 `writer` (`user:anne`).\n",
+        "description": "The Read API returns the tuples from a certain store that match a query filter specified in the body of the request. \nThe API doesn't guarantee order by any field. \nIt is different from the `/stores/{store_id}/expand` API in that it only returns relationship tuples that are stored in the system and satisfy the query. \nIn the body:\n1. `tuple_key` is optional. If not specified, it returns all tuples in the store.\n2. `tuple_key.object` is mandatory if `tuple_key` is specified. It can be a full object (e.g., `type:object_id`) or type only (e.g., `type:`).\n3. `tuple_key.user` is mandatory if tuple_key is specified in the case the `tuple_key.object` is a type only. If tuple_key.user is specified, it needs to be a full object (e.g., `type:user_id`).\n\n## Examples\n\n### Query for all objects in a type definition\n\nTo query for all objects that `user:bob` has `reader` relationship in the `document` type definition, call read API with body of\n```json\n{\n \"tuple_key\": {\n     \"user\": \"user:bob\",\n     \"relation\": \"reader\",\n     \"object\": \"document:\"\n  }\n}\n```\nThe API returns tuples and a continuation token, similar to:\n```json\n{\n  \"tuples\": [\n    {\n      \"key\": {\n        \"user\": \"user:bob\",\n        \"relation\": \"reader\",\n        \"object\": \"document:2021-budget\"\n      },\n      \"timestamp\": \"2021-10-06T15:32:11.128Z\"\n    }\n  ],\n  \"continuation_token\": \"eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ==\"\n}\n```\nThis means that `user:bob` has a `reader` relationship with 1 document `document:2021-budget`. Note that this API, unlike the List Objects API, does not evaluate the tuples in the store.\nThe continuation token is empty if there are no more tuples to query.\n\n### Query for all stored relationship tuples that have a particular relation and object\n\nTo query for all users that have `reader` relationship with `document:2021-budget`, call read API with body of \n```json\n{\n  \"tuple_key\": {\n     \"object\": \"document:2021-budget\",\n     \"relation\": \"reader\"\n   }\n}\n```\nThe API returns something similar to: \n```json\n{\n  \"tuples\": [\n    {\n      \"key\": {\n        \"user\": \"user:bob\",\n        \"relation\": \"reader\",\n        \"object\": \"document:2021-budget\"\n      },\n      \"timestamp\": \"2021-10-06T15:32:11.128Z\"\n    }\n  ],\n  \"continuation_token\": \"eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ==\"\n}\n```\nThis means that `document:2021-budget` has 1 `reader` (`user:bob`).  Note that, even if the model said that all `writers` are also `readers`, the API does not return writers such as `user:anne` because it only returns tuples and does not evaluate them.\n\n### Query for all users with all relationships for a particular document\n\nTo query for all users that have any relationship with `document:2021-budget`, call read API with body of \n```json\n{\n  \"tuple_key\": {\n      \"object\": \"document:2021-budget\"\n   }\n}\n```\nThe API returns something similar to:\n```json\n{\n  \"tuples\": [\n    {\n      \"key\": {\n        \"user\": \"user:anne\",\n        \"relation\": \"writer\",\n        \"object\": \"document:2021-budget\"\n      },\n      \"timestamp\": \"2021-10-05T13:42:12.356Z\"\n    },\n    {\n      \"key\": {\n        \"user\": \"user:bob\",\n        \"relation\": \"reader\",\n        \"object\": \"document:2021-budget\"\n      },\n      \"timestamp\": \"2021-10-06T15:32:11.128Z\"\n    }\n  ],\n  \"continuation_token\": \"eyJwayI6IkxBVEVTVF9OU0NPTkZJR19hdXRoMHN0b3JlIiwic2siOiIxem1qbXF3MWZLZExTcUoyN01MdTdqTjh0cWgifQ==\"\n}\n```\nThis means that `document:2021-budget` has 1 `reader` (`user:bob`) and 1 `writer` (`user:anne`).\n",
         "operationId": "Read",
         "parameters": [
           {
@@ -4895,7 +4895,7 @@
             "description": "Request failed due to internal server error."
           }
         },
-        "summary": "Get tuples from the store that matches a query, without following userset rewrite rules",
+        "summary": "Get stored relationship tuples",
         "tags": [
           "Relationship Tuples"
         ]
@@ -4903,7 +4903,7 @@
     },
     "/stores/{store_id}/streamed-list-objects": {
       "post": {
-        "description": "The Streamed ListObjects API is very similar to the the ListObjects API, with two differences: \n1. Instead of collecting all objects before returning a response, it streams them to the client as they are collected. \n2. The number of results returned is only limited by the execution timeout specified in the flag OPENFGA_LIST_OBJECTS_DEADLINE. \n",
+        "description": "The Streamed ListObjects API is very similar to the the ListObjects API, with two differences: \n1. Instead of collecting all objects before returning a response, it streams them to the client as they are collected. \n2. The number of results returned is only limited by the execution timeout specified in the flag `OPENFGA_LIST_OBJECTS_DEADLINE`. \n",
         "operationId": "StreamedListObjects",
         "parameters": [
           {
@@ -5016,7 +5016,7 @@
             "description": "Request failed due to internal server error."
           }
         },
-        "summary": "Stream all objects of the given type that the user has a relation with",
+        "summary": "Stream all objects with a user relationship",
         "tags": [
           "Relationship Queries"
         ]
@@ -5024,7 +5024,7 @@
     },
     "/stores/{store_id}/write": {
       "post": {
-        "description": "The Write API will transactionally update the tuples for a certain store. Tuples and type definitions allow OpenFGA to determine whether a relationship exists between an object and an user.\nIn the body, `writes` adds new tuples and `deletes` removes existing tuples. When deleting a tuple, any `condition` specified with it is ignored.\nThe API is not idempotent by default: if, later on, you try to add the same tuple key (even if the `condition` is different), or if you try to delete a non-existing tuple, it will throw an error.\nTo allow writes when an identical tuple already exists in the database, set `\"on_duplicate\": \"ignore\"` on the `writes` object.\nTo allow deletes when a tuple was already removed from the database, set `\"on_missing\": \"ignore\"` on the `deletes` object.\nIf a Write request contains both idempotent (ignore) and non-idempotent (error) operations, the most restrictive action (error) will take precedence. If a condition fails for a sub-request with an error flag, the entire transaction will be rolled back. This gives developers explicit control over the atomicity of the requests.\nThe API will not allow you to write tuples such as `document:2021-budget#viewer@document:2021-budget#viewer`, because they are implicit.\nAn `authorization_model_id` may be specified in the body. If it is, it will be used to assert that each written tuple (not deleted) is valid for the model specified. If it is not specified, the latest authorization model ID will be used.\n## Example\n### Adding relationships\nTo add `user:anne` as a `writer` for `document:2021-budget`, call write API with the following \n```json\n{\n  \"writes\": {\n    \"tuple_keys\": [\n      {\n        \"user\": \"user:anne\",\n        \"relation\": \"writer\",\n        \"object\": \"document:2021-budget\"\n      }\n    ],\n    \"on_duplicate\": \"ignore\"\n  },\n  \"authorization_model_id\": \"01G50QVV17PECNVAHX1GG4Y5NC\"\n}\n```\n### Removing relationships\nTo remove `user:bob` as a `reader` for `document:2021-budget`, call write API with the following \n```json\n{\n  \"deletes\": {\n    \"tuple_keys\": [\n      {\n        \"user\": \"user:bob\",\n        \"relation\": \"reader\",\n        \"object\": \"document:2021-budget\"\n      }\n    ],\n    \"on_missing\": \"ignore\"\n  }\n}\n```\n",
+        "description": "The Write API transactionally updates the tuples for a certain store. Tuples and type definitions allow OpenFGA to determine whether a relationship exists between an object and an user.\n\nIn the body, `writes` adds new tuples and `deletes` removes existing tuples. When deleting a tuple, any `condition` specified with it is ignored.\n\nThe API is not idempotent by default: if, later on, you try to add the same tuple key (even if the `condition` is different), or if you try to delete a non-existing tuple, it throws an error.\n\nTo allow writes when an identical tuple already exists in the database, set `\"on_duplicate\": \"ignore\"` on the `writes` object.\nTo allow deletes when a tuple was already removed from the database, set `\"on_missing\": \"ignore\"` on the `deletes` object.\nIf a Write request contains both idempotent (ignore) and non-idempotent (error) operations, the most restrictive action (error) takes precedence. If a condition fails for a sub-request with an error flag, the entire transaction will be rolled back. This gives developers explicit control over the atomicity of the requests.\n\nThe API does not allow you to write tuples such as `document:2021-budget#viewer@document:2021-budget#viewer`, because they are implicit.\nAn `authorization_model_id` may be specified in the body. If it is, model ID is used to assert that each written tuple (not deleted) is valid for the model specified. If it is not specified, the latest authorization model ID is used.\n\n## Example\n\n### Adding relationships\n\nTo add `user:anne` as a `writer` for `document:2021-budget`, call write API with the following:\n```json\n{\n  \"writes\": {\n    \"tuple_keys\": [\n      {\n        \"user\": \"user:anne\",\n        \"relation\": \"writer\",\n        \"object\": \"document:2021-budget\"\n      }\n    ],\n    \"on_duplicate\": \"ignore\"\n  },\n  \"authorization_model_id\": \"01G50QVV17PECNVAHX1GG4Y5NC\"\n}\n```\n### Removing relationships\n\nTo remove `user:bob` as a `reader` for `document:2021-budget`, call write API with the following:\n```json\n{\n  \"deletes\": {\n    \"tuple_keys\": [\n      {\n        \"user\": \"user:bob\",\n        \"relation\": \"reader\",\n        \"object\": \"document:2021-budget\"\n      }\n    ],\n    \"on_missing\": \"ignore\"\n  }\n}\n```\n",
         "operationId": "Write",
         "parameters": [
           {
@@ -5128,7 +5128,7 @@
             "description": "Request failed due to internal server error."
           }
         },
-        "summary": "Add or delete tuples from the store",
+        "summary": "Add or delete tuples",
         "tags": [
           "Relationship Tuples"
         ]
