@@ -1589,13 +1589,15 @@ const file_authzen_v1_authzen_service_proto_rawDesc = "" +
 	"\x13EvaluationsSemantic\x12\x0f\n" +
 	"\vexecute_all\x10\x00\x12\x16\n" +
 	"\x12deny_on_first_deny\x10\x01\x12\x1a\n" +
-	"\x16permit_on_first_permit\x10\x022\x99R\n" +
-	"\x0eAuthZenService\x12\xab\x16\n" +
+	"\x16permit_on_first_permit\x10\x022\xc8T\n" +
+	"\x0eAuthZenService\x12\xb5\x16\n" +
 	"\n" +
-	"Evaluation\x12\x1d.authzen.v1.EvaluationRequest\x1a\x1e.authzen.v1.EvaluationResponse\"\xdd\x15\x92A\xa7\x15\x12M[Experimental] Evaluate whether a subject can perform an action on a resource\x1a\xc9\x14[Experimental] The Evaluation API determines whether a subject is authorized to perform an action on a resource. This endpoint implements the AuthZEN Access Evaluation API specification.\n" +
+	"Evaluation\x12\x1d.authzen.v1.EvaluationRequest\x1a\x1e.authzen.v1.EvaluationResponse\"\xe7\x15\x92A\xb1\x15\x12J[Experimental] Check whether a subject can perform an action on a resource\x1a\xd6\x14[Experimental] The Evaluation API determines whether a subject is authorized to perform an action on a resource. This endpoint implements the AuthZEN Access Evaluation API specification.\n" +
 	"\n" +
 	"## Request Structure\n" +
+	"\n" +
 	"The request requires three components:\n" +
+	"\n" +
 	"- **subject**: The entity requesting access (e.g., a user or service)\n" +
 	"- **action**: The operation being performed (maps to a relation in the authorization model)\n" +
 	"- **resource**: The object being accessed\n" +
@@ -1603,10 +1605,13 @@ const file_authzen_v1_authzen_service_proto_rawDesc = "" +
 	"Each component has a `type` and `id` field, and may include optional `properties` for ABAC (Attribute-Based Access Control) conditions.\n" +
 	"\n" +
 	"## Response\n" +
+	"\n" +
 	"The response contains a `decision` field (boolean) indicating whether access is permitted, and an optional `context` object with additional information such as the evaluation ID or error details.\n" +
 	"\n" +
 	"## ABAC Support\n" +
+	"\n" +
 	"Properties on subject, action, and resource are automatically merged into the evaluation context with prefixes:\n" +
+	"\n" +
 	"- Subject properties: `subject_<property_name>`\n" +
 	"- Resource properties: `resource_<property_name>`\n" +
 	"- Action properties: `action_<property_name>`\n" +
@@ -1614,7 +1619,9 @@ const file_authzen_v1_authzen_service_proto_rawDesc = "" +
 	"These merged properties can be used in conditions defined in your authorization model.\n" +
 	"\n" +
 	"## Examples\n" +
+	"\n" +
 	"### Basic authorization check\n" +
+	"\n" +
 	"Check if user Anne can read a document:\n" +
 	"```json\n" +
 	"{\n" +
@@ -1629,7 +1636,9 @@ const file_authzen_v1_authzen_service_proto_rawDesc = "" +
 	"  \"decision\": true\n" +
 	"}\n" +
 	"```\n" +
+	"\n" +
 	"### Using properties for ABAC\n" +
+	"\n" +
 	"Check access with subject and resource attributes:\n" +
 	"```json\n" +
 	"{\n" +
@@ -1646,7 +1655,9 @@ const file_authzen_v1_authzen_service_proto_rawDesc = "" +
 	"  }\n" +
 	"}\n" +
 	"```\n" +
+	"\n" +
 	"### Using request context\n" +
+	"\n" +
 	"Provide additional context for time-based or environmental conditions:\n" +
 	"```json\n" +
 	"{\n" +
@@ -1660,7 +1671,9 @@ const file_authzen_v1_authzen_service_proto_rawDesc = "" +
 	"  }\n" +
 	"}\n" +
 	"```\n" +
+	"\n" +
 	"### Specifying authorization model\n" +
+	"\n" +
 	"Pin the evaluation to a specific authorization model version using the `Openfga-Authorization-Model-Id` header:\n" +
 	"```\n" +
 	"POST /stores/{store_id}/access/v1/evaluation\n" +
@@ -1673,11 +1686,13 @@ const file_authzen_v1_authzen_service_proto_rawDesc = "" +
 	"}\n" +
 	"```\n" +
 	"*\n" +
-	"Evaluation\x82\xd3\xe4\x93\x02,:\x01*\"'/stores/{store_id}/access/v1/evaluation\x12\xc7\x11\n" +
-	"\vEvaluations\x12\x1e.authzen.v1.EvaluationsRequest\x1a\x1f.authzen.v1.EvaluationsResponse\"\xf6\x10\x92A\xbf\x10\x12Q[Experimental] Check whether one or more users are authorized to access resources\x1a\xdc\x0f[Experimental] The Evaluations API allows batch authorization checks in a single request. It supports request-level defaults for subject, action, resource, and context that can be overridden per evaluation item.\n" +
+	"Evaluation\x82\xd3\xe4\x93\x02,:\x01*\"'/stores/{store_id}/access/v1/evaluation\x12\xbf\x11\n" +
+	"\vEvaluations\x12\x1e.authzen.v1.EvaluationsRequest\x1a\x1f.authzen.v1.EvaluationsResponse\"\xee\x10\x92A\xb7\x10\x12@[Experimental] Check multiple authorizations in a single request\x1a\xe5\x0f[Experimental] The Evaluations API allows batch authorization checks in a single request. It supports request-level defaults for subject, action, resource, and context that can be overridden per evaluation item.\n" +
 	"\n" +
 	"## Evaluation Semantics\n" +
+	"\n" +
 	"The `options.evaluations_semantic` field controls how evaluations are processed:\n" +
+	"\n" +
 	"- `execute_all` (default): Execute all evaluations and return all results\n" +
 	"- `deny_on_first_deny`: Stop processing on first deny decision\n" +
 	"- `permit_on_first_permit`: Stop processing on first permit decision\n" +
@@ -1685,10 +1700,13 @@ const file_authzen_v1_authzen_service_proto_rawDesc = "" +
 	"When using `deny_on_first_deny` or `permit_on_first_permit`, the response may include fewer items than the request because processing short-circuits when the condition is met.\n" +
 	"\n" +
 	"## Authorization Model Selection\n" +
+	"\n" +
 	"To pin evaluations to a specific authorization model version, send the `Openfga-Authorization-Model-Id` header. If the header is not provided, the latest model is used.\n" +
 	"\n" +
 	"## Examples\n" +
+	"\n" +
 	"### Basic batch evaluation\n" +
+	"\n" +
 	"Check if a user can perform multiple actions on a document:\n" +
 	"```json\n" +
 	"{\n" +
@@ -1701,7 +1719,9 @@ const file_authzen_v1_authzen_service_proto_rawDesc = "" +
 	"  ]\n" +
 	"}\n" +
 	"```\n" +
+	"\n" +
 	"### Using evaluation semantics\n" +
+	"\n" +
 	"Stop on first permitted action (useful for finding any valid permission):\n" +
 	"```json\n" +
 	"{\n" +
@@ -1716,7 +1736,9 @@ const file_authzen_v1_authzen_service_proto_rawDesc = "" +
 	"  }\n" +
 	"}\n" +
 	"```\n" +
+	"\n" +
 	"### Overriding defaults per evaluation\n" +
+	"\n" +
 	"Check permissions across multiple resources:\n" +
 	"```json\n" +
 	"{\n" +
@@ -1729,14 +1751,19 @@ const file_authzen_v1_authzen_service_proto_rawDesc = "" +
 	"  ]\n" +
 	"}\n" +
 	"```\n" +
-	"*\vEvaluations\x82\xd3\xe4\x93\x02-:\x01*\"(/stores/{store_id}/access/v1/evaluations\x12\xb1\n" +
-	"\n" +
-	"\rSubjectSearch\x12 .authzen.v1.SubjectSearchRequest\x1a!.authzen.v1.SubjectSearchResponse\"\xda\t\x92A\xa0\t\x12<[Experimental] Search for subjects with access to a resource\x1a\xd0\b[Experimental] The SubjectSearch API returns all subjects that have a specific action (relation) on a given resource. This is useful for answering questions like \"Who can read this document?\" or \"Who can administer this folder?\"\n" +
+	"*\vEvaluations\x82\xd3\xe4\x93\x02-:\x01*\"(/stores/{store_id}/access/v1/evaluations\x12\xc3\v\n" +
+	"\rSubjectSearch\x12 .authzen.v1.SubjectSearchRequest\x1a!.authzen.v1.SubjectSearchResponse\"\xec\n" +
+	"\x92A\xb2\n" +
+	"\x12<[Experimental] Search for subjects with access to a resource\x1a\xe2\t[Experimental] The SubjectSearch API returns all subjects that have a specific action (relation) on a given resource. This is useful for answering questions like \"Who can read this document?\" or \"Who can administer this folder?\"\n" +
 	"\n" +
 	"Results can be filtered by subject type and support pagination for large result sets.\n" +
 	"\n" +
+	"> **Note:** The `subject.id` field may be provided but is ignored, per the AuthZEN spec — only `subject.type` is used to filter results.\n" +
+	"\n" +
 	"## Examples\n" +
+	"\n" +
 	"### Find all users who can read a document\n" +
+	"\n" +
 	"```json\n" +
 	"{\n" +
 	"  \"resource\": {\"type\": \"document\", \"id\": \"roadmap\"},\n" +
@@ -1755,7 +1782,9 @@ const file_authzen_v1_authzen_service_proto_rawDesc = "" +
 	"  \"page\": {\"count\": 3}\n" +
 	"}\n" +
 	"```\n" +
+	"\n" +
 	"### Paginated search with limit\n" +
+	"\n" +
 	"```json\n" +
 	"{\n" +
 	"  \"resource\": {\"type\": \"folder\", \"id\": \"engineering\"},\n" +
@@ -1764,7 +1793,9 @@ const file_authzen_v1_authzen_service_proto_rawDesc = "" +
 	"  \"page\": {\"limit\": 10}\n" +
 	"}\n" +
 	"```\n" +
+	"\n" +
 	"### Continue from previous page\n" +
+	"\n" +
 	"```json\n" +
 	"{\n" +
 	"  \"resource\": {\"type\": \"folder\", \"id\": \"engineering\"},\n" +
@@ -1773,14 +1804,18 @@ const file_authzen_v1_authzen_service_proto_rawDesc = "" +
 	"  \"page\": {\"token\": \"eyJsYXN0X2lkIjoiMTAwIn0=\", \"limit\": 10}\n" +
 	"}\n" +
 	"```\n" +
-	"*\rSubjectSearch\x82\xd3\xe4\x93\x020:\x01*\"+/stores/{store_id}/access/v1/search/subject\x12\x84\v\n" +
-	"\x0eResourceSearch\x12!.authzen.v1.ResourceSearchRequest\x1a\".authzen.v1.ResourceSearchResponse\"\xaa\n" +
-	"\x92A\xef\t\x12;[Experimental] Search for resources a subject has access to\x1a\x9f\t[Experimental] The ResourceSearch API returns all resources of a given type that a subject has a specific action (relation) on. This is useful for answering questions like \"What documents can Anne read?\" or \"What folders can Bob administer?\"\n" +
+	"*\rSubjectSearch\x82\xd3\xe4\x93\x020:\x01*\"+/stores/{store_id}/access/v1/search/subject\x12\x98\f\n" +
+	"\x0eResourceSearch\x12!.authzen.v1.ResourceSearchRequest\x1a\".authzen.v1.ResourceSearchResponse\"\xbe\v\x92A\x83\v\x12;[Experimental] Search for resources a subject has access to\x1a\xb3\n" +
+	"[Experimental] The ResourceSearch API returns all resources of a given type that a subject has a specific action (relation) on. This is useful for answering questions like \"What documents can Anne read?\" or \"What folders can Bob administer?\"\n" +
 	"\n" +
 	"The resource type filter is required. Results support pagination for large result sets.\n" +
 	"\n" +
+	"> **Note:** The `resource.id` field may be provided but is ignored, per the AuthZEN spec — only `resource.type` is used to filter results.\n" +
+	"\n" +
 	"## Examples\n" +
+	"\n" +
 	"### Find all documents a user can read\n" +
+	"\n" +
 	"```json\n" +
 	"{\n" +
 	"  \"subject\": {\"type\": \"user\", \"id\": \"anne\"},\n" +
@@ -1799,7 +1834,9 @@ const file_authzen_v1_authzen_service_proto_rawDesc = "" +
 	"  \"page\": {\"count\": 3}\n" +
 	"}\n" +
 	"```\n" +
+	"\n" +
 	"### Find folders a user can administer with pagination\n" +
+	"\n" +
 	"```json\n" +
 	"{\n" +
 	"  \"subject\": {\"type\": \"user\", \"id\": \"bob\"},\n" +
@@ -1808,7 +1845,9 @@ const file_authzen_v1_authzen_service_proto_rawDesc = "" +
 	"  \"page\": {\"limit\": 25}\n" +
 	"}\n" +
 	"```\n" +
+	"\n" +
 	"### Search with ABAC context\n" +
+	"\n" +
 	"```json\n" +
 	"{\n" +
 	"  \"subject\": {\"type\": \"user\", \"id\": \"anne\"},\n" +
@@ -1820,12 +1859,14 @@ const file_authzen_v1_authzen_service_proto_rawDesc = "" +
 	"  }\n" +
 	"}\n" +
 	"```\n" +
-	"*\x0eResourceSearch\x82\xd3\xe4\x93\x021:\x01*\",/stores/{store_id}/access/v1/search/resource\x12\x86\n" +
+	"*\x0eResourceSearch\x82\xd3\xe4\x93\x021:\x01*\",/stores/{store_id}/access/v1/search/resource\x12\x8c\n" +
 	"\n" +
-	"\fActionSearch\x12\x1f.authzen.v1.ActionSearchRequest\x1a .authzen.v1.ActionSearchResponse\"\xb2\t\x92A\xf9\b\x12E[Experimental] Search for actions a subject can perform on a resource\x1a\xa1\b[Experimental] The ActionSearch API returns all actions (relations) that a subject can perform on a specific resource. This is useful for answering questions like \"What can Anne do with this document?\" or building dynamic UIs that show only the actions a user is permitted to perform.\n" +
+	"\fActionSearch\x12\x1f.authzen.v1.ActionSearchRequest\x1a .authzen.v1.ActionSearchResponse\"\xb8\t\x92A\xff\b\x12E[Experimental] Search for actions a subject can perform on a resource\x1a\xa7\b[Experimental] The ActionSearch API returns all actions (relations) that a subject can perform on a specific resource. This is useful for answering questions like \"What can Anne do with this document?\" or building dynamic UIs that show only the actions a user is permitted to perform.\n" +
 	"\n" +
 	"## Examples\n" +
+	"\n" +
 	"### Find all actions a user can perform on a document\n" +
+	"\n" +
 	"```json\n" +
 	"{\n" +
 	"  \"subject\": {\"type\": \"user\", \"id\": \"anne\"},\n" +
@@ -1843,7 +1884,9 @@ const file_authzen_v1_authzen_service_proto_rawDesc = "" +
 	"  \"page\": {\"count\": 3}\n" +
 	"}\n" +
 	"```\n" +
+	"\n" +
 	"### Search with ABAC context for time-based permissions\n" +
+	"\n" +
 	"```json\n" +
 	"{\n" +
 	"  \"subject\": {\"type\": \"user\", \"id\": \"bob\"},\n" +
@@ -1854,7 +1897,9 @@ const file_authzen_v1_authzen_service_proto_rawDesc = "" +
 	"  }\n" +
 	"}\n" +
 	"```\n" +
+	"\n" +
 	"### Paginated action search\n" +
+	"\n" +
 	"```json\n" +
 	"{\n" +
 	"  \"subject\": {\"type\": \"user\", \"id\": \"admin\"},\n" +
@@ -1862,13 +1907,14 @@ const file_authzen_v1_authzen_service_proto_rawDesc = "" +
 	"  \"page\": {\"limit\": 50}\n" +
 	"}\n" +
 	"```\n" +
-	"*\fActionSearch\x82\xd3\xe4\x93\x02/:\x01*\"*/stores/{store_id}/access/v1/search/action\x12\xca\n" +
+	"*\fActionSearch\x82\xd3\xe4\x93\x02/:\x01*\"*/stores/{store_id}/access/v1/search/action\x12\xcb\n" +
 	"\n" +
-	"\x10GetConfiguration\x12#.authzen.v1.GetConfigurationRequest\x1a$.authzen.v1.GetConfigurationResponse\"\xea\t\x92A\xb1\t\x12=[Experimental] Get AuthZEN PDP configuration and capabilities\x1a\xdd\b[Experimental] The GetConfiguration API returns metadata about the Policy Decision Point (PDP) including its name, version, supported endpoints, and capabilities. This endpoint follows the AuthZEN specification for PDP discovery.\n" +
+	"\x10GetConfiguration\x12#.authzen.v1.GetConfigurationRequest\x1a$.authzen.v1.GetConfigurationResponse\"\xeb\t\x92A\xb2\t\x12=[Experimental] Get AuthZEN PDP configuration and capabilities\x1a\xde\b[Experimental] The GetConfiguration API returns metadata about the Policy Decision Point (PDP) including its name, version, supported endpoints, and capabilities. This endpoint follows the AuthZEN specification for PDP discovery.\n" +
 	"\n" +
 	"Following the AuthZEN spec's multi-tenant pattern, OpenFGA provides a per-store discovery endpoint at `/.well-known/authzen-configuration/{store_id}`. This returns absolute endpoint URLs specific to that store.\n" +
 	"\n" +
 	"## Example Response\n" +
+	"\n" +
 	"```json\n" +
 	"{\n" +
 	"  \"policy_decision_point\": \"https://example.com/stores/01ARZ3NDEKTSV4RRFFQ69G5FAV\",\n" +
