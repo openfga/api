@@ -2985,15 +2985,15 @@ const file_openfga_v1_openfga_service_proto_rawDesc = "" +
 	"\acontext\x18\a \x01(\v2\x17.google.protobuf.StructR\acontext\x12M\n" +
 	"\vconsistency\x18\b \x01(\x0e2!.openfga.v1.ConsistencyPreferenceB\b\xfaB\x05\x82\x01\x02\x10\x01R\vconsistency\"a\n" +
 	"\x13ListObjectsResponse\x12J\n" +
-	"\aobjects\x18\x01 \x03(\tB0\x92A*J([\"document:roadmap\",\"document:planning\"]\xe0A\x02R\aobjects\"\xc2\x06\n" +
+	"\aobjects\x18\x01 \x03(\tB0\x92A*J([\"document:roadmap\",\"document:planning\"]\xe0A\x02R\aobjects\"\xb2\x06\n" +
 	"\x10ListUsersRequest\x12e\n" +
 	"\bstore_id\x18\x01 \x01(\tBI\x92A\x1eJ\x1c\"01YCP46JKYM8FJCQ37NMBYHE5X\"\xfaB%r#2!^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$R\bstore_id\x12\x84\x01\n" +
 	"\x16authorization_model_id\x18\x02 \x01(\tBL\x92A\x1eJ\x1c\"01G5JAVJ41T49E9TT3SKVS7X1J\"\xfaB(r&2!^[ABCDEFGHJKMNPQRSTVWXYZ0-9]{26}$\xd0\x01\x01R\x16authorization_model_id\x12N\n" +
 	"\x06object\x18\x03 \x01(\v2\x12.openfga.v1.ObjectB\"\x92A\x14J\x12\"document:example\"\xe0A\x02\xfaB\x05\x8a\x01\x02\x10\x01R\x06object\x12C\n" +
 	"\brelation\x18\x04 \x01(\tB'\x92A\n" +
 	"J\b\"reader\"\xe0A\x02\xfaB\x14r\x122\x10^[^:#@\\s]{1,50}$R\brelation\x12\xd4\x01\n" +
-	"\fuser_filters\x18\x05 \x03(\v2\x1a.openfga.v1.UserTypeFilterB\x93\x01\x92A\x82\x012=The type of results returned. Only accepts exactly one value.J;[{\"type\": \"user\"}, {\"type\": \"group\", \"relation\": \"member\"}]\xa0\x01\x01\xa8\x01\x01\xe0A\x02\xfaB\a\x92\x01\x04\b\x01\x10\x01R\fuser_filters\x12R\n" +
-	"\x11contextual_tuples\x18\x06 \x03(\v2\x14.openfga.v1.TupleKeyB\x0e\x92A\x03\xa0\x01d\xfaB\x05\x92\x01\x02\x10dR\x11contextual_tuples\x121\n" +
+	"\fuser_filters\x18\x05 \x03(\v2\x1a.openfga.v1.UserTypeFilterB\x93\x01\x92A\x82\x012=The type of results returned. Only accepts exactly one value.J;[{\"type\": \"user\"}, {\"type\": \"group\", \"relation\": \"member\"}]\xa0\x01\x01\xa8\x01\x01\xe0A\x02\xfaB\a\x92\x01\x04\b\x01\x10\x01R\fuser_filters\x12B\n" +
+	"\x11contextual_tuples\x18\x06 \x03(\v2\x14.openfga.v1.TupleKeyR\x11contextual_tuples\x121\n" +
 	"\acontext\x18\a \x01(\v2\x17.google.protobuf.StructR\acontext\x12M\n" +
 	"\vconsistency\x18\b \x01(\x0e2!.openfga.v1.ConsistencyPreferenceB\b\xfaB\x05\x82\x01\x02\x10\x01R\vconsistency\"C\n" +
 	"\x11ListUsersResponse\x12.\n" +

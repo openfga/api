@@ -1415,10 +1415,10 @@ const file_openfga_v1_openfga_proto_rawDesc = "" +
 	"\tTupleKeys\x12G\n" +
 	"\n" +
 	"tuple_keys\x18\x01 \x03(\v2\x14.openfga.v1.TupleKeyB\x11\x92A\x03\xa8\x01\x01\xe0A\x02\xfaB\x05\x92\x01\x02\b\x01R\n" +
-	"tuple_keys\"^\n" +
-	"\x13ContextualTupleKeys\x12G\n" +
+	"tuple_keys\"P\n" +
+	"\x13ContextualTupleKeys\x129\n" +
 	"\n" +
-	"tuple_keys\x18\x01 \x03(\v2\x14.openfga.v1.TupleKeyB\x11\x92A\x03\xa0\x01d\xe0A\x02\xfaB\x05\x92\x01\x02\x10dR\n" +
+	"tuple_keys\x18\x01 \x03(\v2\x14.openfga.v1.TupleKeyB\x03\xe0A\x02R\n" +
 	"tuple_keys\"\xe9\a\n" +
 	"\vUsersetTree\x120\n" +
 	"\x04root\x18\x01 \x01(\v2\x1c.openfga.v1.UsersetTree.NodeR\x04root\x1a\xda\x01\n" +
